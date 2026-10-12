@@ -70,8 +70,11 @@ jobs:
       - name: Run the slide gates on every talk
         run: make slides-check SLIDES=.deps/techne/plugins/graphe/skills/slides/scripts/slides.py
 
+      - name: Export every talk for PowerPoint, with its preview
+        run: make exports SLIDES=.deps/techne/plugins/graphe/skills/slides/scripts/slides.py
+
       - name: Lay out the site
-        run: make site
+        run: python3 scripts/site.py _site --exports _exports
 
       - name: Configure Pages
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'

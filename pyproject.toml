@@ -16,7 +16,7 @@ dev = [
 [tool.ruff]
 line-length = 120
 target-version = "py312"
-extend-exclude = [".deps", "_site"]
+extend-exclude = [".deps", "_site", "_exports"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]

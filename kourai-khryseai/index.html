@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kourai Khryseai</title>
+  <meta name="description" content="Ten AI agents that build software with you: each shows its work and asks before the choices that matter.">
+  <meta property="og:title" content="Kourai Khryseai">
+  <meta property="og:description" content="Ten AI agents that build software with you: each shows its work and asks before the choices that matter.">
+  <link rel="stylesheet" href="../vendor/reveal/reset.css">
+  <link rel="stylesheet" href="../vendor/reveal/reveal.css">
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section class="title-slide dark" data-background-color="#14181f">
+  <span class="kicker">AJ Barea · Rochester Institute of Technology</span>
+  <h1>Kourai Khryseai</h1>
+  <p class="subtitle">Ten AI agents that build software with you, and show their work as they go</p>
+  <img class="hero" src="img/golden-maidens.webp" alt="" width="560" height="560">
+  <aside class="notes">Hi, I'm AJ Barea, a PhD student at RIT. This is Kourai Khryseai, a team of ten AI agents that builds software with you rather than for you. The name means the Golden Maidens: in Greek myth, the gold attendants Hephaestus built for his workshop, each able to think, speak and work on its own.</aside>
+</section>
+
+<section data-chapter="1 · The problem">
+  <span class="kicker">1 · The problem</span>
+  <h2>A coding agent that works alone hands you its result, not its choices</h2>
+  <div class="versus solo">
+    <div class="lane">
+      <div class="node you">You<small>"add user authentication"</small></div>
+      <div class="flow" aria-hidden="true"></div>
+      <div class="node box">One agent, out of sight<small>plans, codes, tests, reviews</small></div>
+      <div class="flow" aria-hidden="true"></div>
+      <div class="node done">A finished change</div>
+    </div>
+    <ul class="unseen fragment">
+      <li>Sessions or tokens?</li>
+      <li>Which tests count as done?</li>
+      <li>Which style rules apply?</li>
+    </ul>
+  </div>
+  <p class="lead">Plan, code, test, review, commit: five jobs for one model, and its decisions surface only at the end.</p>
+  <p class="footnote">The decisions above are examples of the choices a request like this involves.</p>
+  <aside class="notes">Ask a coding agent to add user authentication and it goes away and comes back with a finished change. Along the way it made real decisions: sessions or tokens, what counts as tested, which style rules apply. You find out what it chose only at the end. And one model is being asked to do five jobs well at once: plan, code, test, review and write the commit. So I asked what it would look like if the work were split up, and done in the open.</aside>
+</section>
+
+<section data-chapter="2 · The idea">
+  <span class="kicker">2 · The idea</span>
+  <h2>Ten specialists, each with one job, working with you in the open</h2>
+  <div class="cast">
+    <div class="tier">
+      <h3>Core specialists</h3>
+      <ul>
+        <li><img src="img/hephaestus.webp" alt="" width="256" height="256"><b>Hephaestus</b>runs the forge</li>
+        <li><img src="img/metis.webp" alt="" width="256" height="256"><b>Metis</b>plans</li>
+        <li><img src="img/techne.webp" alt="" width="256" height="256"><b>Techne</b>codes</li>
+        <li><img src="img/dokimasia.webp" alt="" width="256" height="256"><b>Dokimasia</b>tests</li>
+        <li><img src="img/kallos.webp" alt="" width="256" height="256"><b>Kallos</b>reviews style</li>
+        <li><img src="img/mneme.webp" alt="" width="256" height="256"><b>Mneme</b>writes commits</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <h3>Companions</h3>
+      <ul>
+        <li><img src="img/puck.webp" alt="" width="256" height="256"><b>Puck</b>guides you in</li>
+        <li><img src="img/cupid.webp" alt="" width="256" height="256"><b>Cupid</b>coaches the romance</li>
+      </ul>
+    </div>
+    <div class="tier">
+      <h3>Quality checks</h3>
+      <ul>
+        <li><img src="img/aidos.webp" alt="" width="256" height="256"><b>Aidos</b>catches vague writing</li>
+        <li><img src="img/aletheia.webp" alt="" width="256" height="256"><b>Aletheia</b>checks citations</li>
+      </ul>
+    </div>
+  </div>
+  <p class="footnote">Each is named for a Greek idea that matches its job: Metis is wisdom, Techne is craft, Dokimasia is scrutiny, Kallos is beauty, Mneme is memory.</p>
+  <aside class="notes">So the work is split across ten agents, each with one job. Six do the development: Hephaestus runs the workshop, Metis plans, Techne writes the code, Dokimasia tests it, Kallos reviews the style, and Mneme writes the commit messages. Two are companions: Puck walks you through your first session, and Cupid belongs to the visual-novel side, which I'll come back to. And two check quality: Aidos catches vague or padded writing, and Aletheia checks citations and facts. Here's how a request moves through them.</aside>
+</section>
+
+<section data-chapter="2 · The idea">
+  <span class="kicker">2 · The idea</span>
+  <h2>Hephaestus hands the whole conversation to each specialist in turn</h2>
+  <ol class="forge">
+    <li class="stage you">You<small>ask for a feature</small></li>
+    <li class="stage fragment"><img src="img/metis.webp" alt="" width="256" height="256"><b>Metis</b><small>writes the plan</small></li>
+    <li class="stage fragment"><img src="img/techne.webp" alt="" width="256" height="256"><b>Techne</b><small>writes the code</small></li>
+    <li class="stage fragment"><img src="img/dokimasia.webp" alt="" width="256" height="256"><b>Dokimasia</b><small>writes and runs tests</small></li>
+    <li class="stage fragment"><img src="img/kallos.webp" alt="" width="256" height="256"><b>Kallos</b><small>reviews the style</small></li>
+    <li class="stage fragment"><img src="img/mneme.webp" alt="" width="256" height="256"><b>Mneme</b><small>writes the commit</small></li>
+  </ol>
+  <div class="loopback fragment"><span>Fixable style problems go back to Techne, up to five rounds</span></div>
+  <div class="transcript-bar fragment"><img src="img/hephaestus.webp" alt="" width="256" height="256"><p><b>Hephaestus</b> gives each specialist the whole conversation so far, never a summary.</p></div>
+  <p class="footnote">Project term: the Forge Transcript. A bug fix skips planning; a cleanup is style and commit only.</p>
+  <aside class="notes">Here's a full feature request. Metis writes the plan. Techne writes the code from that plan. Dokimasia writes and runs the tests. Kallos reviews the style, and if it finds something Techne can fix, the work goes back to Techne, up to five rounds; anything still left after that is reported rather than retried forever. Mneme writes the commit. Underneath all of it, Hephaestus keeps one running record of the whole exchange and hands all of it to each specialist, so Kallos reads everything Techne wrote, and nobody works from a summary. Smaller requests take shorter routes: a bug fix skips planning, and a cleanup is just style and commit.</aside>
+</section>
+
+<section data-chapter="3 · Working together">
+  <span class="kicker">3 · Working together</span>
+  <h2>You decide twice: before the work starts, and when a real choice comes up</h2>
+  <div class="cards chats" style="--n:2">
+    <figure class="chat">
+      <figcaption>Before any work starts</figcaption>
+      <p class="line agent"><img src="img/hephaestus.webp" alt="" width="256" height="256"><span><b>Hephaestus</b>Plan + JWT + tests + commit. Light the forge?</span></p>
+      <p class="line person"><span>yes</span></p>
+    </figure>
+    <figure class="chat fragment">
+      <figcaption>Midway, when the plan needs your call</figcaption>
+      <p class="line agent"><img src="img/metis.webp" alt="" width="256" height="256"><span><b>Metis</b>Should CSV export support streaming for large files?<br>A: yes, constant memory, slower start<br>B: no, faster start, high memory</span></p>
+      <p class="line person"><span>A</span></p>
+    </figure>
+  </div>
+  <p class="lead">Every agent streams its reasoning as it works.</p>
+  <p class="footnote">Both exchanges are from the project's documentation. Power users can skip the first check with /yolo.</p>
+  <aside class="notes">You stay in the loop at two points. Before anything runs, Hephaestus reads the order back to you: here's the plan, shall I start? You confirm or redirect before any work is spent. Then, midway, any specialist can stop and ask when a choice is really yours. Here Metis asks whether a CSV export should stream large files, and gives the trade-off for each answer. And the whole time, every agent streams its reasoning as it works, so you watch the plan form instead of waiting for a result.</aside>
+</section>
+
+<section data-chapter="3 · Working together">
+  <span class="kicker">3 · Working together</span>
+  <h2>Three ways in, all talking to the same team of agents</h2>
+  <div class="ways">
+    <div class="way"><b>Terminal</b><p>A fast command-line session that streams each agent's work as text.</p></div>
+    <div class="way"><b>Desktop app</b><p>Each agent's portrait, with a voice matched to its personality.</p></div>
+    <div class="way"><b>Visual novel</b><p>A story game built in Ren'Py, where your rapport with each agent grows.</p></div>
+  </div>
+  <div class="hub" aria-hidden="true"><span></span><span></span><span></span></div>
+  <div class="backend"><img src="img/hephaestus.webp" alt="" width="256" height="256"><p><b>One back end</b>Hephaestus and the specialists, run with Docker</p></div>
+  <aside class="notes">There are three ways in, and they all reach the same agents. The terminal is the fast one: you type a request and watch each agent's work stream past. The desktop app shows each agent's portrait and gives each one a voice. And the visual novel turns the same work into a story game, where your rapport with each agent grows as you work together; that's where Cupid comes in. Behind all three is one back end.</aside>
+</section>
+
+<section data-chapter="4 · How it's built">
+  <span class="kicker">4 · How it's built</span>
+  <h2>Each agent is its own server, so any one can be tested or swapped</h2>
+  <div class="stack">
+    <div class="tierbox front"><b>Terminal, desktop app, visual novel</b></div>
+    <div class="link-label">open agent-to-agent protocol (A2A), streamed</div>
+    <div class="tierbox lead-agent"><img src="img/hephaestus.webp" alt="" width="256" height="256"><b>Hephaestus</b><small>picks the route</small></div>
+    <div class="link-label">the same protocol, one specialist at a time</div>
+    <div class="tierbox servers">
+      <img src="img/metis.webp" alt="Metis" width="256" height="256"><img src="img/techne.webp" alt="Techne" width="256" height="256"><img src="img/dokimasia.webp" alt="Dokimasia" width="256" height="256"><img src="img/kallos.webp" alt="Kallos" width="256" height="256"><img src="img/mneme.webp" alt="Mneme" width="256" height="256"><img src="img/puck.webp" alt="Puck" width="256" height="256"><img src="img/cupid.webp" alt="Cupid" width="256" height="256"><img src="img/aidos.webp" alt="Aidos" width="256" height="256"><img src="img/aletheia.webp" alt="Aletheia" width="256" height="256">
+      <small>nine specialists, each its own server</small>
+    </div>
+    <div class="sides">
+      <div class="card"><b>Models</b><p>Claude or Google models, or free local models through Ollama</p></div>
+      <div class="card"><b>Every request traced</b><p>Each agent's steps and timing, in Jaeger and Prometheus</p></div>
+    </div>
+  </div>
+  <p class="footnote">Python, with LiteLLM between the agents and the models, and OpenTelemetry for the traces.</p>
+  <aside class="notes">Under the hood, each agent is its own small web server, and they talk over A2A, an open agent-to-agent protocol. That means any one agent can be run alone, tested on its own, or replaced with a different implementation. The models are swappable too: Claude, Google's models, or free local models through Ollama. And every request leaves a trace, so you can see exactly what each agent did and how long it took.</aside>
+</section>
+
+<section class="dark" data-background-color="#14181f">
+  <h2>Thank you</h2>
+  <p class="muted">AJ Barea · PhD student, Rochester Institute of Technology</p>
+  <p class="muted">ajbarea.github.io · github.com/ajbarea/kourai-khryseai</p>
+  <p class="muted">These slides: ajbarea.github.io/talks/kourai-khryseai</p>
+  <aside class="notes">That's Kourai Khryseai: ten agents, each with one job, working in the open and asking you before the choices that matter. The code and the documentation are public. Thank you; I'd be glad to take questions.</aside>
+</section>
+
+</div>
+</div>
+<script src="../vendor/reveal/reveal.js"></script>
+<script src="../vendor/reveal/notes.js"></script>
+<script src="deck.js"></script>
+</body>
+</html>

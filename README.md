@@ -33,7 +33,8 @@ link like `.../federated-agents/#/5` opens a given slide.
 `graphe:slides` gates on every talk, and the site layout. CI runs it on every pull request, on
 `main`, and daily, since a talk's figures can go stale through a change in another repository.
 A run on `main` that passes publishes the site; one that fails publishes nothing, and the site
-keeps its last good version.
+keeps its last good version. GitHub turns off a public repository's scheduled runs after 60
+days without activity; re-enable the daily run from the Actions tab if it stops.
 
 `SPHRAGIS` points at a sphragis checkout (default `../sphragis`) and `SLIDES` at the
 `graphe:slides` script in a techne checkout (default `../techne/...`).

@@ -3,8 +3,8 @@
 
 No figure on a slide is typed by hand. This module reads the artifacts and writes
 `data/readings.js`, which the slides bind to; `--check` fails when the committed copy no longer
-matches what the artifacts say. The PDF deck in ajbarea/papers imports `readings()` from here,
-so the two decks cannot disagree.
+matches what the artifacts say. The PDF version of this talk imports `readings()` from here,
+so the two cannot disagree.
 
     python figures.py            # write data/readings.js
     python figures.py --check    # is data/readings.js current?

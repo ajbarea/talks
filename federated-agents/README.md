@@ -13,8 +13,8 @@ daily. To add a figure, add it to `readings()` and bind a slide to its name.
 whether the shared part is tested. Each placement comes from a full-text read of the paper, with
 the page noted beside it.
 
-**The PDF version** of this talk is in ajbarea/papers (`federated-agents-deck/`). It imports
-`readings()` from here, so both versions show the same figures.
+**The PDF version** of this talk imports `readings()` from here, so both versions show the same
+figures.
 
 ```
 python figures.py           # write data/readings.js

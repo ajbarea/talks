@@ -43,6 +43,9 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: ajbarea/techne
+          # Pinned, so a new gate in techne cannot stop the site publishing unannounced.
+          # Dependabot does not bump this; move it by hand when graphe:slides changes.
+          ref: c525b4c041ab28afa39d012854e82f3ea48cfc49
           path: .deps/techne
           persist-credentials: false
 

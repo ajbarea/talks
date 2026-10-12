@@ -3,8 +3,9 @@
 .PHONY: help setup lint fix test figures figures-check slides-check site check
 
 SLIDES ?= ../techne/plugins/graphe/skills/slides/scripts/slides.py
-B := uv run --no-project --quiet --with playwright==1.63.0 --with axe-playwright-python==0.1.8 --with pillow
-TALKS := $(filter-out _% vendor,$(patsubst %/index.html,%,$(wildcard */index.html)))
+# The browser command and the list of talks each come from the one place that defines them.
+B = $(shell python3 -c "import runpy; print(runpy.run_path('$(SLIDES)')['WITH_BROWSER'])" 2>/dev/null)
+TALKS = $(shell python3 scripts/site.py --list)
 
 help:              ## List targets
 	@grep -E '^[a-z-]+:.*##' $(MAKEFILE_LIST) | sed 's/:.*## /\t/'
@@ -28,6 +29,8 @@ figures-check:     ## Fail if a talk's committed figures are stale
 	@for f in */figures.py; do echo ">>> $$f"; python3 $$f --check || exit 1; done
 
 slides-check:      ## Run the graphe:slides gates on every talk
+	@test -f "$(SLIDES)" || { echo "no graphe:slides script at $(SLIDES); set SLIDES" >&2; exit 1; }
+	@test -n "$(TALKS)" || { echo "no talks found" >&2; exit 1; }
 	@for t in $(TALKS); do echo ">>> $$t"; $(B) python $(SLIDES) check $$t/index.html || exit 1; done
 
 site:              ## Lay out every talk under _site/

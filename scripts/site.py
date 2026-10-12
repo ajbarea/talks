@@ -2,7 +2,8 @@
 """Lay out every talk as one site: each talk at /<folder>/, shared files at /vendor/, and an
 index page listing the talks by their own <title> and description.
 
-    python scripts/site.py _site
+    python scripts/site.py _site      # build the site
+    python scripts/site.py --list     # the talks, by folder
 
 A talk is a top-level folder holding an index.html. Build scripts and caches stay behind.
 """
@@ -83,6 +84,8 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT) -> list[str]:
         raise SystemExit(f"no talks under {root}: a talk is a folder holding an index.html")
     if any(out.is_relative_to(source) for source in [*found, root / "vendor"]):
         raise SystemExit(f"refusing to build into {out}, inside the files it copies")
+    if out.exists() and not out.is_dir():
+        raise SystemExit(f"refusing to build into {out}, which is a file")
     if out.exists() and any(out.iterdir()):
         if not (out / MARK).is_file():
             raise SystemExit(f"refusing to replace {out}: not empty, and not a site this script built")
@@ -92,6 +95,9 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT) -> list[str]:
     shutil.copytree(root / "vendor", out / "vendor")
     items = []
     for talk in found:
+        links = [p for p in talk.rglob("*") if p.is_symlink()]
+        if links:
+            raise SystemExit(f"{talk.name} holds a symlink, which would publish what it points to: {links[0]}")
         title, description = entry(talk)
         shutil.copytree(talk, out / talk.name, ignore=SKIP)
         items.append(f'    <li><a href="{talk.name}/">{html.escape(title)}</a><p>{html.escape(description)}</p></li>')
@@ -101,7 +107,10 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT) -> list[str]:
 
 def main() -> int:
     if len(sys.argv) != 2:
-        raise SystemExit("usage: site.py <out-dir>")
+        raise SystemExit("usage: site.py <out-dir> | --list")
+    if sys.argv[1] == "--list":
+        print(" ".join(t.name for t in talks()))
+        return 0
     out = pathlib.Path(sys.argv[1]).resolve()
     for name in build(out):
         print(f"talk: {name}/")

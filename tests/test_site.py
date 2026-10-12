@@ -68,6 +68,20 @@ def test_it_rebuilds_its_own_site(site, repo: Path, tmp_path: Path) -> None:
     assert not (out / "stale.html").exists()
 
 
+def test_a_talk_holding_a_symlink_fails(site, repo: Path, tmp_path: Path) -> None:
+    (repo / "alpha-talk" / "deps").symlink_to(repo / ".deps")
+    with pytest.raises(SystemExit, match="symlink"):
+        site.build(tmp_path / "out", repo)
+
+
+def test_a_file_is_not_an_output_folder(site, repo: Path, tmp_path: Path) -> None:
+    out = tmp_path / "file.txt"
+    out.write_text("mine")
+    with pytest.raises(SystemExit, match="refusing"):
+        site.build(out, repo)
+    assert out.read_text() == "mine"
+
+
 @pytest.mark.parametrize("target", ["elsewhere", ".", "alpha-talk/out", "vendor"])
 def test_it_never_replaces_a_folder_it_did_not_build(site, repo: Path, tmp_path: Path, target: str) -> None:
     out = tmp_path / "elsewhere" if target == "elsewhere" else repo / target

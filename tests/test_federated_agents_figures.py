@@ -9,6 +9,7 @@ from __future__ import annotations
 import importlib.util
 import os
 import re
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -43,16 +44,22 @@ def test_the_committed_readings_match_the_artifacts() -> None:
     assert (DECK / "data" / "readings.js").read_text() == module.readings_js(module.readings())
 
 
-def test_the_guard_fails_when_a_figure_is_edited_by_hand() -> None:
-    path = DECK / "data" / "readings.js"
-    original = path.read_text()
-    try:
-        path.write_text(original.replace('"verdict"', '"verdict_x"', 1))
-        result = subprocess.run([sys.executable, str(DECK / "figures.py"), "--check"], capture_output=True, text=True)
-        assert result.returncode == 1, result.stdout + result.stderr
-        assert "readings.js is stale" in result.stdout
-    finally:
-        path.write_text(original)
+def test_the_guard_fails_when_a_figure_is_edited_by_hand(tmp_path: Path) -> None:
+    """On a copy, so a run killed mid-test cannot leave the committed figures edited."""
+    deck = tmp_path / "federated-agents"
+    (deck / "data").mkdir(parents=True)
+    shutil.copy(DECK / "figures.py", deck)
+    original = (DECK / "data" / "readings.js").read_text()
+    (deck / "data" / "readings.js").write_text(original.replace('"verdict"', '"verdict_x"', 1))
+    result = subprocess.run(
+        [sys.executable, str(deck / "figures.py"), "--check"],
+        capture_output=True,
+        text=True,
+        check=False,
+        env={**os.environ, "SPHRAGIS": str(SPHRAGIS)},
+    )
+    assert result.returncode == 1, result.stdout + result.stderr
+    assert "readings.js is stale" in result.stdout
 
 
 def test_every_bound_name_has_a_figure() -> None:

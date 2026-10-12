@@ -9,6 +9,7 @@ package = false
 
 [dependency-groups]
 dev = [
+    "pillow>=12.0",
     "pytest>=9.1.1",
     "ruff>=0.16.9",
 ]
@@ -16,7 +17,7 @@ dev = [
 [tool.ruff]
 line-length = 120
 target-version = "py312"
-extend-exclude = [".deps", "_site"]
+extend-exclude = [".deps", "_site", "_exports"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]

@@ -16,21 +16,26 @@ link like `.../federated-agents/#/5` opens a given slide.
   name is the talk's address.
 - `vendor/reveal/`: reveal.js, shared by every talk.
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
-  by its own `<title>` and description.
+  by its own `<title>` and description, with its preview, its PowerPoint download and its links.
+- `scripts/exports.py`: exports each talk as `<folder>.pptx` (one picture per slide, the script in
+  the speaker notes, through `graphe:slides pptx`) and a preview of its title slide. The exports
+  are built in CI, never committed.
 
 ## Adding a talk
 
 1. Start from the `/graphe:slides` starter deck in a new folder, and point its `vendor/reveal/`
    links at `../vendor/reveal/`.
 2. Give the page a `<title>` and a `<meta name="description">`; the index lists the talk by them.
-3. If its figures come from research artifacts, add a `figures.py` that writes them into `data/`
+3. To link the talk's code, documentation or a recording from the index, add a `talk.json`:
+   `{"links": {"code": "https://...", "docs": "https://...", "video": "https://..."}}`, each optional.
+4. If its figures come from research artifacts, add a `figures.py` that writes them into `data/`
    and fails with `--check` when they are stale, as `federated-agents/figures.py` does. No figure
    is typed onto a slide by hand.
 
 ## Checks
 
 `make check` runs what CI runs: lint, tests, every talk's figures against their artifacts, the
-`graphe:slides` gates on every talk, and the site layout. CI runs it on every pull request, on
+`graphe:slides` gates on every talk, the PowerPoint exports, and the site layout. CI runs it on every pull request, on
 `main`, and daily, since a talk's figures can go stale through a change in another repository.
 A run on `main` that passes publishes the site; one that fails publishes nothing, and the site
 keeps its last good version. GitHub turns off a public repository's scheduled runs after 60

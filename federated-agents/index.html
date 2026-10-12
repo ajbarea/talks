@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Federated Agents</title>
+  <meta name="description" content="Coding agents that learn each company's house rules without its code leaving.">
+  <meta property="og:title" content="Federated Agents">
+  <meta property="og:description" content="Coding agents that learn each company's house rules without its code leaving.">
+  <link rel="stylesheet" href="../vendor/reveal/reset.css">
+  <link rel="stylesheet" href="../vendor/reveal/reveal.css">
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section class="title-slide dark" data-background-color="#14181f">
+  <span class="kicker">AJ Barea · Rochester Institute of Technology</span>
+  <h1>Federated Agents</h1>
+  <p class="subtitle">Coding agents that learn each company's house rules without its code leaving</p>
+  <svg class="motif" viewBox="0 0 420 300" aria-hidden="true" focusable="false">
+    <g class="m-co"><rect x="4" y="40" width="150" height="220" rx="12"/><rect x="266" y="40" width="150" height="220" rx="12"/></g>
+    <rect class="m-priv" x="18" y="58" width="58" height="70" rx="8"/><rect class="m-shared" x="84" y="58" width="58" height="70" rx="8"/>
+    <rect class="m-shared" x="280" y="58" width="58" height="70" rx="8"/><rect class="m-priv" x="346" y="58" width="58" height="70" rx="8"/>
+    <rect class="m-base" x="18" y="140" width="124" height="104" rx="8"/><rect class="m-base" x="280" y="140" width="124" height="104" rx="8"/>
+    <path class="m-flow" d="M150,93 L184,93 M236,93 L270,93"/><rect class="m-server" x="186" y="66" width="48" height="54" rx="8"/>
+  </svg>
+  <aside class="notes">Hi, I'm AJ Barea, a PhD student at RIT. This is Federated Agents: coding agents that learn each company's house rules without its code leaving.</aside>
+</section>
+
+<section data-chapter="1 · The problem">
+  <span class="kicker">1 · The problem</span>
+  <h2>AI coding assistants miss a company's unwritten house rules</h2>
+  <blockquote class="rule">
+    <b>A house rule, as a reviewer states it</b>
+    "Please use our <code>db.query()</code> helper. We never open raw connections."
+  </blockquote>
+  <div class="versus">
+    <figure class="code wrong fragment">
+      <figcaption><span aria-hidden="true">✕ </span>Code an AI assistant writes</figcaption>
+      <pre><code>rows = psycopg2.connect(DSN)
+    .cursor().execute(q)</code></pre>
+    </figure>
+    <div class="then fragment" aria-hidden="true">→</div>
+    <figure class="code right fragment">
+      <figcaption><span aria-hidden="true">✓ </span>What this company's reviewers require</figcaption>
+      <pre><code>rows = db.query(q)</code></pre>
+    </figure>
+  </div>
+  <p class="lead">Rules files and memory hold the rules a company writes down. The unwritten ones are learned in code review, and AI assistants never see it.</p>
+  <aside class="notes">Here's a typical house rule. An AI assistant writes code that opens a database connection directly, and this company's reviewers would send it back: use our helper, we never do that. Some rules like this get written into a rules file the assistant reads. Most never are; new developers learn them in code review, one comment at a time, and AI assistants never see that.</aside>
+</section>
+
+<section data-chapter="1 · The problem">
+  <span class="kicker">1 · The problem</span>
+  <h2>The data that would teach them is data no company wants to share</h2>
+  <div class="figure">
+    <svg viewBox="0 0 1180 350" role="img" aria-labelledby="pool-t pool-d">
+      <title id="pool-t">Pooling every company's review lessons</title>
+      <desc id="pool-d">Three companies send their review lessons to one pool that trains one assistant. Every assistant learns more, and every company is exposed.</desc>
+      <defs>
+        <marker id="head-grey" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57534e"/></marker>
+      </defs>
+      <g class="co">
+        <rect x="20" y="10" width="240" height="96" rx="10"/><text x="140" y="50" class="b" text-anchor="middle">Company A</text><text x="140" y="82" text-anchor="middle">its review lessons</text>
+        <rect x="20" y="127" width="240" height="96" rx="10"/><text x="140" y="167" class="b" text-anchor="middle">Company B</text><text x="140" y="199" text-anchor="middle">its review lessons</text>
+        <rect x="20" y="244" width="240" height="96" rx="10"/><text x="140" y="284" class="b" text-anchor="middle">Company C</text><text x="140" y="316" text-anchor="middle">its review lessons</text>
+      </g>
+      <path class="link" d="M272,175 L352,175" marker-end="url(#head-grey)"/>
+      <rect class="pool" x="364" y="100" width="300" height="150" rx="12"/>
+      <text x="514" y="160" class="b" text-anchor="middle">Pool everything</text>
+      <text x="514" y="194" text-anchor="middle">train one assistant</text>
+      <text x="514" y="222" text-anchor="middle">on all of it</text>
+      <path class="link" d="M676,175 L756,175" marker-end="url(#head-grey)"/>
+      <g class="fragment">
+        <rect class="good" x="770" y="22" width="400" height="140" rx="12"/>
+        <text x="794" y="68" class="b">✓ Every assistant learns more</text>
+        <text x="794" y="104">Much good practice carries over</text>
+        <text x="794" y="134">between companies.</text>
+      </g>
+      <g class="fragment">
+        <rect class="bad" x="770" y="188" width="400" height="140" rx="12"/>
+        <text x="794" y="234" class="b">✕ Every company is exposed</text>
+        <text x="794" y="270">Its code and how its team works</text>
+        <text x="794" y="300">leave the building.</text>
+      </g>
+    </svg>
+  </div>
+  <p class="lead">Today the choice is all or nothing: share everything, or share nothing.</p>
+  <aside class="notes">Every accepted, fixed or rejected suggestion is already a training example. If companies pooled those examples, every assistant would learn more, because much good practice carries over. But pooling means each company's code, and how its team works, leaves the building. So today the choice is all or nothing.</aside>
+</section>
+
+<section data-chapter="2 · The idea">
+  <span class="kicker">2 · The idea</span>
+  <h2>My idea: a shared add-on, a private add-on, and the company decides</h2>
+  <div class="figure">
+    <svg viewBox="0 0 1180 372" role="img" aria-labelledby="idea-t idea-d">
+      <title id="idea-t">Two companies, each with a shared and a private add-on on the same frozen model</title>
+      <desc id="idea-d">Each company runs the same frozen base model with a shared add-on and a private add-on. A server averages only the shared add-ons, so only their updates travel and code never does. Each company keeps a list of which repositories may feed the shared add-on.</desc>
+      <defs>
+        <marker id="head-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072b2"/></marker>
+      </defs>
+      <g>
+        <rect class="company" x="8" y="8" width="444" height="356" rx="14"/>
+        <text x="230" y="44" class="b" text-anchor="middle">Company A</text>
+        <rect class="base" x="28" y="182" width="404" height="88" rx="10"/>
+        <text x="230" y="218" class="b" text-anchor="middle">Base model</text>
+        <text x="230" y="250" text-anchor="middle" class="s">the same frozen open-weight copy</text>
+        <rect class="company" x="728" y="8" width="444" height="356" rx="14"/>
+        <text x="950" y="44" class="b" text-anchor="middle">Company B</text>
+        <rect class="base" x="748" y="182" width="404" height="88" rx="10"/>
+        <text x="950" y="218" class="b" text-anchor="middle">Base model</text>
+        <text x="950" y="250" text-anchor="middle" class="s">the same frozen open-weight copy</text>
+      </g>
+      <g class="fragment">
+        <rect class="private" x="28" y="64" width="196" height="110" rx="10"/>
+        <text x="126" y="110" class="b" text-anchor="middle">Private</text>
+        <text x="126" y="142" text-anchor="middle" class="s">never leaves</text>
+        <rect class="shared" x="236" y="64" width="196" height="110" rx="10"/>
+        <text x="334" y="110" class="b" text-anchor="middle">Shared</text>
+        <text x="334" y="142" text-anchor="middle" class="s">same everywhere</text>
+        <rect class="shared" x="748" y="64" width="196" height="110" rx="10"/>
+        <text x="846" y="110" class="b" text-anchor="middle">Shared</text>
+        <text x="846" y="142" text-anchor="middle" class="s">same everywhere</text>
+        <rect class="private" x="956" y="64" width="196" height="110" rx="10"/>
+        <text x="1054" y="110" class="b" text-anchor="middle">Private</text>
+        <text x="1054" y="142" text-anchor="middle" class="s">never leaves</text>
+      </g>
+      <g class="fragment">
+        <path class="flow" d="M442,119 L498,119" marker-start="url(#head-blue)" marker-end="url(#head-blue)"/>
+        <path class="flow" d="M682,119 L738,119" marker-start="url(#head-blue)" marker-end="url(#head-blue)"/>
+        <rect class="server" x="506" y="64" width="168" height="110" rx="10"/>
+        <text x="590" y="104" class="b" text-anchor="middle">Server</text>
+        <text x="590" y="134" text-anchor="middle" class="s">averages the</text>
+        <text x="590" y="158" text-anchor="middle" class="s">shared add-ons</text>
+        <text x="590" y="214" text-anchor="middle" class="s">only these</text>
+        <text x="590" y="240" text-anchor="middle" class="s">updates travel,</text>
+        <text x="590" y="266" text-anchor="middle" class="s">never code</text>
+      </g>
+      <g class="fragment">
+        <rect class="list" x="28" y="282" width="404" height="66" rx="10"/>
+        <text x="46" y="310" class="s b">Company's list: may feed Shared?</text>
+        <text x="46" y="337" class="s">✓ web-app   ✓ docs   ✕ billing</text>
+        <rect class="list" x="748" y="282" width="404" height="66" rx="10"/>
+        <text x="766" y="310" class="s b">Company's list: may feed Shared?</text>
+        <text x="766" y="337" class="s">✓ sdk   ✕ payments   ✕ hr-tools</text>
+      </g>
+    </svg>
+  </div>
+  <p class="lead">The company marks which of its repositories may feed the shared add-on, and only those do.</p>
+  <p class="footnote">Field terms: the add-ons are LoRA adapters; training them together this way is federated learning. Repository names are illustrative.</p>
+  <aside class="notes">My idea: every company runs the same open-weight base model, frozen, with two small add-ons. The blue one is shared. Each company trains its own copy, and only the changes go to a server that averages them, so no code ever travels. The orange one is private and never leaves the company. The company marks which of its repositories may feed the shared add-on, and only those do; everything else teaches only the private one. The line is written down in advance, so anyone can audit it.</aside>
+</section>
+
+<section data-chapter="2 · The idea">
+  <span class="kicker">2 · The idea</span>
+  <h2>Other designs let the method pick what is shared; none tests whose it is</h2>
+  <div class="relmap wide" data-source="related" data-differs="off"></div>
+  <p class="footnote">Each grey dot is a published design (hover for a summary). None uses real organizations' data: each is tested on public datasets.</p>
+  <aside class="notes">Here's how that differs from published work. Each dot is a published design for what clients share. Across the bottom is who decides what gets shared: training, a fixed rule, or a filter, a server or an AI that judges it. Up the side is whether anyone tested the shared part. Most never did, and none asked whose it is. Ours is the orange dot: the company decides before training, and the shared part is tested for which company it came from.</aside>
+</section>
+
+<section data-chapter="3 · What I've found">
+  <span class="kicker">3 · What I've found</span>
+  <h2>What I've found: tuning helps, <span data-value="readings.team_title"></span></h2>
+  <div class="cards panels" style="--n:3">
+    <div class="card">
+      <b>Tuning helps</b>
+      <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="The tuned assistant's bar is far taller than the untuned one's">
+        <rect class="rival" x="50" y="88" width="50" height="22"/><text x="75" y="128" text-anchor="middle">untuned</text>
+        <rect class="mark" x="140" y="10" width="50" height="100"/><text x="165" y="128" text-anchor="middle">tuned</text>
+      </svg>
+      <p>Tuned on a community's own reviews, the assistant matches its reviewers' fixes far more often.</p>
+    </div>
+    <div class="card">
+      <b>The team-specific part</b>
+      <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="For each community, its own group's bar beside the sibling group's: taller where a gain was found, level where none was">
+        <g data-if="readings.team_gain_openstack"><rect class="mark" x="30" y="16" width="30" height="94"/></g>
+        <g data-unless="readings.team_gain_openstack"><rect class="mark" x="30" y="40" width="30" height="70"/></g>
+        <rect class="rival" x="64" y="40" width="30" height="70"/>
+        <text x="62" y="128" text-anchor="middle">OpenStack</text>
+        <g data-if="readings.team_gain_wikimedia"><rect class="mark" x="146" y="16" width="30" height="94"/></g>
+        <g data-unless="readings.team_gain_wikimedia"><rect class="mark" x="146" y="40" width="30" height="70"/></g>
+        <rect class="rival" x="180" y="40" width="30" height="70"/>
+        <text x="178" y="128" text-anchor="middle">Wikimedia</text>
+      </svg>
+      <p>Blue is each group's own: OpenStack's assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>.</p>
+    </div>
+    <div class="card">
+      <b>Next: does it leak?</b>
+      <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="An attacker holding the shared add-on asks whether it came from Company A">
+        <rect class="shared" x="6" y="36" width="88" height="58" rx="8"/><text x="50" y="60" text-anchor="middle">shared</text><text x="50" y="82" text-anchor="middle">add-on</text>
+        <path class="ask" d="M100,65 L128,65"/><path class="ask-head" d="M126,57 L138,65 L126,73 z"/>
+        <rect class="private" x="142" y="26" width="94" height="78" rx="8"/><text x="189" y="54" text-anchor="middle">"came</text><text x="189" y="74" text-anchor="middle">from</text><text x="189" y="94" text-anchor="middle">Co. A?"</text>
+      </svg>
+      <p>The attacks on published privacy designs are built.</p>
+    </div>
+  </div>
+  <p class="footnote">Bars show direction, not size. Development readings; the sealed test is sized to settle it.</p>
+  <aside class="notes">Two findings so far, and one open question. First, tuning works: an assistant tuned on a community's own reviews matches what its reviewers ask for far more often. Second, the part specific to one team: split a community into two groups of projects and score how much probability each group's assistant gives the reviewers' fixes. OpenStack's own group's assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>. These are development readings, and the sealed test is sized to settle it. Next is privacy: can someone tell which company the shared part came from? The attacks on published privacy designs are built.</aside>
+</section>
+
+<section data-chapter="4 · What's built">
+  <span class="kicker">4 · What's built</span>
+  <h2>One tool turns public code review into a checked dataset</h2>
+  <ol class="steps" style="--n:6">
+    <li><b>Collect</b>by each host's rules</li>
+    <li><b>Pseudonymise</b>names out on arrival</li>
+    <li><b>Pair</b>comment, code, next version</li>
+    <li><b>Clean</b>bots and approvals out</li>
+    <li><b>Split</b>by month, test sealed</li>
+    <li><b>Check</b>labels audited blind</li>
+  </ol>
+  <div class="card wide fragment"><b>Then it runs the study</b><p>It trains the add-ons on RIT's research computing clusters, runs the pre-registered test, and runs the attacks on published privacy designs.</p></div>
+  <p class="footnote">Open source: github.com/ajbarea/sphragis. The label is never guessed: it is the code the developer actually wrote next.</p>
+  <aside class="notes">Here's what I've built: one open-source tool. It collects public code review following each host's rules, and replaces people's names with pseudonyms as the data arrives. It pairs each reviewer comment, and the code it was about, with the code the developer actually wrote next, so the label is never guessed. It cleans out what an assistant shouldn't learn from, like bot comments and one-click approvals. It splits the data by month, keeps the test months sealed, and audits a sample of the labels blind. It also trains the add-ons on RIT's clusters and runs the pre-registered test and the privacy attacks.</aside>
+</section>
+
+<section data-chapter="4 · What's built">
+  <span class="kicker">4 · What's built</span>
+  <h2>The datasets are already built</h2>
+  <div class="cards tiles" style="--n:3">
+    <div class="card"><b>OpenStack</b><span class="big" data-value="readings.corpus_examples_openstack"></span><p>real lessons from <span data-value="readings.corpus_changes_openstack"></span> reviewed changes</p></div>
+    <div class="card"><b>Wikimedia</b><span class="big" data-value="readings.corpus_examples_wikimedia"></span><p>real lessons from <span data-value="readings.corpus_changes_wikimedia"></span> reviewed changes</p></div>
+    <div class="card pending"><b>GitHub</b><span class="big">Collecting</span><p>Apache first, then LLVM, .NET and Grafana</p></div>
+  </div>
+  <div class="card wide lesson">
+    <b>Each lesson is real</b>
+    <div class="lesson-parts"><span>a reviewer's comment</span><span aria-hidden="true">+</span><span>the code it was about</span><span aria-hidden="true">→</span><span>the code the developer wrote next</span></div>
+    <p>Names are removed on arrival; the test months stay sealed.</p>
+  </div>
+  <p class="footnote">Open source: github.com/ajbarea/sphragis</p>
+  <aside class="notes">Two communities are built, OpenStack and Wikimedia, with thousands of lessons each. A lesson is one reviewer comment, the code it was about, and the code the developer wrote next. GitHub communities are being collected now, Apache first. The test months stay sealed until reviewers accept the plan.</aside>
+</section>
+
+<section data-chapter="4 · What's built">
+  <span class="kicker">4 · What's built</span>
+  <h2>The test is built so it can't fool me</h2>
+  <div class="cards panels" style="--n:3">
+    <div class="card">
+      <b>Many splits, not one lucky one</b>
+      <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="Eight dots scattered above and below one line marking their average">
+        <line class="avg" x1="8" y1="66" x2="164" y2="66"/>
+        <circle cx="16" cy="24" r="7" class="dot-grey"/><circle cx="36" cy="98" r="7" class="dot-grey"/><circle cx="56" cy="44" r="7" class="dot-grey"/><circle cx="76" cy="112" r="7" class="dot-grey"/><circle cx="96" cy="34" r="7" class="dot-grey"/><circle cx="116" cy="86" r="7" class="dot-grey"/><circle cx="136" cy="52" r="7" class="dot-grey"/><circle cx="156" cy="104" r="7" class="dot-grey"/>
+        <text x="172" y="72" class="b blue">average</text>
+      </svg>
+      <p>Each dot is one way of dividing the data. One can mislead; the test reads their average.</p>
+    </div>
+    <div class="card">
+      <b data-if="readings.planted_all">A planted rule is caught</b>
+      <b data-unless="readings.planted_all">A planted rule was missed</b>
+      <div class="dots count fragment" data-dots="readings.planted_found" data-of="readings.planted_runs" data-cols="10"></div>
+      <p data-if="readings.planted_all">A fake house rule, planted in half the training lessons, was found in every run.</p>
+      <p data-unless="readings.planted_all">A fake house rule, planted in half the training lessons, was missed in some runs (hollow), which halts the test until it is fixed.</p>
+    </div>
+    <div class="card">
+      <b>Sized to find a real effect</b>
+      <div class="dots count fragment" data-dots="readings.sized_found" data-of="readings.sized_studies" data-cols="10"></div>
+      <p>In simulated studies with a real effect of the smallest size that matters, the test finds it almost every time.</p>
+    </div>
+  </div>
+  <p class="footnote">Each dot in the middle panel is one run; on the right, one simulated study. Filled: found.</p>
+  <aside class="notes">Before trusting any result, I made sure the test can't fool me. Each dot here is one way of dividing the data: any single one can show an effect by luck, so the test reads the average over many. I also planted a fake house rule in half the training lessons. <span data-if="readings.planted_all">When each assistant is scored by how much probability it gives the reviewer's fix, the test found it in every run. Checking word-for-word matches missed it in most runs, which is why the test now scores probability.</span><span data-unless="readings.planted_all">The test missed it in some runs, so the test is on hold until that is fixed.</span> <span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>The test is sized to the standard registered reports ask for, so a real effect of the smallest size that matters is found almost every time. Here's where this sits in the bigger plan.</aside>
+</section>
+
+<section data-chapter="5 · Where it stands">
+  <span class="kicker">5 · Where it stands</span>
+  <h2>The datasets are stage one; federated coding agents are the goal</h2>
+  <ol class="road">
+    <li class="done"><i aria-hidden="true"></i><span class="when">Ongoing · this fall</span><b>Tool and datasets</b>collect, clean and check real code review</li>
+    <li class="now"><i aria-hidden="true"></i><span class="when">Now · due Nov 20</span><b>Plan to reviewers</b>a registered report for MSR 2027</li>
+    <li class="next"><i aria-hidden="true"></i><span class="when">Next · from February</span><b>The sealed test</b>can a team's habits be learned, and where do they stop?</li>
+    <li class="next"><i aria-hidden="true"></i><span class="when">Next · then</span><b>Shared and private add-ons</b>build them and try to break them</li>
+    <li class="goal"><i aria-hidden="true"></i><span class="when">Goal · where it leads</span><b>Federated coding agents</b>that learn each company's rules without its code leaving</li>
+  </ol>
+  <p class="footnote">Registered report: the method is peer-reviewed before the test data is collected, so a "no" is still published.</p>
+  <aside class="notes">This is stage one of a longer plan. The tool and datasets are ongoing: the tool works, and I'm still collecting and checking data. The study plan goes to reviewers for MSR 2027, the Mining Software Repositories conference, by November 20th, as a registered report: reviewers accept the method before any test result exists, so even a no gets published. From February I open the sealed test. Then I build the shared and private add-ons and try to break them. The goal is coding agents that learn each company's rules without its code leaving.</aside>
+</section>
+
+<section data-chapter="5 · Where it stands">
+  <span class="kicker">5 · Where it stands</span>
+  <h2>Two communities decide the answer; GitHub checks that it holds elsewhere</h2>
+  <div class="groups">
+    <div class="group">
+      <b>The main test</b>
+      <p>Review is required before code lands. Every community must pass.</p>
+      <ul>
+        <li class="in">OpenStack <span>in</span></li>
+        <li class="in">Wikimedia <span>in</span></li>
+        <li class="out">Qt, Chromium <span>if they grant permission</span></li>
+      </ul>
+    </div>
+    <div class="group">
+      <b>The replication, on GitHub</b>
+      <p>Review is often optional there, so it is read apart. Kept out of results until GitHub confirms in writing.</p>
+      <ul>
+        <li class="out">Apache <span>collecting</span></li>
+        <li class="out">LLVM <span>next</span></li>
+        <li class="out">.NET, Grafana <span>next</span></li>
+      </ul>
+    </div>
+  </div>
+  <p class="footnote">Membership is fixed by November 20, before any test result exists.</p>
+  <aside class="notes">Where it stands: the main test runs on two communities, OpenStack and Wikimedia, and each one has to pass. Qt and Chromium join only if they grant permission. On GitHub, review is often optional, so the GitHub communities form a separate replication. It reports how many show the effect, without deciding the answer. I've asked GitHub to confirm in writing that this research use is allowed; collection continues, but GitHub data stays out of anything I publish until GitHub confirms. Membership is fixed by November 20th, before any test result exists.</aside>
+</section>
+
+<section class="dark" data-background-color="#14181f">
+  <h2>Thank you</h2>
+  <p class="muted">AJ Barea · PhD student, Rochester Institute of Technology</p>
+  <p class="muted">ajb6289@rit.edu · ajbarea.github.io</p>
+  <p class="muted">These slides: ajbarea.github.io/talks/federated-agents</p>
+  <aside class="notes">Thank you. I'd be glad to take questions.</aside>
+</section>
+
+<section id="faq">
+  <h2>Frequently asked questions</h2>
+  <ol class="faq">
+    <li><a href="#/faq-federation">What is the federation, concretely?</a></li>
+    <li><a href="#/faq-closed">What if companies use different or closed models?</a></li>
+    <li><a href="#/faq-leakage">What guarantee can be offered about leakage?</a></li>
+    <li><a href="#/faq-test">What are the pre-registered test and the privacy attacks?</a></li>
+    <li><a href="#/faq-data">Is the data sound?</a></li>
+    <li><a href="#/faq-public">Does public code review stand in for a private team's?</a></li>
+    <li><a href="#/faq-people">Aren't conventions really the reviewers', and don't they change?</a></li>
+    <li><a href="#/faq-aggregation">How does aggregation work across different adapters?</a></li>
+    <li><a href="#/faq-beyond">Is the dataset useful beyond this one model?</a></li>
+    <li><a href="#/faq-models">Would a different model do better?</a></li>
+    <li><a href="#/faq-retrieval">Would showing the model past reviews do the same?</a></li>
+    <li><a href="#/faq-rulesfile">Why not just write the rules in a file, like AGENTS.md?</a></li>
+    <li><a href="#/faq-prior">How is this different from other shared-and-private agent work?</a></li>
+    <li><a href="#/faq-monitor">Could it train an agent that checks another agent?</a></li>
+    <li><a href="#/faq-general">Is the tool only for code review?</a></li>
+  </ol>
+</section>
+
+<section id="faq-federation" class="backup">
+  <h2>What is the federation, concretely?</h2>
+  <p>Clients are the parties holding review histories. Each trains LoRA adapters on a frozen shared base model; only adapter weights move, never code and never gradients over raw examples.</p>
+  <p>A round is: the server broadcasts the shared adapter, each client trains locally, each uploads only the adapter its provenance rule marks shareable, the server aggregates and rebroadcasts.</p>
+  <p>What is <em>not</em> federated: the private adapter, which never leaves, and the provenance rule itself, which the organization sets and audits locally.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-closed" class="backup">
+  <h2>What if companies use different or closed models?</h2>
+  <p>The add-ons need a base model whose weights every party can run and train against, so the federation is for companies that host an open-weight model. A company that buys a closed model by the token cannot carry the shared add-on.</p>
+  <p>Its route is the written one: a rules file or instructions the closed model reads. The study measures that route beside the adapters, in the rules-file slides.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-leakage" class="backup">
+  <h2>What guarantee can be offered about leakage?</h2>
+  <p>None yet, and saying otherwise would be the mistake this work exists to correct.</p>
+  <p>What exists is a <em>measurement</em>: given a boundary, does the part that crosses it still identify its source? The published boundaries go through it.</p>
+  <p>A guarantee needs a mechanism with a proof, and the candidates are secure aggregation and differential privacy. Both are measured here rather than assumed.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-test" class="backup">
+  <h2>What are the pre-registered test and the privacy attacks?</h2>
+  <p><b>The test:</b> does an add-on trained on an organization's own reviews beat one trained on a sibling slice of the same organization, on months the model has not seen? It passes only if that holds in every organization tested. The rule and the sealed test months were fixed before any test result existed.</p>
+  <p><b>The attacks:</b> does the shared part still reveal its source?</p>
+  <ul>
+    <li><em>Source attribution</em>: which organization did this add-on come from?</li>
+    <li><em>Min-loss attack</em>: assign an example to the source whose add-on fits it best (the baseline).</li>
+    <li><em>Aggregate attack</em>: read the combined update, not one organization's.</li>
+    <li><em>Gradient disaggregation</em>: undo secure aggregation.</li>
+  </ul>
+  <p>A measurement, not a guarantee.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-data" class="backup">
+  <h2>Is the data sound?</h2>
+  <p>Labels are not inferred. An example is a code hunk, the reviewer comments anchored to it, and the author's next revision, taken directly from the review server.</p>
+  <ul>
+    <li>Author comments are excluded, so the signal is a reviewer's, not a self-edit.</li>
+    <li>Near-duplicates are removed before the split; leftover overlap is reported.</li>
+    <li>Label quality is audited blind: two model raters, a human, and an open-weight model anyone can rerun, which matches the human nearly as well as the model raters.</li>
+    <li>Contamination rests on the test months postdating the model: a word classifier that never sees it tells the windows apart better than the membership tests do.</li>
+    <li>Dropping AI-assisted commits (by trailer) moves OpenStack's development pilot by <span data-value="readings.ai_shift_openstack"></span>.</li>
+    <li>Identities are pseudonymised in everything derived from the raw data, and addresses are swept from comment text. The raw snapshots still hold some host account numbers; nothing derived does.</li>
+  </ul>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-public" class="backup">
+  <h2>Does public code review stand in for a private team's?</h2>
+  <p>It is the only review history anyone can study openly, so every claim here is scoped to public communities. Many of their contributors are company and foundation engineers working under required review, which makes them the closest public stand-in.</p>
+  <p>Whether private teams hold their conventions the same way is untested, and no company publishes how much of its practice stays private. The federation is how that data would be used without anyone having to share it.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-people" class="backup">
+  <h2>Aren't conventions really the reviewers', and don't they change?</h2>
+  <p>Partly, and the study checks it. Nearly every test example shares a reviewer with the other half of its own organization and none with a foreign one, so a reviewer effect would show up as the organization's advantage over a foreign one. An analysis planned before the test months open asks whether that advantage grows with how much of the training data the example's own reviewers wrote.</p>
+  <p>People also come and go. The test months come after the training months, so conventions that changed with the people count against the result rather than for it.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-aggregation" class="backup">
+  <h2>How does aggregation work across different adapters?</h2>
+  <p>An update is stored as two small matrices whose <em>product</em> is the real change. Averaging the two separately and multiplying afterwards gives a different answer, so the server has to combine the products.</p>
+  <p>Clients may also hold different ranks. Existing work covers both: exact aggregation of the product, and rank-heterogeneous averaging.</p>
+  <p>That choice is a design item with a stated criterion, not an open question, and it is the one place this work picks from the field rather than adding to it.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-beyond" class="backup">
+  <h2>Is the dataset useful beyond this one model?</h2>
+  <p>Yes. An example is a reviewer's comment, the code it was about, and the developer's real next revision. Nothing in it comes from a model, so any model or agent can be trained on it or scored against it.</p>
+  <p>The communities span several languages: OpenStack's examples are led by Python, Wikimedia's by PHP and JavaScript, and the GitHub candidates add C++, C#, Java, Go and TypeScript.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-models" class="backup">
+  <h2>Would a different model do better?</h2>
+  <div class="figure">
+    <svg viewBox="0 0 1180 190" role="img" aria-labelledby="models-t models-d">
+      <title id="models-t">Candidate models placed by the month their training data ends</title>
+      <desc id="models-d">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (September 2024) were trained before it, so they are fair tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
+      <line class="axis" x1="20" y1="96" x2="1160" y2="96"/>
+      <line class="cut" x1="437" y1="62" x2="437" y2="130"/>
+      <circle class="fair" cx="154" cy="96" r="12"/>
+      <text x="20" y="40" class="b">Llama-3.1-8B</text><text x="20" y="64" class="s">second family · data end Dec 2023</text>
+      <circle class="fair" cx="404" cy="96" r="12"/>
+      <text x="340" y="152" text-anchor="middle" class="b">Qwen2.5-Coder-7B</text><text x="340" y="176" text-anchor="middle" class="s">the registered model · Sep 2024</text>
+      <circle class="unfair" cx="637" cy="96" r="12"/>
+      <text x="637" y="40" text-anchor="middle" class="b">Qwen3-8B</text><text x="637" y="64" text-anchor="middle" class="s">Apr 2025</text>
+      <circle class="unfair" cx="737" cy="96" r="12"/>
+      <circle class="unfair" cx="770" cy="96" r="12"/>
+      <text x="754" y="152" text-anchor="middle" class="b">Qwen3-Coder-30B, gpt-oss-20b</text><text x="754" y="176" text-anchor="middle" class="s">Jul and Aug 2025 · mixtures of experts</text>
+      <circle class="unfair" cx="1037" cy="96" r="12"/>
+      <text x="1037" y="152" text-anchor="middle" class="b">Gemma 4</text><text x="1037" y="176" text-anchor="middle" class="s">Apr 2026</text>
+    </svg>
+  </div>
+  <p class="small">Dashed line: the corpus begins, October 2024. Filled: trained before it, so a fair test. Hollow: may have seen the test data.</p>
+  <p>More models buy generality, not a better answer: the question is whether a team's habits can be learned at all, and a model that may have read the test code cannot settle that. A second family checks the result is not a Qwen quirk.</p>
+  <p class="small">Compressing the base model to 4 bits (QLoRA) saves memory and at best matches quality, so the main test does not use it. It is planned for the privacy half, because the deployment being tested uses it.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-retrieval" class="backup">
+  <h2>Would showing the model past reviews do the same?</h2>
+  <p>That is the cheapest competitor: no training, just the most similar past reviews pasted into the prompt. The study ran it, before the test window, on the same split as the adapters: the base model given the one or three closest past reviews from its own half or from the sibling half, over the first <span data-value="readings.retrieval_partitions_openstack"></span> ways of splitting each organization's projects.</p>
+  <table class="data">
+    <thead><tr><th scope="col"></th><th scope="col">one past review</th><th scope="col">three past reviews</th><th scope="col">adapters, same splits</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">OpenStack</th><td class="num" data-value="readings.retrieval_k1_openstack"></td><td class="num" data-value="readings.retrieval_k3_openstack"></td><td class="num" data-value="readings.retrieval_adapters_openstack"></td></tr>
+      <tr><th scope="row">Wikimedia</th><td class="num" data-value="readings.retrieval_k1_wikimedia"></td><td class="num" data-value="readings.retrieval_k3_wikimedia"></td><td class="num" data-value="readings.retrieval_adapters_wikimedia"></td></tr>
+    </tbody>
+  </table>
+  <p class="small">Each cell is own half minus sibling half in exact match, the study's secondary measure, with its 95% interval. None clears the smallest effect the study counts as meaningful, so by the rule written before the run, retrieval does not show a half-level convention. On exact match the adapters' intervals on the same splits are too wide to decide either way. Past reviews from the organization's own other half do beat the other organization's for Wikimedia (<span data-value="readings.retrieval_org_k1_wikimedia"></span> with one review), so retrieval does pick up the organization.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-rulesfile" class="backup">
+  <h2>Why not just write the rules in a file, like AGENTS.md?</h2>
+  <p>That is how coding agents take conventions today: rules files (AGENTS.md, CLAUDE.md, Cursor rules), organization instructions and memory. They hold what someone wrote down.</p>
+  <p>What no one has measured is whether they capture a team's conventions. A 2026 study found developer-written context files helped agents slightly (not significantly), generated ones did not, and both cost about a fifth more inference (Gloaguen et al., arXiv:2602.11988); it does not ask whether the code follows the team's habits.</p>
+  <p>So the study adds a rules-file arm beside the adapters: the base model given the organization's written conventions, or a file distilled from each half's review comments, scored on own, sibling and foreign code by exact match, the study's secondary measure. Qwen3.6-27B distils it, since the 7B model invented rules and citations; a rule must cite two or more comments and share most of its words with one.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-rules-result" class="backup">
+  <h2>What did the rules file do?</h2>
+  <p>The study ran it before the test window, on the same <span data-value="readings.rules_partitions_openstack"></span> splits of each organization as retrieval: the base model given the rules file distilled from its own half's reviews, or from the sibling half's.</p>
+  <table class="data">
+    <thead><tr><th scope="col"></th><th scope="col">rules file</th><th scope="col">adapters, same splits</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">OpenStack</th><td class="num" data-value="readings.rules_distilled_openstack"></td><td class="num" data-value="readings.rules_adapters_openstack"></td></tr>
+      <tr><th scope="row">Wikimedia</th><td class="num" data-value="readings.rules_distilled_wikimedia"></td><td class="num" data-value="readings.rules_adapters_wikimedia"></td></tr>
+    </tbody>
+  </table>
+  <p class="small">Each cell is own half minus sibling half in exact match, the study's secondary measure, with its 95% interval. The rules file's intervals sit inside the smallest effect the study counts as meaningful, so by the rule written before the run, a file distilled from a team's reviews carries no half-level convention. On exact match the adapters' intervals on the same splits are too wide to decide either way. That file did not raise the model's exact match over no file either.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-prior" class="backup">
+  <h2>How is this different from other shared-and-private agent work?</h2>
+  <p>Splitting what agents learn into shared and private parts is no longer new. Federated Agent Optimization (Yang et al., arXiv:2610.01195) defines the field; FedWorld (arXiv:2608.01561) sorts rules into shared, cluster and private by the evidence clients give for and against them; ShareMem and FederatedSkill split memories and skills by an LLM's judgment.</p>
+  <p>Each decides the split by evidence on a server or an LLM's judgment, not by the owner declaring it from where each example came from. Three things here are not done elsewhere:</p>
+  <ul>
+    <li><b>The owner declares the boundary before training</b>, by where each example came from, and that declaration decides which examples may teach the shared part.</li>
+    <li><b>Tacit review conventions</b> are what is learned, with a pre-registered test of whether the organization is where learning stops transferring.</li>
+    <li><b>The shared part is audited by attribution</b>: can someone tell which organization it came from?</li>
+  </ul>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-monitor" class="backup">
+  <h2>Could it train an agent that checks another agent?</h2>
+  <p>In principle, yes, and it is a later use rather than this study. The label audit already grades whether a developer's revision answers the reviewer's comment (answers it, partly, not at all, or needs more context). That is the judgment a checking agent would make about a coding agent's change before a human sees it.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-general" class="backup">
+  <h2>Is the tool only for code review?</h2>
+  <p>Collection, pseudonymisation and the sealed time split work for any review system the tool has a route into (Gerrit and GitHub today). Pairing a comment with the change that answered it, and the cleaning rules, are specific to code review, because the research question is.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+</div>
+</div>
+<script src="data/readings.js"></script>
+<script src="data/related.js"></script>
+<script src="../vendor/reveal/reveal.js"></script>
+<script src="../vendor/reveal/notes.js"></script>
+<script src="deck.js"></script>
+</body>
+</html>

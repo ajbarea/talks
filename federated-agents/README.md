@@ -14,7 +14,8 @@ whether the shared part is tested. Each placement comes from a full-text read of
 the page noted beside it.
 
 **The PDF version** of this talk imports `readings()` from here, so both versions show the same
-figures.
+figures. Changing `readings()` makes the PDF version's own check fail until it is rebuilt, so
+rebuild it in step.
 
 ```
 python figures.py           # write data/readings.js

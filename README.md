@@ -5,6 +5,7 @@ AJ Barea's research talks as web decks, published at https://ajbarea.github.io/t
 | Talk | Link |
 |---|---|
 | Federated Agents | https://ajbarea.github.io/talks/federated-agents/ |
+| Kourai Khryseai | https://ajbarea.github.io/talks/kourai-khryseai/ |
 
 Each talk opens in any browser, with no network needed once loaded. Press `S` for the speaker
 view (the script, a timer and the next slide), `O` for the overview and `F` for full screen. A

@@ -150,3 +150,47 @@ def test_a_talk_json_outside_the_shape_fails(site, repo: Path, tmp_path: Path, t
     (repo / "alpha-talk" / "talk.json").write_text(text)
     with pytest.raises(SystemExit, match="talk.json"):
         site.build(tmp_path / "out", repo)
+
+
+def test_a_talk_folder_is_named_in_lowercase_hyphenated_words(site, repo: Path, tmp_path: Path) -> None:
+    _talk(repo, 'Bad"Name')
+    with pytest.raises(SystemExit, match="lowercase"):
+        site.build(tmp_path / "out", repo)
+
+
+def test_the_site_never_replaces_the_exports_it_reads(site, repo: Path, tmp_path: Path) -> None:
+    exports = _exports(tmp_path, "alpha-talk", "beta-talk")
+    with pytest.raises(SystemExit, match="refusing"):
+        site.build(exports, repo, exports)
+    assert (exports / "alpha-talk" / "alpha-talk.pptx").is_file()
+
+
+STUB = """import pathlib, sys
+from PIL import Image
+args = sys.argv[1:]
+assert args[0] == "pptx"
+pathlib.Path(args[2]).parent.mkdir(parents=True, exist_ok=True)
+pathlib.Path(args[2]).write_bytes(b"pptx")
+images = pathlib.Path(args[args.index("--images") + 1])
+images.mkdir(parents=True)
+Image.new("RGB", (1920, 1080), "navy").save(images / "slide-01.png")
+"""
+
+
+def test_exports_write_each_talks_pptx_and_preview(repo: Path, tmp_path: Path) -> None:
+    spec = importlib.util.spec_from_file_location("talks_exports", ROOT / "scripts" / "exports.py")
+    assert spec and spec.loader
+    exports = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(exports)
+    stub = tmp_path / "slides.py"
+    stub.write_text(STUB)
+    out = tmp_path / "exports"
+    assert exports.export(out, stub, repo) == ["alpha-talk", "beta-talk"]
+    from PIL import Image
+
+    for name in ("alpha-talk", "beta-talk"):
+        assert (out / name / f"{name}.pptx").read_bytes() == b"pptx"
+        with Image.open(out / name / "thumb.webp") as thumb:
+            assert thumb.size == exports.THUMB
+    with pytest.raises(SystemExit, match="refusing"):
+        exports.export(repo, stub, repo)

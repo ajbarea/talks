@@ -213,6 +213,8 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | 
     if not found:
         raise SystemExit(f"no talks under {root}: a talk is a folder holding an index.html")
     for talk in found:
+        if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", talk.name):
+            raise SystemExit(f"{talk.name}: name a talk's folder in lowercase words joined by hyphens")
         symlinks = [p for p in talk.rglob("*") if p.is_symlink()]
         if symlinks:
             raise SystemExit(f"{talk.name} holds a symlink, which would publish what it points to: {symlinks[0]}")
@@ -222,7 +224,7 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | 
                 if not (exports / talk.name / name).is_file():
                     raise SystemExit(f"no {exports / talk.name / name}; run scripts/exports.py first")
     rows = [(talk, *entry(talk), links(talk)) for talk in found]
-    claim(out, MARK, [*found, root / "vendor"])
+    claim(out, MARK, [*found, root / "vendor", *([exports] if exports is not None else [])])
     shutil.copytree(root / "vendor", out / "vendor")
     items = []
     for talk, title, description, named in rows:

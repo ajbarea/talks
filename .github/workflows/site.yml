@@ -45,7 +45,7 @@ jobs:
           repository: ajbarea/techne
           # Pinned, so a new gate in techne cannot stop the site publishing unannounced.
           # Dependabot does not bump this; move it by hand when graphe:slides changes.
-          ref: 7b7dd1a139909e65ee667808ca98aa01fba4d951
+          ref: 029b5e3f91f80f1a849c1277368441691e592a39
           path: .deps/techne
           persist-credentials: false
 

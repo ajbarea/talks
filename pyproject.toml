@@ -12,6 +12,8 @@ dev = [
     "pillow>=12.0",
     "pytest>=9.1.1",
     "ruff>=0.16.9",
+    "segno>=1.6.6",
+    "zxing-cpp>=3.1.1",
 ]
 
 [tool.ruff]

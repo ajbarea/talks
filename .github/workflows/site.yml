@@ -65,6 +65,9 @@ jobs:
       - name: Check every talk's figures against their artifacts
         run: make figures-check
 
+      - name: Check every talk's QR codes
+        run: make qr-check
+
       - name: Install Chromium for the slide gates
         run: uv run --no-project --quiet --with playwright==1.63.0 playwright install --with-deps chromium
 

@@ -1,6 +1,6 @@
 # Every talk is a folder holding an index.html; `site` lays them all out as one Pages site.
 # SPHRAGIS points at a sphragis checkout for the talks whose figures come from it.
-.PHONY: help setup lint fix test figures figures-check slides-check exports site check
+.PHONY: help setup lint fix test figures figures-check qr qr-check slides-check exports site check
 
 SLIDES ?= ../techne/plugins/graphe/skills/slides/scripts/slides.py
 # The browser command and the list of talks each come from the one place that defines them.
@@ -28,6 +28,12 @@ figures:           ## Regenerate every talk's figures from its artifacts
 figures-check:     ## Fail if a talk's committed figures are stale
 	@for f in */figures.py; do echo ">>> $$f"; python3 $$f --check || exit 1; done
 
+qr:                ## Write each talk's QR codes into its index.html
+	uv run python scripts/qr.py
+
+qr-check:          ## Fail if a talk's QR codes are missing or stale
+	uv run python scripts/qr.py --check
+
 slides-check:      ## Run the graphe:slides gates on every talk
 	@test -f "$(SLIDES)" || { echo "no graphe:slides script at $(SLIDES); set SLIDES" >&2; exit 1; }
 	@test -n "$(TALKS)" || { echo "no talks found" >&2; exit 1; }
@@ -40,4 +46,4 @@ exports:           ## Export every talk's .pptx, .pdf and preview into _exports/
 site:              ## Lay out every talk under _site/, with the exports when they are built
 	python3 scripts/site.py _site $(if $(wildcard _exports/.talks-exports),--exports _exports)
 
-check: lint test figures-check slides-check exports site   ## Everything CI runs
+check: lint test figures-check qr-check slides-check exports site   ## Everything CI runs

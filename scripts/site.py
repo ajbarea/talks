@@ -167,8 +167,9 @@ INDEX = """<!doctype html>
     }}
     * {{ box-sizing: border-box; }}
     body {{ margin: 0; background: var(--paper); color: var(--ink); font: 1.0625rem/1.55 var(--sans); }}
-    main {{ max-width: 76rem; margin: 0 auto; padding: 4rem 2rem 3rem; }}
+    main {{ max-width: 108rem; margin: 0 auto; padding: 4rem 2rem 3rem; }}
     header {{ max-width: 44rem; margin-bottom: 3rem; }}
+    .talks {{ display: block; }}
     h1 {{ font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 1rem;
       font-weight: 750; }}
     header p {{ margin: 0; color: var(--muted); font-size: 1.2rem; }}
@@ -197,8 +198,9 @@ INDEX = """<!doctype html>
     h2 a {{ color: inherit; text-decoration: none; }}
     h2 a:hover {{ text-decoration: underline; text-decoration-thickness: 2px; }}
     .about > p {{ margin: 0 0 1.4rem; color: var(--muted); max-width: 36rem; }}
-    .actions {{ display: flex; flex-wrap: wrap; gap: 0.75rem; }}
-    .button {{ display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: baseline;
+    .actions {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }}
+    .actions .primary {{ grid-column: 1 / -1; }}
+    .button {{ display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; text-align: center;
       gap: 0 0.5rem; padding: 0.7rem 1.1rem;
       border-radius: 6px; border: 2px solid var(--label); color: var(--label); font-weight: 650;
       text-decoration: none; }}
@@ -209,13 +211,26 @@ INDEX = """<!doctype html>
     .links {{ list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding: 0; margin: 1.25rem 0 0; }}
     .links a {{ display: inline-flex; align-items: center; gap: 0.45rem; color: var(--label); font-weight: 600; }}
     a:focus-visible {{ outline: 3px solid var(--ours); outline-offset: 3px; }}
-    footer {{ border-top: 1px solid var(--line); padding-top: 1.5rem; color: var(--muted); font-size: 0.95rem; }}
+    footer {{ margin-top: 2.5rem; border-top: 1px solid var(--line); padding-top: 1.5rem; color: var(--muted);
+      font-size: 0.95rem; }}
     footer a {{ color: var(--label); }}
     kbd {{ font: inherit; font-weight: 700; padding: 0 0.35em; border: 1px solid var(--line); border-radius: 4px;
       background: #fff; }}
+    @media (min-width: 1400px) {{
+      main {{ padding-top: 5rem; }}
+      .talks {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; }}
+      .talk {{ grid-template-columns: 1fr; gap: 1.75rem; align-items: start; padding: 1.5rem 1.5rem 2rem;
+        border: 1px solid var(--line); border-radius: 10px; }}
+      .about > p {{ max-width: none; }}
+      .about > p:first-of-type {{ min-height: 3.1em; }}
+    }}
+    @media (max-width: 1099px) {{
+      .talk {{ grid-template-columns: 1fr; gap: 1.25rem; padding: 2rem 0; }}
+      .about > p {{ max-width: 44rem; }}
+    }}
     @media (max-width: 760px) {{
       main {{ padding: 2.5rem 1.25rem 2rem; }}
-      .talk {{ grid-template-columns: 1fr; gap: 1.25rem; padding: 2rem 0; }}
+      .actions {{ grid-template-columns: 1fr; }}
       .button {{ width: 100%; justify-content: center; }}
     }}
   </style>
@@ -227,7 +242,9 @@ INDEX = """<!doctype html>
     <p>Research talks by <a href="https://ajbarea.github.io/">AJ Barea</a>, PhD student at the
       Rochester Institute of Technology. Open one in your browser, or download it as PowerPoint or PDF.</p>
   </header>
+  <div class="talks">
 {items}
+  </div>
   <footer>In a talk, press <kbd>S</kbd> for the speaker notes and <kbd>F</kbd> for full screen.
     Source: <a href="https://github.com/ajbarea/talks">github.com/ajbarea/talks</a></footer>
 </main>

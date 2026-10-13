@@ -1,0 +1,152 @@
+/* Tips: a card that opens beside any element with data-tip (see tip.js). It lives in the top
+   layer, so slide scaling never clips it. Placed by CSS anchor positioning, flipped when it
+   would leave the screen; tip.js places it by hand where that is missing. */
+
+.tip-anchor {
+  position: fixed;
+  anchor-name: --tip-a;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.tip {
+  --tip-ax: 50%;
+  --tip-accent: var(--mark-rival);
+  --tip-gap: 12px;
+  box-sizing: border-box;
+  inset: auto;
+  margin: 0;
+  padding: 0.7em 0.9em 0.8em;
+  width: max-content;
+  max-width: min(34ch, calc(100vw - 16px));
+  font: 400 clamp(15px, 0.6vw + 8px, 21px) / 1.4 var(--sans);
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--tip-accent);
+  border-radius: 10px;
+  box-shadow: 0 14px 30px -12px rgb(26 26 26 / 0.35), 0 2px 6px rgb(26 26 26 / 0.12);
+  overflow: visible;
+}
+
+.tip:not(:popover-open):not(.tip-open) {
+  display: none;
+}
+
+.tip[data-tone="ours"] {
+  --tip-accent: var(--mark-ours);
+}
+
+@supports (position-area: top) {
+  .tip {
+    position: fixed;
+    position-anchor: --tip-a;
+    position-area: top;
+    justify-self: anchor-center;
+    margin-block-end: var(--tip-gap);
+    position-try-fallbacks: flip-block;
+  }
+}
+
+/* Hand placement: tip.js sets --tip-x and --tip-y. */
+.tip.tip-js {
+  position: fixed;
+  position-area: none;
+  justify-self: normal;
+  left: var(--tip-x);
+  top: var(--tip-y);
+  margin: 0;
+}
+
+/* Keeps the pointer on the tip while it crosses the gap from the dot. */
+.tip::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(var(--tip-gap) + 4px);
+}
+
+.tip[data-side="top"]::before { top: 100%; }
+.tip[data-side="bottom"]::before { bottom: 100%; }
+
+.tip-arrow {
+  position: absolute;
+  left: var(--tip-ax);
+  width: 12px;
+  height: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.tip[data-side="top"] .tip-arrow {
+  top: 100%;
+  margin-top: -6px;
+  border-width: 0 1px 1px 0;
+}
+
+.tip[data-side="bottom"] .tip-arrow {
+  bottom: 100%;
+  margin-bottom: -6px;
+  border-width: 1px 0 0 1px;
+  background: var(--tip-accent);
+  border-color: var(--tip-accent);
+}
+
+.tip-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  margin-bottom: 0.25em;
+}
+
+.tip-name {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.tip-chip {
+  padding: 0 0.5em;
+  font-size: 0.82em;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--muted);
+  background: var(--band);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.tip-text {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* The dot the tip belongs to: a ring that pulses once as the tip opens. */
+[data-tip] {
+  cursor: help;
+}
+
+[data-tip]:focus {
+  outline: none;
+}
+
+[data-tip].tip-on circle,
+[data-tip]:focus-visible circle {
+  stroke: var(--label);
+  stroke-width: 4;
+}
+
+[data-tip].tip-on circle {
+  animation: tip-ping 520ms var(--m-ease, cubic-bezier(0.22, 0.8, 0.3, 1)) 1;
+}
+
+@keyframes tip-ping {
+  from { stroke-width: 14; stroke-opacity: 0; }
+  40%  { stroke-opacity: 1; }
+  to   { stroke-width: 4; stroke-opacity: 1; }
+}
+
+@media print {
+  .tip, .tip-anchor { display: none !important; }
+}

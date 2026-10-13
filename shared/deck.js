@@ -27,6 +27,16 @@
     return node;
   }
 
+  // The attributes tip.js turns into a card, for one related-work entry.
+  function tip(w) {
+    return {
+      "data-tip": w.oneLine,
+      "data-tip-title": w.label,
+      ...(w.year ? { "data-tip-chip": String(w.year) } : {}),
+      ...(w.ours ? { "data-tip-tone": "ours" } : {}),
+    };
+  }
+
   function html(name, attrs, parent, text) {
     const node = document.createElement(name);
     for (const [k, v] of Object.entries(attrs || {})) node.setAttribute(k, v);
@@ -180,10 +190,10 @@
         "data-i": r * 3 + n,
         tabindex: "0",
         role: "img",
-        "aria-label": `${w.label}: ${w.oneLine}`,
+        "aria-label": w.label,
+        ...tip(w),
       }, fig);
-      svg("title", {}, g, `${w.label} (${w.year}): ${w.oneLine}`);
-      svg("circle", { cx, cy, r: w.ours ? 12 : 9 }, g);
+      svg("circle", { cx, cy, r: w.ours ? 12 : 9, "data-tip-anchor": "" }, g);
       svg("text", { x: cx + 18, y: cy + 7 }, g, w.label);
     }
     html("div", { class: "map" }, box).appendChild(fig);
@@ -228,10 +238,10 @@
         "data-i": i,
         tabindex: "0",
         role: "img",
-        "aria-label": `${w.year}, ${w.label}: ${w.oneLine}`,
+        "aria-label": `${w.year}, ${w.label}`,
+        ...tip(w),
       }, fig);
-      svg("title", {}, g, `${w.label} (${w.year}): ${w.oneLine}`);
-      svg("circle", { cx: px(w.year), cy, r: w.ours ? 12 : 9 }, g);
+      svg("circle", { cx: px(w.year), cy, r: w.ours ? 12 : 9, "data-tip-anchor": "" }, g);
       svg("text", { x: px(w.year), y: cy - 18, "text-anchor": "middle" }, g, w.label);
     });
     box.appendChild(fig);

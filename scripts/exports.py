@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Export every talk for download: `<folder>.pptx` (graphe:slides `pptx`: one picture per slide,
-the script in the notes) and `thumb.webp`, its title slide, for the site's index.
+the script in the notes), `<folder>.pdf` (graphe:slides `pdf`: vector, one page per slide) and
+`thumb.webp`, its title slide, for the site's index.
 
     $B python scripts/exports.py _exports --slides <techne>/plugins/graphe/skills/slides/scripts/slides.py
 
@@ -52,6 +53,10 @@ def export(out: pathlib.Path, slides: pathlib.Path, root: pathlib.Path = talks_s
                     "--images",
                     str(images),
                 ],
+                check=True,
+            )
+            subprocess.run(
+                [sys.executable, str(slides), "pdf", str(talk / "index.html"), str(target / f"{talk.name}.pdf")],
                 check=True,
             )
             with Image.open(images / "slide-01.png") as first:

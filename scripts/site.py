@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
-"""Lay out every talk as one site: each talk at /<folder>/, shared files at /vendor/, and an
+"""Lay out every talk as one site: each talk at /<folder>/, shared files at /vendor/ and /shared/, and an
 index page listing the talks by their own <title> and description, with each talk's links.
 
     python scripts/site.py _site                       # build the site
-    python scripts/site.py _site --exports _exports    # with each talk's .pptx and preview
+    python scripts/site.py _site --exports _exports    # with each talk's .pptx, .pdf and preview
     python scripts/site.py --list                      # the talks, by folder
 
 A talk is a top-level folder holding an index.html, and optionally a talk.json naming its links
 ({"links": {"code": URL, "docs": URL, "video": URL}}, each optional). With --exports, every talk
-must have its `<folder>.pptx` and `thumb.webp` there (scripts/exports.py writes them), and the
-index offers the download. Build scripts and caches stay behind.
+must have its `<folder>.pptx`, `<folder>.pdf` and `thumb.webp` there (scripts/exports.py writes
+them), and the index offers the downloads. Build scripts and caches stay behind.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ import shutil
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-NOT_TALKS = {"vendor", "scripts", "tests"}
+NOT_TALKS = {"vendor", "shared", "scripts", "tests"}
 #: Marks a folder this script built, so it never replaces one it did not.
 MARK = ".talks-site"
 SKIP = shutil.ignore_patterns("*.py", "__pycache__", "README.md", "talk.json")
@@ -93,6 +93,9 @@ def size(path: pathlib.Path) -> str:
     return f"{mb:.1f} MB" if mb >= 1 else f"{max(1, round(mb * 1000))} KB"
 
 
+#: The downloads each talk offers, by file type, in the order the index shows them.
+DOWNLOADS = {"pptx": "Download for PowerPoint", "pdf": "Download PDF"}
+
 ICONS = {
     "code": '<path d="M9 7 4 12l5 5M15 7l5 5-5 5"/>',
     "docs": '<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7"/>',
@@ -107,7 +110,9 @@ def icon(kind: str) -> str:
     )
 
 
-def item(name: str, title: str, description: str, named: dict[str, str], pptx: str | None, thumb: bool) -> str:
+def item(
+    name: str, title: str, description: str, named: dict[str, str], sizes: dict[str, str] | None, thumb: bool
+) -> str:
     t, d = html.escape(title), html.escape(description)
     picture = (
         f'<a class="shot" href="{name}/" tabindex="-1" aria-hidden="true">'
@@ -116,10 +121,10 @@ def item(name: str, title: str, description: str, named: dict[str, str], pptx: s
         else f'<a class="shot blank" href="{name}/" tabindex="-1" aria-hidden="true"><span>{t}</span></a>'
     )
     actions = [f'<a class="button primary" href="{name}/">Open the talk</a>']
-    if pptx:
+    for ext, label in DOWNLOADS.items() if sizes else ():
         actions.append(
-            f'<a class="button" href="{name}/{name}.pptx" download>Download for PowerPoint '
-            f'<span class="note">({pptx})</span></a>'
+            f'<a class="button" href="{name}/{name}.{ext}" download>{label} '
+            f'<span class="note">({sizes[ext]})</span></a>'
         )
     more = "".join(
         f'<li><a href="{html.escape(url)}">{icon(kind)}{LINKS[kind]}</a></li>' for kind, url in named.items()
@@ -142,9 +147,10 @@ INDEX = """<!doctype html>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Talks by AJ Barea</title>
   <meta name="description"
-    content="Research talks by AJ Barea: open one in your browser, or download it for PowerPoint.">
+    content="Research talks by AJ Barea: open one in your browser, or download it as PowerPoint or PDF.">
   <meta property="og:title" content="Talks by AJ Barea">
-  <meta property="og:description" content="Research talks: open one in your browser, or download it for PowerPoint.">
+  <meta property="og:description"
+    content="Research talks: open one in your browser, or download it as PowerPoint or PDF.">
   <style>
     :root {{
       --paper: #faf8f3; --ink: #1a1a1a; --muted: #44403c; --label: #1e3a8a;
@@ -197,7 +203,7 @@ INDEX = """<!doctype html>
   <header>
     <h1>Talks</h1>
     <p>Research talks by <a href="https://ajbarea.github.io/">AJ Barea</a>, PhD student at the
-      Rochester Institute of Technology. Open one in your browser, or download it for PowerPoint.</p>
+      Rochester Institute of Technology. Open one in your browser, or download it as PowerPoint or PDF.</p>
   </header>
 {items}
   <footer>In a talk, press <kbd>S</kbd> for the speaker notes and <kbd>F</kbd> for full screen.
@@ -220,21 +226,23 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | 
             raise SystemExit(f"{talk.name} holds a symlink, which would publish what it points to: {symlinks[0]}")
     if exports is not None:
         for talk in found:
-            for name in (f"{talk.name}.pptx", "thumb.webp"):
+            for name in (*(f"{talk.name}.{ext}" for ext in DOWNLOADS), "thumb.webp"):
                 if not (exports / talk.name / name).is_file():
                     raise SystemExit(f"no {exports / talk.name / name}; run scripts/exports.py first")
     rows = [(talk, *entry(talk), links(talk)) for talk in found]
-    claim(out, MARK, [*found, root / "vendor", *([exports] if exports is not None else [])])
-    shutil.copytree(root / "vendor", out / "vendor")
+    claim(out, MARK, [*found, root / "vendor", root / "shared", *([exports] if exports is not None else [])])
+    for shared in ("vendor", "shared"):
+        shutil.copytree(root / shared, out / shared)
     items = []
     for talk, title, description, named in rows:
         shutil.copytree(talk, out / talk.name, ignore=SKIP)
-        pptx = None
+        sizes = None
         if exports is not None:
-            for name in (f"{talk.name}.pptx", "thumb.webp"):
+            files = [f"{talk.name}.{ext}" for ext in DOWNLOADS]
+            for name in (*files, "thumb.webp"):
                 shutil.copy2(exports / talk.name / name, out / talk.name / name)
-            pptx = size(out / talk.name / f"{talk.name}.pptx")
-        items.append(item(talk.name, title, description, named, pptx, exports is not None))
+            sizes = {ext: size(out / talk.name / f) for ext, f in zip(DOWNLOADS, files, strict=True)}
+        items.append(item(talk.name, title, description, named, sizes, exports is not None))
     (out / "index.html").write_text(INDEX.format(items="\n".join(items)))
     return [t.name for t in found]
 
@@ -242,7 +250,7 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("out", nargs="?", type=pathlib.Path, help="the folder to build the site in")
-    parser.add_argument("--exports", type=pathlib.Path, help="each talk's .pptx and preview, from exports.py")
+    parser.add_argument("--exports", type=pathlib.Path, help="each talk's .pptx, .pdf and preview, from exports.py")
     parser.add_argument("--list", action="store_true", help="print the talks, by folder")
     args = parser.parse_args()
     if args.list:

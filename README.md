@@ -13,19 +13,22 @@ link like `.../federated-agents/#/5` opens a given slide.
 
 ## Layout
 
-- One folder per talk, holding its `index.html`, `deck.css`, `deck.js` and `data/`. The folder
+- One folder per talk, holding its `index.html`, its own `deck.css` and any `data/`. The folder
   name is the talk's address.
 - `vendor/reveal/`: reveal.js, shared by every talk.
+- `shared/deck.js`, `shared/deck.css`: the behaviour and base styles every talk loads (chapter rail,
+  agenda, figures from data, phone feed); a talk's own `deck.css` adds what is particular to it.
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
-  by its own `<title>` and description, with its preview, its PowerPoint download and its links.
+  by its own `<title>` and description, with its preview, its PowerPoint and PDF downloads and its links.
 - `scripts/exports.py`: exports each talk as `<folder>.pptx` (one picture per slide, the script in
-  the speaker notes, through `graphe:slides pptx`) and a preview of its title slide. The exports
-  are built in CI, never committed.
+  the speaker notes, through `graphe:slides pptx`), `<folder>.pdf` (vector, one page per slide,
+  through `graphe:slides pdf`) and a preview of its title slide. The exports are built in CI,
+  never committed.
 
 ## Adding a talk
 
-1. Start from the `/graphe:slides` starter deck in a new folder, and point its `vendor/reveal/`
-   links at `../vendor/reveal/`.
+1. Start from the `/graphe:slides` starter deck in a new folder, point its `vendor/reveal/` links at
+   `../vendor/reveal/`, and load `../shared/deck.css` and `../shared/deck.js` in place of its own.
 2. Give the page a `<title>` and a `<meta name="description">`; the index lists the talk by them.
 3. To link the talk's code, documentation or a recording from the index, add a `talk.json`:
    `{"links": {"code": "https://...", "docs": "https://...", "video": "https://..."}}`, each optional.
@@ -36,7 +39,7 @@ link like `.../federated-agents/#/5` opens a given slide.
 ## Checks
 
 `make check` runs what CI runs: lint, tests, every talk's figures against their artifacts, the
-`graphe:slides` gates on every talk, the PowerPoint exports, and the site layout. CI runs it on every pull request, on
+`graphe:slides` gates on every talk, the PowerPoint and PDF exports, and the site layout. CI runs it on every pull request, on
 `main`, and daily, since a talk's figures can go stale through a change in another repository.
 A run on `main` that passes publishes the site; one that fails publishes nothing, and the site
 keeps its last good version. GitHub turns off a public repository's scheduled runs after 60

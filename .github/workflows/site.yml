@@ -45,7 +45,8 @@ jobs:
           repository: ajbarea/techne
           # Pinned, so a new gate in techne cannot stop the site publishing unannounced.
           # Dependabot does not bump this; move it by hand when graphe:slides changes.
-          ref: c0b80d8344e76dda157dc416a6a610ff1a88f5ea
+          # This is techne PR #130 head; re-pin to its squash commit once it merges.
+          ref: 0cb6273c81c877dbc28e6db7ab4fc66550a676d6
           path: .deps/techne
           persist-credentials: false
 
@@ -70,7 +71,7 @@ jobs:
       - name: Run the slide gates on every talk
         run: make slides-check SLIDES=.deps/techne/plugins/graphe/skills/slides/scripts/slides.py
 
-      - name: Export every talk for PowerPoint, with its preview
+      - name: Export every talk for PowerPoint and as a PDF, with its preview
         run: make exports SLIDES=.deps/techne/plugins/graphe/skills/slides/scripts/slides.py
 
       - name: Lay out the site

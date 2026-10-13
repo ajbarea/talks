@@ -7,7 +7,11 @@
   const DATA = window.DECK_DATA || {};
   const SVG = "http://www.w3.org/2000/svg";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const phone = matchMedia("(max-width: 600px)").matches;
+  // A narrow portrait screen gets a vertical feed; anything wider gets slides scaled to fit.
+  // Crossing the line (a rotation, a resized window) reloads, and the hash keeps the slide.
+  const narrow = matchMedia("(max-width: 600px)");
+  const phone = narrow.matches;
+  narrow.addEventListener("change", () => location.reload());
 
   function lookup(path) {
     const value = path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), DATA);
@@ -104,6 +108,23 @@
     return node;
   }
 
+  // The map as a list for the feed: one block per row of the map, each work with its column.
+  function buildMapList(box, rel, x, y) {
+    const flat = (t) => String(t).replace(/\n/g, " ");
+    const list = html("div", { class: "map-list", role: "group", "aria-label": `Related work by ${flat(x.label).toLowerCase()} and ${flat(y.label).toLowerCase()}` }, box);
+    y.levels.forEach((lv) => {
+      const mine = rel.works.filter((w) => w.y === lv);
+      if (!mine.length) return;
+      html("h3", {}, list, `${flat(y.label)} ${flat(lv)}`);
+      const ul = html("ul", {}, list);
+      for (const w of mine) {
+        const li = html("li", { class: w.ours ? "ours" : "" }, ul);
+        html("b", {}, li, w.label);
+        li.append(` · ${flat(w.x)}`);
+      }
+    });
+  }
+
   function buildMap(box) {
     const rel = lookup(box.dataset.source);
     if (!usable(rel, box.dataset.source)) return;
@@ -112,6 +133,10 @@
       return;
     }
     const { x, y } = rel.axes;
+    if (phone) {
+      buildMapList(box, rel, x, y);
+      return;
+    }
     const W = 1180, H = 430, left = 190, top = 10, bottom = 74;
     const cw = (W - left) / x.levels.length;
     const rh = (H - top - bottom) / y.levels.length;
@@ -236,11 +261,27 @@
       const c = current && current.dataset.chapter;
       rail.hidden = !c;
       for (const b of rail.children) b.setAttribute("aria-current", b.textContent === c ? "step" : "false");
+      const on = rail.querySelector('[aria-current="step"]');
+      if (on) rail.scrollLeft = on.offsetLeft - (rail.clientWidth - on.offsetWidth) / 2;
+    };
+    // The rail is fixed to the screen while slides scale, so on a small screen a slide's own top
+    // padding can be shorter than the rail: --rail-clear is the padding that clears it.
+    const clear = () => {
+      const top = document.querySelector(".reveal .slides").getBoundingClientRect().top;
+      const need = (rail.getBoundingClientRect().bottom + 6 - top) / Reveal.getScale();
+      document.querySelector(".reveal").style.setProperty("--rail-clear", `${Math.max(0, Math.ceil(need))}px`);
     };
     Reveal.on("slidechanged", sync);
+    Reveal.on("resize", clear);
     sync();
+    clear();
   }
 
+  // <svg data-only="phone"> / data-only="desktop": a figure drawn twice, wide for a slide and
+  // tall for the feed. Only the one for this screen stays, so nothing counts or reads it twice.
+  for (const node of document.querySelectorAll("[data-only]")) {
+    if (node.dataset.only !== (phone ? "phone" : "desktop")) node.remove();
+  }
   branch();
   bindValues();
   buildDots();
@@ -250,14 +291,8 @@
   buildAgenda(chs);
   if (phone) {
     document.documentElement.classList.add("phone");
-    // A wide figure keeps a readable size and pans sideways instead of shrinking its labels.
-    for (const fig of document.querySelectorAll(".reveal .slides svg[viewBox]")) {
-      const w = fig.viewBox.baseVal.width;
-      if (w > 480) {
-        fig.style.minWidth = `${Math.round(w * 0.9)}px`;
-        fig.parentElement.classList.add("pan");
-      }
-    }
+    // A feed has no stepping: a fragment would hide its content and stretch the page by a screen.
+    for (const f of document.querySelectorAll(".reveal .fragment")) f.classList.remove("fragment");
   }
 
   Reveal.initialize({

@@ -36,6 +36,17 @@ link like `.../federated-agents/#/5` opens a given slide.
    and fails with `--check` when they are stale, as `federated-agents/figures.py` does. No figure
    is typed onto a slide by hand.
 
+## Motion
+
+`shared/motion.css` and `shared/motion.js` give every talk one vocabulary: put `data-motion` on an
+element (`pop`, `rise`, `land`, `arrive`, `grow`, `growx`, `wipe`, `draw`, `flow`, `fade`, `strike`,
+`count`, or `stagger` on a parent) and it plays when its slide opens, or when the fragment holding it
+appears. `data-delay`, `data-dur`, `data-step`, `data-i` and `data-iter` tune it; `data-path` sends a
+`flow` dot along an SVG path. The resting style is the finished state, so exports, the phone feed,
+print and reduced motion show every slide built, and counters end on the bound value. Nothing plays
+for more than five seconds. The index plays a talk's title-slide loop (`thumb-loop.webp`, built by
+`scripts/exports.py`) when its preview is hovered, and a talk opens out of the preview.
+
 ## Checks
 
 `make check` runs what CI runs: lint, tests, every talk's figures against their artifacts, the

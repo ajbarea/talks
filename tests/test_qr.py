@@ -55,9 +55,13 @@ def test_codes_are_current(talk):
 
 
 @pytest.mark.parametrize("talk", TALKS, ids=lambda t: t.name)
-def test_closing_slide_text_matches_the_address(talk):
+def test_address_appears_once_on_the_closing_slide(talk):
     page = (talk / "index.html").read_text()
-    assert f"These slides: {qr.short(qr.talk_url(talk))}<" in page
+    start = page.rindex("<section", 0, page.index("Thank you"))
+    slide = page[start : page.index("</section>", start)]
+    assert "closing" in slide[: slide.index(">")]
+    assert slide.count(qr.short(qr.talk_url(talk)).replace("/talks/", "/talks/<br>")) == 1
+    assert "These slides:" not in slide
 
 
 def test_quiet_zone_is_four_modules_of_white():

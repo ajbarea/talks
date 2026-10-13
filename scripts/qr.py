@@ -67,12 +67,13 @@ def svg(url: str) -> str:
 
 
 def block(kind: str, url: str) -> str:
-    text = html.escape(short(url)).replace("/talks/", "/talks/<wbr>")
+    # The address breaks after "/talks/": at the talk's name on the closing slide, where it is large.
+    text = html.escape(short(url)).replace("/talks/", "/talks/<wbr>" if kind == "follow" else "/talks/<br>")
     if kind == "follow":
         body = f'<p class="qr-label"><b>Follow along</b><span>{text}</span></p>\n    {svg(url)}'
         attrs = 'class="qr qr-follow"'
     else:
-        body = svg(url)
+        body = f'{svg(url)}\n    <p class="qr-label"><b>These slides</b><span>{text}</span></p>'
         attrs = 'class="qr qr-close" data-motion="pop" data-delay="300" data-dur="600"'
     return f"  <!-- qr:{kind} -->\n  <div {attrs}>\n    {body}\n  </div>\n  <!-- /qr -->\n"
 
@@ -93,8 +94,37 @@ def slide_end(page: str, kind: str, talk: str) -> int:
     return page.rfind("\n", start, end) + 1
 
 
+THANKS = re.compile(r"<h2>\s*Thank you\s*</h2>")
+#: The closing slide's own line for the address; the code's caption replaces it.
+TYPED = re.compile(r'[ \t]*<p class="muted">These slides:[^<]*</p>\n')
+
+
+def close_slide(page: str, talk: str) -> str:
+    """Mark the "Thank you" slide `closing` (the stylesheet lays it out as text beside the code)
+    and drop its typed address line."""
+    m = THANKS.search(page)
+    if not m:
+        raise SystemExit(f'{talk}/index.html has no "Thank you" slide to hold its closing QR code')
+    start = page.rindex("<section", 0, m.start())
+    end = page.index(">", start)
+    tag = page[start:end]
+    if "closing" not in tag:
+        tag = re.sub(r'class="([^"]*)"', r'class="\1 closing"', tag) if 'class="' in tag else tag + ' class="closing"'
+    page = page[:start] + tag + page[end:]
+    close = page.index("</section>", start)
+    slide = TYPED.sub("", page[start:close])
+    if "close-text" not in slide:
+        head = THANKS.search(slide).start()
+        stops = [i for i in (slide.find("<!-- qr:close -->"), slide.find('<aside class="notes">')) if i != -1]
+        tail = min(stops) if stops else len(slide)
+        text = slide[head:tail].rstrip()
+        slide = f'{slide[:head]}<div class="close-text">\n  {text}\n  </div>\n  {slide[tail:].lstrip()}'
+    return page[:start] + slide + page[close:]
+
+
 def render(page: str, talk: pathlib.Path) -> str:
     url = talk_url(talk)
+    page = close_slide(page, talk.name)
     found = {m.group(1) for m in BLOCK.finditer(page)}
     page = BLOCK.sub(lambda m: block(m.group(1), url), page)
     for kind in KINDS:

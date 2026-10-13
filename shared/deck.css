@@ -251,7 +251,11 @@ table.data td.num {
 .qr-label { margin: 0; text-align: right; font-size: 20px; line-height: 1.3; color: var(--night-muted); }
 .qr-label b { display: block; font-weight: 700; color: var(--night-ink); }
 .qr-label span { display: block; max-width: 260px; }
-.qr-close { right: 60px; bottom: 40px; width: 424px; }
+.reveal .slides section.closing[style*="display: block"] { display: grid !important; grid-template-columns: minmax(0, 1fr) 424px;
+  column-gap: 60px; align-items: center; height: 100%; top: 0 !important; }
+.qr-close { position: static; width: 424px; }
+.qr-close .qr-label { margin-top: 18px; font-size: 26px; text-align: center; }
+.qr-close .qr-label span { max-width: none; }
 .phone .qr { display: none; }
 
 /* ------------------------------------------------------------- data-built -- */

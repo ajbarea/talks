@@ -330,7 +330,7 @@ table.data th[scope="row"] { font-weight: 650; }
 .road li { font-size: 0.66em; }
 .phone .title-slide .motif { display: none; }
 .phone .mini { height: 108px; }
-.phone .mini text { font-size: 23px; }
+.phone .mini text { font-size: 17px; }
 .phone .steps { grid-template-columns: 1fr 1fr; gap: 10px; }
 .phone .steps li { padding: 10px; }
 .phone .tiles .big { font-size: 1.4em; margin: 2px 0; }
@@ -349,3 +349,6 @@ table.data th[scope="row"] { font-weight: 650; }
 .phone .reveal h2 { font-size: 1.3em; }
 .phone blockquote.rule b { font-size: 0.85em; }
 .backup table.data { font-size: 0.8em; }
+
+/* The tall two-company figure is narrowed so the slide's footnote still fits under it. */
+.phone .figure svg.narrow { display: block; width: 86%; margin: 0 auto; }

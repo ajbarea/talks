@@ -384,10 +384,6 @@ table.data td.num {
   visibility: hidden;
 }
 
-.pan {
-  overflow-x: auto;
-}
-
 .rail button {
   flex: none;
   padding: 5px 14px;
@@ -419,6 +415,14 @@ table.data td.num {
 }
 
 /* ------------------------------------------------------------------ phone -- */
+
+.map-list h3 { margin: 14px 0 4px; font-size: 0.8em; }
+.map-list ul { margin: 0; padding: 0; list-style: none; }
+.map-list li { margin: 0 0 4px; padding-left: 20px; position: relative; font-size: 0.78em; color: var(--muted); }
+.map-list li::before { content: ""; position: absolute; left: 4px; top: 0.4em; width: 9px; height: 9px;
+  border-radius: 50%; background: var(--mark-rival); }
+.map-list li.ours::before { background: var(--mark-ours); width: 12px; height: 12px; left: 2px; }
+.map-list li b { color: var(--ink); }
 
 .phone .reveal { font-size: 26px; }
 .phone .split,

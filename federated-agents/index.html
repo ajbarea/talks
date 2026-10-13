@@ -57,7 +57,7 @@
   <span class="kicker">1 · The problem</span>
   <h2>The data that would teach them is data no company wants to share</h2>
   <div class="figure">
-    <svg viewBox="0 0 1180 350" role="img" aria-labelledby="pool-t pool-d">
+    <svg data-only="desktop" viewBox="0 0 1180 350" role="img" aria-labelledby="pool-t pool-d">
       <title id="pool-t">Pooling every company's review lessons</title>
       <desc id="pool-d">Three companies send their review lessons to one pool that trains one assistant. Every assistant learns more, and every company is exposed.</desc>
       <defs>
@@ -87,6 +87,31 @@
         <text x="794" y="300">leave the building.</text>
       </g>
     </svg>
+    <svg data-only="phone" viewBox="0 0 464 612" role="img" aria-labelledby="pool-pt pool-pd">
+      <title id="pool-pt">Pooling every company's review lessons</title>
+      <desc id="pool-pd">Three companies send their review lessons to one pool that trains one assistant. Every assistant learns more, and every company is exposed.</desc>
+      <defs>
+        <marker id="head-grey-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57534e"/></marker>
+      </defs>
+      <g class="co">
+        <rect x="4" y="2" width="456" height="46" rx="10"/><text x="18" y="33" class="b">Company A</text><text x="446" y="33" text-anchor="end" class="s">its review lessons</text>
+        <rect x="4" y="56" width="456" height="46" rx="10"/><text x="18" y="87" class="b">Company B</text><text x="446" y="87" text-anchor="end" class="s">its review lessons</text>
+        <rect x="4" y="110" width="456" height="46" rx="10"/><text x="18" y="141" class="b">Company C</text><text x="446" y="141" text-anchor="end" class="s">its review lessons</text>
+      </g>
+      <path class="link" d="M232,164 L232,200" marker-end="url(#head-grey-p)"/>
+      <rect class="pool" x="4" y="210" width="456" height="92" rx="12"/>
+      <text x="232" y="248" class="b" text-anchor="middle">Pool everything</text>
+      <text x="232" y="282" text-anchor="middle" class="s">train one assistant on all of it</text>
+      <path class="link" d="M232,310 L232,346" marker-end="url(#head-grey-p)"/>
+      <rect class="good" x="4" y="356" width="456" height="116" rx="12"/>
+      <text x="20" y="392" class="b">✓ Every assistant learns more</text>
+      <text x="20" y="424" class="s">Much good practice carries over</text>
+      <text x="20" y="452" class="s">between companies.</text>
+      <rect class="bad" x="4" y="484" width="456" height="116" rx="12"/>
+      <text x="20" y="520" class="b">✕ Every company is exposed</text>
+      <text x="20" y="552" class="s">Its code and how its team works</text>
+      <text x="20" y="580" class="s">leave the building.</text>
+    </svg>
   </div>
   <p class="lead">Today the choice is all or nothing: share everything, or share nothing.</p>
   <aside class="notes">Every accepted, fixed or rejected suggestion is already a training example. If companies pooled those examples, every assistant would learn more, because much good practice carries over. But pooling means each company's code, and how its team works, leaves the building. So today the choice is all or nothing.</aside>
@@ -96,7 +121,7 @@
   <span class="kicker">2 · The idea</span>
   <h2>My idea: a shared add-on, a private add-on, and the company decides</h2>
   <div class="figure">
-    <svg viewBox="0 0 1180 372" role="img" aria-labelledby="idea-t idea-d">
+    <svg data-only="desktop" viewBox="0 0 1180 372" role="img" aria-labelledby="idea-t idea-d">
       <title id="idea-t">Two companies, each with a shared and a private add-on on the same frozen model</title>
       <desc id="idea-d">Each company runs the same frozen base model with a shared add-on and a private add-on. A server averages only the shared add-ons, so only their updates travel and code never does. Each company keeps a list of which repositories may feed the shared add-on.</desc>
       <defs>
@@ -147,6 +172,31 @@
         <text x="766" y="310" class="s b">Company's list: may feed Shared?</text>
         <text x="766" y="337" class="s">✓ sdk   ✕ payments   ✕ hr-tools</text>
       </g>
+    </svg>
+    <svg data-only="phone" class="narrow" viewBox="0 0 464 800" role="img" aria-labelledby="idea-pt idea-pd">
+      <title id="idea-pt">Two companies, each with a shared and a private add-on on the same frozen model</title>
+      <desc id="idea-pd">Each company runs the same frozen base model with a shared add-on and a private add-on. A server averages only the shared add-ons, so only their updates travel and code never does. Each company keeps a list of which repositories may feed the shared add-on.</desc>
+      <defs>
+        <marker id="head-blue-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0072b2"/></marker>
+      </defs>
+      <rect class="company" x="4" y="2" width="456" height="292" rx="14"/>
+      <text x="232" y="36" class="b" text-anchor="middle">Company A</text>
+      <rect class="private" x="16" y="48" width="214" height="82" rx="10"/><text x="123" y="82" class="b" text-anchor="middle">Private</text><text x="123" y="112" text-anchor="middle" class="s">never leaves</text>
+      <rect class="shared" x="234" y="48" width="214" height="82" rx="10"/><text x="341" y="82" class="b" text-anchor="middle">Shared</text><text x="341" y="112" text-anchor="middle" class="s">same everywhere</text>
+      <rect class="base" x="16" y="138" width="432" height="72" rx="10"/><text x="232" y="168" class="b" text-anchor="middle">Base model</text><text x="232" y="196" text-anchor="middle" class="s">the same frozen open-weight copy</text>
+      <rect class="list" x="16" y="218" width="432" height="68" rx="10"/><text x="28" y="247" class="s b">Company's list: may feed Shared?</text><text x="28" y="275" class="s">✓ web-app   ✓ docs   ✕ billing</text>
+      <path class="flow" d="M232,300 L232,332 " marker-start="url(#head-blue-p)" marker-end="url(#head-blue-p)"/>
+      <rect class="server" x="4" y="340" width="456" height="112" rx="10"/>
+      <text x="232" y="374" class="b" text-anchor="middle">Server averages the shared add-ons</text>
+      <text x="232" y="408" text-anchor="middle" class="s">only these updates travel,</text>
+      <text x="232" y="436" text-anchor="middle" class="s">never code</text>
+      <path class="flow" d="M232,460 L232,492" marker-start="url(#head-blue-p)" marker-end="url(#head-blue-p)"/>
+      <rect class="company" x="4" y="504" width="456" height="292" rx="14"/>
+      <text x="232" y="538" class="b" text-anchor="middle">Company B</text>
+      <rect class="shared" x="16" y="550" width="214" height="82" rx="10"/><text x="123" y="584" class="b" text-anchor="middle">Shared</text><text x="123" y="614" text-anchor="middle" class="s">same everywhere</text>
+      <rect class="private" x="234" y="550" width="214" height="82" rx="10"/><text x="341" y="584" class="b" text-anchor="middle">Private</text><text x="341" y="614" text-anchor="middle" class="s">never leaves</text>
+      <rect class="base" x="16" y="640" width="432" height="72" rx="10"/><text x="232" y="670" class="b" text-anchor="middle">Base model</text><text x="232" y="698" text-anchor="middle" class="s">the same frozen open-weight copy</text>
+      <rect class="list" x="16" y="720" width="432" height="68" rx="10"/><text x="28" y="749" class="s b">Company's list: may feed Shared?</text><text x="28" y="777" class="s">✓ sdk   ✕ payments   ✕ hr-tools</text>
     </svg>
   </div>
   <p class="lead">The company marks which of its repositories may feed the shared add-on, and only those do.</p>
@@ -418,7 +468,7 @@
 <section id="faq-models" class="backup">
   <h2>Would a different model do better?</h2>
   <div class="figure">
-    <svg viewBox="0 0 1180 190" role="img" aria-labelledby="models-t models-d">
+    <svg data-only="desktop" viewBox="0 0 1180 190" role="img" aria-labelledby="models-t models-d">
       <title id="models-t">Candidate models placed by the month their training data ends</title>
       <desc id="models-d">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (September 2024) were trained before it, so they are fair tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
       <line class="axis" x1="20" y1="96" x2="1160" y2="96"/>
@@ -434,6 +484,24 @@
       <text x="754" y="152" text-anchor="middle" class="b">Qwen3-Coder-30B, gpt-oss-20b</text><text x="754" y="176" text-anchor="middle" class="s">Jul and Aug 2025 · mixtures of experts</text>
       <circle class="unfair" cx="1037" cy="96" r="12"/>
       <text x="1037" y="152" text-anchor="middle" class="b">Gemma 4</text><text x="1037" y="176" text-anchor="middle" class="s">Apr 2026</text>
+    </svg>
+    <svg data-only="phone" viewBox="0 0 464 560" role="img" aria-labelledby="models-pt models-pd">
+      <title id="models-pt">Candidate models placed by the month their training data ends</title>
+      <desc id="models-pd">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (September 2024) were trained before it, so they are fair tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
+      <line class="axis" x1="28" y1="8" x2="28" y2="552"/>
+      <circle class="fair" cx="28" cy="28" r="11"/>
+      <text x="54" y="34" class="b">Llama-3.1-8B</text><text x="54" y="62" class="s">second family · data end Dec 2023</text>
+      <circle class="fair" cx="28" cy="108" r="11"/>
+      <text x="54" y="114" class="b">Qwen2.5-Coder-7B</text><text x="54" y="142" class="s">the registered model · Sep 2024</text>
+      <line class="cut" x1="8" y1="180" x2="456" y2="180"/>
+      <text x="54" y="208" class="s">corpus begins · Oct 2024</text>
+      <circle class="unfair" cx="28" cy="252" r="11"/>
+      <text x="54" y="258" class="b">Qwen3-8B</text><text x="54" y="286" class="s">Apr 2025</text>
+      <circle class="unfair" cx="28" cy="334" r="11"/>
+      <circle class="unfair" cx="28" cy="362" r="11"/>
+      <text x="54" y="344" class="b">Qwen3-Coder-30B,</text><text x="54" y="372" class="b">gpt-oss-20b</text><text x="54" y="400" class="s">Jul and Aug 2025</text><text x="54" y="428" class="s">mixtures of experts</text>
+      <circle class="unfair" cx="28" cy="488" r="11"/>
+      <text x="54" y="494" class="b">Gemma 4</text><text x="54" y="522" class="s">Apr 2026</text>
     </svg>
   </div>
   <p class="small">Dashed line: the corpus begins, October 2024. Filled: trained before it, so a fair test. Hollow: may have seen the test data.</p>

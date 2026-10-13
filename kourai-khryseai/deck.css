@@ -114,7 +114,7 @@
 .phone .ways { margin-bottom: 16px; }
 .phone .title-slide .hero { position: static; width: 220px; height: 220px; margin-top: 24px; }
 .phone .title-slide .kicker { margin-top: 40px; }
-.phone .loopback span { font-size: 0.75em; }
+.phone .loopback span { font-size: 0.75em; line-height: 1.3; border-top: 2px solid var(--mark-ours); border-radius: 12px; }
 .node, .unseen::before { line-height: 1.25; }
 .node small { margin-top: 4px; }
 .cast .tier + .tier li { align-content: center; align-items: start; row-gap: 2px; }

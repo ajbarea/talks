@@ -221,3 +221,12 @@ def test_every_talk_loads_the_shared_deck_and_keeps_only_its_own_styles(site) ->
         assert '<script src="../shared/deck.js"></script>' in page
         assert not (talk / "deck.js").exists()
         assert ".reveal .slides section {" not in (talk / "deck.css").read_text()
+
+
+def test_the_chapter_rail_never_wraps_its_pills() -> None:
+    """A wrapping pill becomes a tall circle that covers the slide on a landscape phone."""
+    css = (ROOT / "shared" / "deck.css").read_text()
+    pill = css[css.index(".rail button {") :].split("}")[0]
+    assert "white-space: nowrap" in pill and "flex: none" in pill
+    row = css[css.index(".rail {") :].split("}")[0]
+    assert "max-width" in row and "overflow-x: auto" in row

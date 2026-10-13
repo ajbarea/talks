@@ -67,7 +67,7 @@ def svg(url: str) -> str:
 
 
 def block(kind: str, url: str) -> str:
-    text = html.escape(short(url))
+    text = html.escape(short(url)).replace("/talks/", "/talks/<wbr>")
     if kind == "follow":
         body = f'<p class="qr-label"><b>Follow along</b><span>{text}</span></p>\n    {svg(url)}'
         attrs = 'class="qr qr-follow"'

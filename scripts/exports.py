@@ -34,7 +34,10 @@ THUMB = (960, 540)
 LOOP_FPS = 10
 LOOP_SECONDS = 4.4
 #: Hides what is not slide, as the PowerPoint export does.
-BARE = ".reveal .controls, .reveal .progress, .reveal .slide-number, .rail, .web-only { display: none !important; }"
+BARE = (
+    ".reveal .controls, .reveal .progress, .reveal .slide-number, .rail, .web-only, .tip, .tip-anchor"
+    " { display: none !important; }"
+)
 
 
 def loop_frames(index: pathlib.Path) -> list:

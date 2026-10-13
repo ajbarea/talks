@@ -259,3 +259,23 @@ def test_the_motion_resting_style_is_the_finished_one() -> None:
             continue
         body = rule.split("{")[-1]
         assert "transform" not in body or "keyframes" in rule, selector
+
+
+def test_every_talk_loads_the_tip_files_after_the_deck(site) -> None:
+    for talk in site.talks():
+        page = (talk / "index.html").read_text()
+        assert page.index("../shared/deck.css") < page.index("../shared/tip.css") < page.index('href="deck.css"')
+        assert page.index("../shared/deck.js") < page.index("../shared/tip.js")
+
+
+def test_a_dot_is_described_by_a_tip_never_by_a_native_title() -> None:
+    """A svg title or title attribute on a dot would show beside the tip."""
+    deck = (ROOT / "shared" / "deck.js").read_text()
+    assert 'svg("title"' not in deck and "title:" not in deck.replace("data-tip-title", "")
+    assert deck.count("...tip(w)") == 3
+
+
+def test_the_tip_never_reaches_an_export() -> None:
+    assert ".tip, .tip-anchor" in (ROOT / "scripts" / "exports.py").read_text()
+    assert "@media print" in (ROOT / "shared" / "tip.css").read_text()
+    assert "print-pdf" in (ROOT / "shared" / "tip.js").read_text()

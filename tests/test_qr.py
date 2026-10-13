@@ -63,5 +63,5 @@ def test_closing_slide_text_matches_the_address(talk):
 def test_quiet_zone_is_four_modules_of_white():
     img = rasterize(qr.svg("https://example.com/x"))
     margin = qr.QUIET * SCALE
-    assert min(img.crop((0, 0, img.width, margin)) == 255
-    assert min(img.crop((0, 0, margin, img.height)).getdata()) == 255
+    assert img.crop((0, 0, img.width, margin)).getextrema()[0] == 255
+    assert img.crop((0, 0, margin, img.height)).getextrema()[0] == 255

@@ -257,6 +257,7 @@ table.data td.num {
 .qr-close .qr-label { margin-top: 18px; font-size: 26px; text-align: center; }
 .qr-close .qr-label span { max-width: none; }
 .phone .qr { display: none; }
+.phone .reveal .slides section.closing[style*="display: block"] { display: block !important; height: auto; }
 
 /* ------------------------------------------------------------- data-built -- */
 

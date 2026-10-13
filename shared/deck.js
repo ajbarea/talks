@@ -129,8 +129,8 @@
       html("h3", {}, list, `${flat(y.label)} ${flat(lv)}`);
       const ul = html("ul", {}, list);
       for (const w of mine) {
-        const li = html("li", { class: w.ours ? "ours" : "" }, ul);
-        html("b", {}, li, w.label);
+        const li = html("li", { class: w.ours ? "ours" : "", tabindex: "0", ...tip(w) }, ul);
+        html("b", { "data-tip-anchor": "" }, li, w.label);
         li.append(` · ${flat(w.x)}`);
       }
     });

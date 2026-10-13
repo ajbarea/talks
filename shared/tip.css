@@ -6,7 +6,7 @@
   position: fixed;
   anchor-name: --tip-a;
   pointer-events: none;
-  visibility: hidden;
+  opacity: 0;
 }
 
 .tip {
@@ -43,8 +43,10 @@
     position-anchor: --tip-a;
     position-area: top;
     justify-self: anchor-center;
+    margin-inline: 8px;
     margin-block-end: var(--tip-gap);
     position-try-fallbacks: flip-block;
+    position-visibility: always;
   }
 }
 
@@ -127,8 +129,20 @@
   cursor: help;
 }
 
-[data-tip]:focus {
+svg [data-tip]:focus {
   outline: none;
+}
+
+[data-tip]:not(svg *):focus-visible {
+  outline: 3px solid var(--label);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+li[data-tip] b {
+  text-decoration: underline dotted;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
 }
 
 [data-tip].tip-on circle,

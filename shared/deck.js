@@ -72,6 +72,7 @@
       const hit = typeof of === "number" ? share : Math.round(share * total);
       const cols = Number(box.dataset.cols || 20);
       const rows = Math.ceil(total / cols);
+      box.dataset.motion = "fill";
       const fig = svg("svg", {
         viewBox: `0 0 ${cols * 20} ${rows * 20}`,
         role: "img",
@@ -174,6 +175,9 @@
       const cy = top + r * rh + rh / 2 + (n - (count.get(key) - 1) / 2) * 30;
       const g = svg("g", {
         class: w.ours ? "work ours fragment" : "work",
+        "data-motion": w.ours ? "pop" : "arrive",
+        "data-step": 110,
+        "data-i": r * 3 + n,
         tabindex: "0",
         role: "img",
         "aria-label": `${w.label}: ${w.oneLine}`,
@@ -196,7 +200,7 @@
   }
 
   // <div class="timeline" data-source="related">: one lane per group, one dot per work,
-  // ours drawn last. Dots pop in by year when the slide opens, unless motion is reduced.
+  // ours drawn last. Dots pop in by year when the slide opens (motion.js).
   function buildTimeline(box) {
     const rel = lookup(box.dataset.source);
     if (!usable(rel, box.dataset.source)) return;
@@ -218,8 +222,10 @@
     works.forEach((w, i) => {
       const cy = top + groups.indexOf(w.group) * lane + lane / 2;
       const g = svg("g", {
-        class: w.ours ? "work ours pop" : "work pop",
-        style: `--i:${i}`,
+        class: w.ours ? "work ours" : "work",
+        "data-motion": "pop",
+        "data-step": 140,
+        "data-i": i,
         tabindex: "0",
         role: "img",
         "aria-label": `${w.year}, ${w.label}: ${w.oneLine}`,

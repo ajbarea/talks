@@ -261,15 +261,6 @@ table.data td.num {
   stroke: var(--mark-ours);
 }
 
-.dots.fragment.visible .dot.hit {
-  animation: fill-in 0.25s both;
-  animation-delay: calc(var(--i) * 8ms);
-}
-
-@keyframes fill-in {
-  from { fill: transparent; stroke: var(--mark-rival); }
-}
-
 .relmap {
   display: grid;
   grid-template-columns: 1.6fr 1fr;
@@ -345,16 +336,6 @@ table.data td.num {
 .timeline .lane {
   stroke: var(--line);
   stroke-width: 2;
-}
-
-.reveal section.present .timeline .pop {
-  animation: pop 0.45s both;
-  animation-delay: calc(var(--i) * 140ms);
-}
-
-@keyframes pop {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: none; }
 }
 
 /* ------------------------------------------------------------ chapter rail -- */

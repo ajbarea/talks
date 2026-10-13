@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="../vendor/reveal/reset.css">
   <link rel="stylesheet" href="../vendor/reveal/reveal.css">
   <link rel="stylesheet" href="../shared/deck.css">
+  <link rel="stylesheet" href="../shared/motion.css">
   <link rel="stylesheet" href="deck.css">
 </head>
 <body>
@@ -21,11 +22,15 @@
   <h1>Federated Agents</h1>
   <p class="subtitle">Coding agents that learn each company's house rules without its code leaving</p>
   <svg class="motif" viewBox="0 0 420 300" aria-hidden="true" focusable="false">
-    <g class="m-co"><rect x="4" y="40" width="150" height="220" rx="12"/><rect x="266" y="40" width="150" height="220" rx="12"/></g>
-    <rect class="m-priv" x="18" y="58" width="58" height="70" rx="8"/><rect class="m-shared" x="84" y="58" width="58" height="70" rx="8"/>
-    <rect class="m-shared" x="280" y="58" width="58" height="70" rx="8"/><rect class="m-priv" x="346" y="58" width="58" height="70" rx="8"/>
-    <rect class="m-base" x="18" y="140" width="124" height="104" rx="8"/><rect class="m-base" x="280" y="140" width="124" height="104" rx="8"/>
-    <path class="m-flow" d="M150,93 L184,93 M236,93 L270,93"/><rect class="m-server" x="186" y="66" width="48" height="54" rx="8"/>
+    <g class="m-co" data-motion="pop" data-delay="200"><rect x="4" y="40" width="150" height="220" rx="12"/><rect x="266" y="40" width="150" height="220" rx="12"/></g>
+    <g data-motion="stagger" data-child="pop" data-delay="350" data-step="110">
+      <rect class="m-priv" x="18" y="58" width="58" height="70" rx="8"/><rect class="m-shared" x="84" y="58" width="58" height="70" rx="8"/>
+      <rect class="m-shared" x="280" y="58" width="58" height="70" rx="8"/><rect class="m-priv" x="346" y="58" width="58" height="70" rx="8"/>
+      <rect class="m-base" x="18" y="140" width="124" height="104" rx="8"/><rect class="m-base" x="280" y="140" width="124" height="104" rx="8"/>
+    </g>
+    <path class="m-flow" d="M150,93 L184,93 M236,93 L270,93" data-motion="draw" data-delay="1000" data-dur="500"/><rect class="m-server" x="186" y="66" width="48" height="54" rx="8" data-motion="pop" data-delay="1000"/>
+    <circle class="m-dot" r="6" data-motion="flow" data-path="M150,93 L270,93" data-delay="1600" data-dur="1000" data-iter="3" data-dir="alternate"/>
+    <circle class="m-dot" r="6" data-motion="flow" data-path="M150,93 L270,93" data-delay="2100" data-dur="1000" data-iter="2" data-dir="alternate"/>
   </svg>
   <aside class="notes">Hi, I'm AJ Barea, a PhD student at RIT. This is Federated Agents: coding agents that learn each company's house rules without its code leaving.</aside>
 </section>
@@ -38,13 +43,13 @@
     "Please use our <code>db.query()</code> helper. We never open raw connections."
   </blockquote>
   <div class="versus">
-    <figure class="code wrong fragment">
+    <figure class="code wrong fragment" data-fragment-index="1">
       <figcaption><span aria-hidden="true">✕ </span>Code an AI assistant writes</figcaption>
-      <pre><code>rows = psycopg2.connect(DSN)
+      <pre class="fragment custom" data-motion="strike" data-fragment-index="3"><code>rows = psycopg2.connect(DSN)
     .cursor().execute(q)</code></pre>
     </figure>
-    <div class="then fragment" aria-hidden="true">→</div>
-    <figure class="code right fragment">
+    <div class="then fragment" data-motion="rise" data-fragment-index="2" aria-hidden="true">→</div>
+    <figure class="code right fragment" data-motion="land" data-fragment-index="3">
       <figcaption><span aria-hidden="true">✓ </span>What this company's reviewers require</figcaption>
       <pre><code>rows = db.query(q)</code></pre>
     </figure>
@@ -70,17 +75,22 @@
       </g>
       <path class="link" d="M272,175 L352,175" marker-end="url(#head-grey)"/>
       <rect class="pool" x="364" y="100" width="300" height="150" rx="12"/>
+      <g class="lessons" aria-hidden="true">
+        <circle r="8" data-motion="flow" data-path="M262,58 L364,140" data-delay="300" data-dur="900" data-iter="2"/>
+        <circle r="8" data-motion="flow" data-path="M262,175 L364,175" data-delay="450" data-dur="900" data-iter="2"/>
+        <circle r="8" data-motion="flow" data-path="M262,292 L364,210" data-delay="600" data-dur="900" data-iter="2"/>
+      </g>
       <text x="514" y="160" class="b" text-anchor="middle">Pool everything</text>
       <text x="514" y="194" text-anchor="middle">train one assistant</text>
       <text x="514" y="222" text-anchor="middle">on all of it</text>
       <path class="link" d="M676,175 L756,175" marker-end="url(#head-grey)"/>
-      <g class="fragment">
+      <g class="fragment" data-motion="pop">
         <rect class="good" x="770" y="22" width="400" height="140" rx="12"/>
         <text x="794" y="68" class="b">✓ Every assistant learns more</text>
         <text x="794" y="104">Much good practice carries over</text>
         <text x="794" y="134">between companies.</text>
       </g>
-      <g class="fragment">
+      <g class="fragment" data-motion="land">
         <rect class="bad" x="770" y="188" width="400" height="140" rx="12"/>
         <text x="794" y="234" class="b">✕ Every company is exposed</text>
         <text x="794" y="270">Its code and how its team works</text>
@@ -140,18 +150,18 @@
         <text x="950" y="250" text-anchor="middle" class="s">the same frozen open-weight copy</text>
       </g>
       <g class="fragment">
-        <rect class="private" x="28" y="64" width="196" height="110" rx="10"/>
+        <g data-motion="pop" data-i="0"><rect class="private" x="28" y="64" width="196" height="110" rx="10"/>
         <text x="126" y="110" class="b" text-anchor="middle">Private</text>
-        <text x="126" y="142" text-anchor="middle" class="s">never leaves</text>
-        <rect class="shared" x="236" y="64" width="196" height="110" rx="10"/>
+        <text x="126" y="142" text-anchor="middle" class="s">never leaves</text></g>
+        <g data-motion="pop" data-i="1"><rect class="shared" x="236" y="64" width="196" height="110" rx="10"/>
         <text x="334" y="110" class="b" text-anchor="middle">Shared</text>
-        <text x="334" y="142" text-anchor="middle" class="s">same everywhere</text>
-        <rect class="shared" x="748" y="64" width="196" height="110" rx="10"/>
+        <text x="334" y="142" text-anchor="middle" class="s">same everywhere</text></g>
+        <g data-motion="pop" data-i="1"><rect class="shared" x="748" y="64" width="196" height="110" rx="10"/>
         <text x="846" y="110" class="b" text-anchor="middle">Shared</text>
-        <text x="846" y="142" text-anchor="middle" class="s">same everywhere</text>
-        <rect class="private" x="956" y="64" width="196" height="110" rx="10"/>
+        <text x="846" y="142" text-anchor="middle" class="s">same everywhere</text></g>
+        <g data-motion="pop" data-i="0"><rect class="private" x="956" y="64" width="196" height="110" rx="10"/>
         <text x="1054" y="110" class="b" text-anchor="middle">Private</text>
-        <text x="1054" y="142" text-anchor="middle" class="s">never leaves</text>
+        <text x="1054" y="142" text-anchor="middle" class="s">never leaves</text></g>
       </g>
       <g class="fragment">
         <path class="flow" d="M442,119 L498,119" marker-start="url(#head-blue)" marker-end="url(#head-blue)"/>
@@ -163,14 +173,20 @@
         <text x="590" y="214" text-anchor="middle" class="s">only these</text>
         <text x="590" y="240" text-anchor="middle" class="s">updates travel,</text>
         <text x="590" y="266" text-anchor="middle" class="s">never code</text>
+        <g class="updates" aria-hidden="true">
+          <circle r="7" data-motion="flow" data-path="M440,112 L508,112" data-delay="500" data-dur="800" data-iter="4" data-dir="alternate"/>
+          <circle r="7" data-motion="flow" data-path="M440,126 L508,126" data-delay="900" data-dur="800" data-iter="4" data-dir="alternate"/>
+          <circle r="7" data-motion="flow" data-path="M740,112 L672,112" data-delay="700" data-dur="800" data-iter="4" data-dir="alternate"/>
+          <circle r="7" data-motion="flow" data-path="M740,126 L672,126" data-delay="1100" data-dur="800" data-iter="4" data-dir="alternate"/>
+        </g>
       </g>
-      <g class="fragment">
+      <g class="fragment" data-motion="rise">
         <rect class="list" x="28" y="282" width="404" height="66" rx="10"/>
         <text x="46" y="310" class="s b">Company's list: may feed Shared?</text>
-        <text x="46" y="337" class="s">✓ web-app   ✓ docs   ✕ billing</text>
+        <text x="46" y="337" class="s"><tspan data-motion="fade" data-delay="520" data-step="360" data-i="0">✓ web-app</tspan>   <tspan data-motion="fade" data-delay="520" data-step="360" data-i="1">✓ docs</tspan>   <tspan data-motion="fade" data-delay="520" data-step="360" data-i="2">✕ billing</tspan></text>
         <rect class="list" x="748" y="282" width="404" height="66" rx="10"/>
         <text x="766" y="310" class="s b">Company's list: may feed Shared?</text>
-        <text x="766" y="337" class="s">✓ sdk   ✕ payments   ✕ hr-tools</text>
+        <text x="766" y="337" class="s"><tspan data-motion="fade" data-delay="520" data-step="360" data-i="0">✓ sdk</tspan>   <tspan data-motion="fade" data-delay="520" data-step="360" data-i="1">✕ payments</tspan>   <tspan data-motion="fade" data-delay="520" data-step="360" data-i="2">✕ hr-tools</tspan></text>
       </g>
     </svg>
     <svg data-only="phone" class="narrow" viewBox="0 0 464 800" role="img" aria-labelledby="idea-pt idea-pd">
@@ -219,21 +235,21 @@
     <div class="card">
       <b>Tuning helps</b>
       <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="The tuned assistant's bar is far taller than the untuned one's">
-        <rect class="rival" x="50" y="88" width="50" height="22"/><text x="75" y="128" text-anchor="middle">untuned</text>
-        <rect class="mark" x="140" y="10" width="50" height="100"/><text x="165" y="128" text-anchor="middle">tuned</text>
+        <rect class="rival" x="50" y="88" width="50" height="22" data-motion="grow" data-delay="250" data-step="140" data-i="0"/><text x="75" y="128" text-anchor="middle">untuned</text>
+        <rect class="mark" x="140" y="10" width="50" height="100" data-motion="grow" data-delay="250" data-step="140" data-i="1"/><text x="165" y="128" text-anchor="middle">tuned</text>
       </svg>
       <p>Tuned on a community's own reviews, the assistant matches its reviewers' fixes far more often.</p>
     </div>
     <div class="card">
       <b>The team-specific part</b>
       <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="For each community, its own group's bar beside the sibling group's: taller where a gain was found, level where none was">
-        <g data-if="readings.team_gain_openstack"><rect class="mark" x="30" y="16" width="30" height="94"/></g>
-        <g data-unless="readings.team_gain_openstack"><rect class="mark" x="30" y="40" width="30" height="70"/></g>
-        <rect class="rival" x="64" y="40" width="30" height="70"/>
+        <g data-if="readings.team_gain_openstack"><rect class="mark" x="30" y="16" width="30" height="94" data-motion="grow" data-delay="250" data-step="140" data-i="2"/></g>
+        <g data-unless="readings.team_gain_openstack"><rect class="mark" x="30" y="40" width="30" height="70" data-motion="grow" data-delay="250" data-step="140" data-i="3"/></g>
+        <rect class="rival" x="64" y="40" width="30" height="70" data-motion="grow" data-delay="250" data-step="140" data-i="4"/>
         <text x="62" y="128" text-anchor="middle">OpenStack</text>
-        <g data-if="readings.team_gain_wikimedia"><rect class="mark" x="146" y="16" width="30" height="94"/></g>
-        <g data-unless="readings.team_gain_wikimedia"><rect class="mark" x="146" y="40" width="30" height="70"/></g>
-        <rect class="rival" x="180" y="40" width="30" height="70"/>
+        <g data-if="readings.team_gain_wikimedia"><rect class="mark" x="146" y="16" width="30" height="94" data-motion="grow" data-delay="250" data-step="140" data-i="5"/></g>
+        <g data-unless="readings.team_gain_wikimedia"><rect class="mark" x="146" y="40" width="30" height="70" data-motion="grow" data-delay="250" data-step="140" data-i="6"/></g>
+        <rect class="rival" x="180" y="40" width="30" height="70" data-motion="grow" data-delay="250" data-step="140" data-i="7"/>
         <text x="178" y="128" text-anchor="middle">Wikimedia</text>
       </svg>
       <p>Blue is each group's own: OpenStack's assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>.</p>
@@ -242,7 +258,7 @@
       <b>Next: does it leak?</b>
       <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="An attacker holding the shared add-on asks whether it came from Company A">
         <rect class="shared" x="6" y="36" width="88" height="58" rx="8"/><text x="50" y="60" text-anchor="middle">shared</text><text x="50" y="82" text-anchor="middle">add-on</text>
-        <path class="ask" d="M100,65 L128,65"/><path class="ask-head" d="M126,57 L138,65 L126,73 z"/>
+        <path class="ask" d="M100,65 L128,65"/><circle r="6" class="ask-dot" aria-hidden="true" data-motion="flow" data-path="M104,65 L136,65" data-delay="900" data-dur="1100" data-iter="3"/><path class="ask-head" d="M126,57 L138,65 L126,73 z"/>
         <rect class="private" x="142" y="26" width="94" height="78" rx="8"/><text x="189" y="54" text-anchor="middle">"came</text><text x="189" y="74" text-anchor="middle">from</text><text x="189" y="94" text-anchor="middle">Co. A?"</text>
       </svg>
       <p>The attacks on published privacy designs are built.</p>
@@ -255,7 +271,7 @@
 <section data-chapter="4 · What's built">
   <span class="kicker">4 · What's built</span>
   <h2>One tool turns public code review into a checked dataset</h2>
-  <ol class="steps" style="--n:6">
+  <ol class="steps" style="--n:6" data-motion="stagger" data-child="pop" data-step="260" data-delay="150">
     <li><b>Collect</b>by each host's rules</li>
     <li><b>Pseudonymise</b>names out on arrival</li>
     <li><b>Pair</b>comment, code, next version</li>
@@ -263,7 +279,7 @@
     <li><b>Split</b>by month, test sealed</li>
     <li><b>Check</b>labels audited blind</li>
   </ol>
-  <div class="card wide fragment"><b>Then it runs the study</b><p>It trains the add-ons on RIT's research computing clusters, runs the pre-registered test, and runs the attacks on published privacy designs.</p></div>
+  <div class="card wide fragment" data-motion="rise"><b>Then it runs the study</b><p>It trains the add-ons on RIT's research computing clusters, runs the pre-registered test, and runs the attacks on published privacy designs.</p></div>
   <p class="footnote">Open source: github.com/ajbarea/sphragis. The label is never guessed: it is the code the developer actually wrote next.</p>
   <aside class="notes">Here's what I've built: one open-source tool. It collects public code review following each host's rules, and replaces people's names with pseudonyms as the data arrives. It pairs each reviewer comment, and the code it was about, with the code the developer actually wrote next, so the label is never guessed. It cleans out what an assistant shouldn't learn from, like bot comments and one-click approvals. It splits the data by month, keeps the test months sealed, and audits a sample of the labels blind. It also trains the add-ons on RIT's clusters and runs the pre-registered test and the privacy attacks.</aside>
 </section>
@@ -272,13 +288,13 @@
   <span class="kicker">4 · What's built</span>
   <h2>The datasets are already built</h2>
   <div class="cards tiles" style="--n:3">
-    <div class="card"><b>OpenStack</b><span class="big" data-value="readings.corpus_examples_openstack"></span><p>real lessons from <span data-value="readings.corpus_changes_openstack"></span> reviewed changes</p></div>
-    <div class="card"><b>Wikimedia</b><span class="big" data-value="readings.corpus_examples_wikimedia"></span><p>real lessons from <span data-value="readings.corpus_changes_wikimedia"></span> reviewed changes</p></div>
+    <div class="card"><b>OpenStack</b><span class="big" data-motion="count" data-dur="1200" data-value="readings.corpus_examples_openstack"></span><p>real lessons from <span data-motion="count" data-dur="1200" data-value="readings.corpus_changes_openstack"></span> reviewed changes</p></div>
+    <div class="card"><b>Wikimedia</b><span class="big" data-motion="count" data-dur="1200" data-value="readings.corpus_examples_wikimedia"></span><p>real lessons from <span data-motion="count" data-dur="1200" data-value="readings.corpus_changes_wikimedia"></span> reviewed changes</p></div>
     <div class="card pending"><b>GitHub</b><span class="big">Collecting</span><p>Apache first, then LLVM, .NET and Grafana</p></div>
   </div>
   <div class="card wide lesson">
     <b>Each lesson is real</b>
-    <div class="lesson-parts"><span>a reviewer's comment</span><span aria-hidden="true">+</span><span>the code it was about</span><span aria-hidden="true">→</span><span>the code the developer wrote next</span></div>
+    <div class="lesson-parts" data-motion="stagger" data-child="pop" data-delay="900" data-step="200"><span>a reviewer's comment</span><span aria-hidden="true">+</span><span>the code it was about</span><span aria-hidden="true">→</span><span>the code the developer wrote next</span></div>
     <p>Names are removed on arrival; the test months stay sealed.</p>
   </div>
   <p class="footnote">Open source: github.com/ajbarea/sphragis</p>
@@ -292,8 +308,8 @@
     <div class="card">
       <b>Many splits, not one lucky one</b>
       <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="Eight dots scattered above and below one line marking their average">
-        <line class="avg" x1="8" y1="66" x2="164" y2="66"/>
-        <circle cx="16" cy="24" r="7" class="dot-grey"/><circle cx="36" cy="98" r="7" class="dot-grey"/><circle cx="56" cy="44" r="7" class="dot-grey"/><circle cx="76" cy="112" r="7" class="dot-grey"/><circle cx="96" cy="34" r="7" class="dot-grey"/><circle cx="116" cy="86" r="7" class="dot-grey"/><circle cx="136" cy="52" r="7" class="dot-grey"/><circle cx="156" cy="104" r="7" class="dot-grey"/>
+        <line class="avg" x1="8" y1="66" x2="164" y2="66" data-motion="draw" data-delay="1000" data-dur="700"/>
+        <circle cx="16" cy="24" r="7" class="dot-grey" data-motion="pop" data-delay="150" data-step="110" data-i="0"/><circle cx="36" cy="98" r="7" class="dot-grey" data-motion="pop" data-delay="150" data-step="110" data-i="1"/><circle cx="56" cy="44" r="7" class="dot-grey" data-motion="pop" data-delay="150" data-step="110" data-i="2"/><circle cx="76" cy="112" r="7" class="dot-grey" data-motion="pop" data-delay="150" data-step="110" data-i="3"/><circle cx="96" cy="34" r="7" class="dot-grey" data-motion="pop" data-delay="150" data-step="110" data-i="4"/><circle cx="116" cy="86" r="7" class="dot-grey" data-motion="pop" data-delay="150" data-step="110" data-i="5"/><circle cx="136" cy="52" r="7" class="dot-grey" data-motion="pop" data-delay="150" data-step="110" data-i="6"/><circle cx="156" cy="104" r="7" class="dot-grey" data-motion="pop" data-delay="150" data-step="110" data-i="7"/>
         <text x="172" y="72" class="b blue">average</text>
       </svg>
       <p>Each dot is one way of dividing the data. One can mislead; the test reads their average.</p>
@@ -318,7 +334,7 @@
 <section data-chapter="5 · Where it stands">
   <span class="kicker">5 · Where it stands</span>
   <h2>The datasets are stage one; federated coding agents are the goal</h2>
-  <ol class="road">
+  <ol class="road" data-motion="stagger" data-child="rise" data-step="260" data-delay="200">
     <li class="done"><i aria-hidden="true"></i><span class="when">Ongoing · this fall</span><b>Tool and datasets</b>collect, clean and check real code review</li>
     <li class="now"><i aria-hidden="true"></i><span class="when">Now · due Nov 20</span><b>Plan to reviewers</b>a registered report for MSR 2027</li>
     <li class="next"><i aria-hidden="true"></i><span class="when">Next · from February</span><b>The sealed test</b>can a team's habits be learned, and where do they stop?</li>
@@ -336,7 +352,7 @@
     <div class="group">
       <b>The main test</b>
       <p>Review is required before code lands. Every community must pass.</p>
-      <ul>
+      <ul data-motion="stagger" data-child="rise" data-delay="250">
         <li class="in">OpenStack <span>in</span></li>
         <li class="in">Wikimedia <span>in</span></li>
         <li class="out">Qt, Chromium <span>if they grant permission</span></li>
@@ -345,7 +361,7 @@
     <div class="group">
       <b>The replication, on GitHub</b>
       <p>Review is often optional there, so it is read apart. Kept out of results until GitHub confirms in writing.</p>
-      <ul>
+      <ul data-motion="stagger" data-child="rise" data-delay="450">
         <li class="out">Apache <span>collecting</span></li>
         <li class="out">LLVM <span>next</span></li>
         <li class="out">.NET, Grafana <span>next</span></li>
@@ -577,5 +593,6 @@
 <script src="../vendor/reveal/reveal.js"></script>
 <script src="../vendor/reveal/notes.js"></script>
 <script src="../shared/deck.js"></script>
+<script src="../shared/motion.js"></script>
 </body>
 </html>

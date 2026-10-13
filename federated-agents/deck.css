@@ -318,14 +318,13 @@ table.data th[scope="row"] { font-weight: 650; }
 .motif .m-base { fill: #44403c; }
 .motif .m-flow { stroke: #56b4e9; stroke-width: 4; }
 
-@media (prefers-reduced-motion: no-preference) {
-  .title-slide.present .motif .m-shared,
-  .title-slide.present .motif .m-server { animation: pulse 2.4s ease-in-out 2; }
-}
+/* Moving dots: lessons leaving a company, updates between add-ons, the question an attacker asks. */
+.motif .m-dot { fill: #fff; }
+.figure .lessons circle { fill: var(--private); stroke: #fff; stroke-width: 2; }
+.figure .updates circle { fill: var(--shared); stroke: #fff; stroke-width: 2; r: 9px; }
+.mini .ask-dot { fill: var(--private); }
 
-@keyframes pulse {
-  50% { opacity: 0.55; }
-}
+html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms backwards; transform-origin: 0 50%; }
 
 .road li { font-size: 0.66em; }
 .phone .title-slide .motif { display: none; }

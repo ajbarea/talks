@@ -1,0 +1,98 @@
+/* Motion vocabulary. An element with data-motion plays when its slide opens, or when the
+   fragment holding it appears. The resting style is always the finished state, so a deck that
+   never turns motion on (reduced motion, phone, print, export) shows every figure complete.
+   motion.js adds html.m-live and marks the playing elements .m-go.
+
+   data-motion: pop rise land arrive grow growx wipe draw flow fade strike stagger count
+   data-delay, data-dur, data-step (ms), data-i, data-iter, data-path (flow), data-origin (wipe). */
+
+:root {
+  --m-ease: cubic-bezier(0.22, 0.8, 0.3, 1);
+}
+
+.m-probe {
+  position: absolute;
+  width: 0;
+  height: 0;
+  animation: m-probe 1s;
+  pointer-events: none;
+}
+
+[data-motion="pop"]    { --m-k: m-pop; }
+[data-motion="rise"]   { --m-k: m-rise; }
+[data-motion="land"]   { --m-k: m-land; --m-d: 460ms; }
+[data-motion="arrive"] { --m-k: m-arrive; --m-d: 600ms; }
+[data-motion="grow"]   { --m-k: m-grow; --m-d: 700ms; }
+[data-motion="growx"]  { --m-k: m-growx; --m-d: 700ms; }
+[data-motion="wipe"]   { --m-k: m-wipe; --m-d: 600ms; }
+[data-motion="draw"]   { --m-k: m-draw; --m-d: 700ms; }
+[data-motion="fade"]   { --m-k: m-fade; --m-d: 400ms; }
+[data-motion="flow"]   { --m-k: m-flow; --m-d: 800ms; }
+
+html.m-live .m-go[data-motion] {
+  animation: var(--m-k) var(--m-d, 480ms) var(--m-ease) calc(var(--m-delay, 0ms) + var(--i, 0) * var(--m-step, 90ms))
+    var(--m-iter, 1) var(--m-dir, normal) backwards;
+}
+
+html.m-live .m-go.m-still[data-motion] { animation: none; transition: none; }
+
+html.m-live svg [data-motion] {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+html.m-live [data-motion="grow"] { transform-origin: var(--m-origin, 50% 100%); }
+html.m-live [data-motion="growx"] { transform-origin: var(--m-origin, 0 50%); }
+html.m-live [data-motion="wipe"] { transform-origin: var(--m-origin, 0 50%); }
+
+/* A dot that travels: it exists only while it moves. */
+[data-motion="flow"] { opacity: 0; offset-rotate: 0deg; }
+
+/* Counters keep their width while the digits change. */
+[data-motion="count"] { font-variant-numeric: tabular-nums; }
+
+@keyframes m-probe { to { opacity: 1; } }
+@keyframes m-pop { from { opacity: 0; transform: scale(0.82); } }
+@keyframes m-rise { from { opacity: 0; transform: translateY(12px); } }
+@keyframes m-land { from { opacity: 0; transform: translateY(-22px) scale(1.04); } }
+@keyframes m-arrive { from { opacity: 0; transform: translateX(-34px); } }
+@keyframes m-grow { from { transform: scaleY(0); } }
+@keyframes m-growx { from { transform: scaleX(0); } }
+@keyframes m-wipe { from { transform: scaleX(0); } }
+@keyframes m-fade { from { opacity: 0; } }
+@keyframes m-draw {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
+}
+@keyframes m-flow {
+  0% { offset-distance: 0%; opacity: 0; }
+  12%, 88% { opacity: 1; }
+  100% { offset-distance: 100%; opacity: 0; }
+}
+
+/* A share drawn as dots: the filled ones fill in, one after another. */
+html.m-live .dots.m-go .dot.hit {
+  animation: m-fill 0.3s var(--m-ease) calc(var(--i) * 14ms) backwards;
+}
+html.m-live .dots.m-go.m-still .dot.hit { animation: none; }
+@keyframes m-fill { from { fill: transparent; stroke: var(--mark-rival); } }
+
+/* Strike: a state change, so it runs both ways when the presenter steps back. */
+[data-motion="strike"] {
+  text-decoration: line-through;
+  text-decoration-thickness: 3px;
+  opacity: 0.55;
+}
+html.m-live [data-motion="strike"] {
+  transition: text-decoration-color 0.4s var(--m-ease), opacity 0.4s var(--m-ease);
+}
+html.m-live [data-motion="strike"]:not(.m-go) {
+  text-decoration-color: transparent;
+  opacity: 1;
+}
+
+/* The view transition from the index: the deck opens out of the preview that was clicked. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+  ::view-transition-group(talk-shot) { animation-duration: 0.45s; animation-timing-function: var(--m-ease); }
+}

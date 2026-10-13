@@ -351,4 +351,4 @@ table.data th[scope="row"] { font-weight: 650; }
 .backup table.data { font-size: 0.8em; }
 
 /* The tall two-company figure is narrowed so the slide's footnote still fits under it. */
-.phone .figure svg.narrow { display: block; width: 86%; margin: 0 auto; }
+.phone .figure svg.narrow { display: block; width: 76%; margin: 0 auto; }

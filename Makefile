@@ -33,7 +33,7 @@ slides-check:      ## Run the graphe:slides gates on every talk
 	@test -n "$(TALKS)" || { echo "no talks found" >&2; exit 1; }
 	@for t in $(TALKS); do echo ">>> $$t"; $(B) python $(SLIDES) check $$t/index.html || exit 1; done
 
-exports:           ## Export every talk's .pptx and preview into _exports/
+exports:           ## Export every talk's .pptx, .pdf and preview into _exports/
 	@test -f "$(SLIDES)" || { echo "no graphe:slides script at $(SLIDES); set SLIDES" >&2; exit 1; }
 	$(B) python scripts/exports.py _exports --slides $(SLIDES)
 

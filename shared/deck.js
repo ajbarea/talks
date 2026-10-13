@@ -7,7 +7,11 @@
   const DATA = window.DECK_DATA || {};
   const SVG = "http://www.w3.org/2000/svg";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const phone = matchMedia("(max-width: 600px)").matches;
+  // A narrow portrait screen gets a vertical feed; anything wider gets slides scaled to fit.
+  // Crossing the line (a rotation, a resized window) reloads, and the hash keeps the slide.
+  const narrow = matchMedia("(max-width: 600px)");
+  const phone = narrow.matches;
+  narrow.addEventListener("change", () => location.reload());
 
   function lookup(path) {
     const value = path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), DATA);
@@ -236,9 +240,20 @@
       const c = current && current.dataset.chapter;
       rail.hidden = !c;
       for (const b of rail.children) b.setAttribute("aria-current", b.textContent === c ? "step" : "false");
+      const on = rail.querySelector('[aria-current="step"]');
+      if (on) rail.scrollLeft = on.offsetLeft - (rail.clientWidth - on.offsetWidth) / 2;
+    };
+    // The rail is fixed to the screen while slides scale, so on a small screen a slide's own top
+    // padding can be shorter than the rail: --rail-clear is the padding that clears it.
+    const clear = () => {
+      const top = document.querySelector(".reveal .slides").getBoundingClientRect().top;
+      const need = (rail.getBoundingClientRect().bottom + 6 - top) / Reveal.getScale();
+      document.querySelector(".reveal").style.setProperty("--rail-clear", `${Math.max(0, Math.ceil(need))}px`);
     };
     Reveal.on("slidechanged", sync);
+    Reveal.on("resize", clear);
     sync();
+    clear();
   }
 
   branch();
@@ -250,6 +265,8 @@
   buildAgenda(chs);
   if (phone) {
     document.documentElement.classList.add("phone");
+    // A feed has no stepping: a fragment would hide its content and stretch the page by a screen.
+    for (const f of document.querySelectorAll(".reveal .fragment")) f.classList.remove("fragment");
     // A wide figure keeps a readable size and pans sideways instead of shrinking its labels.
     for (const fig of document.querySelectorAll(".reveal .slides svg[viewBox]")) {
       const w = fig.viewBox.baseVal.width;

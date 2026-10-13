@@ -33,6 +33,8 @@ def repo(tmp_path: Path) -> Path:
     root = tmp_path / "repo"
     (root / "vendor" / "reveal").mkdir(parents=True)
     (root / "vendor" / "reveal" / "reveal.js").write_text("")
+    (root / "shared").mkdir()
+    (root / "shared" / "deck.js").write_text("")
     _talk(root, "beta-talk", "Beta &amp; more")
     _talk(root, "alpha-talk")
     (root / "scripts").mkdir()
@@ -50,6 +52,7 @@ def test_every_talk_is_listed_and_nothing_else(site, repo: Path, tmp_path: Path)
     # The page title, not an SVG's, and unescaped once, escaped once.
     assert "Beta &amp; more" in index and "a figure" not in index
     assert (out / "vendor" / "reveal" / "reveal.js").is_file()
+    assert (out / "shared" / "deck.js").is_file()
     assert (out / "alpha-talk" / "index.html").is_file()
     assert not (out / "alpha-talk" / "figures.py").exists()
 
@@ -103,6 +106,7 @@ def _exports(root: Path, *names: str) -> Path:
     for name in names:
         (out / name).mkdir(parents=True)
         (out / name / f"{name}.pptx").write_bytes(b"x" * 2_500_000)
+        (out / name / f"{name}.pdf").write_bytes(b"x" * 350_000)
         (out / name / "thumb.webp").write_bytes(b"webp")
     return out
 
@@ -116,16 +120,20 @@ def test_links_and_downloads_appear_for_each_talk(site, repo: Path, tmp_path: Pa
     index = (out / "index.html").read_text()
     alpha = index[index.index('href="alpha-talk/"') : index.index('href="beta-talk/"')]
     assert 'href="alpha-talk/alpha-talk.pptx" download' in alpha and "(2.5 MB)" in alpha
+    assert 'href="alpha-talk/alpha-talk.pdf" download' in alpha and "Download PDF" in alpha and "(350 KB)" in alpha
+    assert alpha.index(".pptx") < alpha.index(".pdf")
     # In the order the index defines, whatever order talk.json lists them.
     assert alpha.index("https://github.com/a/b") < alpha.index("https://youtu.be/x")
-    assert (out / "alpha-talk" / "alpha-talk.pptx").is_file() and (out / "alpha-talk" / "thumb.webp").is_file()
+    for name in ("alpha-talk.pptx", "alpha-talk.pdf", "thumb.webp"):
+        assert (out / "alpha-talk" / name).is_file()
     assert not (out / "alpha-talk" / "talk.json").exists()
 
 
 def test_without_exports_the_index_offers_no_download(site, repo: Path, tmp_path: Path) -> None:
     out = tmp_path / "out"
     site.build(out, repo)
-    assert ".pptx" not in (out / "index.html").read_text()
+    index = (out / "index.html").read_text()
+    assert ".pptx" not in index and ".pdf" not in index
 
 
 def test_a_missing_export_fails_before_anything_is_written(site, repo: Path, tmp_path: Path) -> None:
@@ -133,6 +141,13 @@ def test_a_missing_export_fails_before_anything_is_written(site, repo: Path, tmp
     with pytest.raises(SystemExit, match="exports.py"):
         site.build(out, repo, _exports(tmp_path, "alpha-talk"))
     assert not out.exists()
+
+
+def test_a_missing_pdf_fails_too(site, repo: Path, tmp_path: Path) -> None:
+    exports = _exports(tmp_path, "alpha-talk", "beta-talk")
+    (exports / "beta-talk" / "beta-talk.pdf").unlink()
+    with pytest.raises(SystemExit, match=r"beta-talk\.pdf"):
+        site.build(tmp_path / "out", repo, exports)
 
 
 @pytest.mark.parametrize(
@@ -168,12 +183,13 @@ def test_the_site_never_replaces_the_exports_it_reads(site, repo: Path, tmp_path
 STUB = """import pathlib, sys
 from PIL import Image
 args = sys.argv[1:]
-assert args[0] == "pptx"
+assert args[0] in ("pptx", "pdf")
 pathlib.Path(args[2]).parent.mkdir(parents=True, exist_ok=True)
-pathlib.Path(args[2]).write_bytes(b"pptx")
-images = pathlib.Path(args[args.index("--images") + 1])
-images.mkdir(parents=True)
-Image.new("RGB", (1920, 1080), "navy").save(images / "slide-01.png")
+pathlib.Path(args[2]).write_bytes(args[0].encode())
+if args[0] == "pptx":
+    images = pathlib.Path(args[args.index("--images") + 1])
+    images.mkdir(parents=True)
+    Image.new("RGB", (1920, 1080), "navy").save(images / "slide-01.png")
 """
 
 
@@ -190,7 +206,18 @@ def test_exports_write_each_talks_pptx_and_preview(repo: Path, tmp_path: Path) -
 
     for name in ("alpha-talk", "beta-talk"):
         assert (out / name / f"{name}.pptx").read_bytes() == b"pptx"
+        assert (out / name / f"{name}.pdf").read_bytes() == b"pdf"
         with Image.open(out / name / "thumb.webp") as thumb:
             assert thumb.size == exports.THUMB
     with pytest.raises(SystemExit, match="refusing"):
         exports.export(repo, stub, repo)
+
+
+def test_every_talk_loads_the_shared_deck_and_keeps_only_its_own_styles(site) -> None:
+    """The shared files are the one copy: a talk holds no deck.js and no copy of the base styles."""
+    for talk in site.talks():
+        page = (talk / "index.html").read_text()
+        assert page.index("../shared/deck.css") < page.index('href="deck.css"')
+        assert '<script src="../shared/deck.js"></script>' in page
+        assert not (talk / "deck.js").exists()
+        assert ".reveal .slides section {" not in (talk / "deck.css").read_text()

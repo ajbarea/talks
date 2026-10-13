@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import importlib.util
+import io
 import pathlib
 import subprocess
 import sys
@@ -28,9 +29,45 @@ _spec.loader.exec_module(talks_site)
 MARK = ".talks-exports"
 #: The preview's size: half the 1920x1080 slide, sharp at the index's widest card on a 2x screen.
 THUMB = (960, 540)
+#: The preview's loop: the title slide's own entrance, sampled by seeking its animations, ending
+#: on the still. Played on hover, so it is fetched only then.
+LOOP_FPS = 10
+LOOP_SECONDS = 4.4
+#: Hides what is not slide, as the PowerPoint export does.
+BARE = ".reveal .controls, .reveal .progress, .reveal .slide-number, .rail, .web-only { display: none !important; }"
 
 
-def export(out: pathlib.Path, slides: pathlib.Path, root: pathlib.Path = talks_site.ROOT) -> list[str]:
+def loop_frames(index: pathlib.Path) -> list:
+    """Frames of the title slide's entrance at THUMB size, taken by pausing every animation and
+    seeking it, so each frame is the same on every run."""
+    from PIL import Image  # ty: ignore[unresolved-import]
+    from playwright.sync_api import sync_playwright  # ty: ignore[unresolved-import]
+
+    frames = []
+    with sync_playwright() as p:
+        browser = p.chromium.launch()
+        try:
+            page = browser.new_page(viewport={"width": 1920, "height": 1080})
+            page.goto(index.resolve().as_uri() + "#/0")
+            page.wait_for_function("window.Reveal && Reveal.isReady()", timeout=15000)
+            page.add_style_tag(content=BARE)
+            page.evaluate("document.getAnimations().forEach((a) => a.pause())")
+            for i in range(round(LOOP_FPS * LOOP_SECONDS) + 1):
+                page.evaluate(
+                    "(t) => document.getAnimations().forEach((a) => { a.currentTime = t; })", i * 1000 / LOOP_FPS
+                )
+                page.wait_for_timeout(30)
+                shot = page.screenshot(type="png")
+                with Image.open(io.BytesIO(shot)) as im:
+                    frames.append(im.convert("RGB").resize(THUMB, Image.Resampling.LANCZOS))
+        finally:
+            browser.close()
+    return frames
+
+
+def export(
+    out: pathlib.Path, slides: pathlib.Path, root: pathlib.Path = talks_site.ROOT, loops: bool = True
+) -> list[str]:
     from PIL import Image  # ty: ignore[unresolved-import]
 
     if not slides.is_file():
@@ -63,6 +100,17 @@ def export(out: pathlib.Path, slides: pathlib.Path, root: pathlib.Path = talks_s
                 first.convert("RGB").resize(THUMB, Image.Resampling.LANCZOS).save(
                     target / "thumb.webp", quality=88, method=6
                 )
+        if loops:
+            frames = loop_frames(talk / "index.html")
+            frames[0].save(
+                target / "thumb-loop.webp",
+                save_all=True,
+                append_images=frames[1:],
+                duration=round(1000 / LOOP_FPS),
+                loop=2,
+                quality=72,
+                method=4,
+            )
     return [t.name for t in found]
 
 

@@ -201,7 +201,7 @@ def test_exports_write_each_talks_pptx_and_preview(repo: Path, tmp_path: Path) -
     stub = tmp_path / "slides.py"
     stub.write_text(STUB)
     out = tmp_path / "exports"
-    assert exports.export(out, stub, repo) == ["alpha-talk", "beta-talk"]
+    assert exports.export(out, stub, repo, loops=False) == ["alpha-talk", "beta-talk"]
     from PIL import Image
 
     for name in ("alpha-talk", "beta-talk"):
@@ -210,7 +210,7 @@ def test_exports_write_each_talks_pptx_and_preview(repo: Path, tmp_path: Path) -
         with Image.open(out / name / "thumb.webp") as thumb:
             assert thumb.size == exports.THUMB
     with pytest.raises(SystemExit, match="refusing"):
-        exports.export(repo, stub, repo)
+        exports.export(repo, stub, repo, loops=False)
 
 
 def test_every_talk_loads_the_shared_deck_and_keeps_only_its_own_styles(site) -> None:
@@ -230,3 +230,32 @@ def test_the_chapter_rail_never_wraps_its_pills() -> None:
     assert "white-space: nowrap" in pill and "flex: none" in pill
     row = css[css.index(".rail {") :].split("}")[0]
     assert "max-width" in row and "overflow-x: auto" in row
+
+
+def test_a_preview_loop_is_offered_only_when_exported(site, repo: Path, tmp_path: Path) -> None:
+    exports = _exports(tmp_path, "alpha-talk", "beta-talk")
+    (exports / "alpha-talk" / "thumb-loop.webp").write_bytes(b"loop")
+    out = tmp_path / "out"
+    site.build(out, repo, exports)
+    index = (out / "index.html").read_text()
+    assert 'data-loop="alpha-talk/thumb-loop.webp"' in index and "beta-talk/thumb-loop.webp" not in index
+    assert (out / "alpha-talk" / "thumb-loop.webp").is_file()
+    assert not (out / "beta-talk" / "thumb-loop.webp").exists()
+
+
+def test_every_talk_loads_the_motion_files_after_the_deck(site) -> None:
+    for talk in site.talks():
+        page = (talk / "index.html").read_text()
+        assert page.index("../shared/deck.css") < page.index("../shared/motion.css") < page.index('href="deck.css"')
+        assert page.index("../shared/deck.js") < page.index("../shared/motion.js")
+
+
+def test_the_motion_resting_style_is_the_finished_one() -> None:
+    """Exports, phones and print never turn motion on, so no rule outside html.m-live may hide or move a figure."""
+    css = (ROOT / "shared" / "motion.css").read_text()
+    for rule in css.split("}"):
+        selector = rule.split("{")[0].strip()
+        if selector.startswith(("html.m-live", "@", "from", "to", "0%", "12%", "100%", "[data-motion=")):
+            continue
+        body = rule.split("{")[-1]
+        assert "transform" not in body or "keyframes" in rule, selector

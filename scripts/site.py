@@ -9,7 +9,8 @@ index page listing the talks by their own <title> and description, with each tal
 A talk is a top-level folder holding an index.html, and optionally a talk.json naming its links
 ({"links": {"code": URL, "docs": URL, "video": URL}}, each optional). With --exports, every talk
 must have its `<folder>.pptx`, `<folder>.pdf` and `thumb.webp` there (scripts/exports.py writes
-them), and the index offers the downloads. Build scripts and caches stay behind.
+them), and the index offers the downloads; a `thumb-loop.webp` there plays when a preview is
+hovered. Build scripts and caches stay behind.
 """
 
 from __future__ import annotations
@@ -111,12 +112,19 @@ def icon(kind: str) -> str:
 
 
 def item(
-    name: str, title: str, description: str, named: dict[str, str], sizes: dict[str, str] | None, thumb: bool
+    name: str,
+    title: str,
+    description: str,
+    named: dict[str, str],
+    sizes: dict[str, str] | None,
+    thumb: bool,
+    loop: bool = False,
 ) -> str:
     t, d = html.escape(title), html.escape(description)
+    loop_attr = f' data-loop="{name}/thumb-loop.webp"' if loop else ""
     picture = (
         f'<a class="shot" href="{name}/" tabindex="-1" aria-hidden="true">'
-        f'<img src="{name}/thumb.webp" alt="" width="960" height="540" loading="lazy"></a>'
+        f'<img src="{name}/thumb.webp" alt="" width="960" height="540" loading="lazy"{loop_attr}></a>'
         if thumb
         else f'<a class="shot blank" href="{name}/" tabindex="-1" aria-hidden="true"><span>{t}</span></a>'
     )
@@ -170,6 +178,20 @@ INDEX = """<!doctype html>
     .shot {{ display: block; border-radius: 6px; overflow: hidden; outline: 1px solid var(--line);
       aspect-ratio: 16 / 9; background: var(--band); }}
     .shot img {{ display: block; width: 100%; height: 100%; object-fit: cover; }}
+    @media (prefers-reduced-motion: no-preference) {{
+      @view-transition {{ navigation: auto; }}
+      @keyframes enter {{ from {{ opacity: 0; transform: translateY(14px); }} }}
+      header h1, header p, .talk {{ animation: enter 0.6s cubic-bezier(0.22, 0.8, 0.3, 1) backwards; }}
+      header p {{ animation-delay: 0.1s; }}
+      .talk:nth-of-type(1) {{ animation-delay: 0.25s; }}
+      .talk:nth-of-type(2) {{ animation-delay: 0.4s; }}
+      .talk:nth-of-type(n + 3) {{ animation-delay: 0.55s; }}
+      .shot {{ transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.35s; }}
+      .shot img {{ transition: transform 0.6s cubic-bezier(0.22, 0.8, 0.3, 1); }}
+      .talk:hover .shot, .talk:focus-within .shot {{
+        transform: translateY(-6px); box-shadow: 0 20px 36px -22px rgba(30, 58, 138, 0.55); }}
+      .talk:hover .shot img, .talk:focus-within .shot img {{ transform: scale(1.025); }}
+    }}
     .shot.blank {{ display: grid; place-items: center; padding: 2rem; font-size: 1.6rem; font-weight: 700; }}
     h2 {{ font-size: 1.75rem; line-height: 1.15; margin: 0 0 0.6rem; font-weight: 700; }}
     h2 a {{ color: inherit; text-decoration: none; }}
@@ -209,6 +231,29 @@ INDEX = """<!doctype html>
   <footer>In a talk, press <kbd>S</kbd> for the speaker notes and <kbd>F</kbd> for full screen.
     Source: <a href="https://github.com/ajbarea/talks">github.com/ajbarea/talks</a></footer>
 </main>
+<script>
+  // A preview plays its talk's title slide while the card is hovered or focused, and the talk
+  // opens out of the preview that was clicked.
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {{
+    for (const card of document.querySelectorAll(".talk")) {{
+      const img = card.querySelector("img[data-loop]");
+      if (!img) continue;
+      const still = img.getAttribute("src");
+      const set = (src) => () => {{ img.src = src; }};
+      card.addEventListener("pointerenter", set(img.dataset.loop));
+      card.addEventListener("pointerleave", set(still));
+      card.addEventListener("focusin", set(img.dataset.loop));
+      card.addEventListener("focusout", set(still));
+    }}
+  }}
+  addEventListener("pageswap", (e) => {{
+    if (!e.viewTransition || !e.activation || !e.activation.entry) return;
+    const path = new URL(e.activation.entry.url).pathname;
+    for (const shot of document.querySelectorAll(".shot")) {{
+      if (new URL(shot.href).pathname === path) shot.style.viewTransitionName = "talk-shot";
+    }}
+  }});
+</script>
 </body>
 </html>
 """
@@ -237,12 +282,15 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | 
     for talk, title, description, named in rows:
         shutil.copytree(talk, out / talk.name, ignore=SKIP)
         sizes = None
+        loop = exports is not None and (exports / talk.name / "thumb-loop.webp").is_file()
         if exports is not None:
             files = [f"{talk.name}.{ext}" for ext in DOWNLOADS]
             for name in (*files, "thumb.webp"):
                 shutil.copy2(exports / talk.name / name, out / talk.name / name)
             sizes = {ext: size(out / talk.name / f) for ext, f in zip(DOWNLOADS, files, strict=True)}
-        items.append(item(talk.name, title, description, named, sizes, exports is not None))
+            if loop:
+                shutil.copy2(exports / talk.name / "thumb-loop.webp", out / talk.name / "thumb-loop.webp")
+        items.append(item(talk.name, title, description, named, sizes, exports is not None, loop))
     (out / "index.html").write_text(INDEX.format(items="\n".join(items)))
     return [t.name for t in found]
 

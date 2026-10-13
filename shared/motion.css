@@ -41,8 +41,8 @@ html.m-live svg [data-motion] {
   transform-origin: center;
 }
 
-html.m-live [data-motion="grow"] { transform-origin: 50% 100%; }
-html.m-live [data-motion="growx"] { transform-origin: 0 50%; }
+html.m-live [data-motion="grow"] { transform-origin: var(--m-origin, 50% 100%); }
+html.m-live [data-motion="growx"] { transform-origin: var(--m-origin, 0 50%); }
 html.m-live [data-motion="wipe"] { transform-origin: var(--m-origin, 0 50%); }
 
 /* A dot that travels: it exists only while it moves. */

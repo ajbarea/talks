@@ -309,7 +309,7 @@
     // Desktop: fetched, the stages and kept side by side, stages top-aligned so their counts read
     // as one row. Phone: the same, one under another, each reason on one line over a thin bar.
     const L = tall
-      ? { W: 440, endW: 400, endH: 78, colW: 400, gap: 22, head: 52, row: 38, bar: 7, big: "flow-big" }
+      ? { W: 440, endW: 400, endH: 72, colW: 400, gap: 16, head: 50, row: 35, bar: 6, big: "flow-big" }
       : { W: 0, endW: 170, endH: 150, colW: 236, gap: 50, head: 112, row: 66, bar: 22, big: "flow-big" };
     if (!tall) L.W = 2 * L.endW + f.stages.length * L.colW + (f.stages.length + 1) * L.gap;
     const stageH = (st) => L.head + st.reasons.length * L.row;
@@ -427,7 +427,7 @@
       point(groups[0], o.whole, "whole gain", "whole");
       splits.forEach((k, si) => {
         ry += groupGap;
-        o[k].forEach((p, pi) => point(groups[si + 1], p, `in ${p.label}`, accent[si] === pi ? "ours" : "part"));
+        o[k].forEach((p, pi) => point(groups[si + 1], p, p.label, accent[si] === pi ? "ours" : "part"));
       });
     });
     box.appendChild(fig);

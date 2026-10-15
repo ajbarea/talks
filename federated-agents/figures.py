@@ -183,10 +183,19 @@ def sized_simulation(org: str) -> dict:
 #: The funnel's stages on the slide, each a group of sphragis `dataset_funnel.py` steps summed in
 #: their own unit, with the reasons drawn inside it: (label, unit, steps, reasons shown).
 FUNNEL_STAGES = (
-    ("comments set aside", "comments", ("Comments dropped",), 3),
-    ("pairs that are not a fix", "pairs", ("Hunks dropped as ill-posed", "Examples dropped at refinement"), 2),
+    ("comments set aside", "comments", ("Comments dropped", "Comments removed at refinement"), 3),
+    (
+        "pairs that are not a fix",
+        "pairs",
+        ("Hunks dropped as ill-posed", "Examples dropped at refinement", "Examples left with no comment"),
+        3,
+    ),
     ("copies removed", "lessons", ("Examples removed as duplicates",), 2),
 )
+
+#: Steps the slide leaves to the rule page, each allowed only while it stays below this share of
+#: the merged changes; every other step must be in a stage, or the build fails.
+FUNNEL_LEFT_OUT = {"Changes lost before any comment was read": 0.001}
 
 #: Plain words for a funnel row, so the slide speaks to a newcomer; a row not listed fails the build.
 FUNNEL_WORDS = {
@@ -194,6 +203,10 @@ FUNNEL_WORDS = {
     "written by the change's author": "the author's own",
     "from an account the host tags as a bot": "from a bot account",
     "an acknowledgement (Done, LGTM, thanks, ok and the like)": "\u201cDone\u201d, \u201cLGTM\u201d",
+    "an acknowledgement": "\u201cDone\u201d, \u201cLGTM\u201d",
+    "a bot's template, matched to the bot's own source": "a bot's template",
+    "only acknowledgements were left": "only \u201cDone\u201d left",
+    "only a bot's templates were left": "only bot text left",
     "anchored to no line": "on no line",
     "on the last patch set, with no revision after it": "never revised",
     "its diff could not be fetched": "unreadable",
@@ -221,19 +234,35 @@ def funnel(values: dict) -> dict:
     for org, name in (("openstack", "OpenStack"), ("wikimedia", "Wikimedia")):
         f = art[org]
         steps = {st["step"]: st["rows"] for st in f["steps"]}
+        staged = {n for _, _, names, _ in FUNNEL_STAGES for n in names}
+        if unplaced := set(steps) - staged - set(FUNNEL_LEFT_OUT):
+            raise SystemExit(f"{org}: funnel steps in no stage {sorted(unplaced)}")
+        for step, most in FUNNEL_LEFT_OUT.items():
+            if sum(r["count"] or 0 for r in steps.get(step, [])) > most * f["merged_changes"]:
+                raise SystemExit(f"{org}: {step} is too large to leave off the slide")
         stages = []
         for label, unit, names, shown in FUNNEL_STAGES:
             rows = [r for n in names for r in steps[n]]
+            # OpenStack's bot rule could not run (its months predate the bot tag; sphragis
+            # docs/dataset.md), so it removed nothing there and the stage total is exact.
             if any(r["count"] is None for r in rows if r["reason"] != "from an account the host tags as a bot"):
                 raise SystemExit(f"{org}: a {label} row was not counted")
-            counted = sorted((r for r in rows if r["count"]), key=lambda r: -r["count"])
-            unknown = [r["reason"] for r in counted if r["reason"] not in FUNNEL_WORDS]
+            unknown = [r["reason"] for r in rows if r["count"] and r["reason"] not in FUNNEL_WORDS]
             if unknown:
                 raise SystemExit(f"no plain words for funnel rows {unknown}")
-            total = sum(r["count"] for r in counted)
-            top = counted[:shown]
-            reasons = [{"label": FUNNEL_WORDS[r["reason"]], "count": r["count"]} for r in top]
-            rest = total - sum(r["count"] for r in top)
+            # Rows with the same plain words (an acknowledgement dropped on reading and at
+            # refinement) are one reason on the slide.
+            by_words: dict[str, int] = {}
+            for r in rows:
+                if r["count"]:
+                    words = FUNNEL_WORDS[r["reason"]]
+                    by_words[words] = by_words.get(words, 0) + r["count"]
+            counted = sorted(by_words.items(), key=lambda kv: -kv[1])
+            total = sum(by_words.values())
+            # One leftover reason is named rather than called "other reasons".
+            top = counted if len(counted) <= shown + 1 else counted[:shown]
+            reasons = [{"label": words, "count": count} for words, count in top]
+            rest = total - sum(count for _, count in top)
             if rest:
                 reasons.append({"label": "other reasons", "count": rest})
             stages.append({"label": label, "unit": unit, "count": total, "reasons": reasons})
@@ -260,9 +289,11 @@ def split() -> dict:
         whole = load(f"partition-pilot-{org}-likelihood.json")
         if whole.get("metric") != METRIC:
             raise SystemExit(f"{org}'s pilot is on {whole.get('metric')}, not {METRIC}")
-        cell = lambda d: {  # noqa: E731
-            "estimate": d["estimate"], "low": d["intervals"][level]["low"], "high": d["intervals"][level]["high"]
-        }
+
+        def cell(d: dict) -> dict:
+            interval = d["intervals"][level]
+            return {"estimate": d["estimate"], "low": interval["low"], "high": interval["high"]}
+
         entry = {"name": name, "whole": cell(whole)}
         for key, parts in SPLITS.items():
             entry[key] = []
@@ -297,11 +328,19 @@ def readings() -> dict[str, str | int | bool]:
     # 2026-10-15 grant are in none of them (sphragis research log), and data/readings.js is public.
     values["funnel"] = funnel(values)
     values["split"] = split()
-    # The split slide's claim holds only where the intervals say so: the fix itself carries a
-    # gain in every community, and outside names in at least one.
+    # The split slide claims only what the intervals show. Its claims are about the communities
+    # whose whole gain is clear (interval above zero): there the fix carries it and the part
+    # outside names is above zero. Carried-over code is "next to none" only if every
+    # community's interval holds zero; a community without a clear gain is named as unsettled.
     sp = values["split"]
-    values["split_in_fix"] = all(o["edit"][0]["low"] > 0 for o in sp.values())
-    values["split_beyond_names"] = any(o["names"][1]["low"] > 0 for o in sp.values())
+    gain = [o for o in sp.values() if o["whole"]["low"] > 0]
+    unsettled = [o["name"] for o in sp.values() if o["whole"]["low"] <= 0]
+    values["split_gain_orgs"] = " and ".join(o["name"] for o in gain)
+    values["split_in_fix"] = bool(gain) and all(o["edit"][0]["low"] > 0 for o in gain)
+    values["split_beyond_names"] = bool(gain) and all(o["names"][1]["low"] > 0 for o in gain)
+    values["split_copied_none"] = all(o["edit"][1]["low"] <= 0 <= o["edit"][1]["high"] for o in sp.values())
+    values["split_unsettled_orgs"] = " and ".join(unsettled)
+    values["split_any_unsettled"] = bool(unsettled)
     # The label audit on OpenStack's items alone (sphragis label-audit-v2-openstack.json): the
     # share of lessons whose rewrite answers its comment, by the rater the human checked.
     audit = load("label-audit-v2-openstack.json")

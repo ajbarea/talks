@@ -237,7 +237,7 @@
 
 <section data-chapter="3 · What I've found">
   <span class="kicker">3 · What I've found</span>
-  <h2>What I've found: tuning helps, <span data-value="readings.team_title"></span></h2>
+  <h2>Tuning helps, <span data-value="readings.team_title"></span></h2>
   <div class="cards panels" style="--n:3">
     <div class="card">
       <b>Tuning helps</b>
@@ -277,11 +277,11 @@
 
 <section data-chapter="3 · What I've found">
   <span class="kicker">3 · What I've found</span>
-  <h2 data-if="readings.split_in_fix">The team-specific gain sits in the fix itself, <span data-if="readings.split_beyond_names">not only in names</span><span data-unless="readings.split_beyond_names">and may be names</span></h2>
+  <h2 data-if="readings.split_in_fix"><span data-value="readings.split_gain_orgs"></span>'s clear gain sits in the fix itself<span data-if="readings.split_beyond_names">, not only in names</span></h2>
   <h2 data-unless="readings.split_in_fix">Where the team-specific gain sits is not settled yet</h2>
   <div class="forest" data-source="readings.split" data-splits="names,edit" data-accent="1,0"></div>
-  <p class="footnote">Development data, exploratory. Dot: the gain; line: its 97.5% interval. Each split's parts add up to the whole; one scale.</p>
-  <aside class="notes">Here's a question someone always asks: is the gain just the assistant learning a team's vocabulary, its function and variable names? So I split each team's gain into parts that add back up to it. The blue dot on top is the whole gain, with its line showing how sure I am. The first split is the part that comes from names, against everything else: layout, keywords, comments. <span data-if="readings.split_beyond_names">In at least one community the part outside names is clearly above zero, so the gain is not only vocabulary.</span><span data-unless="readings.split_beyond_names">So far no community shows a part outside names clearly above zero, so vocabulary may be most of it.</span> The second split is what the reviewer's fix changed, against code the developer simply carried over. <span data-if="readings.split_in_fix">In every community the fix itself carries the gain, and the carried-over code carries next to none.</span><span data-unless="readings.split_in_fix">Not every community shows the gain inside the fix yet.</span> These are development readings, read only to explore; the sealed test reads both splits again. Now let me show you the tool that made this possible.</aside>
+  <p class="footnote">Development data, exploratory. Dot: the gain; line: its 97.5% interval. Each split's parts, with a small end-of-text term, add up to the whole; one scale.</p>
+  <aside class="notes">Here's a question someone always asks: is the gain just the assistant learning a team's vocabulary, its function and variable names? So I split each team's gain into parts that add back up to it. The blue dot on top is the whole gain, with its line showing how sure I am. The first split is the part that comes from names, against everything else: layout, keywords, comments. <span data-if="readings.split_beyond_names">On <span data-value="readings.split_gain_orgs"></span>, where the gain is clear, the part outside names is clearly above zero, so the gain is not only vocabulary.</span><span data-unless="readings.split_beyond_names">Where the gain is clear, the part outside names is not yet clearly above zero, so vocabulary may be most of it.</span> The second split is what the reviewer's fix changed, against code the developer simply carried over. <span data-if="readings.split_in_fix">There, the fix itself carries the gain.</span><span data-unless="readings.split_in_fix">The fix does not yet clearly carry the gain.</span> <span data-if="readings.split_copied_none">In every community, the carried-over code carries next to none.</span> <span data-if="readings.split_any_unsettled"><span data-value="readings.split_unsettled_orgs"></span>'s whole gain is not settled at this level, so read its split only as a direction.</span> These are development readings, read only to explore; the sealed test reads both splits again. Now let me show you the tool that made this possible.</aside>
 </section>
 
 <section data-chapter="4 · What's built">

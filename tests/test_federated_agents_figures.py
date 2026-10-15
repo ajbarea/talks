@@ -50,7 +50,9 @@ def test_the_guard_fails_when_a_figure_is_edited_by_hand(tmp_path: Path) -> None
     (deck / "data").mkdir(parents=True)
     shutil.copy(DECK / "figures.py", deck)
     original = (DECK / "data" / "readings.js").read_text()
-    (deck / "data" / "readings.js").write_text(original.replace('"verdict"', '"verdict_x"', 1))
+    edited = original.replace('"split_in_fix"', '"split_in_fix_x"', 1)
+    assert edited != original, "the edit must change the figures, or the guard is not exercised"
+    (deck / "data" / "readings.js").write_text(edited)
     result = subprocess.run(
         [sys.executable, str(deck / "figures.py"), "--check"],
         capture_output=True,
@@ -65,6 +67,15 @@ def test_the_guard_fails_when_a_figure_is_edited_by_hand(tmp_path: Path) -> None
 def test_every_bound_name_has_a_figure() -> None:
     """A slide bound to a name the module does not write would show nothing."""
     page = (DECK / "index.html").read_text()
-    bound = set(re.findall(r'data-(?:value|dots|of|if|unless)="readings\.(\w+)"', page))
-    assert bound, "the deck binds no figures"
-    assert bound <= set(_figures().readings()), bound - set(_figures().readings())
+    paths = set(re.findall(r'data-(?:value|dots|of|if|unless|source)="readings\.([\w.]+)"', page))
+    assert paths, "the deck binds no figures"
+    values = _figures().readings()
+    missing = []
+    for path in paths:
+        node = values
+        for key in path.split("."):
+            if not isinstance(node, dict) or key not in node:
+                missing.append(path)
+                break
+            node = node[key]
+    assert not missing, missing

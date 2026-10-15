@@ -12,7 +12,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
         {
           "label": "comments set aside",
           "unit": "comments",
-          "count": 75100,
+          "count": 75227,
           "reasons": [
             {
               "label": "not on a code file",
@@ -28,14 +28,14 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
             },
             {
               "label": "other reasons",
-              "count": 4841
+              "count": 4968
             }
           ]
         },
         {
           "label": "pairs that are not a fix",
           "unit": "pairs",
-          "count": 2647,
+          "count": 2660,
           "reasons": [
             {
               "label": "empty on one side",
@@ -46,8 +46,12 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
               "count": 465
             },
             {
-              "label": "other reasons",
+              "label": "too large a rewrite",
               "count": 332
+            },
+            {
+              "label": "only \u201cDone\u201d left",
+              "count": 13
             }
           ]
         },
@@ -76,7 +80,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
         {
           "label": "comments set aside",
           "unit": "comments",
-          "count": 89142,
+          "count": 89143,
           "reasons": [
             {
               "label": "not on a code file",
@@ -92,7 +96,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
             },
             {
               "label": "other reasons",
-              "count": 5463
+              "count": 5464
             }
           ]
         },
@@ -110,7 +114,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
               "count": 1473
             },
             {
-              "label": "other reasons",
+              "label": "too large a rewrite",
               "count": 352
             }
           ]
@@ -208,8 +212,12 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
       ]
     }
   },
+  "split_gain_orgs": "OpenStack",
   "split_in_fix": true,
   "split_beyond_names": true,
+  "split_copied_none": true,
+  "split_unsettled_orgs": "Wikimedia",
+  "split_any_unsettled": true,
   "audit_valid_openstack": "83%",
   "audit_items_openstack": 191,
   "ai_shift_openstack": "+0.0002",

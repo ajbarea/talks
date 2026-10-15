@@ -444,3 +444,32 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 @media print {
   .rail { display: none; }
 }
+
+/* Attrition flow (deck.js buildFlow): fetched, each stage of losses in its own unit, kept. */
+.flow svg { width: 100%; height: auto; overflow: visible; }
+.flow text { fill: var(--ink); font-family: var(--sans); }
+.flow .flow-end.start { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.flow .flow-end.kept { fill: var(--card); stroke: var(--mark-ours); stroke-width: 4; }
+.flow .flow-big { font-size: 42px; font-weight: 700; }
+.flow .flow-big.kept { fill: var(--limit); }
+.flow .flow-unit { font-size: 23px; fill: var(--muted); }
+.flow .flow-count { font-size: 34px; font-weight: 700; fill: var(--label); }
+.flow .flow-reason { font-size: 22px; fill: var(--ink); }
+.phone .flow .flow-big { font-size: 34px; }
+.phone .flow .flow-unit, .phone .flow .flow-reason { font-size: 19px; }
+.phone .flow .flow-count { font-size: 28px; }
+.flow .flow-bar { fill: var(--mark-rival); }
+.flow .flow-rule { stroke: var(--line); stroke-width: 2; }
+.flow .flow-arrow { fill: var(--frame, #78716c); }
+
+/* Forest plot (deck.js buildForest): a contrast and its parts, point and interval, one scale. */
+.forest svg { width: 100%; height: auto; overflow: visible; }
+.forest text { fill: var(--ink); font-family: var(--sans); }
+.forest .forest-org { font-size: 24px; font-weight: 700; fill: var(--label); }
+.forest .forest-label { font-size: 21px; }
+.forest .forest-axis { font-size: 20px; fill: var(--muted); }
+.forest .forest-zero { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 6 6; }
+.forest .forest-ci { stroke-width: 4; stroke-linecap: round; }
+.forest .forest-ci.whole, .forest .forest-pt.whole { stroke: var(--mark); fill: var(--mark); }
+.forest .forest-ci.part, .forest .forest-pt.part { stroke: var(--mark-rival); fill: var(--mark-rival); }
+.forest .forest-ci.ours, .forest .forest-pt.ours { stroke: var(--mark-ours); fill: var(--mark-ours); }

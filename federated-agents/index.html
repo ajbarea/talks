@@ -275,6 +275,15 @@
   <aside class="notes">Two findings so far, and one open question. First, tuning works: an assistant tuned on a community's own reviews matches what its reviewers ask for far more often. Second, the part specific to one team: split a community into two groups of projects and score how much probability each group's assistant gives the reviewers' fixes. OpenStack's own group's assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>. These are development readings, and the sealed test is sized to settle it. Next is privacy: can someone tell which company the shared part came from? The attacks on published privacy designs are built.</aside>
 </section>
 
+<section data-chapter="3 · What I've found">
+  <span class="kicker">3 · What I've found</span>
+  <h2 data-if="readings.split_in_fix">The team-specific gain sits in the fix itself, <span data-if="readings.split_beyond_names">not only in names</span><span data-unless="readings.split_beyond_names">and may be names</span></h2>
+  <h2 data-unless="readings.split_in_fix">Where the team-specific gain sits is not settled yet</h2>
+  <div class="forest" data-source="readings.split" data-splits="names,edit" data-accent="1,0"></div>
+  <p class="footnote">Development data, exploratory. Dot: the gain; line: its 97.5% interval. Each split's parts add up to the whole; one scale.</p>
+  <aside class="notes">Here's a question someone always asks: is the gain just the assistant learning a team's vocabulary, its function and variable names? So I split each team's gain into parts that add back up to it. The blue dot on top is the whole gain, with its line showing how sure I am. The first split is the part that comes from names, against everything else: layout, keywords, comments. <span data-if="readings.split_beyond_names">In at least one community the part outside names is clearly above zero, so the gain is not only vocabulary.</span><span data-unless="readings.split_beyond_names">So far no community shows a part outside names clearly above zero, so vocabulary may be most of it.</span> The second split is what the reviewer's fix changed, against code the developer simply carried over. <span data-if="readings.split_in_fix">In every community the fix itself carries the gain, and the carried-over code carries next to none.</span><span data-unless="readings.split_in_fix">Not every community shows the gain inside the fix yet.</span> These are development readings, read only to explore; the sealed test reads both splits again. Now let me show you the tool that made this possible.</aside>
+</section>
+
 <section data-chapter="4 · What's built">
   <span class="kicker">4 · What's built</span>
   <h2>One tool turns public code review into a checked dataset</h2>
@@ -289,6 +298,14 @@
   <div class="card wide fragment" data-motion="rise"><b>Then it runs the study</b><p>It trains the add-ons on RIT's research computing clusters, runs the pre-registered test, and runs the attacks on published privacy designs.</p></div>
   <p class="footnote">Open source: github.com/ajbarea/sphragis. The label is never guessed: it is the code the developer actually wrote next.</p>
   <aside class="notes">Here's what I've built: one open-source tool. It collects public code review following each host's rules, and replaces people's names with pseudonyms as the data arrives. It pairs each reviewer comment, and the code it was about, with the code the developer actually wrote next, so the label is never guessed. It cleans out what an assistant shouldn't learn from, like bot comments and one-click approvals. It splits the data by month, keeps the test months sealed, and audits a sample of the labels blind. It also trains the add-ons on RIT's clusters and runs the pre-registered test and the privacy attacks.</aside>
+</section>
+
+<section data-chapter="4 · What's built">
+  <span class="kicker">4 · What's built</span>
+  <h2>Most of what code review holds never becomes a lesson</h2>
+  <div class="flow" data-source="readings.funnel.openstack"></div>
+  <p class="footnote">OpenStack shown; Wikimedia: <span data-value="readings.funnel.wikimedia.kept"></span> lessons from <span data-value="readings.funnel.wikimedia.changes"></span> changes. Bars compare within a stage. Every rule: ajbarea.github.io/sphragis/dataset</p>
+  <aside class="notes">Here's how much the tool throws away to get clean lessons, using OpenStack as the example. It starts from every merged change in the months I use. Most review comments are not lessons at all: the biggest group sits on the commit message rather than on code, the next is the author answering their own reviewer, and then comments on code nobody changed. Those are all set aside. Of the comment and code pairs that remain, some are not real fixes: one side is empty, or the reviewer wrote the fix themselves, so the answer would already be in the question. Then copies and near copies are removed, so the same lesson never appears twice. What is left is the set of lessons the study trains and tests on. Wikimedia goes through the same rules. Every rule and every count is on the tool's website.</aside>
 </section>
 
 <section data-chapter="4 · What's built">
@@ -354,7 +371,7 @@
 
 <section data-chapter="5 · Where it stands">
   <span class="kicker">5 · Where it stands</span>
-  <h2>Two communities decide the answer; GitHub checks that it holds elsewhere</h2>
+  <h2>Two communities decide the answer, Qt has said yes, and GitHub checks elsewhere</h2>
   <div class="groups">
     <div class="group">
       <b>The main test</b>
@@ -362,7 +379,8 @@
       <ul data-motion="stagger" data-child="rise" data-delay="250">
         <li class="in">OpenStack <span>in</span></li>
         <li class="in">Wikimedia <span>in</span></li>
-        <li class="out">Qt, Chromium <span>if they grant permission</span></li>
+        <li class="in">Qt <span>granted; data being built</span></li>
+        <li class="out">Chromium <span>if it grants permission</span></li>
       </ul>
     </div>
     <div class="group">
@@ -376,7 +394,7 @@
     </div>
   </div>
   <p class="footnote">Membership is fixed by November 20, before any test result exists.</p>
-  <aside class="notes">The main test runs on two communities, OpenStack and Wikimedia, and each one has to pass. Qt and Chromium join only if they grant permission in writing; Qt has replied, and I'm agreeing the terms with it. On GitHub, review is often optional, so the GitHub communities form a separate replication. It reports how many show the effect, without deciding the answer. I've asked GitHub to confirm in writing that this research use is allowed; collection continues, but GitHub data stays out of anything I publish until GitHub confirms. Membership is fixed by November 20th, before any test result exists.</aside>
+  <aside class="notes">The main test runs on OpenStack and Wikimedia, and each one has to pass. Qt granted permission in writing on October 15th; its data has been collected under those terms and is being built now, so Qt can join once its data passes the same checks. Chromium joins only if it grants permission too. On GitHub, review is often optional, so the GitHub communities form a separate replication. It reports how many show the effect, without deciding the answer. I've asked GitHub to confirm in writing that this research use is allowed; collection continues, but GitHub data stays out of anything I publish until GitHub confirms. Membership is fixed by November 20th, before any test result exists.</aside>
 </section>
 
 <section class="dark closing" data-background-color="#14181f">
@@ -458,7 +476,8 @@
   <ul>
     <li>Author comments are excluded, so the signal is a reviewer's, not a self-edit.</li>
     <li>Near-duplicates are removed before the split; leftover overlap is reported.</li>
-    <li>Label quality is audited blind: two model raters, a human, and an open-weight model anyone can rerun, which matches the human nearly as well as the model raters.</li>
+    <li>Label quality is audited blind: two model raters, a human, and an open-weight model anyone can rerun. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, about <span data-value="readings.audit_valid_openstack"></span> have a rewrite that answers its comment; the rest stay in and are scored in every arm, so they dilute a difference rather than favour one side.</li>
+    <li>Every filtering rule and what it removed is published: ajbarea.github.io/sphragis/dataset</li>
     <li>Contamination rests on the test months postdating the model: a word classifier that never sees it tells the windows apart better than the membership tests do.</li>
     <li>Dropping AI-assisted commits (by trailer) moves OpenStack's development pilot by <span data-value="readings.ai_shift_openstack"></span>.</li>
     <li>Identities are pseudonymised in everything derived from the raw data, and addresses are swept from comment text. The raw snapshots still hold some host account numbers; nothing derived does.</li>

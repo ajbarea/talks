@@ -328,8 +328,8 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 
 .road li { font-size: 0.66em; }
 .phone .title-slide .motif { display: none; }
-.phone .mini { height: 108px; }
-.phone .mini text { font-size: 17px; }
+.phone .mini { height: 118px; }
+.phone .mini text { font-size: 20px; }
 .phone .steps { grid-template-columns: 1fr 1fr; gap: 10px; }
 .phone .steps li { padding: 10px; }
 .phone .tiles .big { font-size: 1.4em; margin: 2px 0; }

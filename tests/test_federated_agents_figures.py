@@ -49,6 +49,7 @@ def test_the_guard_fails_when_a_figure_is_edited_by_hand(tmp_path: Path) -> None
     deck = tmp_path / "federated-agents"
     (deck / "data").mkdir(parents=True)
     shutil.copy(DECK / "figures.py", deck)
+    shutil.copy(DECK / "index.html", deck)
     original = (DECK / "data" / "readings.js").read_text()
     edited = original.replace('"split_in_fix"', '"split_in_fix_x"', 1)
     assert edited != original, "the edit must change the figures, or the guard is not exercised"
@@ -79,3 +80,11 @@ def test_every_bound_name_has_a_figure() -> None:
                 break
             node = node[key]
     assert not missing, missing
+
+
+def test_only_what_a_slide_binds_is_published() -> None:
+    """readings.js is public: a reading no slide shows must not ride along in it."""
+    module = _figures()
+    values = {"shown": 1, "hidden": 2, "tree": {"a": {"x": 1, "y": 2}, "b": 3}}
+    page = '<p data-value="readings.shown"></p><div data-source="readings.tree.a"></div>'
+    assert module.published(values, module.bound_paths(page)) == {"shown": 1, "tree": {"a": {"x": 1, "y": 2}}}

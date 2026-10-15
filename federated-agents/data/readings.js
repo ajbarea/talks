@@ -74,67 +74,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
       "kept": 5053
     },
     "wikimedia": {
-      "name": "Wikimedia",
       "changes": 114857,
-      "stages": [
-        {
-          "label": "comments set aside",
-          "unit": "comments",
-          "count": 89143,
-          "reasons": [
-            {
-              "label": "not on a code file",
-              "count": 46445
-            },
-            {
-              "label": "the author's own",
-              "count": 23990
-            },
-            {
-              "label": "on code left unchanged",
-              "count": 13244
-            },
-            {
-              "label": "other reasons",
-              "count": 5464
-            }
-          ]
-        },
-        {
-          "label": "pairs that are not a fix",
-          "unit": "pairs",
-          "count": 4254,
-          "reasons": [
-            {
-              "label": "empty on one side",
-              "count": 2429
-            },
-            {
-              "label": "the reviewer wrote the fix",
-              "count": 1473
-            },
-            {
-              "label": "too large a rewrite",
-              "count": 352
-            }
-          ]
-        },
-        {
-          "label": "copies removed",
-          "unit": "lessons",
-          "count": 186,
-          "reasons": [
-            {
-              "label": "exact copies",
-              "count": 117
-            },
-            {
-              "label": "near copies",
-              "count": 69
-            }
-          ]
-        }
-      ],
       "kept": 5513
     }
   },
@@ -222,23 +162,18 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "audit_items_openstack": 191,
   "ai_shift_openstack": "+0.0002",
   "retrieval_k1_openstack": "+0.012 [-0.005, +0.028]",
-  "retrieval_org_k1_openstack": "+0.028 [+0.009, +0.049]",
   "retrieval_k3_openstack": "+0.017 [+0.000, +0.034]",
-  "retrieval_org_k3_openstack": "+0.006 [-0.009, +0.022]",
   "retrieval_adapters_openstack": "-0.000 [-0.017, +0.016]",
   "retrieval_partitions_openstack": 10,
   "retrieval_k1_wikimedia": "+0.009 [-0.004, +0.024]",
   "retrieval_org_k1_wikimedia": "+0.045 [+0.028, +0.062]",
   "retrieval_k3_wikimedia": "+0.012 [-0.003, +0.027]",
-  "retrieval_org_k3_wikimedia": "+0.025 [+0.009, +0.043]",
   "retrieval_adapters_wikimedia": "+0.007 [-0.006, +0.020]",
-  "retrieval_partitions_wikimedia": 10,
   "rules_distilled_openstack": "-0.003 [-0.009, +0.003]",
   "rules_adapters_openstack": "-0.000 [-0.017, +0.016]",
   "rules_partitions_openstack": 10,
   "rules_distilled_wikimedia": "-0.001 [-0.006, +0.004]",
   "rules_adapters_wikimedia": "+0.007 [-0.006, +0.020]",
-  "rules_partitions_wikimedia": 10,
   "team_openstack": "is better on its own code",
   "team_gain_openstack": true,
   "team_wikimedia": "shows no gain that matters",

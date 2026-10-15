@@ -180,6 +180,136 @@ def sized_simulation(org: str) -> dict:
     return sim
 
 
+#: The funnel's stages on the slide, each a group of sphragis `dataset_funnel.py` steps summed in
+#: their own unit, with the reasons drawn inside it: (label, unit, steps, reasons shown).
+FUNNEL_STAGES = (
+    ("comments set aside", "comments", ("Comments dropped", "Comments removed at refinement"), 3),
+    (
+        "pairs that are not a fix",
+        "pairs",
+        ("Hunks dropped as ill-posed", "Examples dropped at refinement", "Examples left with no comment"),
+        3,
+    ),
+    ("copies removed", "lessons", ("Examples removed as duplicates",), 2),
+)
+
+#: Steps the slide leaves to the rule page, each allowed only while it stays below this share of
+#: the merged changes; every other step must be in a stage, or the build fails.
+FUNNEL_LEFT_OUT = {"Changes lost before any comment was read": 0.001}
+
+#: Plain words for a funnel row, so the slide speaks to a newcomer; a row not listed fails the build.
+FUNNEL_WORDS = {
+    "on the commit message or the patch set as a whole": "not on a code file",
+    "written by the change's author": "the author's own",
+    "from an account the host tags as a bot": "from a bot account",
+    "an acknowledgement (Done, LGTM, thanks, ok and the like)": "\u201cDone\u201d, \u201cLGTM\u201d",
+    "an acknowledgement": "\u201cDone\u201d, \u201cLGTM\u201d",
+    "a bot's template, matched to the bot's own source": "a bot's template",
+    "only acknowledgements were left": "only \u201cDone\u201d left",
+    "only a bot's templates were left": "only bot text left",
+    "anchored to no line": "on no line",
+    "on the last patch set, with no revision after it": "never revised",
+    "its diff could not be fetched": "unreadable",
+    "outside any hunk the next patch set changed": "on code left unchanged",
+    "nothing before or after the edit": "empty on one side",
+    "grown or shrunk past the size rules": "too large a rewrite",
+    "next patch set only a rebase, not a rework": "only a rebase",
+    "target written by the reviewer (suggested edit, applied fix)": "the reviewer wrote the fix",
+    "exact copies": "exact copies",
+    "near duplicates (MinHash)": "near copies",
+    "shared boilerplate": "boilerplate",
+    "one change in two places": "one change twice",
+}
+
+
+def funnel(values: dict) -> dict:
+    """Each community's way from merged changes to lessons (sphragis `dataset-funnel.json`).
+
+    The stages are in different units (comments, pairs, lessons), so no width is shared between
+    them; inside a stage the reasons are in one unit and drawn to scale. The lessons kept must be
+    the corpus the deck counts elsewhere, or the build fails.
+    """
+    art = load("dataset-funnel.json")["organizations"]
+    out = {}
+    for org, name in (("openstack", "OpenStack"), ("wikimedia", "Wikimedia")):
+        f = art[org]
+        steps = {st["step"]: st["rows"] for st in f["steps"]}
+        staged = {n for _, _, names, _ in FUNNEL_STAGES for n in names}
+        if unplaced := set(steps) - staged - set(FUNNEL_LEFT_OUT):
+            raise SystemExit(f"{org}: funnel steps in no stage {sorted(unplaced)}")
+        for step, most in FUNNEL_LEFT_OUT.items():
+            if sum(r["count"] or 0 for r in steps.get(step, [])) > most * f["merged_changes"]:
+                raise SystemExit(f"{org}: {step} is too large to leave off the slide")
+        stages = []
+        for label, unit, names, shown in FUNNEL_STAGES:
+            rows = [r for n in names for r in steps[n]]
+            # OpenStack's bot rule could not run (its months predate the bot tag; sphragis
+            # docs/dataset.md), so it removed nothing there and the stage total is exact.
+            if any(r["count"] is None for r in rows if r["reason"] != "from an account the host tags as a bot"):
+                raise SystemExit(f"{org}: a {label} row was not counted")
+            unknown = [r["reason"] for r in rows if r["count"] and r["reason"] not in FUNNEL_WORDS]
+            if unknown:
+                raise SystemExit(f"no plain words for funnel rows {unknown}")
+            # Rows with the same plain words (an acknowledgement dropped on reading and at
+            # refinement) are one reason on the slide.
+            by_words: dict[str, int] = {}
+            for r in rows:
+                if r["count"]:
+                    words = FUNNEL_WORDS[r["reason"]]
+                    by_words[words] = by_words.get(words, 0) + r["count"]
+            counted = sorted(by_words.items(), key=lambda kv: -kv[1])
+            total = sum(by_words.values())
+            # One leftover reason is named rather than called "other reasons".
+            top = counted if len(counted) <= shown + 1 else counted[:shown]
+            reasons = [{"label": words, "count": count} for words, count in top]
+            rest = total - sum(count for _, count in top)
+            if rest:
+                reasons.append({"label": "other reasons", "count": rest})
+            stages.append({"label": label, "unit": unit, "count": total, "reasons": reasons})
+        kept = f["examples"]
+        if f"{kept:,}" != values[f"corpus_examples_{org}"]:
+            raise SystemExit(f"{org}: the funnel keeps {kept:,}, the corpus counts {values[f'corpus_examples_{org}']}")
+        out[org] = {"name": name, "changes": f["merged_changes"], "stages": stages, "kept": kept}
+    return out
+
+
+#: The split of the team-specific contrast (sphragis research log 2026-10-15): the parts that add
+#: up to s, by the pilots' component files, read at the stricter Holm level.
+SPLITS = {
+    "names": (("identifier", "names"), ("other", "the rest")),
+    "edit": (("changed", "what the fix changed"), ("copied", "code carried over")),
+}
+
+
+def split() -> dict:
+    """Each community's development contrast, whole and split two ways, with 97.5% intervals."""
+    level = "0.975"
+    out = {}
+    for org, name in ORGS.items():
+        whole = load(f"partition-pilot-{org}-likelihood.json")
+        if whole.get("metric") != METRIC:
+            raise SystemExit(f"{org}'s pilot is on {whole.get('metric')}, not {METRIC}")
+
+        def cell(d: dict) -> dict:
+            interval = d["intervals"][level]
+            return {"estimate": d["estimate"], "low": interval["low"], "high": interval["high"]}
+
+        entry = {"name": name, "whole": cell(whole)}
+        for key, parts in SPLITS.items():
+            entry[key] = []
+            for component, label in parts:
+                part = load(f"partition-pilot-{org}-likelihood-split-{component}.json")
+                if part.get("metric") != f"{METRIC}:{component}" or part["run_files"] != whole["run_files"]:
+                    raise SystemExit(f"{org}'s {component} split is not read on the pilot's runs")
+                entry[key].append({"label": label, **cell(part)})
+            end = load(f"partition-pilot-{org}-likelihood-split-end.json")["estimate"]
+            total = sum(p["estimate"] for p in entry[key]) + end
+            if not math.isclose(total, whole["estimate"], abs_tol=1e-6):
+                raise SystemExit(f"{org}'s {key} parts add to {total}, not {whole['estimate']}")
+        out[org] = entry
+    return out
+
+
 def registered(name: str) -> dict:
     return load(name)["readings"][REGISTERED[0]][REGISTERED[1]]["per_org"]
 
@@ -187,24 +317,6 @@ def registered(name: str) -> dict:
 def readings() -> dict[str, str | int | bool]:
     """Every figure and flag the deck shows, by the name a slide binds it to."""
     values: dict[str, str | int | bool] = {}
-    dev = load("rq1-qtfull-fp32-seeds.json")["readings"]["pooled"]["crossed"]
-    windows = {org: load(f"window-report-{org}.json")[org] for org in ("openstack", "qt")}
-    values["verdict"] = dev["verdict"]
-    for org in ("qt", "openstack"):
-        values[f"dev_{org}"] = interval(dev["per_org"][org])
-    # The placebo and the capacity check, on the same registered cell as the gate above.
-    for org in ("qt", "openstack"):
-        placebo = registered(f"rq1-placebo-{org}-seeds.json")
-        values[f"placebo_{org}"] = interval(placebo[f"{org}-a"])
-    for org in ("qt", "openstack"):
-        values[f"r256_{org}"] = interval(registered("rq1-r256-seeds.json")[org])
-    for org in ("qt", "openstack"):
-        w = windows[org]["windows"]
-        values[f"train_{org}"] = w["train"]["examples"]
-        values[f"dev_examples_{org}"] = w["dev"]["examples"]
-        top = max(w["train"]["content"].items(), key=lambda kv: kv[1])
-        share = round(100 * top[1] / w["train"]["examples"])
-        values[f"language_{org}"] = f"{top[0]} {share}%"
     # The corpora as the study loads them (deduplicated, split into windows), every window but
     # the sealed test one, and the label audit's scored sample.
     built = load("ai-trailers.json")["orgs"]
@@ -212,7 +324,29 @@ def readings() -> dict[str, str | int | bool]:
         corpus = built[org]["windows"].values()
         values[f"corpus_examples_{org}"] = f"{sum(w['examples'] for w in corpus):,}"
         values[f"corpus_changes_{org}"] = f"{sum(w['changes'] for w in corpus):,}"
-    values["audit_items"] = f"{load('label-audit-v2.json')['items']:,}"
+    # Every figure here comes from data the study may publish: Qt's records fetched before its
+    # 2026-10-15 grant are in none of them (sphragis research log), and data/readings.js is public.
+    values["funnel"] = funnel(values)
+    values["split"] = split()
+    # The split slide claims only what the intervals show. Its claims are about the communities
+    # whose whole gain is clear (interval above zero): there the fix carries it and the part
+    # outside names is above zero. Carried-over code is "next to none" only if every
+    # community's interval holds zero; a community without a clear gain is named as unsettled.
+    sp = values["split"]
+    gain = [o for o in sp.values() if o["whole"]["low"] > 0]
+    unsettled = [o["name"] for o in sp.values() if o["whole"]["low"] <= 0]
+    values["split_gain_orgs"] = " and ".join(o["name"] for o in gain)
+    values["split_in_fix"] = bool(gain) and all(o["edit"][0]["low"] > 0 for o in gain)
+    values["split_beyond_names"] = bool(gain) and all(o["names"][1]["low"] > 0 for o in gain)
+    values["split_copied_none"] = all(o["edit"][1]["low"] <= 0 <= o["edit"][1]["high"] for o in sp.values())
+    values["split_unsettled_orgs"] = " and ".join(unsettled)
+    values["split_any_unsettled"] = bool(unsettled)
+    # The label audit on OpenStack's items alone (sphragis label-audit-v2-openstack.json): the
+    # share of lessons whose rewrite answers its comment, by the rater the human checked.
+    audit = load("label-audit-v2-openstack.json")
+    valid = audit["valid_shares"]["A"]
+    values["audit_valid_openstack"] = f"{100 * valid['share']:.0f}%"
+    values["audit_items_openstack"] = audit["items"]
     # How far OpenStack's development pilot moves when read without its AI-assisted examples.
     # The pilot and both comparators are read at the registered decoder, repetition penalty 1.0
     # (sphragis research log, 2026-10-08); the earlier artifacts decoded at the checkpoint's 1.1.
@@ -267,9 +401,34 @@ def readings() -> dict[str, str | int | bool]:
     return values
 
 
+def bound_paths(page: str | None = None) -> set[str]:
+    """Every `readings.` path a slide binds, through any data-* attribute."""
+    page = (HERE / "index.html").read_text() if page is None else page
+    return set(re.findall(r'data-[\w-]+="readings\.([\w.]+)"', page))
+
+
+def published(values: dict, bound: set[str]) -> dict:
+    """Only what a slide binds: readings.js is public, so a figure no slide shows stays out of it.
+    A bound path keeps everything under it."""
+
+    def keep(node: object, path: str) -> object:
+        if path in bound:
+            return node
+        if isinstance(node, dict) and any(b.startswith(path + ".") for b in bound):
+            kept = {k: keep(v, f"{path}.{k}") for k, v in node.items()}
+            return {k: v for k, v in kept.items() if v is not _CUT}
+        return _CUT
+
+    kept = {k: keep(v, k) for k, v in values.items()}
+    return {k: v for k, v in kept.items() if v is not _CUT}
+
+
+_CUT = object()
+
+
 def readings_js(values: dict) -> str:
     """The figures as a script the deck loads: a `.js` file, so it opens from file:// with no server."""
-    body = json.dumps(values, indent=2)
+    body = json.dumps(published(values, bound_paths()), indent=2)
     return (
         "// GENERATED by figures.py from the sphragis artifacts. Do not edit.\n"
         f"window.DECK_DATA = Object.assign(window.DECK_DATA || {{}}, {{ readings: {body} }});\n"

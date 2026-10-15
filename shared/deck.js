@@ -293,6 +293,146 @@
     clear();
   }
 
+  // <div class="flow" data-source="readings.funnel.openstack">: how a corpus is filtered, from
+  // what was fetched to what was kept. Stages may count different units (comments, pairs,
+  // lessons), so no width is shared between stages; inside a stage its reasons share one unit
+  // and are drawn to scale. Each stage is a fragment, so the room sees one kind of loss at a time.
+  // Data: { changes, stages: [{ label, unit, count, reasons: [{ label, count }] }], kept }.
+  function buildFlow(box) {
+    const f = lookup(box.dataset.source);
+    if (!f || !Array.isArray(f.stages) || !f.stages.length) {
+      console.error(`deck: ${box.dataset.source} has no stages to draw`);
+      return;
+    }
+    const n = (v) => Number(v).toLocaleString("en-US");
+    const tall = phone;
+    // Desktop: fetched, the stages and kept side by side, stages top-aligned so their counts read
+    // as one row. Phone: the same, one under another, each reason on one line over a thin bar.
+    const L = tall
+      ? { W: 440, endW: 400, endH: 72, colW: 400, gap: 16, head: 50, row: 35, bar: 6, big: "flow-big" }
+      : { W: 0, endW: 170, endH: 150, colW: 236, gap: 50, head: 112, row: 66, bar: 22, big: "flow-big" };
+    if (!tall) L.W = 2 * L.endW + f.stages.length * L.colW + (f.stages.length + 1) * L.gap;
+    const stageH = (st) => L.head + st.reasons.length * L.row;
+    const H = tall
+      ? 2 * (L.endH + L.gap) + f.stages.reduce((h, st) => h + stageH(st) + L.gap, 0)
+      : Math.max(L.endH, ...f.stages.map(stageH)) + 10;
+    const fig = svg("svg", {
+      viewBox: `0 0 ${L.W} ${H}`,
+      role: "img",
+      "aria-label": `From ${n(f.changes)} merged changes to ${n(f.kept)} lessons kept: ${f.stages
+        .map((st) => `${n(st.count)} ${st.label}`)
+        .join(", ")}`,
+    });
+    let x = 0, y = 0;
+    const arrow = (g) => {
+      if (tall) svg("path", { d: `M208,${y - L.gap + 6} h24 l-12,12 z`, class: "flow-arrow" }, g);
+      else svg("path", { d: `M${x - L.gap + 9},${L.endH / 2 - 13} l20,13 l-20,13 z`, class: "flow-arrow" }, g);
+    };
+    const endBox = (label, value, cls, attrs, withArrow) => {
+      const g = svg("g", attrs || {}, fig);
+      if (withArrow) arrow(g);
+      const bx = tall ? 20 : x, by = tall ? y : 0;
+      svg("rect", { x: bx, y: by, width: L.endW, height: L.endH, rx: 14, class: `flow-end ${cls}` }, g);
+      if (tall) {
+        svg("text", { x: bx + 22, y: by + 51, class: `flow-big ${cls}` }, g, n(value));
+        svg("text", { x: bx + L.endW - 22, y: by + 49, class: "flow-unit", "text-anchor": "end" }, g, label.replace("\n", " "));
+        y += L.endH + L.gap;
+      } else {
+        svg("text", { x: bx + L.endW / 2, y: by + 64, class: `flow-big ${cls}`, "text-anchor": "middle" }, g, n(value));
+        lines(svg("text", { class: "flow-unit", "text-anchor": "middle" }, g), label, bx + L.endW / 2, by + 108, 26);
+        x += L.endW + L.gap;
+      }
+    };
+    endBox("merged\nchanges", f.changes, "start");
+    for (const st of f.stages) {
+      const g = svg("g", { class: "fragment flow-stage" }, fig);
+      arrow(g);
+      const sx = tall ? 20 : x, sy = tall ? y : 0;
+      svg("text", { x: sx, y: sy + (tall ? 28 : 36), class: "flow-count" }, g, n(st.count));
+      svg("text", { x: tall ? sx + L.colW : sx, y: sy + (tall ? 28 : 70), class: "flow-unit", "text-anchor": tall ? "end" : "start" }, g, st.label);
+      // A rule under the stage's header, so its reasons read as what it is made of.
+      svg("line", { x1: sx, x2: sx + L.colW, y1: sy + (tall ? 38 : 88), y2: sy + (tall ? 38 : 88), class: "flow-rule" }, g);
+      const most = Math.max(...st.reasons.map((r) => r.count));
+      st.reasons.forEach((r, i) => {
+        const ry = sy + L.head + i * L.row;
+        if (tall) {
+          svg("text", { x: sx, y: ry + 8, class: "flow-reason" }, g, r.label);
+          svg("text", { x: sx + L.colW, y: ry + 8, class: "flow-reason", "text-anchor": "end" }, g, n(r.count));
+          svg("rect", { x: sx, y: ry + 16, width: Math.max(3, (r.count / most) * L.colW), height: L.bar, rx: 3, class: "flow-bar", "data-motion": "growx", "data-i": i }, g);
+        } else {
+          const w = Math.max(3, (r.count / most) * (L.colW - 86));
+          svg("text", { x: sx, y: ry + 10, class: "flow-reason" }, g, r.label);
+          svg("rect", { x: sx, y: ry + 20, width: w, height: L.bar, rx: 3, class: "flow-bar", "data-motion": "growx", "data-i": i }, g);
+          svg("text", { x: sx + w + 8, y: ry + 38, class: "flow-reason" }, g, n(r.count));
+        }
+      });
+      if (tall) y += stageH(st) + L.gap;
+      else x += L.colW + L.gap;
+    }
+    endBox("lessons\nkept", f.kept, "kept", { class: "fragment" }, true);
+    box.appendChild(fig);
+  }
+
+  // <div class="forest" data-source="readings.split">: a contrast and its parts, each a point
+  // with its interval against a "no gain" line, on one scale for every community. The parts of a
+  // split add up to the whole; each split is a fragment, and the part the claim is about is the
+  // accent mark. Data: { org: { name, whole: { estimate, low, high }, <split>: [part, part] } },
+  // the splits named in data-splits, each split's accented part's index in data-accent.
+  function buildForest(box) {
+    const data = lookup(box.dataset.source);
+    const splits = (box.dataset.splits || "").split(",").filter(Boolean);
+    if (!data || !splits.length) {
+      console.error(`deck: ${box.dataset.source} has no splits to draw`);
+      return;
+    }
+    const accent = (box.dataset.accent || "").split(",").map(Number);
+    const orgs = Object.values(data);
+    const cells = orgs.flatMap((o) => [o.whole, ...splits.flatMap((k) => o[k])]);
+    const lo = Math.min(0, ...cells.map((c) => c.low)), hi = Math.max(...cells.map((c) => c.high));
+    const pad = (hi - lo) * 0.06;
+    const tall = phone;
+    // On a phone each row's label sits above its line, so the plot keeps the screen's width.
+    const labelW = tall ? 0 : 236, plotW = tall ? 380 : 300, panelW = labelW + plotW + 20;
+    const rowH = tall ? 50 : 44, groupGap = tall ? 8 : 18;
+    const rowsPer = 1 + splits.reduce((r, k) => r + data[Object.keys(data)[0]][k].length, 0);
+    const panelH = 54 + rowsPer * rowH + splits.length * groupGap + 40;
+    const W = tall ? 440 : panelW * orgs.length + 20 * (orgs.length - 1);
+    const H = tall ? panelH * orgs.length : panelH;
+    const fig = svg("svg", {
+      viewBox: `0 0 ${W} ${H}`,
+      role: "img",
+      "aria-label": orgs
+        .map((o) => `${o.name}: the whole gain, then ${splits.map((k) => o[k].map((p) => p.label).join(" against ")).join("; ")}`)
+        .join(". "),
+    });
+    const groups = [svg("g", {}, fig), ...splits.map(() => svg("g", { class: "fragment" }, fig))];
+    orgs.forEach((o, oi) => {
+      const px = tall ? 10 : oi * (panelW + 20), py = tall ? oi * panelH : 0;
+      const sx = (v) => px + labelW + ((v - lo + pad) / (hi - lo + 2 * pad)) * plotW;
+      svg("text", { x: px, y: py + 30, class: "forest-org" }, groups[0], o.name);
+      // The "no gain" line runs the panel's height; on a phone, where labels sit above their
+      // lines, it is a short tick on each row so it never crosses a label.
+      if (!tall) svg("line", { x1: sx(0), x2: sx(0), y1: py + 46, y2: py + panelH - 34, class: "forest-zero" }, groups[0]);
+      svg("text", { x: sx(0), y: py + panelH - 10, class: "forest-axis", "text-anchor": "middle" }, groups[0], "no gain");
+      svg("text", { x: px + labelW + plotW, y: py + panelH - 10, class: "forest-axis", "text-anchor": "end" }, groups[0], "more gain \u2192");
+      let ry = py + 54 + rowH / 2;
+      const point = (g, c, label, cls) => {
+        if (tall) svg("text", { x: px + 20, y: ry - 18, class: "forest-label" }, g, label);
+        else svg("text", { x: px + labelW - 14, y: ry + 7, class: "forest-label", "text-anchor": "end" }, g, label);
+        if (tall) svg("line", { x1: sx(0), x2: sx(0), y1: ry - 12, y2: ry + 12, class: "forest-zero" }, g);
+        svg("line", { x1: sx(c.low), x2: sx(c.high), y1: ry, y2: ry, class: `forest-ci ${cls}`, "data-motion": "growx" }, g);
+        svg("circle", { cx: sx(c.estimate), cy: ry, r: 9, class: `forest-pt ${cls}`, "data-motion": "pop" }, g);
+        ry += rowH;
+      };
+      point(groups[0], o.whole, "whole gain", "whole");
+      splits.forEach((k, si) => {
+        ry += groupGap;
+        o[k].forEach((p, pi) => point(groups[si + 1], p, p.label, accent[si] === pi ? "ours" : "part"));
+      });
+    });
+    box.appendChild(fig);
+  }
+
   // <svg data-only="phone"> / data-only="desktop": a figure drawn twice, wide for a slide and
   // tall for the feed. Only the one for this screen stays, so nothing counts or reads it twice.
   for (const node of document.querySelectorAll("[data-only]")) {
@@ -303,6 +443,8 @@
   buildDots();
   document.querySelectorAll(".relmap[data-source]").forEach(buildMap);
   document.querySelectorAll(".timeline[data-source]").forEach(buildTimeline);
+  document.querySelectorAll(".flow[data-source]").forEach(buildFlow);
+  document.querySelectorAll(".forest[data-source]").forEach(buildForest);
   const chs = chapters();
   buildAgenda(chs);
   if (phone) {

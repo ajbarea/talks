@@ -70,8 +70,9 @@ TEAM_READING = {
     ),
     ("inconclusive", True): ("shows no gain that matters", "none that matters", "team-specific gains are small"),
     ("inconclusive", False): ("is not settled yet", "no answer yet", "team-specific gains are open"),
-    ("bounded", True): ("shows no gain as large as the test can find", "none found", "no team-specific gain"),
-    ("bounded", False): ("shows no gain as large as the test can find", "none found", "no team-specific gain"),
+    # Bounded: the interval's upper end lies below the SESOI (sphragis research log 2026-10-14).
+    ("bounded", True): ("shows no gain that matters", "none that matters", "no team-specific gain that matters"),
+    ("bounded", False): ("shows no gain that matters", "none that matters", "no team-specific gain that matters"),
 }
 
 #: The communities on the slides, in the order they are named.

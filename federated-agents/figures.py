@@ -195,7 +195,11 @@ FUNNEL_STAGES = (
 
 #: Steps the slide leaves to the rule page, each allowed only while it stays below this share of
 #: the merged changes; every other step must be in a stage, or the build fails.
-FUNNEL_LEFT_OUT = {"Changes lost before any comment was read": 0.001}
+FUNNEL_LEFT_OUT = {
+    "Changes lost before any comment was read": 0.001,
+    # Zero for a full build; a community built skipping uncommented changes needs its own stage.
+    "Changes the build did not read": 0.001,
+}
 
 #: Plain words for a funnel row, so the slide speaks to a newcomer; a row not listed fails the build.
 FUNNEL_WORDS = {

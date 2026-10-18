@@ -1,5 +1,5 @@
 // Published designs placed on the rivals map, each from a full-text read of the paper
-// (2026-10-10); the page each placement rests on is noted.
+// (2026-10-10; FedSelect 2026-10-18); the page each placement rests on is noted.
 // x: who decides what the shared part learns. y: whether anything tested the shared part for
 // leaks, and whether that test asks which client it came from.
 window.DECK_DATA = Object.assign(window.DECK_DATA || {}, {
@@ -20,7 +20,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, {
         id: "fdlora",
         label: "FDLoRA",
         year: 2024,
-        group: "shared + private adapters",
+        group: "shared + private parts",
         x: "training\nsorts it",
         y: "not tested",
         oneLine: "Each client keeps a shared and a private adapter trained on the same data, then blends them.",
@@ -30,7 +30,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, {
         id: "feddpa",
         label: "FedDPA",
         year: 2024,
-        group: "shared + private adapters",
+        group: "shared + private parts",
         x: "training\nsorts it",
         y: "not tested",
         oneLine: "A shared and a private adapter per client, mixed per question to handle new kinds of questions.",
@@ -40,17 +40,27 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, {
         id: "sdflora",
         label: "SDFLoRA",
         year: 2026,
-        group: "shared + private adapters",
+        group: "shared + private parts",
         x: "training\nsorts it",
         y: "for other\nleaks",
         oneLine: "Splits each client's adapter into a shared part, sent with optional noise, and a private part.",
+      },
+      {
+        // CVPR 2024. p3: each client grows its own mask of parameters kept local; p8: attacks named as open, none run.
+        id: "fedselect",
+        label: "FedSelect",
+        year: 2024,
+        group: "shared + private parts",
+        x: "training\nsorts it",
+        y: "not tested",
+        oneLine: "Each client keeps the parameters that changed most during training, shares the rest.",
       },
       {
         // ACL 2026. p4: NER masks personal details for the shared adapter; p6: extraction and PII inference attacks.
         id: "securegate",
         label: "SecureGate",
         year: 2026,
-        group: "shared + private adapters",
+        group: "shared + private parts",
         x: "judged by a filter,\nserver or AI",
         y: "for other\nleaks",
         oneLine: "Shares an adapter trained on text with personal details masked, keeps one trained on raw text.",
@@ -149,7 +159,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, {
         id: "ours",
         label: "This work",
         year: 2026,
-        group: "shared + private adapters",
+        group: "shared + private parts",
         x: "the company,\nbefore training",
         y: "for whose\nit is",
         oneLine: "The company lists what may feed the shared adapter before training, and the shared adapter is tested for which company it came from.",

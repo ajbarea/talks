@@ -382,7 +382,8 @@ def readings() -> dict[str, str | int | bool]:
         values[f"team_gain_{org}"] = pilot["verdicts"]["0.975"] == "supported"
     values["team_title"] = team_title(team)
     # Qt's development pilot, read before Qt is admitted: the status slide names its reading alone,
-    # since its K and split readings wait on its simulation (sphragis research log, 2026-10-18).
+    # since its K waits on its simulation and its split is not yet read (sphragis research log,
+    # 2026-10-18).
     values["team_qt"] = team_reading(load("partition-pilot-qt-likelihood.json"))[0]
     # Check 5: each half's own marker planted in half its training lessons; how many runs found it.
     planted = {org: planted_runs(org) for org in ("openstack", "wikimedia")}

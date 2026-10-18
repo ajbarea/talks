@@ -118,9 +118,9 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
     "wikimedia": {
       "name": "Wikimedia",
       "whole": {
-        "estimate": 0.005771639306537524,
+        "estimate": 0.00577163930547922,
         "low": -0.0004116679858655984,
-        "high": 0.012544619911006095
+        "high": 0.012544619911359328
       },
       "names": [
         {
@@ -179,6 +179,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "team_wikimedia": "shows no gain that matters",
   "team_gain_wikimedia": false,
   "team_title": "a team-specific gain on OpenStack, none that matters on Wikimedia",
+  "team_qt": "is better on its own code",
   "planted_runs": 20,
   "planted_found": 20,
   "planted_all": true,

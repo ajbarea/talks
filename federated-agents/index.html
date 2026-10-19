@@ -62,7 +62,7 @@
     </figure>
   </div>
   <p class="lead">Rules files and memory hold the rules a company writes down. The unwritten ones are learned in code review, and AI assistants never see it.</p>
-  <aside class="notes">Here's a typical house rule. An AI assistant writes code that opens a database connection directly, and this company's reviewers would send it back: use our helper, we never do that. Some rules like this get written into a rules file the assistant reads. Most never are; new developers learn them in code review, one comment at a time, and AI assistants never see that.</aside>
+  <aside class="notes">Here's a house rule. An AI assistant opens a database connection directly, and this company's reviewers send it back: use our helper. Some rules are written into a rules file the assistant reads. Most are learned in code review, comment by comment, which AI assistants never see.</aside>
 </section>
 
 <section data-chapter="1 · The problem">
@@ -131,7 +131,7 @@
     </svg>
   </div>
   <p class="lead">Today the choice is all or nothing: share everything, or share nothing.</p>
-  <aside class="notes">Every accepted, fixed or rejected suggestion is already a training example. If companies pooled those examples, every assistant would learn more, because much good practice carries over. But pooling means each company's code, and how its team works, leaves the building. So today the choice is all or nothing.</aside>
+  <aside class="notes">Every accepted, fixed or rejected suggestion is a training example. Pooled across companies, they would teach every assistant more, since much good practice carries over. But each company's code, and how its team works, would leave the building. So today it's all or nothing.</aside>
 </section>
 
 <section data-chapter="2 · The idea">
@@ -224,7 +224,7 @@
   </div>
   <p class="lead">The company marks which of its repositories may feed the shared add-on, and only those do.</p>
   <p class="footnote">Field terms: the add-ons are LoRA adapters; training them together this way is federated learning. Repository names are illustrative.</p>
-  <aside class="notes">My idea: every company runs the same open-weight base model, frozen, with two small add-ons. The blue one is shared. Each company trains its own copy, and only the changes go to a server that averages them, so no code ever travels. The orange one is private and never leaves the company. The company marks which of its repositories may feed the shared add-on, and only those do; everything else teaches only the private one. The line is written down in advance, so anyone can audit it.</aside>
+  <aside class="notes">My idea: every company runs the same frozen, open-weight base model with two small add-ons. The blue one is shared: only each company's changes to it go to a server that averages them, so code never travels. The orange one is private and never leaves. Before training, the company lists which repositories may feed the shared add-on; the rest teach only the private one, and anyone can audit the list.</aside>
 </section>
 
 <section data-chapter="2 · The idea">
@@ -232,7 +232,7 @@
   <h2>Other designs let the method pick what is shared; none tests whose it is</h2>
   <div class="relmap wide" data-source="related" data-differs="off"></div>
   <p class="footnote">Each grey dot is a published design<span class="web-only"> (hover or tap for a summary)</span>. None uses real organizations' data: each is tested on public datasets.</p>
-  <aside class="notes">Here's how that differs from published work. Each dot is a published design for what clients share. Across the bottom is who decides what gets shared: training, a fixed rule, or a filter, a server or an AI that judges it. Up the side is whether anyone tested the shared part. Most never did, and none asked whose it is. Ours is the orange dot: the company decides before training, and the shared part is tested for which company it came from.</aside>
+  <aside class="notes">The grey dots are published designs. Across the bottom: who decides what is shared, from training itself to a fixed rule or a filter, server or AI. Up the side: whether anyone tested the shared part. Most never did; none asked whose it is. Ours, in orange, lets the company decide before training and tests which company the shared part came from.</aside>
 </section>
 
 <section data-chapter="3 · What I've found">
@@ -272,7 +272,7 @@
     </div>
   </div>
   <p class="footnote">Bars show direction, not size. Development readings; the sealed test is sized to settle it.</p>
-  <aside class="notes">Two findings so far, and one open question. First, tuning works: an assistant tuned on a community's own reviews matches what its reviewers ask for far more often. Second, the part specific to one team: split a community into two groups of projects and score how much probability each group's assistant gives the reviewers' fixes. OpenStack's own group's assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>. These are development readings, and the sealed test is sized to settle it. Next is privacy: can someone tell which company the shared part came from? The attacks on published privacy designs are built.</aside>
+  <aside class="notes">First, tuning helps: tuned on a community's own reviews, an assistant matches its reviewers' fixes far more often. Second, the team-specific part: I split a community's projects into two groups, each with its own assistant. OpenStack's own group's assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>. These are development readings; the sealed test, on held-back months, is sized to settle it. Next, privacy: can someone tell which company the shared add-on came from? The attacks on published privacy designs are built.</aside>
 </section>
 
 <section data-chapter="3 · What I've found">
@@ -281,7 +281,7 @@
   <h2 data-unless="readings.split_in_fix">Where the team-specific gain sits is not settled yet</h2>
   <div class="forest" data-source="readings.split" data-splits="names,edit" data-accent="1,0"></div>
   <p class="footnote">Development data, exploratory. Dot: the gain; line: its 97.5% interval. Each split's parts, with a small end-of-text term, add up to the whole; one scale.</p>
-  <aside class="notes">Here's a question someone always asks: is the gain just the assistant learning a team's vocabulary, its function and variable names? So I split each team's gain into parts that add back up to it. The blue dot on top is the whole gain, with its line showing how sure I am. The first split is the part that comes from names, against everything else: layout, keywords, comments. <span data-if="readings.split_beyond_names">On <span data-value="readings.split_gain_orgs"></span>, where the gain is clear, the part outside names is clearly above zero, so the gain is not only vocabulary.</span><span data-unless="readings.split_beyond_names">Where the gain is clear, the part outside names is not yet clearly above zero, so vocabulary may be most of it.</span> The second split is what the reviewer's fix changed, against code the developer simply carried over. <span data-if="readings.split_in_fix">There, the fix itself carries the gain.</span><span data-unless="readings.split_in_fix">The fix does not yet clearly carry the gain.</span> <span data-if="readings.split_copied_none">In every community, the carried-over code carries next to none.</span> <span data-if="readings.split_any_unsettled"><span data-value="readings.split_unsettled_orgs"></span>'s whole gain is not settled at this level, so read its split only as a direction.</span> These are development readings, read only to explore; the sealed test reads both splits again. Now let me show you the tool that made this possible.</aside>
+  <aside class="notes">Is the gain just a team's function and variable names? I split each gain into parts that add up to it; the blue dot on top is the whole gain, its line how sure I am. First, names against everything else: <span data-if="readings.split_beyond_names">on <span data-value="readings.split_gain_orgs"></span>, where the gain is clear, part of it clearly lies outside names.</span><span data-unless="readings.split_beyond_names">names may be most of it.</span> Second, what the reviewer's fix changed against carried-over code: <span data-if="readings.split_in_fix">the fix itself carries the gain.</span><span data-unless="readings.split_in_fix">whether the fix carries it is still open.</span> <span data-if="readings.split_copied_none">In every community, carried-over code carries next to none.</span> <span data-if="readings.split_any_unsettled"><span data-value="readings.split_unsettled_orgs"></span>'s whole gain is unsettled, so its split shows only a direction.</span> These are exploratory development readings; the sealed test reads both again.</aside>
 </section>
 
 <section data-chapter="4 · What's built">
@@ -297,7 +297,7 @@
   </ol>
   <div class="card wide fragment" data-motion="rise"><b>Then it runs the study</b><p>It trains the add-ons on RIT's research computing clusters, runs the pre-registered test, and runs the attacks on published privacy designs.</p></div>
   <p class="footnote">Open source: github.com/ajbarea/sphragis. The label is never guessed: it is the code the developer actually wrote next.</p>
-  <aside class="notes">Here's what I've built: one open-source tool. It collects public code review following each host's rules, and replaces people's names with pseudonyms as the data arrives. It pairs each reviewer comment, and the code it was about, with the code the developer actually wrote next, so the label is never guessed. It cleans out what an assistant shouldn't learn from, like bot comments and one-click approvals. It splits the data by month, keeps the test months sealed, and audits a sample of the labels blind. It also trains the add-ons on RIT's clusters and runs the pre-registered test and the privacy attacks.</aside>
+  <aside class="notes">I built one open-source tool. It collects public code review by each host's rules and swaps names for pseudonyms on arrival. It pairs each reviewer comment and its code with the code the developer wrote next: one lesson, its label never guessed. It drops bot comments and one-click approvals, seals the test months, and audits a sample of labels blind. It also runs the training, the test and the attacks.</aside>
 </section>
 
 <section data-chapter="4 · What's built">
@@ -305,7 +305,7 @@
   <h2>Most of what code review holds never becomes a lesson</h2>
   <div class="flow" data-source="readings.funnel.openstack"></div>
   <p class="footnote">OpenStack shown; Wikimedia: <span data-value="readings.funnel.wikimedia.kept"></span> lessons from <span data-value="readings.funnel.wikimedia.changes"></span> changes. Bars compare within a stage. Every rule: ajbarea.github.io/sphragis/dataset</p>
-  <aside class="notes">Here's how much the tool throws away to get clean lessons, using OpenStack as the example. It starts from every merged change in the months I use. Most review comments are not lessons at all: the biggest group sits on the commit message rather than on code, the next is the author answering their own reviewer, and then comments on code nobody changed. Those are all set aside. Of the comment and code pairs that remain, some are not real fixes: one side is empty, or the reviewer wrote the fix themselves, so the answer would already be in the question. Then copies and near copies are removed, so the same lesson never appears twice. What is left is the set of lessons the study trains and tests on. Wikimedia goes through the same rules. Every rule and every count is on the tool's website.</aside>
+  <aside class="notes">Here's what the tool sets aside on OpenStack. Most review comments go; the biggest group is about the commit message or the change as a whole. Of the pairs left, some drop out, like ones where the reviewer wrote the fix, which gives away the answer. Then copies go. The rest is what the study uses; Wikimedia follows the same rules.</aside>
 </section>
 
 <section data-chapter="4 · What's built">
@@ -322,7 +322,7 @@
     <p>Names are removed on arrival; the test months stay sealed.</p>
   </div>
   <p class="footnote">Open source: github.com/ajbarea/sphragis</p>
-  <aside class="notes">Two communities are built, OpenStack and Wikimedia, with thousands of lessons each. A lesson is one reviewer comment, the code it was about, and the code the developer wrote next. Four GitHub communities are built too, and two qualify. Test months stay sealed until reviewers accept the plan.</aside>
+  <aside class="notes">OpenStack and Wikimedia are built, with thousands of lessons each. Four GitHub communities are built too, and two qualify. The test months stay sealed until reviewers accept the plan.</aside>
 </section>
 
 <section data-chapter="4 · What's built">
@@ -352,7 +352,7 @@
     </div>
   </div>
   <p class="footnote">Each dot in the middle panel is one run; on the right, one simulated study. Filled: found.</p>
-  <aside class="notes">Before trusting any result, I made sure the test can't fool me. Each dot here is one way of dividing the data: any single one can show an effect by luck, so the test reads the average over many. I also planted a fake house rule in half the training lessons. <span data-if="readings.planted_all">When each assistant is scored by how much probability it gives the reviewer's fix, the test found it in every run. Checking word-for-word matches missed it in most runs, which is why the test now scores probability.</span><span data-unless="readings.planted_all">The test missed it in some runs, so the test is on hold until that is fixed.</span> <span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>The test is sized to the standard registered reports ask for, so a real effect of the smallest size that matters is found almost every time. Here's where this sits in the bigger plan.</aside>
+  <aside class="notes">I made sure the test can't fool me. It scores how much probability each assistant gives the reviewer's fix. On the left, each dot is one way of dividing the data; any one can mislead, so the test averages many. I also planted a fake house rule in half the training lessons. <span data-if="readings.planted_all">The test found it in every run.</span><span data-unless="readings.planted_all">It was missed in some runs, so the test is on hold until that is fixed.</span> In simulations, it finds a real effect of the smallest size that matters almost every time. Now, the bigger plan.</aside>
 </section>
 
 <section data-chapter="5 · Where it stands">
@@ -366,7 +366,7 @@
     <li class="goal"><i aria-hidden="true"></i><span class="when">Goal · where it leads</span><b>Federated coding agents</b>that learn each company's rules without its code leaving</li>
   </ol>
   <p class="footnote">Registered report: the method is peer-reviewed before the test data is collected, so a "no" is still published.</p>
-  <aside class="notes">This is stage one of a longer plan. The tool and datasets are ongoing: the tool works, and I'm still collecting and checking data. The study plan goes to reviewers for MSR 2027, the Mining Software Repositories conference, by November 20th, as a registered report: reviewers accept the method before any test result exists, so even a no gets published. From February I open the sealed test. Then I build the shared and private add-ons and try to break them. The goal is coding agents that learn each company's rules without its code leaving.</aside>
+  <aside class="notes">The datasets are stage one, and I'm still collecting and checking data. By November 20th the study plan goes to MSR 2027, the Mining Software Repositories conference, as a registered report: reviewers accept the method before any test result exists, so even a no gets published. From February I open the sealed test, then build the two add-ons and try to break them, toward federated coding agents. Last, who is in the test.</aside>
 </section>
 
 <section data-chapter="5 · Where it stands">
@@ -394,7 +394,7 @@
     </div>
   </div>
   <p class="footnote">Membership is fixed by November 20, before any test result exists.</p>
-  <aside class="notes">The main test runs on OpenStack and Wikimedia, and each one has to pass. Qt granted permission in writing on October 15th, and its data passes the same checks. On its development runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>; that is a development reading, not the sealed test. Its test is being sized, and Qt joins only if that is committed by November 20th. Qt's assistant is also to be compared against one trained on another company's code, and both sources tried fell short: Chromium's V8 pool, and Android's open-source pool even with every permitted month read. That comparison now waits on Fuchsia, an open-source operating system Google develops, whose review host we read Chromium's written answer as covering. Its pool is being collected; if it is too small, that comparison is reported as exploratory, and the test between a community's two groups of projects stands alone. On GitHub, review is often optional, so GitHub communities form a separate replication that reports how many show the effect, without deciding the answer. Apache and .NET qualify; LLVM and Grafana cannot meet the split rules. GitHub data stays out of anything I publish until GitHub confirms in writing that this use is allowed. Membership is fixed by November 20th, before any test result exists.</aside>
+  <aside class="notes">OpenStack and Wikimedia decide the answer; each must pass. Qt has said yes in writing and passes the same data checks; in first runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>, a development reading. Qt's comparison with another company's code waits on Fuchsia, an open-source Google operating system. If Fuchsia's pool, now being collected, is too small, that comparison is reported as exploratory and the two-group test stands alone. GitHub, where review is often optional, is a separate replication, kept out of results until GitHub confirms in writing; Apache and .NET qualify. Membership is fixed by November 20th, before any test result exists, and Qt joins only if its test is sized by then.</aside>
 </section>
 
 <section class="dark closing" data-background-color="#14181f">
@@ -468,6 +468,7 @@
   </ul>
   <p>A measurement, not a guarantee.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
+  <aside class="notes"><span data-if="readings.planted_all">Word-for-word matching missed the planted rule in most runs, so the test scores probability. </span><span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>The test is sized to the standard registered reports ask for.</aside>
 </section>
 
 <section id="faq-data" class="backup">

@@ -27,9 +27,16 @@ def test_faq_notes_are_not_spoken() -> None:
     assert sl.words(deck("Hello there.", faq)) == 2
 
 
+def test_the_talk_also_ends_at_a_backup_slide_without_an_faq_index() -> None:
+    html = '<section><aside class="notes">Spoken here.</aside></section>'
+    html += '<section class="backup"><aside class="notes">Not spoken.</aside></section>'
+    assert sl.words(html) == 2
+
+
 def test_every_branch_counts_and_glued_branches_stay_separate_words() -> None:
     notes = '<span data-if="readings.x">It held.</span><span data-unless="readings.x">It failed.</span>'
     assert sl.words(deck(notes)) == 4
+    assert sl.words(deck('<span data-if="a">It held.</span>Then we go')) == 5
 
 
 def test_a_bound_figure_counts_as_one_word_whatever_its_text() -> None:
@@ -37,6 +44,8 @@ def test_a_bound_figure_counts_as_one_word_whatever_its_text() -> None:
     assert sl.words(deck(notes)) == 5
     held = 'It reads <span data-value="readings.x">nought point <span>four</span> two</span> now.'
     assert sl.words(deck(held)) == 4
+    assert sl.words(deck('a <b data-value="readings.x">four two</b> c')) == 3
+    assert sl.words(deck('up <span data-value="readings.x"></span>% today')) == 3
 
 
 def test_block_tags_end_a_word() -> None:

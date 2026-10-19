@@ -3,10 +3,11 @@
 
     python3 scripts/script_length.py federated-agents    # words and minutes, exit 1 over the cap
 
-The script is the speaker notes (`<aside class="notes">`) of the slides before the FAQ index
-(`<section id="faq">`); the FAQ slides are not spoken. Every `data-if` / `data-unless` branch
-counts, whichever one today's figures show, and a bound figure (`data-value`) counts as one word
-whatever its text, so the length does not move when a figure does.
+The script is the speaker notes (`<aside class="notes">`) of the slides before the first backup
+slide: the FAQ index (`<section id="faq">`) or a slide with class `backup`, which are not spoken.
+Every `data-if` / `data-unless` branch counts, whichever one today's figures show, and a bound
+figure (`data-value`) counts as one word whatever its text, so the length does not move when a
+figure does.
 """
 
 from __future__ import annotations
@@ -20,7 +21,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 WORDS_PER_MINUTE = 140
 CAP_MINUTES = {"federated-agents": 6.5}
 # Tags that end a word even with no space around them; inline ones such as <b> do not.
-BREAKS = {"br", "p", "li", "ul", "ol", "div", "section", "aside"}
+BREAKS = {"br", "p", "li", "ul", "ol", "div", "section", "aside", "td", "tr"}
+VOID = {"br", "img", "hr", "wbr"}
 
 
 class _Notes(HTMLParser):
@@ -29,34 +31,47 @@ class _Notes(HTMLParser):
         self.text: list[str] = []
         self._in_notes = False
         self._past_talk = False
-        self._in_figure = 0  # open <span>s inside a bound figure, whose text is not counted
+        self._open: list[tuple[str, str]] = []  # (tag, "figure" | "branch" | "") open in the notes
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         a = dict(attrs)
-        if tag == "section" and a.get("id") == "faq":
+        if tag == "section" and (a.get("id") == "faq" or "backup" in (a.get("class") or "").split()):
             self._past_talk = True
         if tag == "aside" and "notes" in (a.get("class") or "").split():
-            self._in_notes = True
+            self._in_notes, self._open = True, []
+            self.text.append(" ")
+            return
         if not self._in_notes or self._past_talk:
             return
-        if self._in_figure:
-            self._in_figure += tag == "span"
-        elif "data-value" in a:
+        in_figure = any(kind == "figure" for _, kind in self._open)
+        kind = ""
+        if not in_figure and "data-value" in a:
+            kind = "figure"
+        elif not in_figure and ("data-if" in a or "data-unless" in a):
+            kind = "branch"
+        if kind == "figure":
             self.text.append(" FIGURE")
-            self._in_figure = int(tag == "span")
-        elif tag in BREAKS or "data-if" in a or "data-unless" in a:
+        elif not in_figure and (kind or tag in BREAKS):
             self.text.append(" ")
+        if tag not in VOID:
+            self._open.append((tag, kind))
 
     def handle_endtag(self, tag: str) -> None:
-        if self._in_figure and tag == "span":
-            self._in_figure -= 1
-        elif tag in BREAKS:
-            self.text.append(" ")
         if tag == "aside":
             self._in_notes = False
+            self.text.append(" ")
+            return
+        if not self._in_notes or not any(t == tag for t, _ in self._open):
+            return
+        while self._open:
+            t, kind = self._open.pop()
+            if t == tag:
+                break
+        if kind == "branch" or tag in BREAKS:
+            self.text.append(" ")
 
     def handle_data(self, data: str) -> None:
-        if self._in_notes and not self._past_talk and not self._in_figure:
+        if self._in_notes and not self._past_talk and not any(k == "figure" for _, k in self._open):
             self.text.append(data)
 
 

@@ -40,11 +40,11 @@ qr:                ## Write each talk's QR codes into its index.html
 qr-check:          ## Fail if a talk's QR codes are missing or stale
 	uv run python scripts/qr.py --check
 
-fonts:             ## Fail unless DejaVu, the font the gates draw text in, is installed
-	@test -n "$$(fc-list 'DejaVu Sans:style=Book')" && test -n "$$(fc-list 'DejaVu Sans:style=Bold')" \
-	  && test -n "$$(fc-list 'DejaVu Sans Mono')" \
-	  || { echo "DejaVu Sans is missing; install it: apt-get install fonts-dejavu-core" >&2; exit 1; }
-	@echo "text drawn in $$($(FONTS) fc-match -f '%{family[0]}' system-ui) (this machine's own: $$(fc-match -f '%{family[0]}' system-ui))"
+fonts:             ## Fail unless the gates' font, DejaVu Sans, is what the browser will draw
+	@test "$$($(FONTS) fc-match -f '%{family[0]}' system-ui:bold)" = "DejaVu Sans" \
+	  && test "$$($(FONTS) fc-match -f '%{family[0]}' monospace)" = "DejaVu Sans Mono" \
+	  || { echo "the gates' font is not DejaVu Sans; install it: apt-get install fonts-dejavu-core" >&2; exit 1; }
+	@echo "text drawn in DejaVu Sans (this machine's own: $$(fc-match -f '%{family[0]}' system-ui))"
 
 slides-check: fonts ## Run the graphe:slides gates on every talk
 	@test -f "$(SLIDES)" || { echo "no graphe:slides script at $(SLIDES); set SLIDES" >&2; exit 1; }

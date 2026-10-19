@@ -314,7 +314,7 @@
   <div class="cards tiles" style="--n:3">
     <div class="card"><b>OpenStack</b><span class="big" data-motion="count" data-dur="1200" data-value="readings.corpus_examples_openstack"></span><p>real lessons from <span data-motion="count" data-dur="1200" data-value="readings.corpus_changes_openstack"></span> reviewed changes</p></div>
     <div class="card"><b>Wikimedia</b><span class="big" data-motion="count" data-dur="1200" data-value="readings.corpus_examples_wikimedia"></span><p>real lessons from <span data-motion="count" data-dur="1200" data-value="readings.corpus_changes_wikimedia"></span> reviewed changes</p></div>
-    <div class="card pending"><b>GitHub</b><span class="big">Collecting</span><p>Apache first, then LLVM, .NET and Grafana</p></div>
+    <div class="card pending"><b>GitHub</b><span class="big">Built</span><p>four communities; Apache and .NET qualify</p></div>
   </div>
   <div class="card wide lesson">
     <b>Each lesson is real</b>
@@ -322,7 +322,7 @@
     <p>Names are removed on arrival; the test months stay sealed.</p>
   </div>
   <p class="footnote">Open source: github.com/ajbarea/sphragis</p>
-  <aside class="notes">Two communities are built, OpenStack and Wikimedia, with thousands of lessons each. A lesson is one reviewer comment, the code it was about, and the code the developer wrote next. GitHub communities are being collected now, Apache first. The test months stay sealed until reviewers accept the plan.</aside>
+  <aside class="notes">Two communities are built, OpenStack and Wikimedia, with thousands of lessons each. A lesson is one reviewer comment, the code it was about, and the code the developer wrote next. Four GitHub communities are built too, and two qualify. Test months stay sealed until reviewers accept the plan.</aside>
 </section>
 
 <section data-chapter="4 · What's built">
@@ -387,14 +387,14 @@
       <b>The replication, on GitHub</b>
       <p>Review is often optional there, so it is read apart. Kept out of results until GitHub confirms in writing.</p>
       <ul data-motion="stagger" data-child="rise" data-delay="450">
-        <li class="out">Apache <span>collecting</span></li>
-        <li class="out">LLVM <span>next</span></li>
-        <li class="out">.NET, Grafana <span>next</span></li>
+        <li class="in">Apache <span>qualifies</span></li>
+        <li class="in">.NET <span>qualifies</span></li>
+        <li class="out">LLVM, Grafana <span>cannot qualify</span></li>
       </ul>
     </div>
   </div>
   <p class="footnote">Membership is fixed by November 20, before any test result exists.</p>
-  <aside class="notes">The main test runs on OpenStack and Wikimedia, and each one has to pass. Qt granted permission in writing on October 15th; its data is collected and built under those terms, and it passes the same checks. Its development runs are in, and on them Qt's own group's assistant <span data-value="readings.team_qt"></span>; that is a development reading, not the sealed test. The simulation that sizes Qt's test is under way, and Qt joins only if it is committed by November 20th. Chromium said yes to a smaller pool from its V8 project, but that pool turned out too small to train a comparison assistant, so the outside company Qt is compared against comes from the next source on the registered list. On GitHub, review is often optional, so the GitHub communities form a separate replication. It reports how many show the effect, without deciding the answer. I've asked GitHub to confirm in writing that this research use is allowed; collection continues, but GitHub data stays out of anything I publish until GitHub confirms. Membership is fixed by November 20th, before any test result exists.</aside>
+  <aside class="notes">The main test runs on OpenStack and Wikimedia, and each one has to pass. Qt granted permission in writing on October 15th, and its data passes the same checks. On its development runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>; that is a development reading, not the sealed test. Its test is being sized, and Qt joins only if that is committed by November 20th. Chromium's V8 pool was too small to train a comparison assistant, so the outside company Qt is compared against now comes from Android's open-source project; a first reading came up short, and the rest of its permitted months are being read. On GitHub, review is often optional, so GitHub communities form a separate replication that reports how many show the effect, without deciding the answer. Apache and .NET qualify; LLVM and Grafana cannot meet the split rules. GitHub data stays out of anything I publish until GitHub confirms in writing that this use is allowed. Membership is fixed by November 20th, before any test result exists.</aside>
 </section>
 
 <section class="dark closing" data-background-color="#14181f">
@@ -479,7 +479,7 @@
     <li>Label quality is audited blind: two model raters, a human, and an open-weight model anyone can rerun. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, about <span data-value="readings.audit_valid_openstack"></span> have a rewrite that answers its comment; the rest stay in and are scored in every arm, so they dilute a difference rather than favour one side.</li>
     <li>Every filtering rule and what it removed is published: ajbarea.github.io/sphragis/dataset</li>
     <li>Contamination rests on the test months postdating the model: a word classifier that never sees it tells the windows apart better than the membership tests do.</li>
-    <li>Dropping AI-assisted commits (by trailer) moves OpenStack's development pilot by <span data-value="readings.ai_shift_openstack"></span>.</li>
+    <li>Each result is also read without formatting-only fixes and without AI-assisted commits (by trailer); dropping the latter moves OpenStack's development pilot by <span data-value="readings.ai_shift_openstack"></span>.</li>
     <li>Identities are pseudonymised in everything derived from the raw data, and addresses are swept from comment text. The raw snapshots still hold some host account numbers; nothing derived does.</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -494,7 +494,7 @@
 
 <section id="faq-people" class="backup">
   <h2>Aren't conventions really the reviewers', and don't they change?</h2>
-  <p>Partly, and the study checks it. Nearly every test example shares a reviewer with the other half of its own organization and none with a foreign one, so a reviewer effect would show up as the organization's advantage over a foreign one. An analysis planned before the test months open asks whether that advantage grows with how much of the training data the example's own reviewers wrote.</p>
+  <p>Partly, and the study checks it. Nearly every test example shares a reviewer with the other half of its own organization and none with a foreign one, so a reviewer effect would show up as the organization's advantage over a foreign one. An analysis planned before the test months open asks whether that advantage grows with how much of the training data the example's own reviewers wrote. Review is concentrated: in OpenStack, Wikimedia and Qt alike, the busiest tenth of reviewers are credited with about half the training examples.</p>
   <p>People also come and go. The test months come after the training months, so conventions that changed with the people count against the result rather than for it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
@@ -510,7 +510,7 @@
 <section id="faq-beyond" class="backup">
   <h2>Is the dataset useful beyond this one model?</h2>
   <p>Yes. An example is a reviewer's comment, the code it was about, and the developer's real next revision. Nothing in it comes from a model, so any model or agent can be trained on it or scored against it.</p>
-  <p>The communities span several languages: OpenStack's examples are led by Python, Wikimedia's by PHP and JavaScript, and the GitHub candidates add C++, C#, Java, Go and TypeScript.</p>
+  <p>The communities span several languages: OpenStack's examples are led by Python, Wikimedia's by PHP and JavaScript, and the two GitHub members, Apache and .NET, add Java, C# and more.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 

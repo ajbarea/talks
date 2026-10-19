@@ -5,8 +5,8 @@
 
 The script is the speaker notes (`<aside class="notes">`) of the slides before the FAQ index
 (`<section id="faq">`); the FAQ slides are not spoken. Every `data-if` / `data-unless` branch
-counts, whichever one today's figures show, and a bound figure (`data-value`, empty in the
-source) counts as one word, so the length does not move when a figure does.
+counts, whichever one today's figures show, and a bound figure (`data-value`) counts as one word
+whatever its text, so the length does not move when a figure does.
 """
 
 from __future__ import annotations
@@ -19,6 +19,8 @@ from html.parser import HTMLParser
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 WORDS_PER_MINUTE = 140
 CAP_MINUTES = {"federated-agents": 6.5}
+# Tags that end a word even with no space around them; inline ones such as <b> do not.
+BREAKS = {"br", "p", "li", "ul", "ol", "div", "section", "aside"}
 
 
 class _Notes(HTMLParser):
@@ -27,27 +29,34 @@ class _Notes(HTMLParser):
         self.text: list[str] = []
         self._in_notes = False
         self._past_talk = False
+        self._in_figure = 0  # open <span>s inside a bound figure, whose text is not counted
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         a = dict(attrs)
         if tag == "section" and a.get("id") == "faq":
             self._past_talk = True
-        elif tag == "aside" and "notes" in (a.get("class") or "").split():
+        if tag == "aside" and "notes" in (a.get("class") or "").split():
             self._in_notes = True
+        if not self._in_notes or self._past_talk:
+            return
+        if self._in_figure:
+            self._in_figure += tag == "span"
+        elif "data-value" in a:
+            self.text.append(" FIGURE")
+            self._in_figure = int(tag == "span")
+        elif tag in BREAKS or "data-if" in a or "data-unless" in a:
             self.text.append(" ")
-        elif self._in_notes and not self._past_talk:
-            if "data-value" in a:
-                self.text.append(" FIGURE")
-            elif "data-if" in a or "data-unless" in a:
-                self.text.append(" ")
 
     def handle_endtag(self, tag: str) -> None:
-        if tag == "aside" and self._in_notes:
-            self._in_notes = False
+        if self._in_figure and tag == "span":
+            self._in_figure -= 1
+        elif tag in BREAKS:
             self.text.append(" ")
+        if tag == "aside":
+            self._in_notes = False
 
     def handle_data(self, data: str) -> None:
-        if self._in_notes and not self._past_talk:
+        if self._in_notes and not self._past_talk and not self._in_figure:
             self.text.append(data)
 
 
@@ -62,18 +71,24 @@ def minutes(n_words: int) -> float:
     return n_words / WORDS_PER_MINUTE
 
 
+def cap_words(talk: str) -> int | None:
+    """The most words a talk's script may hold, or None when it has no cap."""
+    cap = CAP_MINUTES.get(talk)
+    return None if cap is None else int(cap * WORDS_PER_MINUTE)
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("talk", help="a talk folder, such as federated-agents")
-    talk = pathlib.Path(ap.parse_args(argv).talk)
-    n = words((ROOT / talk.name / "index.html").read_text(encoding="utf-8"))
-    cap = CAP_MINUTES.get(talk.name)
-    over = cap is not None and minutes(n) > cap
-    limit = f" (cap {cap} minutes, {int(cap * WORDS_PER_MINUTE)} words)" if cap else ""
-    print(f"{talk.name}: {n} words, {minutes(n):.2f} minutes at {WORDS_PER_MINUTE} a minute{limit}")
-    if over:
-        print(f"{talk.name}: over the cap by {n - int(cap * WORDS_PER_MINUTE)} words", file=sys.stderr)
-    return 1 if over else 0
+    talk = pathlib.Path(ap.parse_args(argv).talk).name
+    n = words((ROOT / talk / "index.html").read_text(encoding="utf-8"))
+    limit = cap_words(talk)
+    cap = "" if limit is None else f" (cap {CAP_MINUTES[talk]} minutes, {limit} words)"
+    print(f"{talk}: {n} words, {minutes(n):.2f} minutes at {WORDS_PER_MINUTE} a minute{cap}")
+    if limit is not None and n > limit:
+        print(f"{talk}: over the cap by {n - limit} words", file=sys.stderr)
+        return 1
+    return 0
 
 
 if __name__ == "__main__":

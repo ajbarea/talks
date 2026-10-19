@@ -56,10 +56,11 @@ A run on `main` that passes publishes the site; one that fails publishes nothing
 keeps its last good version. GitHub turns off a public repository's scheduled runs after 60
 days without activity; re-enable the daily run from the Actions tab if it stops.
 
-The gates, renders and exports draw text in DejaVu Sans on every machine (`scripts/fonts.conf`),
-because the decks' system font stack resolves to a different font on each one, and a slide that
-fits in a narrower font clips in CI. `make fonts` fails when DejaVu is not installed
-(`apt-get install fonts-dejavu-core`). `make render TALK=<folder> OUT=<dir>` writes a built talk's
+On Linux, the gates, renders and exports draw text only in DejaVu (`scripts/fonts.conf`), the
+font CI's runner draws the decks' system font stack in. Each machine resolves that stack to its
+own font, and a slide that fits in a narrower one clips in CI. `make fonts` fails when the stack
+does not resolve to DejaVu (`apt-get install fonts-dejavu-core`). Chromium reads fontconfig on
+Linux only, so on macOS or Windows the gates still measure the system font. `make render TALK=<folder> OUT=<dir>` writes a built talk's
 slides and phone views as PNGs.
 
 `make script-length` prints each talk's spoken script in words and minutes at 140 a minute: the

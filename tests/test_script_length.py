@@ -18,9 +18,8 @@ def deck(talk: str, faq: str = "") -> str:
 
 @pytest.mark.parametrize("talk", sorted(sl.CAP_MINUTES))
 def test_the_spoken_script_fits_its_cap(talk: str) -> None:
-    n = sl.words((ROOT / talk / "index.html").read_text(encoding="utf-8"))
-    cap = sl.CAP_MINUTES[talk]
-    assert sl.minutes(n) <= cap, f"{talk}: {n} words is {sl.minutes(n):.2f} minutes, over the {cap}-minute cap"
+    """Runs what `make script-length` runs; its first line says how far over a failing talk is."""
+    assert sl.main([talk]) == 0
 
 
 def test_faq_notes_are_not_spoken() -> None:
@@ -33,9 +32,15 @@ def test_every_branch_counts_and_glued_branches_stay_separate_words() -> None:
     assert sl.words(deck(notes)) == 4
 
 
-def test_a_bound_figure_counts_as_one_word() -> None:
+def test_a_bound_figure_counts_as_one_word_whatever_its_text() -> None:
     notes = 'OpenStack reads <span data-value="readings.team_openstack"></span>; Wikimedia too.'
     assert sl.words(deck(notes)) == 5
+    held = 'It reads <span data-value="readings.x">nought point <span>four</span> two</span> now.'
+    assert sl.words(deck(held)) == 4
+
+
+def test_block_tags_end_a_word() -> None:
+    assert sl.words(deck("<ul><li>One.</li><li>Two.</li></ul>first<br>second<p>third</p>")) == 5
 
 
 def test_entities_and_tags_inside_a_word_do_not_split_it() -> None:

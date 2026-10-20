@@ -42,6 +42,26 @@
   <aside class="notes">Hi, I'm AJ Barea, a PhD student at RIT. This is Federated Agents: coding agents that learn each company's house rules without its code leaving.</aside>
 </section>
 
+<section data-contribution>
+  <span class="kicker">What I did</span>
+  <h2>I built two checked datasets of real code-review lessons</h2>
+  <div class="cards contrib" style="--n:2">
+    <div class="card">
+      <b>What I did</b>
+      <div class="counts">
+        <span><span class="big" data-motion="count" data-dur="1200" data-value="readings.corpus_examples_openstack"></span>OpenStack lessons</span>
+        <span><span class="big" data-motion="count" data-dur="1200" data-value="readings.corpus_examples_wikimedia"></span>Wikimedia lessons</span>
+      </div>
+      <p>Each one: a reviewer's comment, its code, and the developer's fix.</p>
+    </div>
+    <div class="card">
+      <b>Why you should care</b>
+      <p>Your reviewers keep repeating rules no AI assistant has seen. Lessons like these teach those rules; my study tests whether an assistant learns them without your code leaving.</p>
+    </div>
+  </div>
+  <aside class="notes">Here's what I did. I built an open-source tool that turns public code review into checked lessons, and with it two datasets: <span data-value="readings.corpus_examples_openstack"></span> lessons from OpenStack and <span data-value="readings.corpus_examples_wikimedia"></span> from Wikimedia. Each lesson is a reviewer's comment, the code it was about, and the code the developer wrote next. Here's why you should care. If you write code on a team, your reviewers keep repeating rules that no AI assistant has ever seen. Lessons like these are what would teach it those rules, and my study tests whether it can learn them without your code ever leaving. Let me start with one of those rules.</aside>
+</section>
+
 <section data-chapter="1 · The problem">
   <span class="kicker">1 · The problem</span>
   <h2>AI coding assistants miss a company's unwritten house rules</h2>

@@ -9,6 +9,12 @@
   border-radius: 50%; box-shadow: 0 0 0 6px #b8862b;
 }
 
+/* What I did and why you should care: the ten portraits, then the stakes. */
+.contrib { margin-top: 24px; }
+.contrib .faces { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin: 4px 0 14px; }
+.contrib .faces img { display: block; width: 100%; height: auto; border-radius: 50%; background: var(--band); }
+.phone .contrib .faces { grid-template-columns: repeat(5, 1fr); gap: 8px; }
+
 /* The lone agent: a request in, a closed box, a result out; the choices it made beside it. */
 .solo { display: grid; grid-template-columns: 1fr 360px; gap: 36px; align-items: center; margin-top: 24px; }
 .lane { display: flex; align-items: center; gap: 0; }

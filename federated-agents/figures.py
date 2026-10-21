@@ -351,11 +351,31 @@ def readings() -> dict[str, str | int | bool]:
     valid = audit["valid_shares"]["A"]
     values["audit_valid_openstack"] = f"{100 * valid['share']:.0f}%"
     values["audit_items_openstack"] = audit["items"]
-    # How far OpenStack's development pilot moves when read without its AI-assisted examples.
-    # The pilot and both comparators are read at the registered decoder, repetition penalty 1.0
-    # (sphragis research log, 2026-10-08); the earlier artifacts decoded at the checkpoint's 1.1.
-    pilot = load(f"partition-pilot-openstack-sensitivities{DECODER}.json")
+    # How far OpenStack's development pilot moves when read without its AI-assisted examples, on
+    # the registered score (sphragis research log, 2026-10-21).
+    pilot = load("partition-pilot-openstack-likelihood-sensitivities.json")
+    if pilot.get("metric") != METRIC:
+        raise SystemExit(f"the sensitivities are on {pilot.get('metric')}, not {METRIC}")
     values["ai_shift_openstack"] = f"{pilot['without']['ai_assisted']['estimate'] - pilot['estimate']:+.4f}"
+    # The backport lookup (sphragis research log, 2026-10-20): the share of development targets
+    # whose added lines already stood in their project at the weight upload, as a range over the
+    # communities, and whether leaving them out keeps each development pilot's reading, on the
+    # registered score at the deck's level.
+    shares = []
+    for org in ("openstack", "wikimedia", "qt"):
+        dev = load(f"backport-lookup-{org}.json")["windows"]["dev"]
+        shares.append(dev["found"] / dev["examples"])
+    low, high = round(100 * min(shares)), round(100 * max(shares))
+    values["found_share_dev"] = f"{low}%" if low == high else f"{low}% to {high}%"
+    holds = []
+    for org in ORGS:
+        read = load(f"partition-pilot-{org}-likelihood-sensitivities.json")
+        if read.get("metric") != METRIC:
+            raise SystemExit(f"the sensitivities are on {read.get('metric')}, not {METRIC}")
+        primary = read["intervals"]["0.975"]["low"] > 0
+        without = read["without"]["found_before_checkpoint"]["intervals"]["0.975"]["low"] > 0
+        holds.append(primary == without)
+    values["found_holds"] = all(holds)
     # The retrieval comparator on the development window: own half's pool minus sibling's, at
     # k = 1 and 3, the adapters over the same partitions, and the sibling-minus-foreign contrast.
     for org in ("openstack", "wikimedia"):

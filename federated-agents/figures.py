@@ -162,6 +162,8 @@ def sized_simulation(org: str) -> dict:
         # A simulation written before the null-only mode existed carries no flag and is full.
         if not (sim := json.loads(path.read_text())).get("null_only", False)
         and sim.get("metric") == METRIC
+        # The simulation drew the same cluster unit as the K source (a by-change one carries none).
+        and (sim.get("cluster_unit") or {}).get("unit") == (k.get("cluster_unit") or {}).get("unit")
         and sim["runs"] == k["runs"]
         and sim["null_trials"] == k["null_trials"]
         and same_calibration(sim["spread_targets"], k["spread_targets"])
@@ -401,6 +403,17 @@ def readings() -> dict[str, str | int | bool]:
         values[f"team_{org}"] = team[org][0]
         values[f"team_gain_{org}"] = pilot["verdicts"]["0.975"] == "supported"
     values["team_title"] = team_title(team)
+    # The development pilots read again with relation chains as the resampled unit, H1's
+    # registered cluster unit (sphragis research log, 2026-10-21): whether every community's
+    # verdict at the deck's level is the one it has by change.
+    same = []
+    for org in (*ORGS, "qt"):
+        by_change = load(f"partition-pilot-{org}-likelihood.json")
+        by_chain = load(f"partition-pilot-{org}-likelihood-chains.json")
+        if by_chain.get("metric") != METRIC or by_chain["cluster_unit"]["unit"] != "chain":
+            raise SystemExit(f"{org}'s chain pilot is not on {METRIC} by chain")
+        same.append(by_change["verdicts"]["0.975"] == by_chain["verdicts"]["0.975"])
+    values["chains_hold"] = all(same)
     # Qt's development pilot, read before Qt is admitted: the status slide names its reading alone,
     # since its K waits on its simulation and its split is not yet read (sphragis research log,
     # 2026-10-18).

@@ -165,6 +165,7 @@ def sized_simulation(org: str) -> dict:
         # A simulation written before the null-only mode existed carries no flag and is full.
         if not (sim := json.loads(path.read_text())).get("null_only", False)
         and sim.get("metric") == METRIC
+        and sim.get("hypothesis", "H1") == "H1"
         # The simulation drew the same cluster unit as the K source (a by-change one carries none).
         and (sim.get("cluster_unit") or {}).get("unit") == (k.get("cluster_unit") or {}).get("unit")
         and sim["runs"] == k["runs"]

@@ -147,15 +147,18 @@ def same_calibration(a: dict, b: dict) -> bool:
 
 
 def sized_simulation(org: str) -> dict:
-    """The H1 simulation at the K a test read takes (sphragis `k-coverage-<org>-likelihood.json`).
+    """The H1 simulation at the K a Gerrit test read takes, both drawn in relation chains, H1's
+    registered cluster unit (sphragis `k-coverage-<org>-likelihood-chains.json`).
 
     The panel says a real effect of the smallest size that matters is found at the registered
     power, which holds only if every effect the simulation detects at that power, at the spread
     K was sized on, is below the SESOI.
     """
-    k = load(f"k-coverage-{org}-likelihood.json")
+    k = load(f"k-coverage-{org}-likelihood-chains.json")
     if k.get("metric") != METRIC:
         raise SystemExit(f"{org}'s K source is on {k.get('metric')}, not {METRIC}")
+    if (k.get("cluster_unit") or {}).get("unit") != "chain":
+        raise SystemExit(f"{org}'s K source is not drawn in relation chains")
     matches = [
         sim
         for path in sorted(RESULTS.glob(f"partition-sensitivity-{org}{DECODER}-{METRIC}*.json"))
@@ -414,9 +417,8 @@ def readings() -> dict[str, str | int | bool]:
             raise SystemExit(f"{org}'s chain pilot is not on {METRIC} by chain")
         same.append(by_change["verdicts"]["0.975"] == by_chain["verdicts"]["0.975"])
     values["chains_hold"] = all(same)
-    # Qt's development pilot, read before Qt is admitted: the status slide names its reading alone,
-    # since its K waits on its simulation and its split is not yet read (sphragis research log,
-    # 2026-10-18).
+    # Qt's development pilot, read before Qt is admitted: the status slide names its reading alone
+    # (sphragis research log, 2026-10-18).
     values["team_qt"] = team_reading(load("partition-pilot-qt-likelihood.json"))[0]
     # Check 5: each half's own marker planted in half its training lessons; how many runs found it.
     planted = {org: planted_runs(org) for org in ("openstack", "wikimedia")}
@@ -426,15 +428,16 @@ def readings() -> dict[str, str | int | bool]:
     values["planted_runs"] = len(every)
     values["planted_found"] = every.count("pass")
     values["planted_all"] = values["planted_found"] == values["planted_runs"]
-    # Each community's K from the coverage rule a test read takes it from, beside the
-    # reproducibility K it would have had: the coverage rule raised it where they differ.
+    # Each community's K from the coverage rule a Gerrit test read takes it from, in relation
+    # chains, beside the reproducibility K it would have had: the coverage rule raised it where
+    # they differ (sphragis research log, 2026-10-22).
     for org in ORGS:
-        k = load(f"k-coverage-{org}-likelihood.json")
+        k = load(f"k-coverage-{org}-likelihood-chains.json")
         values[f"k_{org}"] = k["runs"]
         values[f"k_reproducibility_{org}"] = k["reproducibility_runs"]
         values[f"k_raised_{org}"] = k["runs"] > k["reproducibility_runs"]
     # The sizing panel: studies out of SIZED_STUDIES that find an effect at the registered power.
-    power = {sized_simulation(org)["hypothesis_power"] for org in ("openstack", "wikimedia")}
+    power = {sized_simulation(org)["hypothesis_power"] for org in (*ORGS, "qt")}
     if len(power) != 1:
         raise SystemExit(f"the simulations are sized at different powers: {power}")
     values["sized_studies"] = SIZED_STUDIES

@@ -126,13 +126,17 @@ def _sizing(
     k_metric: str = "logprob_per_token",
     sim_metric: str = "logprob_per_token",
     null_trials: int = 4000,
+    k_unit: str | None = "chain",
+    sim_unit: str | None = "chain",
+    hypothesis: str = "H1",
 ) -> None:
     _write(root, "likelihood-sesoi.json", {"sesoi": registered})
     _write(
         root,
-        "k-coverage-wikimedia-likelihood.json",
+        "k-coverage-wikimedia-likelihood-chains.json",
         {
             "metric": k_metric,
+            "cluster_unit": {"unit": k_unit} if k_unit else None,
             "runs": 20,
             "null_trials": 4000,
             "spread_target": "sizing_bound_90",
@@ -142,9 +146,11 @@ def _sizing(
     cells = {"1": {"minimum_detectable_effect": mde / 2}, "2": {"minimum_detectable_effect": mde}}
     _write(
         root,
-        "partition-sensitivity-wikimedia-rp1.0-logprob_per_token-k20.json",
+        "partition-sensitivity-wikimedia-rp1.0-logprob_per_token-chains-k20.json",
         {
             "metric": sim_metric,
+            "hypothesis": hypothesis,
+            "cluster_unit": {"unit": sim_unit} if sim_unit else None,
             "null_only": False,
             "runs": 20,
             "null_trials": null_trials,
@@ -169,6 +175,9 @@ def test_a_simulation_below_the_sesoi_sizes_the_panel(figures, tmp_path: Path) -
         {"mde": 0.007, "k_metric": "exact_match"},
         {"mde": 0.007, "sim_metric": "exact_match"},
         {"mde": 0.007, "null_trials": 1000},
+        {"mde": 0.007, "k_unit": None, "sim_unit": None},  # K and its simulation read by change
+        {"mde": 0.007, "sim_unit": None},  # the only simulation drew changes
+        {"mde": 0.007, "hypothesis": "H2"},
     ],
 )
 def test_a_simulation_that_cannot_back_the_panel_fails_the_build(figures, tmp_path: Path, kwargs: dict) -> None:

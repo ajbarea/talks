@@ -36,7 +36,7 @@ Target Duration: ~45 seconds
 * **Environment & Lighting:** Cut to a moody Victorian library with mahogany bookshelves and a roaring fireplace. Rich amber and mahogany tones.
 * **The Avatar (Wardrobe & Physicality):** Velvet burgundy jacket with an ascot. Sophisticated and relaxed. At 0:23, brings two hands up, each holding a glowing module.
 * **Overlay Animation:** Hovering in front of the frozen core are two modular magnetic adapters:
-  1. An Amber/Orange Adapter labeled 'PRIVATE' (fed by the repositories left off the list: ✕ billing, snapping into the model).
+  1. An Amber/Orange Adapter labeled 'PRIVATE' (fed by the repositories marked ✕: billing, snapping into the model).
   2. A Cyan/Blue Adapter labeled 'SHARED' (fed only by the repositories the company ticks on a short list: ✓ web-app ✓ docs ✕ billing).
 * **Spoken Script:**
   "My idea: two add-ons on the same frozen base model. A private add-on that never leaves your company... and a shared add-on that learns only from projects your company marks shareable."

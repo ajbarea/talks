@@ -184,3 +184,56 @@ def test_a_simulation_that_cannot_back_the_panel_fails_the_build(figures, tmp_pa
     _sizing(tmp_path, **kwargs)
     with pytest.raises(SystemExit):
         figures.sized_simulation("wikimedia")
+
+
+def _runs(root: Path, setups: dict[str, list[tuple[str, int, int, int]]]) -> None:
+    results = root / "datasets" / "results"
+    results.mkdir(parents=True, exist_ok=True)
+    for org, runs in setups.items():
+        names = []
+        for i, (model, rank, a, b) in enumerate(runs):
+            name = f"datasets/results/run-{org}-{i}.json"
+            corpora = {f"{org}-a": {"train_examples_equalized": a}, f"{org}-b": {"train_examples_equalized": b}}
+            (root / name).write_text(json.dumps({"model_id": model, "lora_rank": rank, "corpora": corpora}))
+            names.append(name)
+        _write(results, f"partition-pilot-{org}-likelihood.json", {"run_files": names})
+
+
+@pytest.fixture
+def runs_root(figures, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    monkeypatch.setattr(figures, "SPHRAGIS", tmp_path)
+    monkeypatch.setattr(figures, "RESULTS", tmp_path / "datasets" / "results")
+    return tmp_path
+
+
+SAME = ("org/Model-7B", 32, 1850, 1850)
+
+
+def test_one_set_up_across_every_run_names_it(figures, runs_root: Path) -> None:
+    _runs(runs_root, {org: [SAME, SAME] for org in ("openstack", "wikimedia", "qt")})
+    assert figures.trained_setup() == ("org/Model-7B", 32, 1850)
+
+
+@pytest.mark.parametrize(
+    "odd", [("org/Model-7B", 64, 1850, 1850), ("org/Other", 32, 1850, 1850), ("org/Model-7B", 32, 1850, 1700)]
+)
+def test_a_run_with_another_set_up_fails_the_build(figures, runs_root: Path, odd: tuple) -> None:
+    _runs(runs_root, {"openstack": [SAME], "wikimedia": [SAME, odd], "qt": [SAME]})
+    with pytest.raises(SystemExit, match="different set-ups"):
+        figures.trained_setup()
+
+
+def test_a_pilot_with_no_runs_or_a_missing_run_fails_the_build(figures, runs_root: Path) -> None:
+    _runs(runs_root, {"openstack": [SAME], "wikimedia": [], "qt": [SAME]})
+    with pytest.raises(SystemExit, match="no run files"):
+        figures.trained_setup()
+    _runs(runs_root, {"openstack": [SAME], "wikimedia": [SAME], "qt": [SAME]})
+    (runs_root / "datasets" / "results" / "run-qt-0.json").unlink()
+    with pytest.raises(SystemExit, match="missing artifact"):
+        figures.trained_setup()
+
+
+def test_a_window_reads_as_the_months_it_covers(figures) -> None:
+    assert figures.month_span("2024-11-01", "2025-09-01") == "Nov 2024 to Aug 2025"
+    with pytest.raises(SystemExit, match="empty"):
+        figures.month_span("2025-11-01", "2025-11-01")

@@ -157,7 +157,7 @@ figure.code pre {
 .phone .areas .card > b { grid-column: 1 / -1; }
 .phone .areas .mini { height: auto; }
 .phone .areas .mini text { font-size: 22px; }
-.mini .own { fill: none; stroke: var(--frame); stroke-width: 2; stroke-dasharray: 6 5; }
+.mini .own { fill: none; stroke: var(--frame); stroke-width: 2; }
 .mini .hub,
 .mini .add,
 .mini .fixed { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 3; }

@@ -337,7 +337,29 @@ def month_span(start: str, end: str) -> str:
     """A window as the months it covers: 2024-11-01 to 2025-09-01 reads "Nov 2024 to Aug 2025"."""
     first = dt.date.fromisoformat(start)
     last = dt.date.fromisoformat(end) - dt.timedelta(days=1)
+    if last < first:
+        raise SystemExit(f"the window {start} to {end} is empty")
     return f"{first:%b %Y} to {last:%b %Y}"
+
+
+def trained_setup() -> tuple[str, int, int]:
+    """What every development run behind the registered pilots trained: base model, adapter rank and
+    lessons per half as used. They must agree, or the pipeline slide names one set-up for several."""
+    seen = set()
+    for org in (*ORGS, "qt"):
+        files = load(f"partition-pilot-{org}-likelihood.json")["run_files"]
+        if not files:
+            raise SystemExit(f"{org}'s registered pilot lists no run files")
+        for name in files:
+            path = SPHRAGIS / name
+            if not path.is_file():
+                raise SystemExit(f"missing artifact {path}; the deck's numbers come from sphragis")
+            run = json.loads(path.read_text())
+            for half in run["corpora"].values():
+                seen.add((run["model_id"], run["lora_rank"], half["train_examples_equalized"]))
+    if len(seen) != 1:
+        raise SystemExit(f"the development runs trained different set-ups: {sorted(seen)}")
+    return seen.pop()
 
 
 def registered(name: str) -> dict:
@@ -463,16 +485,8 @@ def readings() -> dict[str, str | int | bool]:
         raise SystemExit(f"the simulations are sized at different powers: {power}")
     values["sized_studies"] = SIZED_STUDIES
     values["sized_found"] = round(SIZED_STUDIES * power.pop())
-    # The method figure: what every development run behind the registered pilots trained (base
-    # model, adapter rank, lessons per half), which must agree across them, and the windows.
-    trained = set()
-    for org in (*ORGS, "qt"):
-        for name in load(f"partition-pilot-{org}-likelihood.json")["run_files"]:
-            run = json.loads((SPHRAGIS / name).read_text())
-            trained.add((run["model_id"], run["lora_rank"], run["train_size"]))
-    if len(trained) != 1:
-        raise SystemExit(f"the development runs trained different set-ups: {sorted(trained)}")
-    model, rank, size = trained.pop()
+    # The method figure: what the development runs trained, and the study's windows.
+    model, rank, size = trained_setup()
     values["method_model"] = model.rsplit("/", 1)[-1]
     values["method_rank"] = rank
     values["method_lessons"] = f"{size:,}"

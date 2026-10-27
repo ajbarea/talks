@@ -1,0 +1,68 @@
+# Video Script: Why Your Tech Lead Hates AI Code (And What I'm Testing)
+
+Target Format: Vertical 9:16 (YouTube Shorts / Reels)
+Target Duration: ~45 seconds
+
+---
+
+### Segment 1 (0:00 – 0:10): The Code Review Rejection
+
+* **Environment & Lighting:** A dim, cinematic developer setup with dual ultrawide monitors glowing in deep indigo. A soft amber rim light contours the avatar.
+* **The Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal t-shirt. Direct, conspiratorial eye contact. At 0:04, leans in half an inch with an energetic, knowing smirk.
+* **Overlay Animation (The Hook):** A floating holographic IDE window shows an AI proudly autocompleting raw database code:
+  `rows = psycopg2.connect(DSN).cursor().execute(q)`
+  Instantly, a bright crimson code-review comment card slaps down over it:
+  `✕ REJECTED: 'Use our db.query() helper. We NEVER open raw connections.'`
+  A shower of red sparks reflects subtly against the avatar's face.
+* **Spoken Script:**
+  "Ever had an AI write code that works... [0.6s pause, knowing smile] ...only for your tech lead to immediately reject it with: 'We don't do that here'?"
+* **Vocal Direction:** Fast, conversational, punchy. Emphasize 'works' and drop into a playful, mock-serious tone on 'We don't do that here'.
+
+---
+
+### Segment 2 (0:10 – 0:20): The Unwritten Rules Problem
+
+* **Environment & Lighting:** Seamless cut to an arctic ice cave / server vault. Massive blade racks encased in glowing, translucent blue glacial ice. Cool frosty lighting with a warm key light on the face.
+* **The Avatar (Wardrobe & Physicality):** Heavy frost-dusted parka with a subtle high-tech golden collar. At 0:12, gestures with an open palm toward the frozen core.
+* **Overlay Animation:** A massive, glowing crystalline neural network is frozen solid in ice (the Base Model). Review comment bubbles hover around it, but cannot penetrate the ice.
+* **Spoken Script:**
+  "AI coding assistants miss your team's unwritten house rules. They're taught in code review, which assistants never see, and no company wants to hand over its code."
+* **Vocal Direction:** Clear, empathetic problem-statement pacing. Punch 'unwritten house rules' and stress 'hand over its code'.
+
+---
+
+### Segment 3 (0:20 – 0:30): The Twin-Adapter Idea
+
+* **Environment & Lighting:** Cut to a moody Victorian library with mahogany bookshelves and a roaring fireplace. Rich amber and mahogany tones.
+* **The Avatar (Wardrobe & Physicality):** Velvet burgundy jacket with an ascot. Sophisticated and relaxed. At 0:23, brings two hands up, each holding a glowing module.
+* **Overlay Animation:** Hovering in front of the frozen core are two modular magnetic adapters:
+  1. An Amber/Orange Adapter labeled 'PRIVATE' (pulling in internal API docs and billing rules, snapping into the model).
+  2. A Cyan/Blue Adapter labeled 'SHARED' (fed only by the repositories the company ticks on a short list: ✓ web-app ✓ docs ✕ billing).
+* **Spoken Script:**
+  "My idea: two small add-ons on one frozen base model. A private add-on that never leaves your company... and a shared add-on that learns only from projects your company marks shareable."
+* **Vocal Direction:** Confident, clear, and intellectually exciting. Genuine smile. Treat 'private add-on' and 'shared add-on' as clean, intuitive concepts.
+
+---
+
+### Segment 4 (0:30 – 0:40): The Federated Punchline (Code Stays Home)
+
+* **Environment & Lighting:** Cut to a futuristic spaceship command bridge looking out across an expansive starfield. Deep violet and golden nebula rim lighting.
+* **The Avatar (Wardrobe & Physicality):** Futuristic fleet commander jacket. At 0:35, brings both hands together in a smooth, confident clasp.
+* **Overlay Animation:** A network map of different companies (Company A, Company B, Company C). Shimmering blue streams flow from each company to a central server, carrying only updates to the blue shared add-on. Each company's private repository stays put with the text: CODE STAYS HOME. At 0:37 a question badge pops over the blue streams: "WHOSE IS IT?"
+* **Spoken Script:**
+  "With federated learning, only shared updates travel, never your code. Step one is the data. Building it, and testing whether those updates reveal whose they are, comes after."
+* **Vocal Direction:** Build energy on 'only shared updates travel, never your code', then drop to a curious, open tone and land on 'whose they are'.
+
+---
+
+### Segment 5 (0:40 – 0:46): The Community Call to Action
+
+* **Environment & Lighting:** Smooth transition back to the Segment 1 developer workspace (dim indigo monitor glow, warm amber rim light). Creates a clean visual loop back to the start.
+* **The Avatar (Wardrobe & Physicality):** Back in the relaxed-fit dark-charcoal t-shirt. At 0:42, gives a friendly, conversational lean forward with an amused, curious expression.
+* **Overlay Animation:** A sleek, minimalist dark-mode card slides up with the GitHub repository preview:
+  `sphragis: open-source tool that turns public code review into datasets`
+  Below it, a pulsing badge:
+  `Pinned Comment ⬇`
+* **Spoken Script:**
+  "The tool is open source; link pinned. Some communities gave written permission, others post rules for collectors; either way, review text stays unpublished. What's the weirdest rule your reviewers enforce? Drop it below."
+* **Vocal Direction:** Casual, peer-to-peer, and genuinely curious. Smile when asking the question and finish on an upbeat, open-ended rhythm.

@@ -1,4 +1,4 @@
-# Video Script: Why Your Tech Lead Hates AI Code (And What I'm Testing)
+# Video Script: Why Your Tech Lead Rejects AI Code (And What I'm Testing)
 
 Target Format: Vertical 9:16 (YouTube Shorts / Reels)
 Target Duration: ~45 seconds
@@ -36,10 +36,10 @@ Target Duration: ~45 seconds
 * **Environment & Lighting:** Cut to a moody Victorian library with mahogany bookshelves and a roaring fireplace. Rich amber and mahogany tones.
 * **The Avatar (Wardrobe & Physicality):** Velvet burgundy jacket with an ascot. Sophisticated and relaxed. At 0:23, brings two hands up, each holding a glowing module.
 * **Overlay Animation:** Hovering in front of the frozen core are two modular magnetic adapters:
-  1. An Amber/Orange Adapter labeled 'PRIVATE' (pulling in internal API docs and billing rules, snapping into the model).
+  1. An Amber/Orange Adapter labeled 'PRIVATE' (fed by the repositories left off the list: ✕ billing, snapping into the model).
   2. A Cyan/Blue Adapter labeled 'SHARED' (fed only by the repositories the company ticks on a short list: ✓ web-app ✓ docs ✕ billing).
 * **Spoken Script:**
-  "My idea: two small add-ons on one frozen base model. A private add-on that never leaves your company... and a shared add-on that learns only from projects your company marks shareable."
+  "My idea: two add-ons on the same frozen base model. A private add-on that never leaves your company... and a shared add-on that learns only from projects your company marks shareable."
 * **Vocal Direction:** Confident, clear, and intellectually exciting. Genuine smile. Treat 'private add-on' and 'shared add-on' as clean, intuitive concepts.
 
 ---
@@ -50,8 +50,8 @@ Target Duration: ~45 seconds
 * **The Avatar (Wardrobe & Physicality):** Futuristic fleet commander jacket. At 0:35, brings both hands together in a smooth, confident clasp.
 * **Overlay Animation:** A network map of different companies (Company A, Company B, Company C). Shimmering blue streams flow from each company to a central server, carrying only updates to the blue shared add-on. Each company's private repository stays put with the text: CODE STAYS HOME. At 0:37 a question badge pops over the blue streams: "WHOSE IS IT?"
 * **Spoken Script:**
-  "With federated learning, only shared updates travel, never your code. Step one is the data. Building it, and testing whether those updates reveal whose they are, comes after."
-* **Vocal Direction:** Build energy on 'only shared updates travel, never your code', then drop to a curious, open tone and land on 'whose they are'.
+  "With federated learning, only shared updates travel, not the code itself. Step one is the data; the add-ons, and testing whether updates reveal whose they are, come after."
+* **Vocal Direction:** Build energy on 'only shared updates travel, not the code itself', then drop to a curious, open tone and land on 'whose they are'.
 
 ---
 
@@ -64,5 +64,5 @@ Target Duration: ~45 seconds
   Below it, a pulsing badge:
   `Pinned Comment ⬇`
 * **Spoken Script:**
-  "The tool is open source; link pinned. Some communities gave written permission, others post rules for collectors; either way, review text stays unpublished. What's the weirdest rule your reviewers enforce? Drop it below."
+  "The tool is open source; link pinned. Some communities gave written permission, others post rules for collectors; I never republish review text. What's the weirdest rule your reviewers enforce? Drop it below."
 * **Vocal Direction:** Casual, peer-to-peer, and genuinely curious. Smile when asking the question and finish on an upbeat, open-ended rhythm.

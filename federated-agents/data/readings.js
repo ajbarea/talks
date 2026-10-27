@@ -193,5 +193,11 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "k_reproducibility_wikimedia": 10,
   "k_raised_wikimedia": true,
   "sized_studies": 20,
-  "sized_found": 19
+  "sized_found": 19,
+  "method_model": "Qwen2.5-Coder-7B-Instruct",
+  "method_rank": 32,
+  "method_lessons": "1,850",
+  "window_train": "Nov 2024 to Aug 2025",
+  "window_dev": "Sep 2025 to Oct 2025",
+  "window_test": "Nov 2025 to Oct 2026"
 } });

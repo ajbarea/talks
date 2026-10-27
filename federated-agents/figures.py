@@ -15,6 +15,8 @@ SPHRAGIS points at a sphragis checkout; the default is a sibling of this reposit
 from __future__ import annotations
 
 import argparse
+import datetime as dt
+import importlib.util
 import json
 import math
 import os
@@ -320,6 +322,24 @@ def split() -> dict:
     return out
 
 
+def windows() -> dict[str, tuple[str, str]]:
+    """The study's time windows, from sphragis `corpus/windows.py` (start inclusive, end exclusive)."""
+    path = SPHRAGIS / "sphragis" / "corpus" / "windows.py"
+    spec = importlib.util.spec_from_file_location("sphragis_windows", path)
+    if spec is None or spec.loader is None or not path.is_file():
+        raise SystemExit(f"missing {path}; the deck's windows come from sphragis")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.WINDOWS
+
+
+def month_span(start: str, end: str) -> str:
+    """A window as the months it covers: 2024-11-01 to 2025-09-01 reads "Nov 2024 to Aug 2025"."""
+    first = dt.date.fromisoformat(start)
+    last = dt.date.fromisoformat(end) - dt.timedelta(days=1)
+    return f"{first:%b %Y} to {last:%b %Y}"
+
+
 def registered(name: str) -> dict:
     return load(name)["readings"][REGISTERED[0]][REGISTERED[1]]["per_org"]
 
@@ -443,6 +463,21 @@ def readings() -> dict[str, str | int | bool]:
         raise SystemExit(f"the simulations are sized at different powers: {power}")
     values["sized_studies"] = SIZED_STUDIES
     values["sized_found"] = round(SIZED_STUDIES * power.pop())
+    # The method figure: what every development run behind the registered pilots trained (base
+    # model, adapter rank, lessons per half), which must agree across them, and the windows.
+    trained = set()
+    for org in (*ORGS, "qt"):
+        for name in load(f"partition-pilot-{org}-likelihood.json")["run_files"]:
+            run = json.loads((SPHRAGIS / name).read_text())
+            trained.add((run["model_id"], run["lora_rank"], run["train_size"]))
+    if len(trained) != 1:
+        raise SystemExit(f"the development runs trained different set-ups: {sorted(trained)}")
+    model, rank, size = trained.pop()
+    values["method_model"] = model.rsplit("/", 1)[-1]
+    values["method_rank"] = rank
+    values["method_lessons"] = f"{size:,}"
+    for window, (start, end) in windows().items():
+        values[f"window_{window}"] = month_span(start, end)
     return values
 
 

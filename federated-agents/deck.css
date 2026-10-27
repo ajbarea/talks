@@ -132,6 +132,42 @@ figure.code pre {
 .mini .dot-grey { fill: #78716c; }
 .mini text.blue { fill: var(--label); }
 
+/* The method pipeline: three rows, solid for built, dashed for planned. */
+.pipeline { margin-top: 4px; }
+.figure .lane { font-size: 20px; font-weight: 700; fill: var(--label); }
+.figure .lane-state { font-weight: 400; fill: var(--muted); }
+.figure .stage { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
+.figure .stage.run { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 3; }
+.figure .next { fill: none; stroke: var(--frame); stroke-width: 2; stroke-dasharray: 8 6; }
+.figure .win-train,
+.figure .win-dev { fill: #e7e5e4; }
+.figure .win-test { fill: var(--private-tint); stroke: var(--private); stroke-width: 2; }
+
+/* The four research fields: one drawing and one sentence each. */
+.areas .card p { font-size: 0.7em; }
+.areas .card > b { font-size: 0.8em; }
+.mini .head { fill: #57534e; }
+.phone .areas .card {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  column-gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+}
+.phone .areas .card > b { grid-column: 1 / -1; }
+.phone .areas .mini { height: auto; }
+.phone .areas .mini text { font-size: 22px; }
+.mini .own { fill: none; stroke: var(--frame); stroke-width: 2; stroke-dasharray: 6 5; }
+.mini .hub,
+.mini .add,
+.mini .fixed { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 3; }
+.mini .frozen { fill: #e7e5e4; stroke: var(--frame); stroke-width: 2; }
+.mini .note { fill: var(--band); stroke: var(--label); stroke-width: 2; }
+.mini .code { fill: var(--private-tint); stroke: var(--private); stroke-width: 3; }
+.mini .line { stroke: var(--ink); stroke-width: 3; }
+.mini .arrow { stroke: #57534e; stroke-width: 3; fill: none; }
+.mini .upd { fill: var(--shared); stroke: #fff; stroke-width: 2; }
+
 .dots.count svg { max-width: 100%; }
 .dots.count .dot { stroke: var(--shared); }
 .dots.count .dot.hit { fill: var(--shared); stroke: var(--shared); }

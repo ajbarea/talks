@@ -156,6 +156,53 @@
 
 <section data-chapter="2 · The idea">
   <span class="kicker">2 · The idea</span>
+  <h2>Four research fields meet in this work</h2>
+  <div class="cards panels areas" style="--n:4">
+    <div class="card">
+      <b>Learning together, apart</b>
+      <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="Three owners each keep their data and send only model changes to one server">
+        <rect class="own" x="6" y="8" width="62" height="34" rx="6"/><rect class="own" x="6" y="48" width="62" height="34" rx="6"/><rect class="own" x="6" y="88" width="62" height="34" rx="6"/>
+        <path class="arrow" d="M72,25 L154,58 M72,65 L154,65 M72,105 L154,72"/>
+        <circle class="upd" r="6" aria-hidden="true" data-motion="flow" data-path="M72,25 L152,58" data-delay="400" data-dur="900" data-iter="2"/>
+        <circle class="upd" r="6" aria-hidden="true" data-motion="flow" data-path="M72,105 L152,72" data-delay="650" data-dur="900" data-iter="2"/>
+        <rect class="hub" x="156" y="40" width="82" height="50" rx="8"/><text x="197" y="71" text-anchor="middle">server</text>
+      </svg>
+      <p>Many owners train one model; each owner's data stays home.</p>
+    </div>
+    <div class="card">
+      <b>Small add-ons</b>
+      <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="A small add-on sits on top of a large frozen model">
+        <rect class="add" x="78" y="10" width="84" height="34" rx="6" data-motion="pop" data-delay="300"/><text x="120" y="33" text-anchor="middle">add-on</text>
+        <rect class="frozen" x="20" y="52" width="200" height="70" rx="8"/><text x="120" y="83" text-anchor="middle">large model</text><text x="120" y="107" text-anchor="middle">left unchanged</text>
+      </svg>
+      <p>A small add-on teaches a large model a new skill; the model stays as it was.</p>
+    </div>
+    <div class="card">
+      <b>Learning from code review</b>
+      <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="A reviewer's comment on code, followed by the corrected code">
+        <rect class="note" x="6" y="8" width="170" height="40" rx="8"/><text x="91" y="34" text-anchor="middle">"use db.query"</text>
+        <rect class="code" x="6" y="58" width="96" height="64" rx="6"/><path class="line" d="M18,74 L88,74 M18,90 L74,90 M18,106 L84,106"/>
+        <path class="arrow" d="M106,90 L124,90"/><path class="head" d="M122,83 L134,90 L122,97 z"/>
+        <rect class="fixed" x="138" y="58" width="96" height="64" rx="6" data-motion="pop" data-delay="400"/><path class="line" d="M150,74 L220,74 M150,90 L196,90 M150,106 L212,106"/>
+      </svg>
+      <p>Public code review shows the rules teams really enforce.</p>
+    </div>
+    <div class="card">
+      <b>Testing what a model gives away</b>
+      <svg class="mini" viewBox="0 0 240 130" role="img" aria-label="An attacker holding a trained model asks which owner its data came from">
+        <rect class="add" x="6" y="36" width="88" height="58" rx="8"/><text x="50" y="70" text-anchor="middle">model</text>
+        <path class="ask" d="M100,65 L128,65"/><path class="ask-head" d="M126,57 L138,65 L126,73 z"/>
+        <rect class="private" x="142" y="26" width="94" height="78" rx="8"/><text x="189" y="58" text-anchor="middle">"whose</text><text x="189" y="82" text-anchor="middle">data?"</text>
+      </svg>
+      <p>Attacks test what a trained model reveals about its training data.</p>
+    </div>
+  </div>
+  <p class="footnote">Field terms, in order: federated learning; LoRA adapters; mining software repositories; inference attacks.</p>
+  <aside class="notes">This work sits where four research fields meet, so here they are in a sentence each. First, learning together, apart: many owners train one model, each owner's data stays home, and only changes to the model travel. Second, small add-ons: instead of retraining a large model, you train a small add-on beside it, and the model itself stays as it was. Third, learning from code review: the public record of how teams review code shows the rules they really enforce. Fourth, testing what a model gives away: attacks that ask what a trained model reveals about its data. My idea puts all four together.</aside>
+</section>
+
+<section data-chapter="2 · The idea">
+  <span class="kicker">2 · The idea</span>
   <h2>My idea: a shared add-on, a private add-on, and the company decides</h2>
   <div class="figure">
     <svg data-only="desktop" viewBox="0 0 1180 372" role="img" aria-labelledby="idea-t idea-d">
@@ -306,18 +353,25 @@
 
 <section data-chapter="4 · What's built">
   <span class="kicker">4 · What's built</span>
-  <h2>One tool turns public code review into a checked dataset</h2>
-  <ol class="steps" style="--n:6" data-motion="stagger" data-child="pop" data-step="260" data-delay="150">
-    <li><b>Collect</b>by each host's rules</li>
-    <li><b>Pseudonymise</b>names out on arrival</li>
-    <li><b>Pair</b>comment, code, next version</li>
-    <li><b>Clean</b>bots and approvals out</li>
-    <li><b>Split</b>by month, test sealed</li>
-    <li><b>Check</b>labels audited blind</li>
-  </ol>
-  <div class="card wide fragment" data-motion="rise"><b>Then it runs the study</b><p>It trains the add-ons on RIT's research computing clusters, runs the pre-registered test, and runs the attacks on published privacy designs.</p></div>
-  <p class="footnote">Open source: github.com/ajbarea/sphragis. The label is never guessed: it is the code the developer actually wrote next.</p>
-  <aside class="notes">I built one open-source tool. It collects public code review by each host's rules and swaps names for pseudonyms on arrival. It pairs each reviewer comment and its code with the code the developer wrote next: one lesson, its label never guessed. It drops bot comments and one-click approvals, seals the test months, and audits a sample of labels blind. It also runs the training, the test and the attacks.</aside>
+  <h2>Every step up to the sealed test is built</h2>
+  <div class="figure pipeline">
+    <svg data-only="desktop" viewBox="0 0 1180 466" role="img" aria-labelledby="pipe-t pipe-d">
+      <title id="pipe-t">The study's pipeline, from public code review to the sealed test</title>
+      <desc id="pipe-d">Row one, built: collect public reviews, drop account names and hash account ids, pair each comment and its code with the next version, drop bots and approvals, drop copies, and split by month with the test months sealed. Row two, built and read on the development months: split a community's projects in two, train one small add-on per half on the same frozen model, score how likely each add-on finds the code the developer wrote next, and compare the own half's add-on with the other half's over many splits. Row three, planned: read the sealed test, where every community must gain; build shared and private add-ons; and try to break them.</desc>
+      <defs><marker id="head-pipe" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57534e"/></marker></defs>
+      <g><text x="0" y="20" class="lane">Build the dataset <tspan class="lane-state">· built</tspan></text><rect class="stage" x="0" y="28" width="176" height="92" rx="10"/><text x="88" y="58" class="b" text-anchor="middle">Collect</text><text x="88" y="84" class="s" text-anchor="middle">public reviews,</text><text x="88" y="108" class="s" text-anchor="middle">by host rules</text><path class="link" d="M179,74 L197,74" marker-end="url(#head-pipe)"/><rect class="stage" x="200" y="28" width="176" height="92" rx="10"/><text x="288" y="58" class="b" text-anchor="middle">Accounts</text><text x="288" y="84" class="s" text-anchor="middle">names dropped,</text><text x="288" y="108" class="s" text-anchor="middle">ids hashed</text><path class="link" d="M379,74 L397,74" marker-end="url(#head-pipe)"/><rect class="stage" x="400" y="28" width="176" height="92" rx="10"/><text x="488" y="58" class="b" text-anchor="middle">Pair</text><text x="488" y="84" class="s" text-anchor="middle">comment, code</text><text x="488" y="108" class="s" text-anchor="middle">→ next version</text><path class="link" d="M579,74 L597,74" marker-end="url(#head-pipe)"/><rect class="stage" x="600" y="28" width="176" height="92" rx="10"/><text x="688" y="58" class="b" text-anchor="middle">Clean</text><text x="688" y="84" class="s" text-anchor="middle">drop bots and</text><text x="688" y="108" class="s" text-anchor="middle">approvals</text><path class="link" d="M779,74 L797,74" marker-end="url(#head-pipe)"/><rect class="stage" x="800" y="28" width="176" height="92" rx="10"/><text x="888" y="58" class="b" text-anchor="middle">Drop copies</text><text x="888" y="84" class="s" text-anchor="middle">exact, near,</text><text x="888" y="108" class="s" text-anchor="middle">boilerplate</text><path class="link" d="M979,74 L997,74" marker-end="url(#head-pipe)"/><rect class="stage" x="1000" y="28" width="176" height="92" rx="10"/><text x="1088" y="58" class="b" text-anchor="middle">Split</text><text x="1088" y="84" class="s" text-anchor="middle">by month;</text><text x="1088" y="108" class="s" text-anchor="middle">test sealed</text><rect class="win-train" x="0" y="130" width="380" height="34" rx="8"/><text x="190" y="154" class="s" text-anchor="middle">train: <tspan data-value="readings.window_train"></tspan></text><rect class="win-dev" x="399" y="130" width="380" height="34" rx="8"/><text x="589" y="154" class="s" text-anchor="middle">development: <tspan data-value="readings.window_dev"></tspan></text><rect class="win-test" x="798" y="130" width="380" height="34" rx="8"/><text x="988" y="154" class="s" text-anchor="middle">sealed test: <tspan data-value="readings.window_test"></tspan></text></g>
+      <g class="fragment" data-motion="rise"><text x="0" y="200" class="lane">Run the study <tspan class="lane-state">· built, read on the development months</tspan></text><rect class="stage run" x="0" y="210" width="250" height="118" rx="10"/><text x="125" y="240" class="b" text-anchor="middle">Split in two</text><text x="125" y="266" class="s" text-anchor="middle">each community's</text><text x="125" y="290" class="s" text-anchor="middle">projects, in many</text><text x="125" y="314" class="s" text-anchor="middle">seeded ways</text><path class="link" d="M252,269 L267,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="270" y="210" width="330" height="118" rx="10"/><text x="435" y="240" class="b" text-anchor="middle">Train each half</text><text x="435" y="266" class="s" text-anchor="middle"><tspan data-value="readings.method_model"></tspan>,</text><text x="435" y="290" class="s" text-anchor="middle">frozen, + an add-on on</text><text x="435" y="314" class="s" text-anchor="middle">up to <tspan data-value="readings.method_lessons"></tspan> lessons a half</text><path class="link" d="M602,269 L617,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="620" y="210" width="270" height="118" rx="10"/><text x="755" y="240" class="b" text-anchor="middle">Score the real fix</text><text x="755" y="266" class="s" text-anchor="middle">how likely each add-on</text><text x="755" y="290" class="s" text-anchor="middle">finds the code the</text><text x="755" y="314" class="s" text-anchor="middle">developer wrote next</text><path class="link" d="M892,269 L907,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="910" y="210" width="270" height="118" rx="10"/><text x="1045" y="240" class="b" text-anchor="middle">Compare</text><text x="1045" y="266" class="s" text-anchor="middle">own half's add-on vs.</text><text x="1045" y="290" class="s" text-anchor="middle">the other half's,</text><text x="1045" y="314" class="s" text-anchor="middle">averaged over splits</text></g>
+      <g class="fragment" data-motion="rise"><text x="0" y="360" class="lane">Next <tspan class="lane-state">· planned</tspan></text><rect class="next" x="0" y="370" width="380" height="92" rx="10"/><text x="190" y="400" class="b" text-anchor="middle">Read the sealed test</text><text x="190" y="426" class="s" text-anchor="middle">after reviewers accept the plan;</text><text x="190" y="450" class="s" text-anchor="middle">every community must gain</text><path class="link" d="M382,416 L397,416" marker-end="url(#head-pipe)"/><rect class="next" x="399" y="370" width="380" height="92" rx="10"/><text x="589" y="400" class="b" text-anchor="middle">Shared and private add-ons</text><text x="589" y="426" class="s" text-anchor="middle">only the shared add-on's</text><text x="589" y="450" class="s" text-anchor="middle">changes go to a server</text><path class="link" d="M781,416 L796,416" marker-end="url(#head-pipe)"/><rect class="next" x="798" y="370" width="380" height="92" rx="10"/><text x="988" y="400" class="b" text-anchor="middle">Try to break them</text><text x="988" y="426" class="s" text-anchor="middle">with the attacks already built</text><text x="988" y="450" class="s" text-anchor="middle">on published designs</text></g>
+    </svg>
+    <svg data-only="phone" viewBox="0 0 464 802" role="img" aria-labelledby="pipe-pt pipe-pd">
+      <title id="pipe-pt">The study's pipeline, from public code review to the sealed test</title>
+      <desc id="pipe-pd">Row one, built: collect public reviews, drop account names and hash account ids, pair each comment and its code with the next version, drop bots and approvals, drop copies, and split by month with the test months sealed. Row two, built and read on the development months: split a community's projects in two, train one small add-on per half on the same frozen model, score how likely each add-on finds the code the developer wrote next, and compare the own half's add-on with the other half's over many splits. Row three, planned: read the sealed test, where every community must gain; build shared and private add-ons; and try to break them.</desc>
+      <defs><marker id="head-pipe-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#57534e"/></marker></defs>
+      <rect class="stage" x="4" y="2" width="456" height="346" rx="12"/><text x="20" y="34" class="lane">Build the dataset <tspan class="lane-state">· built</tspan></text><text x="20" y="70" class="s">Collect public code review</text><text x="20" y="102" class="s">Drop account names, hash ids</text><text x="20" y="134" class="s">Pair comment, code, next version</text><text x="20" y="166" class="s">Drop bots and approvals</text><text x="20" y="198" class="s">Drop exact and near copies</text><text x="20" y="230" class="s">Split by month; test sealed</text><text x="20" y="262" class="s">Train: <tspan data-value="readings.window_train"></tspan></text><text x="20" y="294" class="s">Development: <tspan data-value="readings.window_dev"></tspan></text><text x="20" y="326" class="s">Sealed test: <tspan data-value="readings.window_test"></tspan></text><path class="link" d="M232,352 L232,380" marker-end="url(#head-pipe-p)"/><rect class="stage run" x="4" y="388" width="456" height="218" rx="12"/><text x="20" y="420" class="lane">Run the study <tspan class="lane-state">· built</tspan></text><text x="20" y="456" class="s">Split each community in two</text><text x="20" y="488" class="s">Frozen <tspan data-value="readings.method_model"></tspan></text><text x="20" y="520" class="s">Add-on a half, up to <tspan data-value="readings.method_lessons"></tspan> lessons</text><text x="20" y="552" class="s">Score each on the developer's fix</text><text x="20" y="584" class="s">Own half vs. other, averaged</text><path class="link" d="M232,610 L232,638" marker-end="url(#head-pipe-p)"/><rect class="next" x="4" y="646" width="456" height="152" rx="12"/><text x="20" y="678" class="lane">Next <tspan class="lane-state">· planned</tspan></text><text x="20" y="714" class="s">Read the sealed test</text><text x="20" y="746" class="s">Shared and private add-ons</text><text x="20" y="778" class="s">Try to break them</text>
+    </svg>
+  </div>
+  <p class="footnote">Solid: built; dashed: planned. Field terms: the add-on is a LoRA adapter (rank <span data-value="readings.method_rank"></span>); the score is mean log-probability per token.</p>
+  <aside class="notes">Here's the whole method. The tool collects public code review by each host's rules, drops account names, and replaces each account with a salted pseudonym in everything it builds. It pairs each reviewer comment and its code with the code the developer wrote next: one lesson, its label never guessed. It drops bots and one-click approvals, removes copies, and splits by month, with the test months sealed. Then it runs the study. It splits a community's projects in two, trains one small add-on per half on the same frozen model, and scores how likely each add-on finds the code the developer actually wrote. The gain is the own half's add-on against the other half's, averaged over many splits. The dashed row comes next: the sealed test, where every community must gain, then the shared and private add-ons, and the attacks on them.</aside>
 </section>
 
 <section data-chapter="4 · What's built">

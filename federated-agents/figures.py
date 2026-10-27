@@ -15,6 +15,8 @@ SPHRAGIS points at a sphragis checkout; the default is a sibling of this reposit
 from __future__ import annotations
 
 import argparse
+import datetime as dt
+import importlib.util
 import json
 import math
 import os
@@ -320,6 +322,52 @@ def split() -> dict:
     return out
 
 
+def windows() -> dict[str, tuple[str, str]]:
+    """The study's time windows, from sphragis `corpus/windows.py` (start inclusive, end exclusive)."""
+    path = SPHRAGIS / "sphragis" / "corpus" / "windows.py"
+    spec = importlib.util.spec_from_file_location("sphragis_windows", path)
+    if spec is None or spec.loader is None or not path.is_file():
+        raise SystemExit(f"missing {path}; the deck's windows come from sphragis")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.WINDOWS
+
+
+def month_span(start: str, end: str) -> str:
+    """A window as the months it covers: 2024-11-01 to 2025-09-01 reads "Nov 2024 to Aug 2025"."""
+    first, stop = dt.date.fromisoformat(start), dt.date.fromisoformat(end)
+    if first.day != 1 or stop.day != 1 or stop <= first:
+        raise SystemExit(f"the window {start} to {end} is not whole months")
+    last = stop - dt.timedelta(days=1)
+    return f"{first:%b %Y} to {last:%b %Y}"
+
+
+def trained_setup() -> tuple[str, int, int]:
+    """What every development run behind the registered pilots trained: `model_id`, `lora_rank`,
+    and each half's `corpora.*.train_examples_equalized`, the lessons drawn per half. Training
+    refuses a lesson too long to fit, so a half trains on up to that many (`training.*.items`).
+    The set-ups must agree, or the pipeline slide names one set-up for several."""
+    seen = set()
+    for org in (*ORGS, "qt"):
+        files = load(f"partition-pilot-{org}-likelihood.json")["run_files"]
+        if not files:
+            raise SystemExit(f"{org}'s registered pilot lists no run files")
+        for name in files:
+            path = SPHRAGIS / name
+            if not path.is_file():
+                raise SystemExit(f"missing artifact {path}; the deck's numbers come from sphragis")
+            run = json.loads(path.read_text())
+            drawn = {half: c["train_examples_equalized"] for half, c in run["corpora"].items()}
+            for adapter, trained in run["training"].items():
+                if trained["items"] > drawn[adapter.rsplit("-s", 1)[0]]:
+                    raise SystemExit(f"{name}: {adapter} trained on more lessons than its half drew")
+            for n in drawn.values():
+                seen.add((run["model_id"], run["lora_rank"], n))
+    if len(seen) != 1:
+        raise SystemExit(f"the development runs trained different set-ups: {sorted(seen)}")
+    return seen.pop()
+
+
 def registered(name: str) -> dict:
     return load(name)["readings"][REGISTERED[0]][REGISTERED[1]]["per_org"]
 
@@ -443,6 +491,13 @@ def readings() -> dict[str, str | int | bool]:
         raise SystemExit(f"the simulations are sized at different powers: {power}")
     values["sized_studies"] = SIZED_STUDIES
     values["sized_found"] = round(SIZED_STUDIES * power.pop())
+    # The method figure: what the development runs trained, and the study's windows.
+    model, rank, size = trained_setup()
+    values["method_model"] = model.rsplit("/", 1)[-1]
+    values["method_rank"] = rank
+    values["method_lessons"] = f"{size:,}"
+    for window, (start, end) in windows().items():
+        values[f"window_{window}"] = month_span(start, end)
     return values
 
 

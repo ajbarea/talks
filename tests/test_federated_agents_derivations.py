@@ -184,3 +184,82 @@ def test_a_simulation_that_cannot_back_the_panel_fails_the_build(figures, tmp_pa
     _sizing(tmp_path, **kwargs)
     with pytest.raises(SystemExit):
         figures.sized_simulation("wikimedia")
+
+
+def _runs(root: Path, setups: dict[str, list[tuple[str, int, int, int]]]) -> None:
+    results = root / "datasets" / "results"
+    results.mkdir(parents=True, exist_ok=True)
+    for org, runs in setups.items():
+        names = []
+        for i, (model, rank, a, b) in enumerate(runs):
+            name = f"datasets/results/run-{org}-{i}.json"
+            corpora = {f"{org}-a": {"train_examples_equalized": a}, f"{org}-b": {"train_examples_equalized": b}}
+            training = {f"{org}-a-s1": {"items": a - 3}, f"{org}-b-s1": {"items": b}}
+            run = {"model_id": model, "lora_rank": rank, "corpora": corpora, "training": training}
+            (root / name).write_text(json.dumps(run))
+            names.append(name)
+        _write(results, f"partition-pilot-{org}-likelihood.json", {"run_files": names})
+
+
+@pytest.fixture
+def runs_root(figures, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    monkeypatch.setattr(figures, "SPHRAGIS", tmp_path)
+    monkeypatch.setattr(figures, "RESULTS", tmp_path / "datasets" / "results")
+    return tmp_path
+
+
+SAME = ("org/Model-7B", 32, 1850, 1850)
+
+
+def test_one_set_up_across_every_run_names_the_lessons_drawn_not_trained(figures, runs_root: Path) -> None:
+    # A half that refused a few too-long lessons still reads as its draw: the slide says "up to".
+    _runs(runs_root, {org: [SAME, SAME] for org in ("openstack", "wikimedia", "qt")})
+    assert figures.trained_setup() == ("org/Model-7B", 32, 1850)
+
+
+def test_a_half_that_trained_on_more_than_it_drew_fails_the_build(figures, runs_root: Path) -> None:
+    _runs(runs_root, {org: [SAME] for org in ("openstack", "wikimedia", "qt")})
+    path = runs_root / "datasets" / "results" / "run-qt-0.json"
+    run = json.loads(path.read_text())
+    run["training"]["qt-b-s1"]["items"] = 1851
+    path.write_text(json.dumps(run))
+    with pytest.raises(SystemExit, match="more lessons than its half drew"):
+        figures.trained_setup()
+
+
+@pytest.mark.parametrize(
+    "odd", [("org/Model-7B", 64, 1850, 1850), ("org/Other", 32, 1850, 1850), ("org/Model-7B", 32, 1850, 1700)]
+)
+def test_a_run_with_another_set_up_fails_the_build(figures, runs_root: Path, odd: tuple) -> None:
+    _runs(runs_root, {"openstack": [SAME], "wikimedia": [SAME, odd], "qt": [SAME]})
+    with pytest.raises(SystemExit, match="different set-ups"):
+        figures.trained_setup()
+
+
+def test_a_pilot_with_no_runs_or_a_missing_run_fails_the_build(figures, runs_root: Path) -> None:
+    _runs(runs_root, {"openstack": [SAME], "wikimedia": [], "qt": [SAME]})
+    with pytest.raises(SystemExit, match="no run files"):
+        figures.trained_setup()
+    _runs(runs_root, {"openstack": [SAME], "wikimedia": [SAME], "qt": [SAME]})
+    (runs_root / "datasets" / "results" / "run-qt-0.json").unlink()
+    with pytest.raises(SystemExit, match="missing artifact"):
+        figures.trained_setup()
+
+
+def test_a_window_reads_as_the_months_it_covers(figures) -> None:
+    assert figures.month_span("2024-11-01", "2025-09-01") == "Nov 2024 to Aug 2025"
+    assert figures.month_span("2024-10-01", "2024-11-01") == "Oct 2024 to Oct 2024"
+    for start, end in [
+        ("2025-11-01", "2025-11-01"),
+        ("2025-11-01", "2025-10-01"),
+        ("2025-09-01", "2025-10-15"),
+        ("2025-09-02", "2025-11-01"),
+    ]:
+        with pytest.raises(SystemExit, match="not whole months"):
+            figures.month_span(start, end)
+
+
+def test_a_missing_windows_module_names_it(figures, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(figures, "SPHRAGIS", tmp_path)
+    with pytest.raises(SystemExit, match="windows come from sphragis"):
+        figures.windows()

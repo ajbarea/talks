@@ -335,16 +335,18 @@ def windows() -> dict[str, tuple[str, str]]:
 
 def month_span(start: str, end: str) -> str:
     """A window as the months it covers: 2024-11-01 to 2025-09-01 reads "Nov 2024 to Aug 2025"."""
-    first = dt.date.fromisoformat(start)
-    last = dt.date.fromisoformat(end) - dt.timedelta(days=1)
-    if last < first:
-        raise SystemExit(f"the window {start} to {end} is empty")
+    first, stop = dt.date.fromisoformat(start), dt.date.fromisoformat(end)
+    if first.day != 1 or stop.day != 1 or stop <= first:
+        raise SystemExit(f"the window {start} to {end} is not whole months")
+    last = stop - dt.timedelta(days=1)
     return f"{first:%b %Y} to {last:%b %Y}"
 
 
 def trained_setup() -> tuple[str, int, int]:
-    """What every development run behind the registered pilots trained: base model, adapter rank and
-    lessons per half as used. They must agree, or the pipeline slide names one set-up for several."""
+    """What every development run behind the registered pilots trained: `model_id`, `lora_rank`,
+    and each half's `corpora.*.train_examples_equalized`, the lessons drawn per half. Training
+    refuses a lesson too long to fit, so a half trains on up to that many (`training.*.items`).
+    The set-ups must agree, or the pipeline slide names one set-up for several."""
     seen = set()
     for org in (*ORGS, "qt"):
         files = load(f"partition-pilot-{org}-likelihood.json")["run_files"]
@@ -355,8 +357,12 @@ def trained_setup() -> tuple[str, int, int]:
             if not path.is_file():
                 raise SystemExit(f"missing artifact {path}; the deck's numbers come from sphragis")
             run = json.loads(path.read_text())
-            for half in run["corpora"].values():
-                seen.add((run["model_id"], run["lora_rank"], half["train_examples_equalized"]))
+            drawn = {half: c["train_examples_equalized"] for half, c in run["corpora"].items()}
+            for adapter, trained in run["training"].items():
+                if trained["items"] > drawn[adapter.rsplit("-s", 1)[0]]:
+                    raise SystemExit(f"{name}: {adapter} trained on more lessons than its half drew")
+            for n in drawn.values():
+                seen.add((run["model_id"], run["lora_rank"], n))
     if len(seen) != 1:
         raise SystemExit(f"the development runs trained different set-ups: {sorted(seen)}")
     return seen.pop()

@@ -194,7 +194,9 @@ def _runs(root: Path, setups: dict[str, list[tuple[str, int, int, int]]]) -> Non
         for i, (model, rank, a, b) in enumerate(runs):
             name = f"datasets/results/run-{org}-{i}.json"
             corpora = {f"{org}-a": {"train_examples_equalized": a}, f"{org}-b": {"train_examples_equalized": b}}
-            (root / name).write_text(json.dumps({"model_id": model, "lora_rank": rank, "corpora": corpora}))
+            training = {f"{org}-a-s1": {"items": a - 3}, f"{org}-b-s1": {"items": b}}
+            run = {"model_id": model, "lora_rank": rank, "corpora": corpora, "training": training}
+            (root / name).write_text(json.dumps(run))
             names.append(name)
         _write(results, f"partition-pilot-{org}-likelihood.json", {"run_files": names})
 
@@ -209,9 +211,20 @@ def runs_root(figures, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
 SAME = ("org/Model-7B", 32, 1850, 1850)
 
 
-def test_one_set_up_across_every_run_names_it(figures, runs_root: Path) -> None:
+def test_one_set_up_across_every_run_names_the_lessons_drawn_not_trained(figures, runs_root: Path) -> None:
+    # A half that refused a few too-long lessons still reads as its draw: the slide says "up to".
     _runs(runs_root, {org: [SAME, SAME] for org in ("openstack", "wikimedia", "qt")})
     assert figures.trained_setup() == ("org/Model-7B", 32, 1850)
+
+
+def test_a_half_that_trained_on_more_than_it_drew_fails_the_build(figures, runs_root: Path) -> None:
+    _runs(runs_root, {org: [SAME] for org in ("openstack", "wikimedia", "qt")})
+    path = runs_root / "datasets" / "results" / "run-qt-0.json"
+    run = json.loads(path.read_text())
+    run["training"]["qt-b-s1"]["items"] = 1851
+    path.write_text(json.dumps(run))
+    with pytest.raises(SystemExit, match="more lessons than its half drew"):
+        figures.trained_setup()
 
 
 @pytest.mark.parametrize(
@@ -235,5 +248,18 @@ def test_a_pilot_with_no_runs_or_a_missing_run_fails_the_build(figures, runs_roo
 
 def test_a_window_reads_as_the_months_it_covers(figures) -> None:
     assert figures.month_span("2024-11-01", "2025-09-01") == "Nov 2024 to Aug 2025"
-    with pytest.raises(SystemExit, match="empty"):
-        figures.month_span("2025-11-01", "2025-11-01")
+    assert figures.month_span("2024-10-01", "2024-11-01") == "Oct 2024 to Oct 2024"
+    for start, end in [
+        ("2025-11-01", "2025-11-01"),
+        ("2025-11-01", "2025-10-01"),
+        ("2025-09-01", "2025-10-15"),
+        ("2025-09-02", "2025-11-01"),
+    ]:
+        with pytest.raises(SystemExit, match="not whole months"):
+            figures.month_span(start, end)
+
+
+def test_a_missing_windows_module_names_it(figures, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(figures, "SPHRAGIS", tmp_path)
+    with pytest.raises(SystemExit, match="windows come from sphragis"):
+        figures.windows()

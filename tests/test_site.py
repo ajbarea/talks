@@ -57,6 +57,15 @@ def test_every_talk_is_listed_and_nothing_else(site, repo: Path, tmp_path: Path)
     assert not (out / "alpha-talk" / "figures.py").exists()
 
 
+def test_a_talk_folders_markdown_is_not_published(site, repo: Path, tmp_path: Path) -> None:
+    (repo / "alpha-talk" / "README.md").write_text("notes")
+    (repo / "alpha-talk" / "video-script.md").write_text("a script")
+    out = tmp_path / "out"
+    site.build(out, repo)
+    assert (out / "alpha-talk" / "index.html").is_file()
+    assert not list((out / "alpha-talk").rglob("*.md"))
+
+
 def test_a_talk_without_a_description_fails(site, repo: Path, tmp_path: Path) -> None:
     (repo / "alpha-talk" / "index.html").write_text("<html><head><title>T</title></head></html>")
     with pytest.raises(SystemExit, match="description"):

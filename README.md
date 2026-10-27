@@ -35,6 +35,8 @@ link like `.../federated-agents/#/5` opens a given slide.
 4. If its figures come from research artifacts, add a `figures.py` that writes them into `data/`
    and fails with `--check` when they are stale, as `federated-agents/figures.py` does. No figure
    is typed onto a slide by hand.
+5. Notes and scripts go in the talk's folder as Markdown (`README.md`, a video script); the site
+   leaves every `.md`, `.py` and `talk.json` out, so they stay in the repository.
 
 ## Motion
 

@@ -16,6 +16,7 @@ link like `.../federated-agents/#/5` opens a given slide.
 - One folder per talk, holding its `index.html`, its own `deck.css` and any `data/`. The folder
   name is the talk's address.
 - `vendor/reveal/`: reveal.js, shared by every talk.
+- `videos/`: scripts for AJ's explainer videos, made in Google Vids; see [videos/README.md](videos/README.md).
 - `shared/deck.js`, `shared/deck.css`: the behaviour and base styles every talk loads (chapter rail,
   agenda, figures from data, phone feed); a talk's own `deck.css` adds what is particular to it.
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
@@ -35,8 +36,9 @@ link like `.../federated-agents/#/5` opens a given slide.
 4. If its figures come from research artifacts, add a `figures.py` that writes them into `data/`
    and fails with `--check` when they are stale, as `federated-agents/figures.py` does. No figure
    is typed onto a slide by hand.
-5. Notes and scripts go in the talk's folder as Markdown (`README.md`, a video script); the site
-   leaves every `.md`, `.py` and `talk.json` out, so they stay in the repository.
+5. Notes go in the talk's folder as Markdown (`README.md`); the site leaves every `.md`, `.py` and
+   `talk.json` out, so they stay in the repository. A video made from the talk gets its script in
+   [`videos/`](videos/README.md).
 
 ## Motion
 

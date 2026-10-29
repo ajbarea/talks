@@ -27,7 +27,7 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 NOT_TALKS = {"vendor", "shared", "scripts", "tests"}
 #: Marks a folder this script built, so it never replaces one it did not.
 MARK = ".talks-site"
-#: A talk folder's notes and scripts (README.md, a video script) stay in the repository.
+#: A talk folder's notes (README.md) and scripts stay in the repository.
 SKIP = shutil.ignore_patterns("*.py", "__pycache__", "*.md", "talk.json")
 #: The links a talk may name, in the order the index shows them, with their labels.
 LINKS = {"code": "Code on GitHub", "docs": "Documentation", "video": "Watch the video"}

@@ -1,7 +1,8 @@
 # Video Script: Why Your Tech Lead Rejects AI Code (And What I'm Testing)
 
 Target Format: Vertical 9:16 (YouTube Shorts / Reels)
-Target Duration: ~45 seconds
+Target Duration: ~50 seconds
+Source: the Federated Agents deck, [`federated-agents/index.html`](../../federated-agents/index.html), and its speaker notes; live at https://ajbarea.github.io/talks/federated-agents/
 
 ---
 
@@ -15,8 +16,8 @@ Target Duration: ~45 seconds
   `✕ REJECTED: 'Use our db.query() helper. We NEVER open raw connections.'`
   A shower of red sparks reflects subtly against the avatar's face.
 * **Spoken Script:**
-  "Ever had an AI write code that works... [0.6s pause, knowing smile] ...only for your tech lead to immediately reject it with: 'We don't do that here'?"
-* **Vocal Direction:** Fast, conversational, punchy. Emphasize 'works' and drop into a playful, mock-serious tone on 'We don't do that here'.
+  "Ever had an AI write code that works... only for your tech lead to immediately reject it with: 'We don't do that here'?"
+* **Vocal Direction:** Fast, conversational, punchy. After 'works', a 0.6 s pause with a knowing smile. Emphasize 'works' and drop into a playful, mock-serious tone on 'We don't do that here'.
 
 ---
 
@@ -26,7 +27,7 @@ Target Duration: ~45 seconds
 * **The Avatar (Wardrobe & Physicality):** Heavy frost-dusted parka with a subtle high-tech golden collar. At 0:12, gestures with an open palm toward the frozen core.
 * **Overlay Animation:** A massive, glowing crystalline neural network is frozen solid in ice (the Base Model). Review comment bubbles hover around it, but cannot penetrate the ice.
 * **Spoken Script:**
-  "AI coding assistants miss your team's unwritten house rules. They're taught in code review, which assistants never see, and no company wants to hand over its code."
+  "AI assistants miss your team's unwritten house rules. Code review teaches them, and assistants never see it. No company wants to hand over its code."
 * **Vocal Direction:** Clear, empathetic problem-statement pacing. Punch 'unwritten house rules' and stress 'hand over its code'.
 
 ---
@@ -39,8 +40,8 @@ Target Duration: ~45 seconds
   1. An Amber/Orange Adapter labeled 'PRIVATE' (fed by the repositories marked ✕: billing, snapping into the model).
   2. A Cyan/Blue Adapter labeled 'SHARED' (fed only by the repositories the company ticks on a short list: ✓ web-app ✓ docs ✕ billing).
 * **Spoken Script:**
-  "My idea: two add-ons on the same frozen base model. A private add-on that never leaves your company... and a shared add-on that learns only from projects your company marks shareable."
-* **Vocal Direction:** Confident, clear, and intellectually exciting. Genuine smile. Treat 'private add-on' and 'shared add-on' as clean, intuitive concepts.
+  "My idea: one frozen model, two add-ons. A private one never leaves your company... a shared one learns only from projects your company marks shareable."
+* **Vocal Direction:** Confident, clear, and intellectually exciting. Genuine smile. Treat 'private' and 'shared' as clean, intuitive concepts.
 
 ---
 
@@ -48,14 +49,14 @@ Target Duration: ~45 seconds
 
 * **Environment & Lighting:** Cut to a futuristic spaceship command bridge looking out across an expansive starfield. Deep violet and golden nebula rim lighting.
 * **The Avatar (Wardrobe & Physicality):** Futuristic fleet commander jacket. At 0:35, brings both hands together in a smooth, confident clasp.
-* **Overlay Animation:** A network map of different companies (Company A, Company B, Company C). Shimmering blue streams flow from each company to a central server, carrying only updates to the blue shared add-on. Each company's private repository stays put with the text: CODE STAYS HOME. At 0:37 a question badge pops over the blue streams: "WHOSE IS IT?"
+* **Overlay Animation:** A network map of different companies (Company A, Company B, Company C). Shimmering blue streams flow from each company to a central server, carrying only updates to the blue shared add-on. Each company's private repository stays put with the text: CODE STAYS HOME. At 0:37 a question badge pops over the blue streams: 'WHOSE IS IT?'
 * **Spoken Script:**
-  "With federated learning, only shared updates travel, not the code itself. Step one is the data; the add-ons, and testing whether updates reveal whose they are, come after."
-* **Vocal Direction:** Build energy on 'only shared updates travel, not the code itself', then drop to a curious, open tone and land on 'whose they are'.
+  "Federated learning sends only shared updates, never code. Step one is the data; the add-ons, and testing whether updates reveal whose they are, come after."
+* **Vocal Direction:** Build energy on 'only shared updates, never code', then drop to a curious, open tone and land on 'whose they are'.
 
 ---
 
-### Segment 5 (0:40 – 0:46): The Community Call to Action
+### Segment 5 (0:40 – 0:50): The Community Call to Action
 
 * **Environment & Lighting:** Smooth transition back to the Segment 1 developer workspace (dim indigo monitor glow, warm amber rim light). Creates a clean visual loop back to the start.
 * **The Avatar (Wardrobe & Physicality):** Back in the relaxed-fit dark-charcoal t-shirt. At 0:42, gives a friendly, conversational lean forward with an amused, curious expression.
@@ -64,5 +65,5 @@ Target Duration: ~45 seconds
   Below it, a pulsing badge:
   `Pinned Comment ⬇`
 * **Spoken Script:**
-  "The tool is open source; link pinned. Some communities gave written permission, others post rules for collectors; I never republish review text. What's the weirdest rule your reviewers enforce? Drop it below."
+  "The tool is open source; link pinned. I follow each community's rules and never republish review text. What's the weirdest rule your reviewers enforce?"
 * **Vocal Direction:** Casual, peer-to-peer, and genuinely curious. Smile when asking the question and finish on an upbeat, open-ended rhythm.

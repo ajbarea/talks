@@ -62,7 +62,7 @@ def test_the_guard_fails_when_a_figure_is_edited_by_hand(tmp_path: Path) -> None
         env={**os.environ, "SPHRAGIS": str(SPHRAGIS)},
     )
     assert result.returncode == 1, result.stdout + result.stderr
-    assert "readings.js is stale" in result.stdout
+    assert "readings.js is stale" in result.stderr
 
 
 def test_every_bound_name_has_a_figure() -> None:

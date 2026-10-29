@@ -28,6 +28,7 @@ FIELDS = {
 #: Fields whose 'At m:ss' times must fall inside their segment.
 TIMED = re.compile(r"wardrobe|physicality|overlay", re.I)
 SEGMENT = re.compile(r"^#{2,4}\s+(?:Segment|Scene)\b", re.I)
+NUMBER = re.compile(r"^#{2,4}\s+\w+\s+S?(\d+)\b", re.I)
 SPAN = re.compile(r"\((\d+):(\d{2})\s*[–—-]\s*(\d+):(\d{2})\)")
 AT = re.compile(r"\bAt (\d+):(\d{2})\b(?!\s*[AP]M)", re.I)
 END = re.compile(r"^(#{1,6}\s|---\s*$)")
@@ -89,7 +90,7 @@ def check(text: str) -> list[tuple[int, str]]:
     """Every problem as (line, message); an empty list means the script passes."""
     problems: list[tuple[int, str]] = []
     for n, raw in enumerate(text.splitlines(), 1):
-        if SPAN.search(raw) and not SEGMENT.match(raw) and re.match(r"^(#|\*\*)", raw):
+        if not SEGMENT.match(raw) and (NUMBER.match(raw) or SPAN.search(raw) and re.match(r"^(#|\*\*)", raw)):
             problems.append((n, "looks like a segment heading but is not '### Segment N (m:ss – m:ss): Title'"))
     segs = segments(text)
     if not segs:
@@ -104,7 +105,9 @@ def check(text: str) -> list[tuple[int, str]]:
             start, end = clock(*span.groups()[:2]), clock(*span.groups()[2:])
             if not 0 < end - start <= MAX_SECONDS:
                 problems.append((seg.line, f"segment runs {end - start} s; a clip is 1 to {MAX_SECONDS} s"))
-            if start and previous_end is not None and start != previous_end:
+            number = NUMBER.match(seg.heading)
+            first = number is not None and number.group(1) == "1"
+            if not first and previous_end is not None and start != previous_end:
                 problems.append((seg.line, f"segment starts at {start} s but the one before ends at {previous_end} s"))
         previous_end = end
         if DOUBLE.search(seg.heading):

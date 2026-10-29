@@ -142,7 +142,9 @@ def test_a_number_takes_a_word_per_two_digits() -> None:
     assert cs.spoken_seconds("In 2025") == 3 * 60 / cs.WORDS_PER_MINUTE
 
 
-@pytest.mark.parametrize("heading", ["### Segmnet 2 (0:10 – 0:20): Typo", "**Segment 2 (0:10 – 0:20): Bold**"])
+@pytest.mark.parametrize(
+    "heading", ["### Segmnet 2 (0:10 – 0:20): Typo", "**Segment 2 (0:10 – 0:20): Bold**", "### Segmnet 2: Typo"]
+)
 def test_a_heading_that_does_not_parse_is_flagged(heading: str) -> None:
     text = GOOD + "\n" + heading + '\n\n* **Visual Overlay:** A "quoted" card.\n'
     assert any("looks like a segment heading" in p for p in problems(text))
@@ -215,3 +217,8 @@ def test_main_fails_with_no_scripts(tmp_path: pathlib.Path, monkeypatch: pytest.
 def test_main_fails_on_a_missing_file(tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]) -> None:
     assert cs.main([str(tmp_path / "nope.md")]) == 1
     assert "no such file" in capsys.readouterr().err
+
+
+def test_a_mid_cut_segment_starting_at_zero_is_flagged() -> None:
+    text = GOOD.replace("---", "---\n\n### " + second("0:00 – 0:10") + "\n---", 1)
+    assert any("the one before ends" in p for p in problems(text))

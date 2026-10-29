@@ -59,7 +59,7 @@ Source: the Federated Agents deck, [`federated-agents/index.html`](../../federat
 
 ### Segment 5 (0:40 – 0:50): The Community Call to Action
 
-* **Environment & Lighting:** Smooth transition to a dim, cinematic developer setup with dual ultrawide monitors glowing in deep indigo. A soft amber rim light contours the avatar. It matches the opening shot, so the Short loops cleanly.
+* **Environment & Lighting:** Smooth transition to a dim, cinematic developer setup with dual ultrawide monitors glowing in deep indigo. A soft amber rim light contours the avatar.
 * **The Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal t-shirt. At 0:42, gives a friendly, conversational lean forward with an amused, curious expression.
 * **Overlay Animation:** A sleek, minimalist dark-mode card slides up with the GitHub repository preview:
   `sphragis: open-source tool that turns public code review into datasets`

@@ -10,7 +10,7 @@ Vids makes each clip with Gemini Omni from that clip's prompt alone, and an Omni
 ## The rules
 
 1. **One segment is one clip, 10 seconds or less.** Aim for 8 to 10. Head each one `### Segment N (m:ss – m:ss): Title`; a Short's segments are `S1`, `S2`, and so on.
-2. **The spoken line fits its clip.** At about 150 words a minute, a 10-second clip holds 25 words. The lint times every line at that rate.
+2. **The spoken line fits its clip, with a second to spare.** At about 150 words a minute, a 10-second clip holds 22 words once a second is left for pauses and the cut. The lint times every line at that rate and counts a number by its digits ('2025' takes two words' time).
 3. **Every segment states five fields, in full:**
    - `Environment & Lighting`: the set, the light, the camera and the framing (16:9 or 9:16).
    - `Avatar (Wardrobe & Physicality)`: the outfit, the posture and each gesture with its time ('At 0:14, points to the chart').
@@ -21,11 +21,12 @@ Vids makes each clip with Gemini Omni from that clip's prompt alone, and an Omni
 5. **Double quotes go only around the spoken words.** One quoted span per segment, because every quoted span is voiced, a repeat included. On-screen text, labels and directions take single quotes; code takes backticks, and code shown on screen uses single-quoted strings.
 6. **No directions inside the spoken quotes.** Write a pause as '...' in the line; put '[smiles]', '[0.6 s pause]' and the like in `Vocal Direction`.
 7. **Keep the look the same.** Name the outfit and the sets once in the header, then repeat them in every segment, unless the script means the change.
-8. **Plain language.** Most sentences 20 words or fewer, about an 8th to 10th grade reading level. Name a field term once and explain it in the same line.
-9. **Every fact traces to its source.** List the sources at the top of the file, with the segments each one backs. Sources are never voiced.
-10. **Where a talk deck exists, the narration comes from the deck's speaker notes** (`graphe:slides`), so the video and the talk say the same thing.
-11. **Shorts:** 45 to 50 seconds, the hook in the first 3, the face and a question at the end, and a last line and set that loop back into the first.
-12. **Long versions:** 2 to 4 minutes, 16:9, with chapters in the description: the first at 00:00, at least three, each 10 seconds or longer ([YouTube's chapter rules](https://support.google.com/youtube/answer/9884579)).
+8. **Any voice, any cast.** The narrator is AJ's avatar, so a script may use any voice, or several characters played by the avatar. Name each character's wardrobe, set and voice in the header, and start each segment's avatar field with its character.
+9. **Plain language.** Most sentences 20 words or fewer, about an 8th to 10th grade reading level. Name a field term once and explain it in the same line.
+10. **Every fact traces to its source.** List the sources at the top of the file, with the segments each one backs. Sources are never voiced.
+11. **Where a talk deck exists, the narration comes from the deck's speaker notes** (`graphe:slides`), so the video and the talk say the same thing.
+12. **Shorts:** 45 to 50 seconds, the hook in the first 3, the face and a question at the end, and a last line and set that loop back into the first.
+13. **Long versions:** 2 to 4 minutes, 16:9, with chapters in the description: the first at 00:00, at least three, each 10 seconds or longer ([YouTube's chapter rules](https://support.google.com/youtube/answer/9884579)).
 
 ## A script file holds
 
@@ -54,4 +55,4 @@ python3 videos/check_script.py path/script.md  # one script
 make videos-check                              # the same, from make
 ```
 
-It prints `path:line: problem` for each segment with a missing field, a double quote outside the spoken line, more than one quoted span, a [direction] inside the quotes, a pointer to another segment, or a clip or spoken line over 10 seconds. `make test` runs it on every script too, so CI fails a script that breaks a rule.
+It prints `path:line: problem` for a heading that looks like a segment but does not parse, and for each segment with a missing field, a double quote outside the spoken line, more than one quoted span, a [direction] inside the quotes, a pointer to another segment, a gesture time outside the segment, a gap or overlap with the segment before, or a clip or spoken line that does not fit in 10 seconds. `make test` runs it on every script too, so CI fails a script that breaks a rule.

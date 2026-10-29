@@ -11,7 +11,7 @@ Sources (cited here, never voiced):
 
 - H. Brendan McMahan, Eider Moore, Daniel Ramage, Seth Hampson and Blaise Agüera y Arcas, [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629), AISTATS 2017. Segments 1 to 3, S1, S2: training data stays on the devices; a shared model is learned by aggregating locally computed updates; iterative model averaging (FedAvg); photos and text entry as examples.
 - Leslie Lamport, Robert Shostak and Marshall Pease, [The Byzantine Generals Problem](https://doi.org/10.1145/357172.357176), ACM TOPLAS 4(3), 1982. Segment 5: where the name comes from.
-- Peva Blanchard, El Mahdi El Mhamdi, Rachid Guerraoui and Julien Stainer, [Machine Learning with Adversaries: Byzantine Tolerant Gradient Descent](https://proceedings.neurips.cc/paper/2017/hash/f4b9ec30ad9f68f89b29639786cb62ef-Abstract.html), NeurIPS 2017 ([arXiv:1703.02757](https://arxiv.org/abs/1703.02757)). Segments 6, 11 to 14, S2, S4, S5: no linear combination of updates, averaging included, tolerates a single Byzantine worker, which can make it select any vector; Krum scores each update by its squared distances to its n − f − 2 closest neighbors and picks the lowest; the guarantee needs 2f + 2 < n; Krum can slow learning when no one attacks.
+- Peva Blanchard, El Mahdi El Mhamdi, Rachid Guerraoui and Julien Stainer, [Machine Learning with Adversaries: Byzantine Tolerant Gradient Descent](https://proceedings.neurips.cc/paper/2017/hash/f4b9ec30ad9f68f89b29639786cb62ef-Abstract.html), NeurIPS 2017 (on arXiv as [Byzantine-Tolerant Machine Learning, 1703.02757](https://arxiv.org/abs/1703.02757)). Segments 6, 11 to 14, S2, S4, S5: no linear combination of updates, averaging included, tolerates a single Byzantine worker, which can make it select any vector; Krum scores each update by its squared distances to its n − f − 2 closest neighbors and picks the lowest; the guarantee needs 2f + 2 < n; Krum can slow learning when no one attacks.
 - Liping Li, Wei Xu, Tianyi Chen, Georgios B. Giannakis and Qing Ling, [RSA: Byzantine-Robust Stochastic Aggregation Methods for Distributed Learning from Heterogeneous Datasets](https://arxiv.org/abs/1811.03761), AAAI 2019. Segments 7, 9, 10, S3: the sign-flipping attack sends the true value times a negative constant (σ = −4 in its tests); the Gaussian attack sends elements drawn from N(0, g²) with g = 10,000; plain averaging (SGD) fails under both.
 
 ## Long version (16:9, 1920x1080)
@@ -33,7 +33,7 @@ Sources (cited here, never voiced):
 * **Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal crew-neck t-shirt, no logos, no jewelry; same look in every segment. Stands beside the whiteboard. At 0:13, points to one phone icon. At 0:17, traces an arrow toward the server with one finger.
 * **Visual Overlay:** On the whiteboard, five simple phone icons sit in a half circle around a server icon in the middle, each phone holding a small padlocked folder labeled 'your data'. One phone trains, and a small envelope labeled 'update' travels to the server; the padlocked folder stays put. Caption: 'Google, 2017'.
 * **Spoken Script:**
-  "In a 2017 paper, Google researchers laid it out. Each device learns from its own data and sends back only an update."
+  "In 2017, Google researchers laid it out. Each device learns from its own data and sends back only an update."
 * **Vocal Direction:** Clear and steady. Stress 'only an update'.
 
 ---
@@ -42,9 +42,9 @@ Sources (cited here, never voiced):
 
 * **Environment & Lighting:** A home office at night, facing a large whiteboard wall that is blank except for what the overlay draws. A warm desk lamp lights the face from the left; soft blue monitor glow from the right. No brand logos. Eye-level camera, medium-wide shot, 16:9.
 * **Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal crew-neck t-shirt, no logos, no jewelry; same look in every segment. Stands beside the whiteboard. At 0:22, sweeps a hand around the half circle. At 0:27, circles one finger: 'again'.
-* **Visual Overlay:** On the whiteboard, five simple phone icons sit in a half circle around a server icon in the middle, each phone holding a small padlocked folder labeled 'your data'. Every phone sends an 'update' envelope; the server blends them into one 'shared model' and sends it back out to all phones. A round counter ticks: 'round 1', 'round 2', 'round 3'. Label: 'FedAvg'.
+* **Visual Overlay:** On the whiteboard, five simple phone icons sit in a half circle around a server icon in the middle, each phone holding a small padlocked folder labeled 'your data'. Several phones send 'update' envelopes; the server blends them into one 'shared model' and sends it back out to all phones. A round counter ticks: 'round 1', 'round 2', 'round 3'. Label: 'FedAvg'.
 * **Spoken Script:**
-  "A server averages everyone's updates into one shared model, then sends it back out. Repeat for many rounds. That's called FedAvg."
+  "Each round, a server averages updates from a group of devices into one shared model. Repeat many rounds. That's FedAvg."
 * **Vocal Direction:** Even and patient. Say 'Fed-Avg' as two parts.
 
 ---
@@ -66,7 +66,7 @@ Sources (cited here, never voiced):
 * **Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal crew-neck t-shirt, no logos, no jewelry; same look in every segment. Stands beside the whiteboard. At 0:44, points to the one red phone.
 * **Visual Overlay:** On the whiteboard, five simple phone icons sit in a half circle around a server icon in the middle, each phone holding a small padlocked folder labeled 'your data'. One phone turns red and gets a small label: 'Byzantine client'. A tiny side note: 'after the Byzantine Generals Problem, 1982'.
 * **Spoken Script:**
-  "A client that sends bad updates on purpose is called Byzantine. The name comes from an old puzzle about generals who can't trust messages."
+  "A client that lies on purpose is called Byzantine. The name comes from an old puzzle about generals who can't trust messages."
 * **Vocal Direction:** Storytelling tone on 'an old puzzle about generals'.
 
 ---
@@ -77,8 +77,8 @@ Sources (cited here, never voiced):
 * **Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal crew-neck t-shirt, no logos, no jewelry; same look in every segment. Stands beside the whiteboard. At 0:52, raises one finger. At 0:56, drags one hand sideways across the board.
 * **Visual Overlay:** On the whiteboard, five simple phone icons sit in a half circle around a server icon in the middle, each phone holding a small padlocked folder labeled 'your data'. The red phone's arrow pulls the server's average far off to one side, while the honest arrows point together. Caption: 'plain averaging: one bad client can steer the result'.
 * **Spoken Script:**
-  "How bad can one liar be? A 2017 paper showed that with plain averaging, a single Byzantine client can drag the result anywhere."
-* **Vocal Direction:** Dramatic but controlled. Stress 'a single' and 'anywhere'.
+  "One liar is enough. A 2017 paper showed that with plain averaging, one Byzantine client can drag the result anywhere."
+* **Vocal Direction:** Dramatic but controlled. Stress 'one liar' and 'anywhere'.
 
 ---
 
@@ -121,7 +121,7 @@ Sources (cited here, never voiced):
 * **Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal crew-neck t-shirt, no logos, no jewelry; same look in every segment. Seated at the desk. At 1:33, gives a small shake of the head. At 1:37, opens one palm.
 * **Visual Overlay:** A card reads 'plain averaging' with a red cross over it. Below it, a small source line: 'tested in published work: Li et al., AAAI 2019'.
 * **Spoken Script:**
-  "Both attacks come from published tests of defenses. Plain averaging failed against them, so researchers built smarter ways to combine updates."
+  "Both attacks come from published tests. Plain averaging failed against both, which is why researchers build smarter ways to combine updates."
 * **Vocal Direction:** Matter-of-fact; lift on 'smarter ways'.
 
 ---
@@ -174,7 +174,7 @@ Sources (cited here, never voiced):
 
 * **Environment & Lighting:** A tidy home developer desk at night. One ultrawide monitor behind the avatar glows soft blue; a warm desk lamp on the left lights the face. Wooden desk, a mug, a small plant, no brand logos, nothing readable on the monitor. Shallow depth of field, eye-level camera, medium shot, 16:9.
 * **Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal crew-neck t-shirt, no logos, no jewelry; same look in every segment. Seated at the desk, leaning in with direct eye contact. At 2:25, raises both eyebrows, inviting an answer.
-* **Visual Overlay:** The five phone icons return along the bottom, all green, with a badge: 'Comment below'.
+* **Visual Overlay:** Five green phone icons line up along the bottom with a badge: 'Comment below'.
 * **Spoken Script:**
   "So federated learning keeps your data home, but the server has to trust the crowd. Would you join one? Tell me below."
 * **Vocal Direction:** Warm and curious. End on eye contact.
@@ -231,9 +231,9 @@ Sources (cited here, never voiced):
 
 * **Environment & Lighting:** A tidy home developer desk at night. One ultrawide monitor behind the avatar glows soft blue; a warm desk lamp on the left lights the face. Wooden desk, a mug, a small plant, no brand logos, nothing readable on the monitor. Shallow depth of field, eye-level camera, chest-up vertical framing, 9:16.
 * **Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal crew-neck t-shirt, no logos, no jewelry; same look in every segment. Seated at the desk, leaning in with direct eye contact. At 0:45, warm, open smile.
-* **Visual Overlay:** A badge slides in: 'Comment below'. The phone from the opening reappears in the avatar's hand, ready to loop.
+* **Visual Overlay:** A badge slides in: 'Comment below'. A phone reappears in the avatar's hand, screen facing away, ready to loop.
 * **Spoken Script:**
-  "It works while attackers are a minority. Would you trust a crowd of strangers' phones to train your AI? Tell me below."
+  "Its guarantee needs attackers to stay a minority. Would you trust strangers' phones to train your AI? Tell me below."
 * **Vocal Direction:** Warm and curious. End on eye contact, so the loop hands off to 'Federated learning trains one AI model'.
 
 ---

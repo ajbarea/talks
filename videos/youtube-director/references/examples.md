@@ -3,7 +3,7 @@
 The three worked examples from [SKILL.md](../SKILL.md), moved here unchanged. They show the format, not this repository's rules:
 
 - Example 2's scenes run 15 to 20 seconds. A Vids clip is 10 seconds at most, so split each into clips of 10 seconds or less ([../../vids-rules.md](../../vids-rules.md)).
-- Example 3 shows the Mode B layout only; it is not on the video queue ([../../README.md](../../README.md)).
+- Example 3 shows the Mode B layout only. Its facts date from October 18, 2026 and are out of date; the [live deck](https://ajbarea.github.io/talks/federated-agents/) is the source of truth. It is not on the video queue ([../../README.md](../../README.md)).
 
 <examples>
 

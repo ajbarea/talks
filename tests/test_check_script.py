@@ -98,8 +98,9 @@ def test_a_direction_inside_the_spoken_quotes_is_flagged() -> None:
     assert any("[direction]" in p for p in problems(text))
 
 
-def test_a_pointer_to_another_segment_is_flagged() -> None:
-    text = GOOD.replace("A desk at night, warm lamp from the left.", "Same as Segment 1.")
+@pytest.mark.parametrize("pointer", ["Same as Segment 1.", "Back to the Segment 2 desk.", "As in segment S1."])
+def test_a_pointer_to_another_segment_is_flagged(pointer: str) -> None:
+    text = GOOD.replace("A desk at night, warm lamp from the left.", pointer)
     assert any("say it in full" in p for p in problems(text))
 
 
@@ -113,8 +114,8 @@ def test_a_heading_without_a_span_is_flagged() -> None:
     assert "heading has no (m:ss – m:ss) span" in problems(GOOD.replace(" (0:00 – 0:10)", ""))
 
 
-@pytest.mark.parametrize("words, ok", [(25, True), (26, False)])
-def test_a_spoken_line_over_ten_seconds_is_flagged(words: int, ok: bool) -> None:
+@pytest.mark.parametrize("words, ok", [(22, True), (23, False)])
+def test_a_spoken_line_must_leave_a_second_spare(words: int, ok: bool) -> None:
     line = " ".join(["word"] * words)
     text = GOOD.replace("Say you give your agent fifty rules. It breaks one. Here's why.", line)
     assert (not any("spoken line needs" in p for p in problems(text))) is ok
@@ -122,7 +123,7 @@ def test_a_spoken_line_over_ten_seconds_is_flagged(words: int, ok: bool) -> None
 
 def test_a_spoken_line_is_timed_against_a_shorter_clip() -> None:
     text = GOOD.replace("0:00 – 0:10", "0:00 – 0:03")
-    assert any("the clip has 3 s" in p for p in problems(text))
+    assert any("it has 2 s" in p for p in problems(text))
 
 
 def test_a_file_without_segments_fails() -> None:
@@ -134,3 +135,83 @@ def test_main_reports_a_failing_file(tmp_path: pathlib.Path, capsys: pytest.Capt
     bad.write_text(GOOD.replace("'context rot'", '"context rot"'), encoding="utf-8")
     assert cs.main([str(bad)]) == 1
     assert f"{bad}:" in capsys.readouterr().err
+
+
+def test_a_number_takes_a_word_per_two_digits() -> None:
+    assert cs.spoken_seconds("2025") == cs.spoken_seconds("twenty twenty-five")
+    assert cs.spoken_seconds("In 2025") == 3 * 60 / cs.WORDS_PER_MINUTE
+
+
+@pytest.mark.parametrize("heading", ["### Segmnet 2 (0:10 – 0:20): Typo", "**Segment 2 (0:10 – 0:20): Bold**"])
+def test_a_heading_that_does_not_parse_is_flagged(heading: str) -> None:
+    text = GOOD + "\n" + heading + '\n\n* **Visual Overlay:** A "quoted" card.\n'
+    assert any("looks like a segment heading" in p for p in problems(text))
+
+
+def second(span: str) -> str:
+    seg = GOOD.split("### ", 1)[1].split("---", 1)[0].replace("Segment 1 (0:00 – 0:10)", f"Segment 2 ({span})")
+    return seg.replace("At 0:04", "At " + span.split(" – ")[0])
+
+
+@pytest.mark.parametrize("span, ok", [("0:10 – 0:20", True), ("0:12 – 0:20", False), ("0:08 – 0:18", False)])
+def test_segments_in_a_cut_run_back_to_back(span: str, ok: bool) -> None:
+    text = GOOD.replace("---", "---\n\n### " + second(span) + "\n---", 1)
+    assert (not any("the one before ends" in p for p in problems(text))) is ok
+
+
+def test_a_new_cut_may_start_again_at_zero() -> None:
+    text = GOOD.replace("---", "---\n\n### " + second("0:00 – 0:10").replace("Segment 2", "Segment S1") + "\n---", 1)
+    assert problems(text) == []
+
+
+@pytest.mark.parametrize("at, ok", [("At 0:10", True), ("At 0:11", False), ("at 0:12", False), ("At 3:00 PM", True)])
+def test_a_gesture_time_falls_inside_its_segment(at: str, ok: bool) -> None:
+    text = GOOD.replace("At 0:04", at)
+    assert (not any("falls outside this segment" in p for p in problems(text))) is ok
+
+
+@pytest.mark.parametrize(
+    "form",
+    [
+        "* **Environment & Lighting**: A desk at night.",
+        "* Environment & Lighting: A desk at night.",
+        "- Environment: A desk.",
+    ],
+)
+def test_every_label_form_is_read(form: str) -> None:
+    text = GOOD.replace("* **Environment & Lighting:** A desk at night, warm lamp from the left.", form)
+    assert problems(text) == []
+
+
+def test_a_bullet_starting_with_a_time_is_not_a_field() -> None:
+    text = GOOD.replace("At 0:04, leans in.", "Leans back.\n* At 0:04: leans in.")
+    assert problems(text) == []
+
+
+def test_double_quotes_before_the_first_field_are_flagged() -> None:
+    text = GOOD.replace("\n\n* **Environment", '\n\nThe card says "hi".\n* **Environment', 1)
+    assert any("outside the spoken line" in p for p in problems(text))
+
+
+def test_scene_headings_count_as_segments() -> None:
+    assert problems(GOOD.replace("### Segment 1", "### Scene 1")) == []
+
+
+def test_curly_quotes_around_the_spoken_line_pass() -> None:
+    text = GOOD.replace('"Say you give', "“Say you give").replace("Here's why.\"", "Here's why.”")
+    assert problems(text) == []
+
+
+def test_a_heading_ends_a_segment() -> None:
+    text = GOOD.replace("---\n\n## Audio Prompt", "## Audio Prompt")
+    assert problems(text) == []
+
+
+def test_main_fails_with_no_scripts(tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(cs, "HERE", tmp_path)
+    assert cs.main([]) == 1
+
+
+def test_main_fails_on_a_missing_file(tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]) -> None:
+    assert cs.main([str(tmp_path / "nope.md")]) == 1
+    assert "no such file" in capsys.readouterr().err

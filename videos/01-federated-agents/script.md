@@ -2,6 +2,7 @@
 
 Target Format: Vertical 9:16 (YouTube Shorts / Reels)
 Target Duration: ~50 seconds
+Look: a new set and outfit in each of segments 1 to 4, on purpose; segment 5 returns to the opening desk and t-shirt so the Short loops.
 Source: the Federated Agents deck, [`federated-agents/index.html`](../../federated-agents/index.html), and its speaker notes; live at https://ajbarea.github.io/talks/federated-agents/
 
 ---
@@ -16,7 +17,7 @@ Source: the Federated Agents deck, [`federated-agents/index.html`](../../federat
   `✕ REJECTED: 'Use our db.query() helper. We NEVER open raw connections.'`
   A shower of red sparks reflects subtly against the avatar's face.
 * **Spoken Script:**
-  "Ever had an AI write code that works... only for your tech lead to immediately reject it with: 'We don't do that here'?"
+  "Ever had an AI write code that works... only for your tech lead to reject it with: 'We don't do that here'?"
 * **Vocal Direction:** Fast, conversational, punchy. After 'works', a 0.6 s pause with a knowing smile. Emphasize 'works' and drop into a playful, mock-serious tone on 'We don't do that here'.
 
 ---
@@ -27,8 +28,8 @@ Source: the Federated Agents deck, [`federated-agents/index.html`](../../federat
 * **The Avatar (Wardrobe & Physicality):** Heavy frost-dusted parka with a subtle high-tech golden collar. At 0:12, gestures with an open palm toward the frozen core.
 * **Overlay Animation:** A massive, glowing crystalline neural network is frozen solid in ice (the Base Model). Review comment bubbles hover around it, but cannot penetrate the ice.
 * **Spoken Script:**
-  "AI assistants miss your team's unwritten house rules. Code review teaches them, and assistants never see it. No company wants to hand over its code."
-* **Vocal Direction:** Clear, empathetic problem-statement pacing. Punch 'unwritten house rules' and stress 'hand over its code'.
+  "AI misses your team's unwritten house rules. Code review teaches them, which AI never sees. No company wants to share its code."
+* **Vocal Direction:** Clear, empathetic problem-statement pacing. Punch 'unwritten house rules' and stress 'share its code'.
 
 ---
 
@@ -40,7 +41,7 @@ Source: the Federated Agents deck, [`federated-agents/index.html`](../../federat
   1. An Amber/Orange Adapter labeled 'PRIVATE' (fed by the repositories marked ✕: billing, snapping into the model).
   2. A Cyan/Blue Adapter labeled 'SHARED' (fed only by the repositories the company ticks on a short list: ✓ web-app ✓ docs ✕ billing).
 * **Spoken Script:**
-  "My idea: one frozen model, two add-ons. A private one never leaves your company... a shared one learns only from projects your company marks shareable."
+  "My idea: one frozen model, two add-ons. A private one stays home... a shared one learns only from projects marked shareable."
 * **Vocal Direction:** Confident, clear, and intellectually exciting. Genuine smile. Treat 'private' and 'shared' as clean, intuitive concepts.
 
 ---
@@ -49,21 +50,21 @@ Source: the Federated Agents deck, [`federated-agents/index.html`](../../federat
 
 * **Environment & Lighting:** Cut to a futuristic spaceship command bridge looking out across an expansive starfield. Deep violet and golden nebula rim lighting.
 * **The Avatar (Wardrobe & Physicality):** Futuristic fleet commander jacket. At 0:35, brings both hands together in a smooth, confident clasp.
-* **Overlay Animation:** A network map of different companies (Company A, Company B, Company C). Shimmering blue streams flow from each company to a central server, carrying only updates to the blue shared add-on. Each company's private repository stays put with the text: CODE STAYS HOME. At 0:37 a question badge pops over the blue streams: 'WHOSE IS IT?'
+* **Overlay Animation:** A network map of different companies (Company A, Company B, Company C). Shimmering blue streams flow from each company to a central server, carrying only updates to the blue shared add-on. Each company's private repository stays put with the text 'CODE STAYS HOME'. At 0:37 a question badge pops over the blue streams: 'WHOSE IS IT?'
 * **Spoken Script:**
-  "Federated learning sends only shared updates, never code. Step one is the data; the add-ons, and testing whether updates reveal whose they are, come after."
-* **Vocal Direction:** Build energy on 'only shared updates, never code', then drop to a curious, open tone and land on 'whose they are'.
+  "Federated learning shares updates, never code. First comes the data, then the add-ons, then a test: do updates reveal their owner?"
+* **Vocal Direction:** Build energy on 'updates, never code', then drop to a curious, open tone and land on 'reveal their owner'.
 
 ---
 
 ### Segment 5 (0:40 – 0:50): The Community Call to Action
 
-* **Environment & Lighting:** Smooth transition back to the Segment 1 developer workspace (dim indigo monitor glow, warm amber rim light). Creates a clean visual loop back to the start.
-* **The Avatar (Wardrobe & Physicality):** Back in the relaxed-fit dark-charcoal t-shirt. At 0:42, gives a friendly, conversational lean forward with an amused, curious expression.
+* **Environment & Lighting:** Smooth transition to a dim, cinematic developer setup with dual ultrawide monitors glowing in deep indigo. A soft amber rim light contours the avatar. It matches the opening shot, so the Short loops cleanly.
+* **The Avatar (Wardrobe & Physicality):** Relaxed-fit heavyweight charcoal t-shirt. At 0:42, gives a friendly, conversational lean forward with an amused, curious expression.
 * **Overlay Animation:** A sleek, minimalist dark-mode card slides up with the GitHub repository preview:
   `sphragis: open-source tool that turns public code review into datasets`
   Below it, a pulsing badge:
   `Pinned Comment ⬇`
 * **Spoken Script:**
-  "The tool is open source; link pinned. I follow each community's rules and never republish review text. What's the weirdest rule your reviewers enforce?"
+  "Open-source tool, link pinned. I follow each community's rules and never republish review text. What's the weirdest rule your reviewers enforce?"
 * **Vocal Direction:** Casual, peer-to-peer, and genuinely curious. Smile when asking the question and finish on an upbeat, open-ended rhythm.

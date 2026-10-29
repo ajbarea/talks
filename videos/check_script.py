@@ -4,6 +4,7 @@ Usage: python3 videos/check_script.py [script.md ...]   (default: every videos/*
 The rules it enforces are in videos/vids-rules.md.
 """
 
+import math
 import pathlib
 import re
 import sys
@@ -14,23 +15,28 @@ HERE = pathlib.Path(__file__).resolve().parent
 MAX_SECONDS = 10
 #: US conversational rate, about 150 words a minute; a spoken line is timed at it.
 WORDS_PER_MINUTE = 150
+#: Room a spoken line leaves in its clip for directed pauses and the cut.
+HEADROOM_SECONDS = 1
 #: Each segment's required fields, matched against its bullet labels.
 FIELDS = {
     "Environment & Lighting": re.compile(r"environment", re.I),
     "Avatar (Wardrobe & Physicality)": re.compile(r"wardrobe|physicality", re.I),
     "Visual Overlay": re.compile(r"overlay", re.I),
-    "Spoken Script": re.compile(r"spoken", re.I),
+    "Spoken Script": re.compile(r"\bspoken", re.I),
     "Vocal Direction": re.compile(r"vocal", re.I),
 }
+#: Fields whose 'At m:ss' times must fall inside their segment.
+TIMED = re.compile(r"wardrobe|physicality|overlay", re.I)
 SEGMENT = re.compile(r"^#{2,4}\s+(?:Segment|Scene)\b", re.I)
 SPAN = re.compile(r"\((\d+):(\d{2})\s*[–—-]\s*(\d+):(\d{2})\)")
-END = re.compile(r"^(#{1,4}\s|---\s*$)")
+AT = re.compile(r"\bAt (\d+):(\d{2})\b(?!\s*[AP]M)", re.I)
+END = re.compile(r"^(#{1,6}\s|---\s*$)")
 BULLET = re.compile(r"^[*-]\s+(.*)$")
-LABEL = re.compile(r"^\*\*(.+?):\*\*\s*(.*)$|^\*\*(.+?)\*\*:\s*(.*)$|^([^:`'\"*]{2,60}):\s*(.*)$")
-DOUBLE = re.compile(r"[\"“”]")
-QUOTED = re.compile(r"[\"“]([^\"“”]*)[\"”]")
+LABEL = re.compile(r"^\*\*(.+?):\*\*\s*(.*)$|^\*\*(.+?)\*\*:\s*(.*)$|^([A-Za-z][^:`'\"*\d]{1,59}):\s*(.*)$")
+DOUBLE = re.compile(r"[\"“”„‟«»″]")
+QUOTED = re.compile(r"[\"“„]([^\"“”„]*)[\"”]")
 WORD = re.compile(r"\w[\w'’-]*")
-BACKREF = re.compile(r"\b(same as|as above|as before|see segment)\b", re.I)
+BACKREF = re.compile(r"\b(same as|as above|as before|see segment|segment s?\d+)\b", re.I)
 
 
 @dataclass
@@ -69,24 +75,38 @@ def segments(text: str) -> list[Segment]:
     return out
 
 
-def seconds(match: re.Match[str]) -> int:
-    a, b, c, d = (int(g) for g in match.groups())
-    return (c * 60 + d) - (a * 60 + b)
+def clock(m: str, s: str) -> int:
+    return int(m) * 60 + int(s)
+
+
+def spoken_seconds(spoken: str) -> float:
+    """A word takes one slot; a number takes one per two digits ('2025' is 'twenty twenty-five')."""
+    slots = sum(math.ceil(len(w) / 2) if w.isdigit() else 1 for w in WORD.findall(spoken))
+    return slots * 60 / WORDS_PER_MINUTE
 
 
 def check(text: str) -> list[tuple[int, str]]:
     """Every problem as (line, message); an empty list means the script passes."""
+    problems: list[tuple[int, str]] = []
+    for n, raw in enumerate(text.splitlines(), 1):
+        if SPAN.search(raw) and not SEGMENT.match(raw) and re.match(r"^(#|\*\*)", raw):
+            problems.append((n, "looks like a segment heading but is not '### Segment N (m:ss – m:ss): Title'"))
     segs = segments(text)
     if not segs:
-        return [(1, "no '### Segment N (m:ss – m:ss)' headings found")]
-    problems: list[tuple[int, str]] = []
+        return problems or [(1, "no '### Segment N (m:ss – m:ss)' headings found")]
+    previous_end: int | None = None
     for seg in segs:
         span = SPAN.search(seg.heading)
-        length = seconds(span) if span else None
-        if length is None:
+        start = end = None
+        if span is None:
             problems.append((seg.line, "heading has no (m:ss – m:ss) span"))
-        elif not 0 < length <= MAX_SECONDS:
-            problems.append((seg.line, f"segment runs {length} s; a clip is 1 to {MAX_SECONDS} s"))
+        else:
+            start, end = clock(*span.groups()[:2]), clock(*span.groups()[2:])
+            if not 0 < end - start <= MAX_SECONDS:
+                problems.append((seg.line, f"segment runs {end - start} s; a clip is 1 to {MAX_SECONDS} s"))
+            if start and previous_end is not None and start != previous_end:
+                problems.append((seg.line, f"segment starts at {start} s but the one before ends at {previous_end} s"))
+        previous_end = end
         if DOUBLE.search(seg.heading):
             problems.append((seg.line, "double quotes in the heading get voiced; use single quotes"))
         for name, rule in FIELDS.items():
@@ -98,6 +118,10 @@ def check(text: str) -> list[tuple[int, str]]:
         for label, n, body in seg.fields:
             if BACKREF.search(body):
                 problems.append((n, f"{label} points elsewhere; each clip is generated alone, so say it in full"))
+            if TIMED.search(label) and start is not None and end is not None:
+                for at in AT.finditer(body):
+                    if not start <= clock(*at.groups()) <= end:
+                        problems.append((n, f"{label}: '{at.group(0)}' falls outside this segment"))
             if not FIELDS["Spoken Script"].search(label):
                 if DOUBLE.search(body):
                     problems.append((n, f"double quotes in {label} get voiced; use single quotes or backticks"))
@@ -108,10 +132,10 @@ def check(text: str) -> list[tuple[int, str]]:
             spoken = " ".join(spans)
             if "[" in spoken or "]" in spoken:
                 problems.append((n, "a [direction] inside the spoken quotes is voiced; move it to Vocal Direction"))
-            need = len(WORD.findall(spoken)) * 60 / WORDS_PER_MINUTE
-            room = min(length or MAX_SECONDS, MAX_SECONDS)
+            need = spoken_seconds(spoken)
+            room = min(end - start if span else MAX_SECONDS, MAX_SECONDS) - HEADROOM_SECONDS
             if need > room:
-                problems.append((n, f"spoken line needs {need:.1f} s at {WORDS_PER_MINUTE} wpm; the clip has {room} s"))
+                problems.append((n, f"spoken line needs {need:.1f} s at {WORDS_PER_MINUTE} wpm; it has {room} s"))
     return sorted(problems)
 
 
@@ -122,6 +146,10 @@ def main(argv: list[str]) -> int:
         return 1
     failed = 0
     for path in paths:
+        if not path.is_file():
+            print(f"{path}: no such file", file=sys.stderr)
+            failed += 1
+            continue
         problems = check(path.read_text(encoding="utf-8"))
         for line, message in problems:
             print(f"{path}:{line}: {message}", file=sys.stderr)

@@ -25,6 +25,9 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CI: "true"
+      # ruff prints its findings as annotations on the PR's changed lines; `make lint` stays the
+      # same command locally.
+      RUFF_OUTPUT_FORMAT: github
       SPHRAGIS: ${{ github.workspace }}/.deps/sphragis
     steps:
       - name: Check out the talks

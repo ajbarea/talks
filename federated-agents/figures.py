@@ -543,7 +543,7 @@ def main() -> int:
     if args.check:
         committed = READINGS.read_text() if READINGS.is_file() else ""
         if committed != expected:
-            print(f"{READINGS.name} is stale against the sphragis artifacts; run figures.py")
+            print(f"{READINGS.name} is stale against the sphragis artifacts; run figures.py", file=sys.stderr)
             return 1
         print(f"{READINGS.name} matches the sphragis artifacts")
         return 0

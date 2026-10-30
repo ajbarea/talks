@@ -1,0 +1,32 @@
+Can a federated learning research framework be easy to learn without hiding what it does? A narrated tour of the educational UI for InteFL.
+
+The whole platform starts with one command, which installs dependencies, starts the FastAPI back end, the React 19 front end and Redis, and opens the browser. The app detects my RTX 3060 and offers it as the training device. From there the video follows one experiment end to end: pick a research-backed preset with an estimated runtime and difficulty, read the tooltip on each hyperparameter, edit the JSON in a side panel that syncs with the form, and let live validation block a bad config before it wastes compute. Jobs wait in a queue so heavy runs do not overload limited hardware.
+
+Then the results: an insights tab that explains defense effectiveness and attack impact, interactive Recharts plots, metric summaries with the raw CSV, and Argus, the built-in AI assistant. A second preset adds dynamic model poisoning from round two, and Matplotlib plots compare model behavior and weight distributions before and after the attack. An integrated terminal (Ctrl + backtick) gives direct shell access.
+
+Aggregation strategies: FedAvg, Trust/Reputation, PID, Krum, ArKrum, Multi-Krum, Bulyan, RFA and Trimmed-Mean.
+Stack: React 19, Vite 7, React Bootstrap, Recharts and React Router 7; FastAPI, Flower 1.26, PyTorch 2.10, Hugging Face Transformers 5.1 and Datasets 4.5; scikit-learn, PEFT/LoRA, pandas and numpy 2.
+
+Narrated with a text-to-speech voice (Microsoft Read Aloud); the demo, analysis and script are mine.
+
+00:00 What the educational UI is for
+00:15 One-command launch
+00:38 Navigation and GPU detection
+01:06 Research-backed presets
+02:01 Live validation and the JSON editor
+03:01 Creating a simulation and the queue
+03:37 Dashboard and integrated terminal
+04:24 Watching a run live
+05:14 Results: the insights tab
+05:32 Interactive plots
+06:12 Attack and metrics tabs
+06:41 Argus, the AI assistant
+07:40 Second run: dynamic model poisoning
+08:56 Weight distributions and wrap-up
+
+InteFL repo: https://github.com/dmitrykoro/fl-execution-framework
+Capstone talk on why I built the UI: https://youtu.be/2Q3Fv6Df3gU
+AI, Research and Software Projects playlist: https://www.youtube.com/playlist?list=PLmQVFU1FBDddL1sPe9Qj-drkwZ3v-wuQo
+More videos: https://youtube.com/@AJBarea
+
+#FederatedLearning #InteFL #MachineLearning #React #FastAPI #AIassistant

@@ -1,0 +1,7 @@
+A demo of TaskMaster, my full-stack project for RIT SWEN-610: React with Reactstrap, a Flask REST API, and PostgreSQL.
+
+The front end is React with Reactstrap. The back end is a Python Flask-RESTful API, and the data lives in PostgreSQL.
+
+More videos: https://youtube.com/@AJBarea
+
+#react #flask #postgresql #python #fullstack

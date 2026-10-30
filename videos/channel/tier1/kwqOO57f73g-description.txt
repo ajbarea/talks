@@ -1,0 +1,25 @@
+Can an e-puck find a yellow cylinder with its camera, turn to face it and stop 5 inches away? Lab 4 adds the camera.
+
+Lab 4 gives the robot a camera, shown in a first-person window, set to recognize yellow. The goal for every task is a tall yellow cylinder. Task 1 keeps the robot facing it: the camera reports where the goal sits across 80 positions on its x-axis, and the robot spins until the goal is centered at 40. I move the robot and the goal around the map to test it.
+
+Task 2 drives toward the goal and holds 5 inches away with proportional control, backing up when pushed too close and following the cylinder when it moves. Task 3 is bug zero, partly done at recording: I explain how it switches between heading for the goal and wall following, show a case where it loops forever, and show the corner bug in my own controller.
+
+Lab 4 of 6 in my Webots series, made for CDA 4621 Control of Mobile Robots. Python controllers on the e-puck robot.
+Note: these labs were built in Webots 2021, and newer Webots versions changed a lot. The source repo now targets Webots R2025a, so its code may not match the video; to replicate the video exactly, install Webots 2021 from the Cyberbotics archive.
+
+00:00 The camera and the yellow goal
+01:05 Task 1: always face the goal
+03:44 Task 2: stop 5 inches from the goal
+06:23 Task 3: bug zero, partly done
+06:47 How bug zero works
+07:50 When bug zero loops forever
+08:52 The wall-following bug in my controller
+
+Simulator (Webots): https://cyberbotics.com/#download
+Older Webots releases: https://github.com/cyberbotics/webots/releases
+Robot (e-puck): https://cyberbotics.com/doc/guide/epuck
+Source code: https://github.com/ajbarea/control-of-mobile-robots
+Full Webots series: https://www.youtube.com/playlist?list=PLmQVFU1FBDddYV_4IRW1zfXH6CAKuZjIM
+More videos: https://youtube.com/@AJBarea
+
+#webots #robotics #epuck #python #computervision #bugalgorithm

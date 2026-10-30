@@ -1,0 +1,25 @@
+How does a team that loses and gains members mid-project still ship a banking app? Our planning docs, stack and a live demo.
+
+TBD Bank is a full-stack banking app. Users register, log in, edit their profile and password, open accounts, transfer money between their own accounts, send or request money from other users, answer money requests from their notifications, and filter their transaction history by income or expense.
+
+We walk through our agile process on a Trello kanban board with daily stand-ups, the team restructure, the flowchart, the light and dark Figma wireframes, the entity relationship diagram, our branching strategy and the challenges we hit. Then we demo the app live, list the backlog for a future sprint, and take questions. The front end is Angular with Bootstrap and Angular Material. The back end is Java with Spring Boot, Spring Security and JWT authentication, on PostgreSQL.
+
+TBD team: Seth Evry, Elian Felix, AJ Barea.
+
+00:00 Intro and agile process
+01:01 Team structure and restructure
+02:06 Planning: flowchart
+02:50 Planning: Figma wireframes
+03:28 Planning: entity relationship diagram
+04:46 Tech stack
+05:59 Branching strategy
+06:50 Features implemented
+07:45 Challenges
+09:08 Live demo
+12:58 Backlog for a future sprint
+13:48 Q&A
+
+Source code: https://github.com/ajbarea/tbd-banking-application
+More videos: https://youtube.com/@AJBarea
+
+#springboot #angular #java #postgresql #fullstack #bankingapp

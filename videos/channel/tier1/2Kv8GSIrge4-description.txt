@@ -1,0 +1,25 @@
+Why does a proportional controller never stop exactly 10 inches from a wall? An e-puck shows it with three distance sensors.
+
+Lab 3 drives the e-puck with its left, front and right distance sensors, printed live in the console. A proportional controller sets the motor speed: the distance error times a gain, then capped at the motor limit of 6.28. I explain that loop first, then use it in four tasks.
+
+Task 1 slows to a stop 10 inches from the wall with a gain of 2.5; it zigzags close to 10 but never lands on it exactly. Task 2 drives down a hallway while staying 2.5 to 5.5 inches from both side walls. Task 3 follows a corridor with turns, favoring the left wall and spinning 90 degrees at each wall, run in both directions. Task 4 is a maze I had not solved yet, so you get to watch it fail.
+
+Lab 3 of 6 in my Webots series, made for CDA 4621 Control of Mobile Robots. Python controllers on the e-puck robot.
+Note: these labs were built in Webots 2021, and newer Webots versions changed a lot. The source repo now targets Webots R2025a, so its code may not match the video; to replicate the video exactly, install Webots 2021 from the Cyberbotics archive.
+
+00:00 Four tasks, three distance sensors
+00:43 How proportional control works
+01:50 Task 1: stop 10 inches from the wall
+03:27 Task 2: hold the middle of the hallway
+04:39 Task 3: corridor with turns, clockwise
+06:08 The same corridor, counterclockwise
+07:12 Task 4: the maze, still unsolved
+
+Simulator (Webots): https://cyberbotics.com/#download
+Older Webots releases: https://github.com/cyberbotics/webots/releases
+Robot (e-puck): https://cyberbotics.com/doc/guide/epuck
+Source code: https://github.com/ajbarea/control-of-mobile-robots
+Full Webots series: https://www.youtube.com/playlist?list=PLmQVFU1FBDddYV_4IRW1zfXH6CAKuZjIM
+More videos: https://youtube.com/@AJBarea
+
+#webots #robotics #epuck #python #pidcontrol #wallfollowing

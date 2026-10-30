@@ -1,0 +1,14 @@
+Kourai Khryseai in under two minutes: a game where AI agents plan, code, test and document an app with you.
+
+AI slop-cut edition: a short cut of my Kourai Khryseai poster talk, in my own voice. The project is named for the golden automata Hephaestus built to help at his forge. You choose an app to build and work on it with a team of AI agents that follow MCP and the A2A (agent-to-agent) protocol. It began as a CLI where Hephaestus gave orders in sequence, and became a group chat where agents overhear and gossip. The poster focuses on the human-centered side: systems that track how you work with each agent and show which ones you get along with.
+
+00:00 What the name means
+00:34 Agents on MCP and A2A
+00:53 From CLI to group chat
+01:29 The human-centered AI focus
+
+Full poster talk: https://youtu.be/vYWXLaDjp2M
+Source code: https://github.com/ajbarea/kourai-khryseai
+More videos: https://youtube.com/@AJBarea
+
+#AgenticAI #MultiAgentSystems #A2A #MCP #AI

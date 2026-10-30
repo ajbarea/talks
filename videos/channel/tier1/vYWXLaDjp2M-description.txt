@@ -1,0 +1,24 @@
+What if AI coding agents worked like characters in a game, showing their work and asking you when a decision matters?
+
+A recording of my poster at the Rochester Institute of Technology (RIT) Center for Human-Aware AI (CHAI) Poster Session. Kourai Khryseai is named for the golden automata Hephaestus built to help at his forge. It is a multi-agent development system: you pick the app, then plan, code, test and document it with ten AI agents. The agents follow MCP and the A2A (agent-to-agent) protocol and talk to each other and to you. Instead of running silently, they stream their work and ask for guidance.
+
+It started as a CLI where Hephaestus gave orders to each agent in turn, and grew into a group chat where agents overhear and gossip. The same backend drives three interfaces: the CLI, a Pygame GUI with a voice for each agent, and a Ren'Py visual novel. As you work, the system tracks how you treat each agent, such as accepting suggestions and finishing tasks together, through relationship scores and Forge Virtues like Synergy, Sophia and Techne, inspired by Mass Effect and Disco Elysium. These player metrics are the human-centered AI focus of the poster.
+
+Built with LiteLLM and Starlette, observed with OpenTelemetry and Jaeger, with an SQLite memory core for episodic and semantic memory.
+
+PhD in Computing and Information Sciences, Rochester Institute of Technology. Faculty advisor: Dr. Leon Reznik.
+
+00:00 What Kourai Khryseai is
+00:35 One multi-agent backend: MCP and A2A
+01:02 From CLI to group chat
+01:25 Three interfaces: CLI, Pygame and Ren'Py
+02:14 Tracking how you work with each agent
+02:46 The virtue system
+03:30 Relationship and play-through stats
+04:12 The human-centered AI focus
+
+Source code: https://github.com/ajbarea/kourai-khryseai
+AI, Research and Software Projects playlist: https://www.youtube.com/playlist?list=PLmQVFU1FBDddL1sPe9Qj-drkwZ3v-wuQo
+More videos: https://youtube.com/@AJBarea
+
+#MultiAgentSystems #AgenticAI #HumanOnTheLoop #A2A #MCP #RIT #Python

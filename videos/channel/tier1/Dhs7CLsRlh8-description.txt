@@ -1,0 +1,25 @@
+Can a robot drive a rectangle, two circles and an oval on wheel speeds and timing alone? Lab 2 tries all three.
+
+Lab 2 writes three Python controllers for a differential drive robot, each tracing a shape from given distances, widths, heights, radii and speeds. Every controller warns when the path cannot be finished in the time given or when the speed passes the motor limit, and prints the heading in degrees from the robot's yaw as it drives.
+
+Task 1 drives a rectangle clockwise. Task 2 drives two clockwise circles of radius 10 and 14, after first rejecting a 10-second deadline as impossible. Task 3 drives an oval race track built from two half circles and two straight lines, after a speed-limit warning. Each run ends with the distance, time and speed it calculated.
+
+Lab 2 of 6 in my Webots series, made for CDA 4621 Control of Mobile Robots. Python controllers on the e-puck robot.
+Note: these labs were built in Webots 2021, and newer Webots versions changed a lot. The source repo now targets Webots R2025a, so its code may not match the video; to replicate the video exactly, install Webots 2021 from the Cyberbotics archive.
+
+00:00 Three shapes and two warnings
+00:58 Task 1: rectangle, heading in degrees
+02:12 Task 2: two clockwise circles
+02:59 Warning: 10 seconds is too short
+03:16 Circles of radius 10 and 14
+04:13 Task 3: oval race track
+04:46 Speed-limit warning, then the oval
+
+Simulator (Webots): https://cyberbotics.com/#download
+Older Webots releases: https://github.com/cyberbotics/webots/releases
+Robot (e-puck): https://cyberbotics.com/doc/guide/epuck
+Source code: https://github.com/ajbarea/control-of-mobile-robots
+Full Webots series: https://www.youtube.com/playlist?list=PLmQVFU1FBDddYV_4IRW1zfXH6CAKuZjIM
+More videos: https://youtube.com/@AJBarea
+
+#webots #robotics #epuck #python #kinematics #differentialdrive

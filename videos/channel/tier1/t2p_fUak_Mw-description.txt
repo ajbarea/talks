@@ -1,0 +1,25 @@
+Can a manager change a ticket after approving it? A live demo of my Java expense reimbursement API, with roles and status locks.
+
+The Expense Reimbursement System lets employees submit reimbursement tickets with a cost and a description. A financial manager approves or denies each one, and a ticket cannot change status after that. The user stories cover the employee side (login, unique usernames, submitting and viewing tickets) and the manager side (processing tickets once). The full text is in the repo.
+
+I built it with Java, Javalin and PostgreSQL and drive it from Postman. The demo shows invalid logins, a regular user blocked from deleting users or approving their own ticket, a manager updating user details, reading tickets and filtering them by status and by author, and a manager deleting users whose tickets go with them through a cascade delete. The last part is the Q&A from the live presentation, including how the auth cookie tells the API which user is calling and what role they have.
+
+Solo project.
+
+00:00 Fresh database and test users
+00:46 Login checks
+01:42 What a regular user cannot do
+02:19 Manager login and user updates
+03:07 Reading and filtering tickets
+04:01 Approving and denying tickets
+05:02 Tickets by author
+05:35 Manager deletes users, tickets cascade
+06:18 Q&A: changing a resolved ticket
+07:05 Q&A: why PUT for updates
+07:46 Q&A: cookie authorization
+10:07 Q&A: can a manager approve their own ticket?
+
+Source code: https://github.com/ajbarea/expense-reimbursement-system
+More videos: https://youtube.com/@AJBarea
+
+#java #javalin #postgresql #restapi #postman #softwareengineering

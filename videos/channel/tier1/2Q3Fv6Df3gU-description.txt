@@ -1,0 +1,27 @@
+How do you turn a CLI-only federated learning simulator into a full-stack app with a GUI, an API and 1,136 automated tests?
+
+A recording of my Master's capstone at the Rochester Institute of Technology (RIT) Graduate Showcase, mostly a conversation at my poster. I worked with a PhD team under Dr. Leon Reznik on InteFL, their federated learning simulation framework. They asked first for a test suite, then for dynamic attacks that poison client data, by label flipping or Gaussian noise, only in the rounds you choose. Both fed the team's papers, one for a dependability conference and one on metacognition. On my own, I added a web front end, so new team members learn what each parameter does from tooltips instead of a notes file.
+
+I explain how federated learning keeps data on each client and sends only gradients to the server, then walk through what I built: the React front end, a FastAPI layer, and a subprocess wrapper so a crashed simulation no longer leaves processes eating resources. The front end has seven quick presets, interactive Recharts plots in place of static Matplotlib PDFs, an integrated terminal, and it runs in Docker. On my own GPU the same simulation ran in 45 seconds, faster than on the RIT cluster.
+
+In numbers: 1,136 automated tests at 95% code coverage, a full test run in under 90 seconds with parallel execution, a REST API with 12 endpoints, and a configuration wizard with 30+ validated fields.
+Stack: React 19, Vite, Recharts, Material Design 3; Python, FastAPI, WebSocket; Flower, PyTorch, Hugging Face Datasets; Pytest, pytest-xdist.
+
+MS in Software Engineering, Rochester Institute of Technology. Advisor: Dr. Leon Reznik.
+
+00:00 Onboarding: what do the parameters mean?
+00:23 The first ask: a test suite
+00:48 Dynamic poisoning attacks
+01:52 How federated learning works
+02:57 GPU training and the live demo
+03:56 What I built: UI, API and subprocesses
+04:43 Why I built the front end
+06:18 Presets and interactive plots
+07:05 Docker and the cluster run
+
+InteFL repo: https://github.com/dmitrykoro/fl-execution-framework
+Narrated UI walkthrough: https://youtu.be/UtOHEHz2pWw
+AI, Research and Software Projects playlist: https://www.youtube.com/playlist?list=PLmQVFU1FBDddL1sPe9Qj-drkwZ3v-wuQo
+More videos: https://youtube.com/@AJBarea
+
+#FederatedLearning #InteFL #SoftwareEngineering #RIT #Capstone #React #FastAPI #Python

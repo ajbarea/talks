@@ -33,7 +33,7 @@ CHAPTER = re.compile(rf"^\s*({STAMP})\s*[-–—:]?\s+(\S.*)$")
 ANY_STAMP = re.compile(rf"(?<![\d:]){STAMP}(?![\d:])")
 URL = re.compile(r"https?://\S+")
 HASHTAG = re.compile(r"(?<![\w/&#])#[^\W\d_][\w]*")
-DISCLOSURE = re.compile(r"\bAI[- ](?:avatar|clone|voice)\b", re.I)
+DISCLOSURE = re.compile(r"\bAI[- ](?:avatar|clone|voice)\b|\btext-to-speech voice\b", re.I)
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
 
 
@@ -93,7 +93,7 @@ def check_description(text: str, duration: int | None = None, ai: bool = False) 
     if len(tags) > MAX_HASHTAGS:
         out.append((0, f"{len(tags)} hashtags; keep to {MAX_HASHTAGS} (YouTube ignores all past 60)"))
     if ai and not discloses_ai(text):
-        out.append((0, "the video is AI-narrated: add a line saying an AI avatar narrates it"))
+        out.append((0, "the video is AI-narrated: add a line saying an AI avatar or text-to-speech voice narrates it"))
     return out
 
 

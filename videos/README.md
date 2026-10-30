@@ -13,7 +13,7 @@ AJ's explainer videos, made in Google Vids with his personal avatar: his own ver
 
 ## Guardrails
 
-1. **Say that an AI avatar narrates.** On upload, tick 'Altered or synthetic content' in YouTube Studio, and say in the description that an AI avatar of AJ narrates the video. YouTube requires disclosure of realistic synthetic media, and a synthetically generated voice narrating a video is one of its examples ([YouTube, March 2024](https://blog.youtube/news-and-events/disclosing-ai-generated-content)).
+1. **Say that an AI avatar narrates.** On upload, tick 'Altered or synthetic content' in YouTube Studio, and say in the description that an AI avatar of AJ narrates the video. A text-to-speech narrator is disclosed the same way. YouTube requires disclosure of realistic synthetic media, and a synthetically generated voice narrating a video is one of its examples ([YouTube, March 2024](https://blog.youtube/news-and-events/disclosing-ai-generated-content)).
 2. **Only published work.** Never cover a paper while it is under double-blind review, or lab results that are not yet published. Videos cover published papers, public repositories and general concepts.
 3. **Nothing private on screen.** No private repository, account, email, token or key in an overlay or a screenshot; overlays use made-up names.
 

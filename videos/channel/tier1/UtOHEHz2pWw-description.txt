@@ -7,6 +7,8 @@ Then the results: an insights tab that explains defense effectiveness and attack
 Aggregation strategies: FedAvg, Trust/Reputation, PID, Krum, ArKrum, Multi-Krum, Bulyan, RFA and Trimmed-Mean.
 Stack: React 19, Vite 7, React Bootstrap, Recharts and React Router 7; FastAPI, Flower 1.26, PyTorch 2.10, Hugging Face Transformers 5.1 and Datasets 4.5; scikit-learn, PEFT/LoRA, pandas and numpy 2.
 
+Narrated with a text-to-speech voice (Microsoft Read Aloud); the demo, analysis and script are mine.
+
 00:00 What the educational UI is for
 00:15 One-command launch
 00:38 Navigation and GPU detection

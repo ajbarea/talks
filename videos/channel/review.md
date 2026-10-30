@@ -1058,7 +1058,7 @@ More videos: https://youtube.com/@AJBarea
 | Field | Value |
 |---|---|
 | Title | new: "InteFL Full Walkthrough: Educational UI and AI Analysis" ("FL Framework" is generic; names the framework InteFL) |
-| AI-narrated | no (no AI label on the live page; captions and description name no AI voice) |
+| AI-narrated | yes: a text-to-speech voice (Microsoft Read Aloud), per AJ; narrator line added and Altered or synthetic content ticked (README guardrail 1) |
 | Tags | InteFL, federated learning UI, federated learning tutorial, federated learning dashboard, FL experiment platform, Flower framework, React 19, FastAPI, Redis, AI assistant, model poisoning, Recharts, Byzantine robust aggregation, ArKrum, federated learnig |
 | Pinned comment | At 7:40 the second preset turns on model poisoning from round two. Which plot told you most clearly that something was wrong: the accuracy curve or the weight distribution comparison at 8:56? |
 | End screen | Subscribe + 2Q3Fv6Df3gU "InteFL: Full-Stack Federated Learning Framework \| RIT MS SE Capstone" (the capstone talk on why this UI was built) |
@@ -1108,6 +1108,8 @@ Then the results: an insights tab that explains defense effectiveness and attack
 
 Aggregation strategies: FedAvg, Trust/Reputation, PID, Krum, ArKrum, Multi-Krum, Bulyan, RFA and Trimmed-Mean.
 Stack: React 19, Vite 7, React Bootstrap, Recharts and React Router 7; FastAPI, Flower 1.26, PyTorch 2.10, Hugging Face Transformers 5.1 and Datasets 4.5; scikit-learn, PEFT/LoRA, pandas and numpy 2.
+
+Narrated with a text-to-speech voice (Microsoft Read Aloud); the demo, analysis and script are mine.
 
 00:00 What the educational UI is for
 00:15 One-command launch

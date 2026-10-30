@@ -3,8 +3,9 @@
 ## State (2026-10-29 night)
 - ✅ #43 merged as #45 (upload package, `make videos-verify ID=... [AI=1] [AUTO_THUMB=1]`).
 - ✅ Tier 2 (113 concert uploads) and Tier 3 (36 gaming clips): `videos/channel/refresh.py` renders from `music.tsv` / `gaming.tsv`; `tests/test_channel_refresh.py` lints every rendered description.
-- 🔄 Tier 1 (20 videos): hand drafts in `videos/channel/tier1/<id>-description.txt`; per-video title, tags, pinned question, end screen and fact sources in `videos/channel/review.md`.
-- 📋 PR with review.md first (Heph spot-checks), then apply in Studio.
+- ✅ Tier 1 (20 videos) LIVE 10-30: descriptions, tags, 6 title fixes, 5 category fixes (Webots 1-5 -> Education), 19 end screens (Subscribe + named video; the 36 s clone video has none), 20 pinned questions; `make videos-verify` 4/4 on all 20. UtOHEHz2pWw is TTS-narrated (Microsoft Read Aloud, AJ via Heph): narrator line + AI use = yes.
+- ✅ PR #46 opened; Heph spot-checked review.md (clean).
+- 📋 Tier 2 and 3 next.
 
 ## Apply (Playwright MCP, profile signed in; pick @AJBarea in /channel_switcher if Studio says "Create channel")
 1. Tier 1, one video at a time: `studio.youtube.com/video/<id>/edit`, replace description (and title where review.md says new), tags, category, Save; end screen (Subscribe + the named video); pinned comment on the watch page. Then `make videos-verify ID=<id> [AI=1] AUTO_THUMB=1` and fix what fails.

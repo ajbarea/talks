@@ -5,7 +5,7 @@ description: Write, storyboard, script or optimize a YouTube video of any length
 
 # YouTube Cinematic, Presentation & Multi-Genre Director
 
-Origin: AJ's YouTube director skill draft of October 18, 2026, kept in his private ideas repository; moved here unchanged except for this header, the note below and the examples, which now live in [references/examples.md](references/examples.md).
+Origin: AJ's YouTube director skill draft of October 18, 2026, kept in his private ideas repository; moved here with this header, the note below, the examples (now in [references/examples.md](references/examples.md)), and Phase 6's upload package and live check, added after the earthquake video of October 29, 2026.
 
 In this repository every Mode A script also follows [../vids-rules.md](../vids-rules.md) (one clip is 10 seconds at most; the lint `videos/check_script.py` checks it), and where a talk deck exists, the narration comes from the deck's speaker notes (`graphe:slides`). The disclosure rule in [../README.md](../README.md) overrides the constraint below about keeping the pipeline invisible: every video says an AI avatar of AJ narrates it.
 
@@ -114,25 +114,30 @@ Provide a dedicated chronological edit schedule:
 
 ---
 
-### Phase 6: YouTube Studio Metadata Package
-Provide a complete, copy-pasteable metadata package:
-- **Hook Title:** Under 50 characters for Shorts; under 70 characters for long-form presentations (search-optimized, curiosity-driven).
-- **Video Description:**
-  - *First 120 Characters:* Mobile search preview hook summarizing the core conflict or research question.
-  - *Mode B Chapter Timestamps:* Exact clickable timestamps for YouTube player chapters (e.g., `00:00 - Introduction`).
-  - *Substantive Summary:* Technical/conceptual overview of the topic.
-  - *Resource Links:* Links to open-source GitHub repos, paper preprints/arXiv, and Reveal.js web slide decks (`https://ajbarea.github.io/talks/<slug>/`).
-  - *Cross-Funnel Link:* Link to the companion Short (for presentations) or link to the full presentation (for Shorts).
-  - *Channel & Subscribe Link:* `https://youtube.com/@ajbarea`
-  - *Hashtags:* 5–8 targeted hashtags.
-- **Pinned Comment:** Direct discussion question to spark viewer debate, plus primary code/paper/slide links.
-- **Studio Search Tags:** 12–15 comma-separated keywords for YouTube search algorithm indexing.
+### Phase 6: Upload Package and Live Check
+Write the package in [references/upload-package.md](references/upload-package.md): a plain-text `description.txt` (pasted as is, never copied from a rendered Markdown view), a `metadata.md` and a thumbnail. In order:
+- **Hook Title:** Under 50 characters for Shorts; under 70 characters for long-form presentations, topic word first. On an existing video, change the title only when it is unclear.
+- **Video Description (`description.txt`):**
+  - *Hook line:* at most 150 characters, a real finding or the question the video answers.
+  - *Summary:* one or two short paragraphs; every number from the video, its data or its linked repository.
+  - *Disclosure line:* "An AI avatar of me narrates this video" whenever the avatar narrates, plus **Altered or synthetic content** ticked in Studio.
+  - *Chapters:* one per line, the first at `00:00`, at least 3, each at least 10 seconds, times from the final export's captions.
+  - *Resource Links:* one per line as `Label: URL`: public GitHub repos, paper preprints/arXiv, and web decks (`https://ajbarea.github.io/talks/<slug>/`).
+  - *Cross-Funnel Link:* the companion Short (for presentations) or the full presentation (for Shorts).
+  - *Channel Link:* `More videos: https://youtube.com/@AJBarea`
+  - *Hashtags:* 3 to 8, on the last line.
+- **Pinned Comment:** one specific discussion question tied to a moment in the video, plus at most one code, paper or slide link.
+- **Studio Search Tags:** 5 to 15, for misspellings and synonyms; tags play a minimal role in discovery.
+- **End Screen:** Subscribe plus the most related video, for any 16:9 video of 25 seconds or more.
+- **Thumbnail:** a face frame and the video's own visual with 3 to 5 words (`videos/tools/thumbnail.py`), judged at 320 px. No generative imagery on a data video.
+
+Before upload, run the review pass in [references/upload-package.md](references/upload-package.md#the-review-pass-before-upload) (contact sheets, the transcript against the data, `python3 videos/youtube_check.py description.txt`). After upload, run `make videos-verify ID=<id>` (add `AI=1` for an AI-narrated video) and fix whatever it fails. Lessons on voice, quota, overlays, slow zooms and QGIS maps are in [references/production-notes.md](references/production-notes.md).
 </workflow>
 
 ---
 
 <constraints>
-- Format outputs cleanly in standard GitHub Markdown without raw HTML tables so creators can copy-paste straight into video notes or editors.
+- Format outputs cleanly in standard GitHub Markdown without raw HTML tables, except the description, which is plain text in `description.txt` so its line breaks survive the paste.
 - Strictly adhere to double quotes (`"..."`) on spoken dialogue in Mode A, and single quotes (`'...'`) on visual directions.
 - Keep live-action presentations authentic: avoid stiff, memorized monologues; foster engaging, conversational academic authority.
 - In Shorts, keep the technical pipeline invisible to viewers—treat the finished video as a high-concept cinematic production.

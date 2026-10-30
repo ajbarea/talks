@@ -44,6 +44,8 @@ New in this track:
 - `NN-slug/script.md`: one video's script, both cuts.
 - `vids-rules.md`: the writing rules and the pre-flight checklist.
 - `check_script.py`: the lint (`make videos-check`; `make test` runs it too).
+- `youtube_check.py`: lints each `description.txt`; `make videos-verify ID=...` checks a live page.
+- `tools/`: thumbnail and slow-zoom helpers.
 - `youtube-director/`: the director skill, with its worked examples in `references/`.
 
 The site build skips this folder: it has no `index.html`, so it is not a talk.

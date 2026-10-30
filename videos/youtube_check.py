@@ -3,7 +3,7 @@
 Usage:
   python3 videos/youtube_check.py [FILE ...] [--duration S] [--ai]   lint description.txt files
                                                                       (default: every videos/**/*description.txt)
-  python3 videos/youtube_check.py --live ID [--auto-thumbnail]        check the public watch page (needs Pillow)
+  python3 videos/youtube_check.py --live=ID [--ai] [--auto-thumbnail] check the public watch page (needs Pillow)
 
 The rules and their sources are in videos/youtube-director/references/upload-package.md.
 """
@@ -83,7 +83,9 @@ def check_description(text: str, duration: int | None = None, ai: bool | None = 
         if len(marks) < MIN_CHAPTERS:
             out.append((marks[0][0], f"{len(marks)} chapters; YouTube needs at least {MIN_CHAPTERS}"))
         for (_, a, _), (n, b, _) in zip(marks, marks[1:], strict=False):
-            if b - a < MIN_CHAPTER_SECONDS:
+            if b <= a:
+                out.append((n, "chapter times must go up: this one is not after the one before"))
+            elif b - a < MIN_CHAPTER_SECONDS:
                 out.append((n, f"the chapter before this one lasts {b - a} s; each needs {MIN_CHAPTER_SECONDS} s"))
         if duration is not None and duration - marks[-1][1] < MIN_CHAPTER_SECONDS:
             out.append((marks[-1][0], f"the last chapter lasts {duration - marks[-1][1]} s of a {duration} s video"))
@@ -154,23 +156,23 @@ def thumbnail_kind(video: str, get=fetch) -> str:
     return f"auto frame {best + 1}" if diffs[best] < SAME_FRAME else "custom"
 
 
-def verify(video: str, auto_thumbnail: bool = False, get=fetch) -> list[tuple[str, bool, str]]:
-    """Each check on the public page as (check, passed, detail)."""
+def verify(video: str, ai: bool = False, auto_thumbnail: bool = False, get=fetch) -> list[tuple[str, bool, str]]:
+    """Each check on the public page as (check, passed, detail); ai says the video is AI-narrated."""
     html = get(f"https://www.youtube.com/watch?v={video}&hl=en").decode()
     facts = page_facts(_json_after(html, "ytInitialData = "), _json_after(html, "ytInitialPlayerResponse = "))
     desc, label = facts["description"], facts["ai_label"]
-    out = [("description", not p, f"line {n}: {p}" if n else p) for n, p in check_description(desc, facts["duration"])]
+    problems = check_description(desc, facts["duration"], ai)
+    out = [("description", False, f"line {n}: {p}" if n else p) for n, p in problems]
     if not out:
-        out.append(("description", True, "hook, links, chapters and hashtags pass"))
+        out.append(("description", True, "passes the lint"))
     want = len(chapters(desc))
     got = len(facts["chapters"])
     if want:
         out.append(("chapters", got == want, f"{got} on the scrub bar, {want} in the description"))
     else:
         out.append(("chapters", True, f"none in the description ({got} automatic)"))
-    said = discloses_ai(desc)
-    says = "says" if said else "does not say"
-    out.append(("AI label", bool(label) == said, f"label {label or 'absent'}; description {says} AI"))
+    want_label = "shown" if ai else "absent (pass --ai if an AI avatar narrates)"
+    out.append(("AI label", bool(label) == ai, f"label {label or 'absent'}; expected {want_label}"))
     kind = thumbnail_kind(video, get)
     out.append(("thumbnail", auto_thumbnail or kind == "custom", kind))
     return out
@@ -180,12 +182,12 @@ def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("files", nargs="*", type=pathlib.Path)
     ap.add_argument("--duration", type=int, help="video length in seconds, for the last chapter")
-    ap.add_argument("--ai", action="store_true", help="the video is AI-narrated; require the disclosure line")
-    ap.add_argument("--live", metavar="ID", help="check this video's public watch page instead")
+    ap.add_argument("--ai", action="store_true", help="the video is AI-narrated: require the disclosure line and label")
+    ap.add_argument("--live", metavar="ID", help="check this public watch page instead (write --live=ID)")
     ap.add_argument("--auto-thumbnail", action="store_true", help="accept one of YouTube's own frames")
     args = ap.parse_args(argv)
     if args.live:
-        results = verify(args.live, args.auto_thumbnail)
+        results = verify(args.live, args.ai, args.auto_thumbnail)
         for name, ok, detail in results:
             print(f"{'PASS' if ok else 'FAIL'}  {name:<12} {detail}")
         return 0 if all(ok for _, ok, _ in results) else 1

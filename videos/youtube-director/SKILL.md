@@ -131,7 +131,7 @@ Write the package in [references/upload-package.md](references/upload-package.md
 - **End Screen:** Subscribe plus the most related video, for any 16:9 video of 25 seconds or more.
 - **Thumbnail:** a face frame and the video's own visual with 3 to 5 words (`videos/tools/thumbnail.py`), judged at 320 px. No generative imagery on a data video.
 
-Before upload, run the review pass in [references/upload-package.md](references/upload-package.md#the-review-pass-before-upload) (contact sheets, the transcript against the data, `python3 videos/youtube_check.py description.txt`). After upload, run `make videos-verify ID=<id>` and fix whatever it fails. Lessons on voice, quota, overlays, slow zooms and QGIS maps are in [references/production-notes.md](references/production-notes.md).
+Before upload, run the review pass in [references/upload-package.md](references/upload-package.md#the-review-pass-before-upload) (contact sheets, the transcript against the data, `python3 videos/youtube_check.py description.txt`). After upload, run `make videos-verify ID=<id>` (add `AI=1` for an AI-narrated video) and fix whatever it fails. Lessons on voice, quota, overlays, slow zooms and QGIS maps are in [references/production-notes.md](references/production-notes.md).
 </workflow>
 
 ---

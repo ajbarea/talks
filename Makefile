@@ -30,9 +30,9 @@ test:              ## Run the tests
 videos-check:      ## Lint every video script (videos/vids-rules.md) and every upload description
 	python3 videos/check_script.py && python3 videos/youtube_check.py
 
-videos-verify:     ## Check a published video's public page: make videos-verify ID=i_MyPXD6-mg [AUTO_THUMB=1]
+videos-verify:     ## Check a published video's public page: make videos-verify ID=i_MyPXD6-mg [AI=1] [AUTO_THUMB=1]
 	@[ -n "$(ID)" ] || { echo "set ID" >&2; exit 1; }
-	uv run python videos/youtube_check.py --live $(ID) $(if $(AUTO_THUMB),--auto-thumbnail)
+	uv run python videos/youtube_check.py '--live=$(ID)' $(if $(AI),--ai) $(if $(AUTO_THUMB),--auto-thumbnail)
 
 script-length:     ## Each talk's spoken script in words and minutes; fails a talk over its cap
 	@for t in $(TALKS); do python3 scripts/script_length.py $$t || exit 1; done

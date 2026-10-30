@@ -121,13 +121,13 @@ def _results(get, **kw) -> dict[str, tuple[bool, str]]:
 
 def test_a_finished_upload_passes_live() -> None:
     marks = [("Introduction", 0), ("Odometry", 12), ("Wrap-up", 100)]
-    r = _results(_fake(_page(GOOD + "\nAn AI avatar of me narrates.\n", marks, "Made with AI"), shown=60))
+    r = _results(_fake(_page(GOOD + "\nAn AI avatar of me narrates.\n", marks, "Made with AI"), shown=60), ai=True)
     assert all(ok for ok, _ in r.values()), r
     assert r["thumbnail"][1] == "custom"
 
 
 def test_live_catches_lost_chapters_missing_label_and_auto_thumbnail() -> None:
-    r = _results(_fake(_page(GOOD + "\nAn AI avatar of me narrates.\n", []), shown=120))
+    r = _results(_fake(_page(GOOD + "\nAn AI avatar of me narrates.\n", []), shown=120), ai=True)
     assert r["chapters"] == (False, "0 on the scrub bar, 3 in the description")
     assert r["AI label"][0] is False
     assert r["thumbnail"] == (False, "auto frame 2")
@@ -136,7 +136,28 @@ def test_live_catches_lost_chapters_missing_label_and_auto_thumbnail() -> None:
 
 def test_a_label_without_the_disclosure_line_fails() -> None:
     marks = [("Introduction", 0), ("Odometry", 12), ("Wrap-up", 100)]
+    r = _results(_fake(_page(GOOD, marks, "Made with AI"), shown=60), ai=True)
+    assert r["AI label"][0] is True
+    assert r["description"][0] is False
+
+
+def test_ai_label_follows_the_flag_not_the_wording() -> None:
+    marks = [("Introduction", 0), ("Odometry", 12), ("Wrap-up", 100)]
+    talk = GOOD + "\nA talk about AI-generated code.\n"
+    assert _results(_fake(_page(talk, marks), shown=60))["AI label"][0] is True
     assert _results(_fake(_page(GOOD, marks, "Made with AI"), shown=60))["AI label"][0] is False
+
+
+def test_descending_chapters_say_so() -> None:
+    text = GOOD.replace("00:12 Odometry", "00:12 Odometry\n00:05 Back")
+    assert any("must go up" in p for p in problems(text))
+
+
+def test_live_takes_an_id_that_starts_with_a_dash(monkeypatch) -> None:
+    seen = {}
+    monkeypatch.setattr(yc, "verify", lambda v, ai, auto: seen.setdefault("id", v) and [])
+    assert yc.main(["--live=-Pe9a4knLwc"]) == 0
+    assert seen["id"] == "-Pe9a4knLwc"
 
 
 def test_scrub_bar_chapters_are_counted_once() -> None:

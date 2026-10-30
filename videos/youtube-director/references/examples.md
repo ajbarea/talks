@@ -102,7 +102,7 @@ I play every character in this RPG party sketch — and somehow the NPC innkeepe
 💬 Which RPG class do you main? And how would YOU open the door? Let me know below!
 
 Subscribe for more sketches and gaming shorts:
-🔗 https://youtube.com/@ajbarea
+🔗 https://youtube.com/@AJBarea
 
 #Shorts #RPG #DnD #SketchComedy #GamingMemes #Fantasy #TabletopRPG #Comedy
 
@@ -226,7 +226,7 @@ Every night at 3 AM: flickering router lights, a screaming CPU fan, and ghost th
 💬 What's the spookiest or most elusive bug you've ever had to hunt down? Drop your horror stories below!
 
 Subscribe for more research, experiments, and tech builds:
-🔗 https://youtube.com/@ajbarea
+🔗 https://youtube.com/@AJBarea
 
 #SoftwareEngineering #ProgrammingHumor #Debugging #WebDevelopment #ComputerScience #DeveloperLife #Halloween #CodingHorror
 

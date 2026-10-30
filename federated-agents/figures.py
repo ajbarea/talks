@@ -70,7 +70,12 @@ TEAM_READING = {
         "a small team gain",
         "small team-specific gains",
     ),
-    ("inconclusive", True): ("shows no gain that matters", "none that matters", "team-specific gains are small"),
+    # Inside the SESOI band but not above zero: any gain is below what matters, not shown absent.
+    ("inconclusive", True): (
+        "shows at most a small gain",
+        "at most a small one",
+        "team-specific gains are small",
+    ),
     ("inconclusive", False): ("is not settled yet", "no answer yet", "team-specific gains are open"),
     # Bounded: the interval's upper end lies below the SESOI (sphragis research log 2026-10-14).
     ("bounded", True): ("shows no gain that matters", "none that matters", "no team-specific gain that matters"),
@@ -447,6 +452,10 @@ def readings() -> dict[str, str | int | bool]:
         values[f"rules_distilled_{org}"] = interval(read["families"]["distilled"]["own_minus_sibling"])
         values[f"rules_adapters_{org}"] = interval(read["adapters"]["own_minus_sibling"])
         values[f"rules_partitions_{org}"] = len(read["partitions"])
+    # How much more often a tuned adapter's greedy output is its own half's reference than the base
+    # model's, over the positive control's arms (sphragis likelihood-sesoi.json).
+    control = load("likelihood-sesoi.json")
+    values["tuned_exact_gain"] = f"{100 * control['adapter_minus_base']['exact_match']:.0f}"
     # The team-specific contrast on the registered score, each community's development pilot.
     team = {}
     for org in ORGS:

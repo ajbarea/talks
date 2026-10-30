@@ -302,8 +302,8 @@
   <aside class="notes">The grey dots are published designs. Across the bottom: who decides what is shared, from training itself to a fixed rule or a filter, server or AI. Up the side: whether anyone tested the shared part. Most never did; none asked whose it is. Ours, in orange, lets the company decide before training and tests which company the shared part came from.</aside>
 </section>
 
-<section data-chapter="3 · What I've found">
-  <span class="kicker">3 · What I've found</span>
+<section data-chapter="3 · What first runs show">
+  <span class="kicker">3 · What first runs show</span>
   <h2>Tuning helps, <span data-value="readings.team_title"></span></h2>
   <div class="cards panels" style="--n:3">
     <div class="card">
@@ -312,7 +312,7 @@
         <rect class="rival" x="50" y="88" width="50" height="22" data-motion="grow" data-delay="250" data-step="140" data-i="0"/><text x="75" y="128" text-anchor="middle">untuned</text>
         <rect class="mark" x="140" y="10" width="50" height="100" data-motion="grow" data-delay="250" data-step="140" data-i="1"/><text x="165" y="128" text-anchor="middle">tuned</text>
       </svg>
-      <p>Tuned on a community's own reviews, the assistant matches its reviewers' fixes far more often.</p>
+      <p>Tuned on its community's reviews, it gets about <span data-value="readings.tuned_exact_gain"></span> more fixes in 100 exactly right.</p>
     </div>
     <div class="card">
       <b>The team-specific part</b>
@@ -339,11 +339,11 @@
     </div>
   </div>
   <p class="footnote">Bars show direction, not size. Development readings; the sealed test is sized to settle it.</p>
-  <aside class="notes">First, tuning helps: tuned on a community's own reviews, an assistant matches its reviewers' fixes far more often. Second, the team-specific part: I split a community's projects into two groups, each with its own assistant. OpenStack's own group's assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>. These are development readings; the sealed test, on held-back months, is sized to settle it. Next, privacy: can someone tell which company the shared add-on came from? The attacks on published privacy designs are built.</aside>
+  <aside class="notes">These are first runs on development data, not the sealed test. First, tuning helps: tuned on a community's own reviews, an assistant gets about <span data-value="readings.tuned_exact_gain"></span> more of every 100 reviewer fixes exactly right than the untuned one. Second, the team-specific part: I split a community's projects into two groups, each with its own assistant. OpenStack's own group's assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>. The sealed test, on held-back months, is sized to settle it. Next, privacy: can someone tell which company the shared add-on came from? The attacks on published privacy designs are built.</aside>
 </section>
 
-<section data-chapter="3 · What I've found">
-  <span class="kicker">3 · What I've found</span>
+<section data-chapter="3 · What first runs show">
+  <span class="kicker">3 · What first runs show</span>
   <h2 data-if="readings.split_in_fix"><span data-value="readings.split_gain_orgs"></span>'s clear gain sits in the fix itself<span data-if="readings.split_beyond_names">, not only in names</span></h2>
   <h2 data-unless="readings.split_in_fix">Where the team-specific gain sits is not settled yet</h2>
   <div class="forest" data-source="readings.split" data-splits="names,edit" data-accent="1,0"></div>
@@ -454,7 +454,7 @@
         <li class="in">OpenStack <span>in</span></li>
         <li class="in">Wikimedia <span>in</span></li>
         <li class="in">Qt <span>granted; first runs done, test sized</span></li>
-        <li class="in">Qt vs. another company <span data-if="readings.foreign_sized">Chromium, the browser; test sized</span><span data-unless="readings.foreign_sized">Chromium, the browser; test size open</span></li>
+        <li class="in">Qt vs. another company <span data-if="readings.foreign_sized">Chromium, the browser; test sized</span><span data-unless="readings.foreign_sized">Chromium, the browser; first runs unsettled, test size open</span></li>
       </ul>
     </div>
     <div class="group">
@@ -533,6 +533,7 @@
 <section id="faq-test" class="backup">
   <h2>What are the pre-registered test and the privacy attacks?</h2>
   <p><b>The test:</b> does an add-on trained on an organization's own reviews beat one trained on a sibling slice of the same organization, on months the model has not seen? It passes only if that holds in every organization tested. The rule and the sealed test months were fixed before any test result existed.</p>
+  <p><b>The second contrast:</b> on Qt, does an add-on from a sibling slice of Qt beat one from Chromium, another organization? First runs are not settled, and whether this contrast is a registered test or an exploratory one is still open.</p>
   <p><b>The attacks:</b> does the shared part still reveal its source?</p>
   <ul>
     <li><em>Source attribution</em>: which organization did this add-on come from?</li>
@@ -675,7 +676,7 @@
   <p>Each decides the split by evidence on a server or an LLM's judgment, not by the owner declaring it from where each example came from. Three things here are not done elsewhere:</p>
   <ul>
     <li><b>The owner declares the boundary before training</b>, by where each example came from, and that declaration decides which examples may teach the shared part.</li>
-    <li><b>Tacit review conventions</b> are what is learned, with a pre-registered test of whether the organization is where learning stops transferring.</li>
+    <li><b>Tacit review conventions</b> are what is learned, with a pre-registered test of whether they are learned, and a planned test, its status still open, of whether the organization is where learning stops transferring.</li>
     <li><b>The shared part is audited by attribution</b>: can someone tell which organization it came from?</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>

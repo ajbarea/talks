@@ -179,7 +179,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "tuned_exact_gain": "24",
   "team_openstack": "is better on its own code",
   "team_gain_openstack": true,
-  "team_wikimedia": "shows at most a small gain, below what matters",
+  "team_wikimedia": "shows at most a small gain",
   "team_gain_wikimedia": false,
   "team_title": "a team-specific gain on OpenStack, at most a small one on Wikimedia",
   "chains_hold": true,

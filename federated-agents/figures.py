@@ -72,7 +72,7 @@ TEAM_READING = {
     ),
     # Inside the SESOI band but not above zero: any gain is below what matters, not shown absent.
     ("inconclusive", True): (
-        "shows at most a small gain, below what matters",
+        "shows at most a small gain",
         "at most a small one",
         "team-specific gains are small",
     ),

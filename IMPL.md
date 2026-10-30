@@ -5,7 +5,9 @@
 - ✅ Tier 2 (113 concert uploads) and Tier 3 (36 gaming clips): `videos/channel/refresh.py` renders from `music.tsv` / `gaming.tsv`; `tests/test_channel_refresh.py` lints every rendered description.
 - ✅ Tier 1 (20 videos) LIVE 10-30: descriptions, tags, 6 title fixes, 5 category fixes (Webots 1-5 -> Education), 19 end screens (Subscribe + named video; the 36 s clone video has none), 20 pinned questions; `make videos-verify` 4/4 on all 20. UtOHEHz2pWw is TTS-narrated (Microsoft Read Aloud, AJ via Heph): narrator line + AI use = yes.
 - ✅ PR #46 opened; Heph spot-checked review.md (clean).
-- 📋 Tier 2 and 3 next.
+- ✅ Tier 2 (113 concert uploads) and Tier 3 (36 gaming clips) LIVE 10-30: every description read back after reload; 24 concert uploads moved from Education to Music. One gaming note (XJXNjklBKuw) first went up as "shotgu" from a strip bug in `gaming_row`; fixed, regression test added, re-applied.
+- Browser memory: the Studio tab grows about 300 MB per video edit and the session caps at 5 GB, so batches are 6 videos with `browser_close` between them (Heph 10-30).
+- 📋 Live sweep of all 169 (`.work/sweep.sh`), then report to Heph and merge.
 
 ## Apply (Playwright MCP, profile signed in; pick @AJBarea in /channel_switcher if Studio says "Create channel")
 1. Tier 1, one video at a time: `studio.youtube.com/video/<id>/edit`, replace description (and title where review.md says new), tags, category, Save; end screen (Subscribe + the named video); pinned comment on the watch page. Then `make videos-verify ID=<id> [AI=1] AUTO_THUMB=1` and fix what fails.

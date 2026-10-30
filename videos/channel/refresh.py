@@ -73,7 +73,7 @@ def gaming_row(video: dict) -> dict[str, str]:
                 music.append(m[1])
         elif line.strip() or (note and note[-1]):
             note.append(line.rstrip())
-    return {"id": video["id"], "note": "\\n".join(note).strip("\\n"), "music": "; ".join(music)}
+    return {"id": video["id"], "note": "\n".join(note).strip("\n").replace("\n", "\\n"), "music": "; ".join(music)}
 
 
 def render_music(r: dict[str, str]) -> str:

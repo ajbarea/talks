@@ -59,3 +59,8 @@ def test_a_repeated_music_credit_collapses_to_one_line() -> None:
     credit = "[Paper Moon by Plini]"
     row = cr.gaming_row({"id": "g", "description": f"year one footage\n\n{credit}\n{credit}\n{credit}"})
     assert cr.render_gaming(row) == "year one footage\n\nMusic: Paper Moon by Plini\n"
+
+
+def test_a_note_ending_in_n_keeps_its_last_letter() -> None:
+    row = cr.gaming_row({"id": "g", "description": "BF4 weapons test: SPAS-12 shotgun\n[Bubble Dream by Chon]"})
+    assert cr.render_gaming(row) == "BF4 weapons test: SPAS-12 shotgun\n\nMusic: Bubble Dream by Chon\n"

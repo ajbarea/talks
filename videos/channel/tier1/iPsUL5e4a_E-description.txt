@@ -1,0 +1,19 @@
+How do you catch broken plots in a federated learning framework on every PR without running any training? Replay recorded baselines.
+
+I walk through the visual smoke test pipeline I just merged into InteFL, our team's federated learning simulation framework. Five representative JSON configs cover distinct paths through the pipeline: two baselines with no attack, Bulyan against Gaussian noise, Krum against 20% label flipping, and Multi-Krum facing Gaussian noise and label flipping together at 50% each. In CI, a mock simulation replays pre-recorded baseline metrics instead of training, but runs the real aggregation logic and the real plot, CSV and HTML generation. A run takes about 3 minutes.
+
+Then I show where to download the simulation-outputs artifact from the Actions tab and what is inside: for each config, four PDFs (accuracy, loss, absolute distance, removal criterion), an index.html dashboard, and per-round and per-client CSVs. The workflow runs on PRs to main, pushes to main and manual workflow_dispatch. To add a config, drop a JSON into the smoke directory, run record_baselines, and commit both files. The test finds it with no code changes.
+
+00:00 Intro
+00:15 How the pipeline works
+01:33 Where to find CI artifacts
+02:09 What's inside simulation-outputs.zip
+02:41 When the workflow runs
+03:11 Adding new configs
+04:01 Sign-off
+
+InteFL repo: https://github.com/dmitrykoro/fl-execution-framework
+AI, Research and Software Projects playlist: https://www.youtube.com/playlist?list=PLmQVFU1FBDddL1sPe9Qj-drkwZ3v-wuQo
+More videos: https://youtube.com/@AJBarea
+
+#FederatedLearning #InteFL #MLOps #CICD #GitHubActions #Testing

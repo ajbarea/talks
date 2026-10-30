@@ -1,0 +1,22 @@
+Every workflow started and every group created or deleted lands in one searchable log. A tour of the DocBridge.io admin dashboard.
+
+Problem statement 2 of our USF senior project asked whether an admin interface can let operations staff see DocBridge.io metrics, manage users and log selected events. Its user stories cover editing users, a metrics dashboard and a record of past operations. The full user stories and acceptance criteria are in the repo.
+
+The admin management page adds, edits and deletes admin accounts. The metrics page shows the total users of the DocBridge extension, the total documents stored in the private blockchain, and a graph of documents stored and workflows started this month and last. The user page edits user accounts and their groups and workflows, and has a button that refreshes a user's expired Google OAuth token, which otherwise leaves the extension on an endless loading screen. The transaction view page logs successful and failed operations, and we sync, delete and add groups and send a workflow to show each log entry appear. A search by email or group name filters the log.
+
+PhiQuest team: Ethan Wuitschick (team lead), Allen Cheng (programming lead), AJ Barea (blockchain specialist).
+Our Computer Engineering senior project at USF, 2022. Part 2 of 2.
+
+00:00 Admin management page
+00:39 Metrics page
+01:02 User page and token refresh
+01:35 Groups and workflows
+01:58 Transaction view page: the activity log
+03:30 Searching logs by user or group
+
+Source code: https://github.com/ajbarea/blockchain-explorer
+Part 1, the private blockchain: https://youtu.be/s_4SQaAf_34
+Playlist: https://www.youtube.com/playlist?list=PLmQVFU1FBDdc3XyzoCp5NDFkoY5kzW3bT
+More videos: https://youtube.com/@AJBarea
+
+#admindashboard #blockchain #nodejs #capstone #USF

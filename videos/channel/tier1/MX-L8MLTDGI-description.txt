@@ -1,0 +1,27 @@
+What happens when you tell a robot to drive faster than its motors allow, or in a circle of radius zero?
+
+Lab 1 programs an e-puck to drive a straight line of a set distance at a constant speed. I run four test cases: a speed past the motor limit of 2π (the controller prints an error), full speed of 6.28 for 30 inches, zero speed, and a negative speed that drives it backward. Each run prints the expected time and distance next to the actual ones.
+
+Task 2 reads the wheel encoders (position sensors in Webots) to drive full circles. Five more test cases: over the speed limit, zero speed, a negative speed that circles counterclockwise, a positive speed that circles clockwise, and a zero radius, where opposite speeds on the two wheels spin the robot in place for one full turn.
+
+Lab 1 of 6 in my Webots series, made for CDA 4621 Control of Mobile Robots. Python controllers on the e-puck robot.
+Note: these labs were built in Webots 2021, and newer Webots versions changed a lot. The source repo now targets Webots R2025a, so its code may not match the video; to replicate the video exactly, install Webots 2021 from the Cyberbotics archive.
+
+00:00 Task 1: drive straight at a set speed
+00:15 Speed over the 2π limit
+00:30 Full speed for 30 inches
+01:01 Zero and negative speed
+01:45 Task 2: circles with the wheel encoders
+02:21 Over-limit and zero-speed circles
+03:05 Negative speed: counterclockwise
+03:58 Positive speed: clockwise
+04:35 Zero radius: spin in place
+
+Simulator (Webots): https://cyberbotics.com/#download
+Older Webots releases: https://github.com/cyberbotics/webots/releases
+Robot (e-puck): https://cyberbotics.com/doc/guide/epuck
+Source code: https://github.com/ajbarea/control-of-mobile-robots
+Full Webots series: https://www.youtube.com/playlist?list=PLmQVFU1FBDddYV_4IRW1zfXH6CAKuZjIM
+More videos: https://youtube.com/@AJBarea
+
+#webots #robotics #epuck #python #mobilerobots

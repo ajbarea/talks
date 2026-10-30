@@ -1,0 +1,26 @@
+We set a 70% test coverage goal for our full-stack social media app and hit it on both the front end and the back end.
+
+ThoughtCloud is a social media app. Users create and customize an account, write text and image posts, like, comment and follow, browse posts from everyone, search for other users, reset a forgotten password by email, and get notifications when someone engages with their content.
+
+This is our team capstone, presented live. We cover our Scrum process and branching strategy, the AWS deployment (EC2 for the back end and Jenkins, RDS for PostgreSQL, S3 for the front end, SES for password reset emails, with Jenkins pipelines and Docker), and the stack: Angular with Angular Material and Bootstrap, and Java with Spring Boot, Hibernate, Spring Security and JWT. Tests use JUnit and Mockito on the back end and Jasmine and Karma on the front end. Then a live demo, the challenges of working in a pre-made code base, and questions.
+
+ThoughtCloud team: Seth Evry (team lead), Elian Felix, Julio Canales, Abraham Barboza, AJ Barea.
+
+00:00 Overview
+00:24 Team structure
+00:46 Scrum process
+01:22 Git flow and branching
+02:09 DevOps on AWS
+03:03 Front-end and back-end stack
+04:26 Test coverage
+05:09 Live demo: register, post, like
+07:49 Browse, comments and follows
+09:51 Password recovery
+10:44 Notifications and deleting comments
+12:20 Challenges
+13:21 Q&A
+
+Source code: https://github.com/ajbarea/thought-cloud-social
+More videos: https://youtube.com/@AJBarea
+
+#angular #springboot #aws #java #fullstack #socialmedia

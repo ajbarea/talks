@@ -1,0 +1,30 @@
+Three distances are enough to pin down a robot. Trilateration, the idea behind GPS, localizes an e-puck on a 4x4 grid.
+
+Lab 5 is about localization: working out where the robot is on a map. The console prints the grid, with an x for each cell visited and a dot for each one not yet visited, and the robot pose: x, y, grid cell and heading.
+
+Task 1 uses trilateration. Four colored pillars stand at known corners of the grid, and the robot measures its distance to three of them with a distance sensor. I explain the circles, then the algebra that turns three distances into two equations with two unknowns. An early build finds the right cell from every square. The final build travels the whole grid, though at recording it still skipped cells 2 and 3.
+
+Task 2 drops the pillars. The wall layout is known in advance, so the three distance sensors and the compass heading are enough to rule out cells until only one fits. The robot stops once every cell is visited.
+
+Lab 5 of 6 in my Webots series, made for CDA 4621 Control of Mobile Robots. Python controllers on the e-puck robot.
+Note: these labs were built in Webots 2021, and newer Webots versions changed a lot. The source repo now targets Webots R2025a, so its code may not match the video; to replicate the video exactly, install Webots 2021 from the Cyberbotics archive.
+
+00:00 Localization and the grid printout
+00:45 Task 1: trilateration on a 4x4 grid
+01:37 How trilateration works, GPS style
+03:03 From three distances to x and y
+04:27 The grid and the four pillars
+05:18 Early build: every cell checked
+08:08 Final Task 1: scanning the whole grid
+12:55 Task 2: localizing from walls alone
+14:05 Reading the wall patterns
+15:12 Task 2 run
+
+Simulator (Webots): https://cyberbotics.com/#download
+Older Webots releases: https://github.com/cyberbotics/webots/releases
+Robot (e-puck): https://cyberbotics.com/doc/guide/epuck
+Source code: https://github.com/ajbarea/control-of-mobile-robots
+Full Webots series: https://www.youtube.com/playlist?list=PLmQVFU1FBDddYV_4IRW1zfXH6CAKuZjIM
+More videos: https://youtube.com/@AJBarea
+
+#webots #robotics #epuck #python #localization #trilateration

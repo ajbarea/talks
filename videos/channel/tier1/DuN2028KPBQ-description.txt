@@ -1,0 +1,27 @@
+How does a robot find the shortest path through a maze? First the e-puck maps every wall, then a wavefront planner plans the route.
+
+Lab 6 has two halves. In Task 1 the maze is unknown: the robot uses its distance sensors and Monte Carlo particle filter localization to work out which cell it is in, then marks that cell visited and records the walls around it. The printout shows a question mark for each unvisited cell, a V once visited, and a 1 or 0 for each wall. It stops when every cell is visited and the inner walls are mapped.
+
+In Task 2 the maze is known. I explain the wavefront planner: the goal gets a 2, walls a 1, and each free neighbor gets its cell's value plus one until the grid is filled; the path then steps down from the start. My version uses four-point connectivity on a 9x9 grid that stands for the 4x4 maze. I run three cases: cell 16 to 10, cell 16 to 6, and cell 13 to 1, which has two shortest paths of nine steps.
+
+Lab 6 of 6 in my Webots series, made for CDA 4621 Control of Mobile Robots. Python controllers on the e-puck robot.
+Note: these labs were built in Webots 2021, and newer Webots versions changed a lot. The source repo now targets Webots R2025a, so its code may not match the video; to replicate the video exactly, install Webots 2021 from the Cyberbotics archive.
+
+00:00 Mapping and path planning
+00:58 Task 1: mapping the maze walls
+01:28 Reading the wall map printout
+04:24 Task 2: shortest path on a known maze
+05:12 How the wavefront planner works
+07:42 My version: four-point, 9x9 grid
+08:40 Test 1: cell 16 to cell 10
+11:26 Test 2: cell 16 to cell 6
+12:35 Test 3: cell 13 to cell 1, two shortest paths
+
+Simulator (Webots): https://cyberbotics.com/#download
+Older Webots releases: https://github.com/cyberbotics/webots/releases
+Robot (e-puck): https://cyberbotics.com/doc/guide/epuck
+Source code: https://github.com/ajbarea/control-of-mobile-robots
+Full Webots series: https://www.youtube.com/playlist?list=PLmQVFU1FBDddYV_4IRW1zfXH6CAKuZjIM
+More videos: https://youtube.com/@AJBarea
+
+#webots #robotics #epuck #python #pathplanning #wavefront

@@ -1,0 +1,15 @@
+A silent tour of the InteFL web interface: configure, run and compare federated learning simulations from the browser.
+
+This is early alpha footage of the front end for InteFL, our team's federated learning research framework. It is built for student researchers and developers who want a full experimentation environment that stays easy to use. The video moves through the whole experiment loop: a configuration form with 30+ parameters, including dataset partitioning (IID, Dirichlet, Pathological) and attack strategies; live training progress with interactive charts and GPU tracking; per-client results with malicious clients highlighted; and a comparison view that overlays several simulations with zoom and brush controls. The interface has dark and light themes in Material Design 3.
+
+Aggregation strategies: FedAvg, Trust/Reputation, PID, Multi-Krum, Bulyan, RFA and Trimmed-Mean.
+Stack: React 19, Vite, React Bootstrap and Recharts on the front end; FastAPI, Flower, PyTorch and Hugging Face Transformers on the back end; scikit-learn, PEFT/LoRA, pandas and numpy for the ML.
+
+No audio: this is a visual demo only. For a narrated tour of a later version, see the full walkthrough linked below.
+
+InteFL repo: https://github.com/dmitrykoro/fl-execution-framework
+Narrated full walkthrough: https://youtu.be/UtOHEHz2pWw
+AI, Research and Software Projects playlist: https://www.youtube.com/playlist?list=PLmQVFU1FBDddL1sPe9Qj-drkwZ3v-wuQo
+More videos: https://youtube.com/@AJBarea
+
+#FederatedLearning #InteFL #MachineLearning #React #FastAPI #UXdesign

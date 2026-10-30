@@ -1,0 +1,22 @@
+Can a private blockchain prove a signed document was never changed? We sign a PDF through DocBridge.io, then edit it and check.
+
+Problem statement 1 of our USF senior project asked whether a private blockchain can certify documents signed through DocBridge.io. Its user stories ask for signatures tied to the chain, a blockchain explorer for admins, and a ledger only admins can see. The full user stories and acceptance criteria are in the repo.
+
+The admin dashboard lets in only Google accounts stored in the admin table, so an unlisted account gets an error until an admin adds it. The blockchain explorer lists the latest documents and blocks, and finds a transaction by its document ID or by uploading the file, which it matches by hash. We start a signing workflow with the DocBridge extension, see the new transaction on the explorer, then show that an edited copy of the signed file is no longer found. The back end is Node.js with Express and Sequelize, with Google OAuth sign-in.
+
+PhiQuest team: Ethan Wuitschick (team lead), Allen Cheng (programming lead), AJ Barea (blockchain specialist).
+Our Computer Engineering senior project at USF, 2022. Part 1 of 2.
+
+00:00 Admin login with Google
+00:31 Only admin accounts get in
+01:11 Blockchain explorer: search by ID or file
+01:52 Signing a document with DocBridge
+02:47 The new transaction on the chain
+03:16 An edited file fails verification
+
+Source code: https://github.com/ajbarea/blockchain-explorer
+Part 2, the admin dashboard: https://youtu.be/h5FIODBvD60
+Playlist: https://www.youtube.com/playlist?list=PLmQVFU1FBDdc3XyzoCp5NDFkoY5kzW3bT
+More videos: https://youtube.com/@AJBarea
+
+#blockchain #nodejs #capstone #USF #documentverification

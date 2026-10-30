@@ -1,0 +1,25 @@
+Does the AI coding tool matter, or the model behind it? Copilot missed my planted bug on GPT-4.1, then fixed it on Claude Sonnet 4.
+
+In this graduate lecture I put four AI coding tools through the same tasks. Battle one pits two VS Code extensions, Amazon Q and GitHub Copilot, against a Python Q-learning project from an earlier AI course: write a README, add pytest coverage, then find and fix a bug I planted in the Bellman update. Battle two gives two terminal agents, Gemini CLI and Claude Code, one prompt file and an empty folder, and asks each for a documentation plan, a user guide and a playable Pygame game called Catcher.
+
+Gemini's game followed the spec exactly, with simple graphics. Claude Code's added score multipliers and a game over after three misses, but its keyboard input had a bug. Before the battles I map the AI dev tool landscape: chatbots, IDE extensions with ask, edit and agent modes, AI-first editors such as Kiro, terminal agents, and MCP. I close with pros and cons, free tiers and student deals, and a hands-on activity that builds an AWS Lambda function with an AI agent.
+
+Made for SWEN-614. Tools and prices are as of July 2025.
+
+00:00 Intro & Motivation
+04:08 Dev Tool Landscape
+10:03 IDE Showdown: Q vs Copilot
+22:04 Battle One Winner?
+26:10 CLI Showdown: Gemini vs Claude
+32:30 Video Games
+34:12 Battle Two Winner?
+34:38 Conclusions & "Who Wins?"
+35:40 Pricing & Roadmap
+
+Source code and both Catcher games: https://github.com/ajbarea/catcher
+Lecture slides: https://github.com/ajbarea/catcher/blob/main/SWEN-614_AJ-Barea_AI-Dev-Tools_Slides.pdf
+Hands-on activity: https://github.com/ajbarea/catcher/blob/main/SWEN-614_AJ-Barea_AWS_HandsOn_Activity.pdf
+AI, Research and Software Projects playlist: https://www.youtube.com/playlist?list=PLmQVFU1FBDddL1sPe9Qj-drkwZ3v-wuQo
+More videos: https://youtube.com/@AJBarea
+
+#AIcoding #GitHubCopilot #ClaudeCode #GeminiCLI #AmazonQ #devtools

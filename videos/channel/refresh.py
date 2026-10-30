@@ -41,7 +41,17 @@ def full_date(text: str) -> str:
 
 
 def hashtag(text: str) -> str:
-    return "#" + "".join(w[:1].upper() + w[1:] for w in re.findall(r"[A-Za-z0-9]+", text))
+    """CamelCase hashtag, or "" when no letter leads it (YouTube ignores #311)."""
+    tag = "".join(w[:1].upper() + w[1:] for w in re.findall(r"[^\W_]+", text))
+    return f"#{tag}" if tag[:1].isalpha() else ""
+
+
+def escape(text: str) -> str:
+    return text.replace("\\", "\\\\").replace("\n", "\\n")
+
+
+def unescape(text: str) -> str:
+    return re.sub(r"\\(.)", lambda m: "\n" if m[1] == "n" else m[1], text)
 
 
 def music_row(video: dict, shows: dict[str, str]) -> dict[str, str]:
@@ -73,7 +83,7 @@ def gaming_row(video: dict) -> dict[str, str]:
                 music.append(m[1])
         elif line.strip() or (note and note[-1]):
             note.append(line.rstrip())
-    return {"id": video["id"], "note": "\n".join(note).strip("\n").replace("\n", "\\n"), "music": "; ".join(music)}
+    return {"id": video["id"], "note": escape("\n".join(note).strip("\n")), "music": "; ".join(music)}
 
 
 def render_music(r: dict[str, str]) -> str:
@@ -85,12 +95,13 @@ def render_music(r: dict[str, str]) -> str:
         out += [*extra, ""]
     if r["playlist"]:
         out.append(f"Full show: {PLAYLIST}{r['playlist']}")
-    out += [CHANNEL, "", f"{hashtag(r['band'])} #LiveMusic {hashtag(r['city'].split(',')[0])} #Concert"]
+    tags = [hashtag(r["band"]), "#LiveMusic", hashtag(r["city"].split(",")[0]), "#Concert"]
+    out += [CHANNEL, "", " ".join(t for t in tags if t)]
     return "\n".join(out) + "\n"
 
 
 def render_gaming(r: dict[str, str]) -> str:
-    out = r["note"].split("\\n") if r["note"] else []
+    out = unescape(r["note"]).split("\n") if r["note"] else []
     if r["music"]:
         out += ["", *(f"Music: {m}" for m in r["music"].split("; "))]
     return "\n".join(out).strip("\n") + "\n"
@@ -122,15 +133,19 @@ def extract(meta: pathlib.Path, playlists: pathlib.Path) -> None:
         if " @ " in title:
             shows[vid] = pid
     tier1 = {p.name.removesuffix("-description.txt") for p in (HERE / "tier1").glob("*-description.txt")}
-    music, gaming = [], []
+    music, gaming, dropped = [], [], []
     for line in meta.read_text(encoding="utf-8").splitlines():
         video = json.loads(line)
         if video["id"] in tier1:
             continue
         if video.get("categories") == ["Gaming"]:
             gaming.append(gaming_row(video))
-        elif CONCERT.match(video["description"].strip().split("\n", 1)[0]):
+        elif CONCERT.match(video["description"].strip().splitlines()[0] if video["description"].strip() else ""):
             music.append(music_row(video, shows))
+        else:
+            dropped.append(video["id"])
+    if dropped:
+        raise SystemExit(f"no tier for {', '.join(dropped)}: add a tier1 description or fix the first line")
     write(MUSIC, MUSIC_FIELDS, music)
     write(GAMING, GAMING_FIELDS, gaming)
     print(f"{len(music)} concert uploads, {len(gaming)} gaming clips")
@@ -142,9 +157,10 @@ def main(argv: list[str]) -> int:
     elif argv[:1] == ["render"] and len(argv) == 2:
         out = pathlib.Path(argv[1])
         out.mkdir(parents=True, exist_ok=True)
-        for vid, text in descriptions().items():
+        texts = descriptions()
+        for vid, text in texts.items():
             (out / f"{vid}-description.txt").write_text(text, encoding="utf-8")
-        print(f"{len(descriptions())} descriptions in {out}")
+        print(f"{len(texts)} descriptions in {out}")
     else:
         print(__doc__, file=sys.stderr)
         return 2

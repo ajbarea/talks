@@ -152,6 +152,7 @@ def test_talking_about_ai_is_not_a_disclosure() -> None:
     assert any("AI-narrated" in p for p in problems(GOOD + "\nA talk about AI-generated code.\n", ai=True))
     assert not problems(GOOD + "\nAn AI avatar of me narrates this video.\n", ai=True)
     assert not problems(GOOD + "\nNarrated with a text-to-speech voice (Microsoft Read Aloud).\n", ai=True)
+    assert not problems(GOOD + "\nA TTS voice narrates this video.\n", ai=True)
 
 
 def test_descending_chapters_say_so() -> None:

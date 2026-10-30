@@ -3,6 +3,8 @@
 import importlib.util
 import pathlib
 
+import pytest
+
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 
@@ -64,3 +66,26 @@ def test_a_repeated_music_credit_collapses_to_one_line() -> None:
 def test_a_note_ending_in_n_keeps_its_last_letter() -> None:
     row = cr.gaming_row({"id": "g", "description": "BF4 weapons test: SPAS-12 shotgun\n[Bubble Dream by Chon]"})
     assert cr.render_gaming(row) == "BF4 weapons test: SPAS-12 shotgun\n\nMusic: Bubble Dream by Chon\n"
+
+
+def test_a_backslash_in_a_note_survives() -> None:
+    row = cr.gaming_row({"id": "g", "description": "saved to C:\\new\nline two"})
+    assert cr.render_gaming(row) == "saved to C:\\new\nline two\n"
+
+
+def test_hashtags_keep_accents_and_skip_digit_led_names() -> None:
+    assert cr.hashtag("Mötley Crüe") == "#MötleyCrüe"
+    assert cr.hashtag("311") == ""
+    row = dict.fromkeys(cr.MUSIC_FIELDS, "")
+    row |= {"band": "311", "song": "Down", "venue": "Hall", "city": "Omaha, Nebraska", "date": "May 1, 2020"}
+    assert cr.render_music(row).endswith("#LiveMusic #Omaha #Concert\n")
+
+
+def test_extract_refuses_an_upload_with_no_tier(tmp_path, monkeypatch) -> None:
+    meta = tmp_path / "meta.jsonl"
+    meta.write_text('{"id": "zz", "title": "x", "description": "a talk", "categories": ["Education"]}\n')
+    (tmp_path / "pl.tsv").write_text("")
+    monkeypatch.setattr(cr, "MUSIC", tmp_path / "m.tsv")
+    monkeypatch.setattr(cr, "GAMING", tmp_path / "g.tsv")
+    with pytest.raises(SystemExit, match="no tier for zz"):
+        cr.extract(meta, tmp_path / "pl.tsv")

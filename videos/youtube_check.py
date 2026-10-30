@@ -33,7 +33,7 @@ CHAPTER = re.compile(rf"^\s*({STAMP})\s*[-–—:]?\s+(\S.*)$")
 ANY_STAMP = re.compile(rf"(?<![\d:]){STAMP}(?![\d:])")
 URL = re.compile(r"https?://\S+")
 HASHTAG = re.compile(r"(?<![\w/&#])#[^\W\d_][\w]*")
-DISCLOSURE = re.compile(r"\bAI[- ](?:avatar|clone|voice)\b|\btext-to-speech voice\b", re.I)
+DISCLOSURE = re.compile(r"\bAI[- ](?:avatar|clone|voice)s?\b|\b(?:text[- ]to[- ]speech|TTS) voices?\b", re.I)
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
 
 

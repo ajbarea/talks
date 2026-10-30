@@ -454,7 +454,7 @@
         <li class="in">OpenStack <span>in</span></li>
         <li class="in">Wikimedia <span>in</span></li>
         <li class="in">Qt <span>granted; first runs done, test sized</span></li>
-        <li class="in">Qt vs. another company <span>Chromium, the browser, has enough</span></li>
+        <li class="in">Qt vs. another company <span data-if="readings.foreign_sized">Chromium, the browser; test sized</span><span data-unless="readings.foreign_sized">Chromium, the browser; test size open</span></li>
       </ul>
     </div>
     <div class="group">
@@ -468,7 +468,7 @@
     </div>
   </div>
   <p class="footnote">Membership is fixed by November 20, before any test result exists.</p>
-  <aside class="notes">OpenStack, Wikimedia and Qt decide the answer; each must pass. Qt has said yes in writing, passes the same data checks, and simulations have now sized its test; in first runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>, a development reading. Qt's comparison with another company's code takes the first of three open-source Google projects with enough review data to match Qt's: Chromium, the browser, then Fuchsia, an operating system, then Android, which has too little. Chromium's data is now in, and its main project alone has enough to match Qt's, so Chromium is the comparison; Fuchsia, which also has enough, is not needed. GitHub, where review is often optional, is a separate replication, read under GitHub's open-access research terms; Apache and .NET qualify. Membership is fixed by November 20th, before any test result exists.</aside>
+  <aside class="notes">OpenStack, Wikimedia and Qt decide the answer; each must pass. Qt has said yes in writing, passes the same data checks, and simulations have now sized its test; in first runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>, a development reading. Qt's comparison with another company's code takes the first of three open-source Google projects with enough review data to match Qt's: Chromium, the browser, then Fuchsia, an operating system, then Android, which has too little. Chromium's main project alone has enough, so Chromium is the comparison. In first runs against an assistant tuned on Chromium, Qt's own assistant <span data-value="readings.foreign_qt"></span>.<span data-unless="readings.foreign_sized"> Simulations found no number of splits the plan allows that keeps false alarms at the planned rate, so sizing that test is a decision for the registered report.</span><span data-if="readings.foreign_sized"> Simulations have sized that test too.</span> GitHub, where review is often optional, is a separate replication, read under GitHub's open-access research terms; Apache and .NET qualify. Membership is fixed by November 20th, before any test result exists.</aside>
 </section>
 
 <section class="dark closing" data-background-color="#14181f">

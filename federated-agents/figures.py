@@ -469,6 +469,14 @@ def readings() -> dict[str, str | int | bool]:
     # Qt's development pilot, read before Qt is admitted: the status slide names its reading alone
     # (sphragis research log, 2026-10-18).
     values["team_qt"] = team_reading(load("partition-pilot-qt-likelihood.json"))[0]
+    # H2's development pilot, Qt against an adapter tuned on Chromium, read by chain, its registered
+    # unit; and whether its simulation sized a K (sphragis research log, 2026-10-29: no K in the
+    # registered grid held its null, so `k_coverage.py` wrote no artifact).
+    foreign = load("partition-pilot-qt-foreignchromium-likelihood-chains.json")
+    if foreign.get("hypothesis") != "H2" or foreign["cluster_unit"]["unit"] != "chain":
+        raise SystemExit("the Chromium pilot is not H2's by chain")
+    values["foreign_qt"] = team_reading(foreign)[0]
+    values["foreign_sized"] = any(RESULTS.glob("k-coverage-qt-foreign*.json"))
     # Check 5: each half's own marker planted in half its training lessons; how many runs found it.
     planted = {org: planted_runs(org) for org in ("openstack", "wikimedia")}
     if len({len(v) for v in planted.values()}) != 1:

@@ -150,6 +150,7 @@ def test_ai_label_follows_the_flag_not_the_wording() -> None:
 
 def test_talking_about_ai_is_not_a_disclosure() -> None:
     assert any("AI-narrated" in p for p in problems(GOOD + "\nA talk about AI-generated code.\n", ai=True))
+    assert any("AI-narrated" in p for p in problems(GOOD + "\nA talk comparing TTS voices and AI voices.\n", ai=True))
     assert not problems(GOOD + "\nAn AI avatar of me narrates this video.\n", ai=True)
     assert not problems(GOOD + "\nNarrated with a text-to-speech voice (Microsoft Read Aloud).\n", ai=True)
     assert not problems(GOOD + "\nA TTS voice narrates this video.\n", ai=True)

@@ -61,7 +61,7 @@ Built from the video's own material, never generated:
 | AI label | the "Made with AI" label is shown exactly when `AI=1` is set |
 | thumbnail | the shown thumbnail is none of YouTube's three auto frames (`AUTO_THUMB=1` accepts one) |
 
-The lint checks the hook, `<` and `>`, one link and one timestamp per line, the chapter rules, the hashtag cap and, with `--ai`, the disclosure line; the 3-hashtag floor and the `Label: URL` shape are for the reviewer. An auto thumbnail picked in Studio on a new upload has not been tested against the three auto frames.
+The lint checks the hook, the 5,000-byte cap, `<` and `>`, one link and one timestamp per line, the chapter rules, the hashtag cap and, with `--ai`, the disclosure line; the 3-hashtag floor and the `Label: URL` shape are for the reviewer. An auto thumbnail picked in Studio on a new upload has not been tested against the three auto frames.
 
 YouTube can take a few minutes to rebuild chapters after an edit. A failure that persists means the line breaks or times are wrong.
 

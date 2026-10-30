@@ -33,7 +33,7 @@ CHAPTER = re.compile(rf"^\s*({STAMP})\s*[-–—:]?\s+(\S.*)$")
 ANY_STAMP = re.compile(rf"(?<![\d:]){STAMP}(?![\d:])")
 URL = re.compile(r"https?://\S+")
 HASHTAG = re.compile(r"(?<![\w/&#])#[^\W\d_][\w]*")
-DISCLOSURE = re.compile(r"\bAI[- ](?:avatar|clone|generated|voice)\b|\bmade with AI\b", re.I)
+DISCLOSURE = re.compile(r"\bAI[- ](?:avatar|clone|voice)\b", re.I)
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
 
 
@@ -57,7 +57,7 @@ def discloses_ai(text: str) -> bool:
     return bool(DISCLOSURE.search(text))
 
 
-def check_description(text: str, duration: int | None = None, ai: bool | None = None) -> list[tuple[int, str]]:
+def check_description(text: str, duration: int | None = None, ai: bool = False) -> list[tuple[int, str]]:
     """Every problem as (line, message); line 0 means the whole description."""
     text = text.replace("\r\n", "\n")
     out: list[tuple[int, str]] = []
@@ -194,7 +194,7 @@ def main(argv: list[str]) -> int:
     files = args.files or sorted(HERE.glob("**/*description.txt"))
     bad = 0
     for f in files:
-        for n, problem in check_description(f.read_text(encoding="utf-8"), args.duration, args.ai or None):
+        for n, problem in check_description(f.read_text(encoding="utf-8"), args.duration, args.ai):
             print(f"{f}:{n}: {problem}", file=sys.stderr)
             bad += 1
     print(f"{len(files)} description(s), {bad} problem(s)")

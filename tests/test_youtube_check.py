@@ -148,6 +148,11 @@ def test_ai_label_follows_the_flag_not_the_wording() -> None:
     assert _results(_fake(_page(GOOD, marks, "Made with AI"), shown=60))["AI label"][0] is False
 
 
+def test_talking_about_ai_is_not_a_disclosure() -> None:
+    assert any("AI-narrated" in p for p in problems(GOOD + "\nA talk about AI-generated code.\n", ai=True))
+    assert not problems(GOOD + "\nAn AI avatar of me narrates this video.\n", ai=True)
+
+
 def test_descending_chapters_say_so() -> None:
     text = GOOD.replace("00:12 Odometry", "00:12 Odometry\n00:05 Back")
     assert any("must go up" in p for p in problems(text))

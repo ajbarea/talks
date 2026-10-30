@@ -1,20 +1,17 @@
-# IMPL: channel refresh (talks #44), branch videos/channel-refresh
+# IMPL: channel refresh (talks #44), done 2026-10-30
 
-## State (2026-10-29 night)
-- ✅ #43 merged as #45 (upload package, `make videos-verify ID=... [AI=1] [AUTO_THUMB=1]`).
-- ✅ Tier 2 (113 concert uploads) and Tier 3 (36 gaming clips): `videos/channel/refresh.py` renders from `music.tsv` / `gaming.tsv`; `tests/test_channel_refresh.py` lints every rendered description.
-- ✅ Tier 1 (20 videos) LIVE 10-30: descriptions, tags, 6 title fixes, 5 category fixes (Webots 1-5 -> Education), 19 end screens (Subscribe + named video; the 36 s clone video has none), 20 pinned questions; `make videos-verify` 4/4 on all 20. UtOHEHz2pWw is TTS-narrated (Microsoft Read Aloud, AJ via Heph): narrator line + AI use = yes.
-- ✅ PR #46 opened; Heph spot-checked review.md (clean).
-- ✅ Tier 2 (113 concert uploads) and Tier 3 (36 gaming clips) LIVE 10-30: every description read back after reload; 24 concert uploads moved from Education to Music. One gaming note (XJXNjklBKuw) first went up as "shotgu" from a strip bug in `gaming_row`; fixed, regression test added, re-applied.
-- Browser memory: the Studio renderer reached 3.5 GB within about a dozen edits (ps, 10-30) against a 5 GB session cap, so batches are 6 videos with `browser_close` between them (Heph 10-30).
-- 📋 Live sweep of all 169 (`.work/sweep.sh`), then report to Heph and merge.
+## State
+- ✅ #43 merged as #45: upload package, `make videos-verify ID=... [AI=1] [AUTO_THUMB=1]`.
+- ✅ #44 live on all 169 public videos (PR #46): 20 Tier 1 by hand (descriptions with caption chapters, tags, 6 title fixes, 19 end screens, 20 pinned questions), 113 concert uploads from one template, 36 gaming clips formatting only. Categories: Webots Labs 1-5 to Education, 24 concert uploads to Music.
+- AI disclosure: zc_W9tCGO1I (Google Vids avatar) and UtOHEHz2pWw (Microsoft Read Aloud TTS, per AJ); both have the narrator line and "AI use" set.
 
-## Apply (Playwright MCP, profile signed in; pick @AJBarea in /channel_switcher if Studio says "Create channel")
-1. Tier 1, one video at a time: `studio.youtube.com/video/<id>/edit`, replace description (and title where review.md says new), tags, category, Save; end screen (Subscribe + the named video); pinned comment on the watch page. Then `make videos-verify ID=<id> [AI=1] AUTO_THUMB=1` and fix what fails.
-2. Report to Heph by tmux when Tier 1 is live.
-3. Tier 2 and 3: `python3 videos/channel/refresh.py render <dir>`, paste each `<id>-description.txt`; bulk-set category Music on concert uploads (24 sit in Education) and Education on Webots Labs 1-5 (in Gaming).
-4. Report to Heph at the end; close #44 from the PR.
+## Next (not started)
+- Custom thumbnails for Tier 1 uploads that still show an auto frame (upload-package.md recipe).
+- New uploads: write `description.txt`, lint, upload, `make videos-verify`.
 
-## Inputs (not committed)
-- `.work/meta.jsonl`: yt-dlp pull of all 169 public videos (10-29). `.work/subs/<id>.txt`: Tier 1 captions. `.work/playlists.tsv`: playlist membership.
-- Re-pull: `uvx yt-dlp --js-runtimes node --flat-playlist ...`; captions: `uvx yt-dlp --js-runtimes node --write-auto-subs --skip-download`.
+## How the refresh was applied (reuse for the next sweep)
+- Studio through the Playwright MCP browser; if Studio shows "Create channel", pick @AJBarea in /channel_switcher.
+- Type descriptions line by line (`keyboard.insertText` + Enter); `fill` does not register in Studio. Tags: insertText, then a real "," key per tag.
+- The Studio renderer reached 3.5 GB within about a dozen edits (ps, 10-30) against a 5 GB session cap: batches of 6 videos, `browser_close` between batches.
+- Read every edit back after a reload; skip Save when nothing changed, so reruns are safe.
+- `videos/channel/refresh.py extract META PLAYLISTS` rebuilds the tables from a fresh `yt-dlp` pull (`uvx yt-dlp --js-runtimes node ...`); it refuses an upload that fits no tier.

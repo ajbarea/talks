@@ -1,6 +1,6 @@
 # Every talk is a folder holding an index.html; `site` lays them all out as one Pages site.
 # SPHRAGIS points at a sphragis checkout for the talks whose figures come from it.
-.PHONY: help setup lint fix test videos-check script-length figures figures-check qr qr-check fonts slides-script slides-check render exports site check
+.PHONY: help setup lint fix test videos-check videos-verify script-length figures figures-check qr qr-check fonts slides-script slides-check render exports site check
 
 SLIDES ?= ../techne/plugins/graphe/skills/slides/scripts/slides.py
 # The browser command and the list of talks each come from the one place that defines them.
@@ -27,8 +27,12 @@ fix:               ## Ruff, fixing what it can
 test:              ## Run the tests
 	uv run pytest -q
 
-videos-check:      ## Lint every video script against videos/vids-rules.md
-	python3 videos/check_script.py
+videos-check:      ## Lint every video script (videos/vids-rules.md) and every upload description
+	python3 videos/check_script.py && python3 videos/youtube_check.py
+
+videos-verify:     ## Check a published video's public page: make videos-verify ID=i_MyPXD6-mg [AUTO_THUMB=1]
+	@[ -n "$(ID)" ] || { echo "set ID" >&2; exit 1; }
+	uv run python videos/youtube_check.py --live $(ID) $(if $(AUTO_THUMB),--auto-thumbnail)
 
 script-length:     ## Each talk's spoken script in words and minutes; fails a talk over its cap
 	@for t in $(TALKS); do python3 scripts/script_length.py $$t || exit 1; done

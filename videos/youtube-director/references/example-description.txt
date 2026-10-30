@@ -1,0 +1,24 @@
+Why did an M 7.7 injure 27 people in Panama while an M 6.8 doublet at sea went almost unnoticed?
+
+I mapped all 2,016 M2.5+ earthquakes USGS recorded from 25 September to 25 October 2026 in QGIS, then played the month as a time-lapse. Color and size both encode magnitude: minor (2.5 to 3.9), moderate (4.0 to 5.4) and strong to major (5.5+). Each quake stays on the map for 36 hours, so aftershock sequences show up as clusters along fault lines.
+
+Then I stop on four events and compare what the map shows with what happened on the ground: the M 7.7 strike-slip mainshock in Panama, the M 6.7 and M 6.8 doublet on the Mid-Atlantic Ridge, the M 7.0 normal-fault quake on the Tibetan Plateau, and the M 6.9 off Vanuatu with the M 6.5 deep under the Bonin Islands. Shaking estimates and PAGER alerts come from USGS. Damage and casualty figures come from news reports, cited on screen.
+
+An AI avatar of me narrates this video, with my voice. The analysis, maps and script are mine. Made for ISTE-782 Visual Analytics at RIT.
+
+00:00 Introduction
+00:10 The legend: magnitude in color and size
+00:40 The 30-day time-lapse
+01:10 Panama: M 7.7 strike-slip mainshock
+02:12 Mid-Atlantic Ridge: M 6.7 and M 6.8 doublet
+02:58 Tibetan Plateau: M 7.0 normal faulting
+04:02 Western Pacific: Vanuatu M 6.9 and deep Bonin M 6.5
+05:13 Wrap-up
+
+Data: USGS earthquake feed, past 30 days, M2.5+: https://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php
+USGS PAGER: https://earthquake.usgs.gov/data/pager/
+QGIS: https://qgis.org
+
+More videos: https://youtube.com/@ajbarea
+
+#earthquakes #QGIS #GIS #dataviz #geospatial #USGS #visualanalytics

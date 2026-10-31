@@ -20,7 +20,7 @@ Two uploads from one cut: the 16:9 video and a 9:16 Short. Paste each descriptio
 | File | Frame | Words | At 320 px |
 |---|---|---|---|
 | thumb-A-ghost.jpg | 0:09.15, the wide-eyed close-up | IT WASN'T A GHOST | reads; strongest face |
-| thumb-B-loop.jpg | 0:09.15 face beside the red terminal at 0:22.5 (`videos/tools/thumbnail.py`) | IT WAS A LOOP / NOT A GHOST | headline reads; the small line is the weakest |
+| thumb-B-loop.jpg | 0:09.15 face beside the red terminal at 0:22.5 (`videos/tools/thumbnail.py`) | IT WAS A LOOP / KILL -9 | reads; the small accent line is the weakest |
 | thumb-C-kill.jpg | 0:30.5, the hooded face under projected code | KILL THE GHOST | reads |
 
 **Pinned comment:**

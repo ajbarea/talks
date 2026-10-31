@@ -38,7 +38,7 @@ New in this track:
 | 02 | [Why Your AI Agent Gets Dumber the More Rules You Give It](02-context-rot/script.md), a two-character bit | Chroma's Context Rot report (2025); Anthropic, When to fold subagents into your main agent loop (2026); Claude Code hooks docs | ready to record | record | – |
 | 03 | [How a Fleet of AI Agents Builds My Software](03-agent-fleet/script.md) | the klepsydra and techne READMEs | ready to record | record | – |
 | 04 | [What Is an Attack on Federated Learning?](04-fl-attacks/script.md) | McMahan et al. 2017; Blanchard et al. 2017; Li et al. 2019; Lamport et al. 1982 | ready to record | record | – |
-| 05 | [The Terminal That Haunted Me](05-haunted-terminal/metadata.md), a Halloween sketch | [director example 3](youtube-director/references/examples.md) | ready to upload | upload both cuts | Sat, Oct 31 |
+| 05 | [The Terminal That Haunted Me](05-haunted-terminal/metadata.md), a Halloween sketch | [director example 2](youtube-director/references/examples.md) | ready to upload | upload both cuts | Sat, Oct 31 |
 
 ## Layout
 

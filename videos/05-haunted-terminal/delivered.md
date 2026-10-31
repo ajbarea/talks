@@ -1,7 +1,7 @@
 <!-- budget: 1100 words -->
 # The Terminal That Haunted Me (as delivered)
 
-What the final 50-second cut says and shows, beat by beat. AJ made it in Google Vids from example 3 in [the director skill's examples](../youtube-director/references/examples.md), cut to five 10-second clips. The spoken lines are the cleaned captions (`spooky.en.srt`), checked word for word against a local speech-to-text pass.
+What the final 50-second cut says and shows, beat by beat. AJ made it in Google Vids from example 2 in [the director skill's examples](../youtube-director/references/examples.md), cut to five 10-second clips. The spoken lines are the cleaned captions (`spooky.en.srt`), checked word for word against a local speech-to-text pass.
 
 Production Mode: Mode A (Google Vids, AJ's personal avatar)
 Long version: Landscape 16:9 (1920x1080), 0:50, 30 fps

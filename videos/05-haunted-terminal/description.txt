@@ -1,0 +1,17 @@
+My apartment was haunted every night at 3 AM. Then I checked the logs. A 50-second Halloween sketch about a bug that would not die.
+
+The router lights flickered and I swear I heard whispering. The ghost was an old recursive debug call I forgot to kill months ago. It kept waking up to fetch updates, trigger errors and spawn threads, then crawled right back in, until the CPU fan screeched like a specter. One kill signal ended the haunting.
+
+An AI avatar of me narrates and acts in this video, with my voice. I made it in Google Vids from my own verified face and voice. The story is made up for Halloween.
+
+00:00 The haunted apartment
+00:10 The router and the logs
+00:20 The recursive loop
+00:30 The kill signal
+00:40 Your spookiest bug
+
+klepsydra (every Claude Code session and its background agents on one wall): https://github.com/ajbarea/klepsydra
+
+More videos: https://youtube.com/@AJBarea
+
+#Halloween #ProgrammingHumor #Debugging #CodingHorror #AIagents #SoftwareEngineering

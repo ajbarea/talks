@@ -19,7 +19,7 @@ AJ's explainer videos, made in Google Vids with his personal avatar: his own ver
 
 ## Queue
 
-States: **ready to record** (lint passes, assets and metadata written), **script lint-clean** (the segments pass; other parts are still missing), **in progress** (work outside this folder), **idea** (no script yet).
+States: **ready to upload** (recorded; the upload package is written), **ready to record** (lint passes, assets and metadata written), **script lint-clean** (the segments pass; other parts are still missing), **in progress** (work outside this folder), **idea** (no script yet).
 
 Work already in progress, top of the queue:
 
@@ -38,10 +38,12 @@ New in this track:
 | 02 | [Why Your AI Agent Gets Dumber the More Rules You Give It](02-context-rot/script.md), a two-character bit | Chroma's Context Rot report (2025); Anthropic, When to fold subagents into your main agent loop (2026); Claude Code hooks docs | ready to record | record | – |
 | 03 | [How a Fleet of AI Agents Builds My Software](03-agent-fleet/script.md) | the klepsydra and techne READMEs | ready to record | record | – |
 | 04 | [What Is an Attack on Federated Learning?](04-fl-attacks/script.md) | McMahan et al. 2017; Blanchard et al. 2017; Li et al. 2019; Lamport et al. 1982 | ready to record | record | – |
+| 05 | [The Terminal That Haunted Me](05-haunted-terminal/metadata.md), a Halloween sketch | [director example 3](youtube-director/references/examples.md) | ready to upload | upload both cuts | Sat, Oct 31 |
 
 ## Layout
 
 - `NN-slug/script.md`: one video's script, both cuts.
+- `NN-slug/description.txt`, `metadata.md`: a recorded video's upload package.
 - `vids-rules.md`: the writing rules and the pre-flight checklist.
 - `check_script.py`: the lint (`make videos-check`; `make test` runs it too).
 - `youtube_check.py`: lints each `description.txt`; `make videos-verify ID=...` checks a live page.

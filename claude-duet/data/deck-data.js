@@ -25,7 +25,7 @@ window.DECK_DATA = {
       { id: "science", label: "Claude Science", x: "Your code\nand data", y: "You ask",
         oneLine: "A desktop app (beta) that pairs Claude with an analysis environment on your computer." },
       { id: "cowork", label: "Claude Cowork", x: "Your accounts\nand apps", y: "On a schedule\nyou set",
-        oneLine: "Longer tasks in the desktop app; schedule one for any cadence and close the laptop." },
+        oneLine: "Longer tasks on the web, phone or desktop app; schedule one for any cadence and close the laptop." },
       { id: "web-code", label: "Code on the web", x: "Your code\nand data", y: "On a schedule\nyou set",
         oneLine: "Claude Code on a cloud computer, on a copy of your GitHub repository; a scheduled task runs it hourly, nightly or weekly." },
       { id: "code", label: "Claude Code", x: "Your code\nand data", y: "You ask", ours: true,

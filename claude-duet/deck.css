@@ -108,6 +108,7 @@
 
 /* The install commands, full width so they never wrap. */
 .install { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 16px 0 0; }
+.install .os { display: block; margin-bottom: 4px; font-size: 0.68em; color: var(--muted); }
 .install code { padding: 6px 12px; border-radius: 6px; background: #1c1917; color: #f5f5f4; font-size: 0.68em; }
 
 /* Backup: sources. */

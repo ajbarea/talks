@@ -44,7 +44,7 @@
   <h2>I've used Duet since October 27, and did a week's work in Claude Code</h2>
   <div class="cards" style="--n:2">
     <div class="card">
-      <b>What I did</b>
+      <b>This week</b>
       <p>Ten days in Duet's preview. In Claude Code, in one week: <span data-value="week.labPrs"></span> measured pull requests for a neuroscience lab, <span data-value="week.videos"></span> video pages refreshed, and a registered report's rules reviewed until clean.</p>
     </div>
     <div class="card">
@@ -52,7 +52,7 @@
       <p>An agent inside your repository follows rules you set. A hook can refuse to run an analysis on data that hasn't passed your validation step.</p>
     </div>
   </div>
-  <aside class="notes">Here's what I did. I've been in Duet's preview since October 27th. And last week, in Claude Code, I opened three pull requests for Richard Lange's lab, each measured and checked by a second agent, refreshed the pages of all 169 videos on my channel, and had the rules of a registered report reviewed until a reviewer found nothing. Here's why I think you should care. We're a data-quality lab. An agent that works inside your repository follows rules you set, so it can be told never to run an analysis on data that hasn't passed your validation step. Let's start with Duet. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; ajbarea/sphragis #233.</small></aside>
+  <aside class="notes">Here's what I did. I've been in Duet's preview since October 27th. And last week, in Claude Code, I opened three pull requests for Richard Lange's lab, each with before-and-after measurements, and reviewed by a second agent before I opened it, refreshed the pages of all 169 videos on my channel, and had the rules of a registered report reviewed until a reviewer found nothing. Here's why I think you should care. We're a data-quality lab. An agent that works inside your repository follows rules you set, so it can be told never to run an analysis on data that hasn't passed your validation step. Let's start with Duet. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; ajbarea/sphragis #233.</small></aside>
 </section>
 
 <section data-chapter="1 · What Duet is">
@@ -115,7 +115,7 @@
 
 <section data-chapter="2 · Where it fits">
   <span class="kicker">2 · Where it fits</span>
-  <h2>Duet can't see the files on your computer, so research code needs Claude Code</h2>
+  <h2>Duet can't see the files on your computer, so for research code I use Claude Code</h2>
   <table class="need">
     <thead><tr><th>What research code needs</th><th>Claude Duet</th><th>Claude Code</th></tr></thead>
     <tbody data-motion="stagger" data-child="rise" data-step="140">
@@ -127,7 +127,7 @@
     </tbody>
   </table>
   <p class="footnote">From Anthropic's help center: Duet "can't see all of your projects or the files on your computer", and you can't watch its browser yet.</p>
-  <aside class="notes">Here's where it falls short for us. Duet can't see the files on your computer; it works on its own cloud computer, not on the setup your code and data live in. It follows Anthropic's list of when to ask, not your lab's rules. And for now you can't watch its browser while it works. What it does better is coming to you on its own. One early reviewer put it well: Duet can see his Claude sessions, but it can't direct them. And Claude Science also runs on your machine, built for analysis; I use Claude Code because it lives in the repository itself. Let's pause there. <small>Sources: help center; announcement; Every's review; Claude Science page.</small></aside>
+  <aside class="notes">Here's where it falls short for us. Duet can't see the files on your computer; it works on its own cloud computer, not on the setup your code and data live in. It follows Anthropic's list of when to ask, not your lab's rules. And for now you can't watch its browser while it works. What it does better is coming to you on its own. One early reviewer put it well: Duet can see his Claude sessions, but it can't direct them. Claude Science, a beta app built for analysis, also runs where your data lives; I use Claude Code because it works inside the repository itself. Let's pause there. <small>Sources: help center; announcement; Every's review; Claude Science page.</small></aside>
 </section>
 
 <section class="discussion" data-background-color="#f1efe9" data-chapter="2 · Where it fits">
@@ -152,7 +152,7 @@ $ claude</code></div>
     <div class="ext r fragment" data-motion="rise"><b>Headless runs</b><code>claude -p</code> in scripts and scheduled jobs</div>
   </div>
   <p class="footnote">MCP: Model Context Protocol, an open standard for connecting AI tools to data.</p>
-  <aside class="notes">Claude Code is the opposite design. It runs in your repository and your terminal. It reads your code, edits files, and runs the same commands you would. Around that sit the pieces that make it mine. Hooks are rules it can't skip, which I'll demo. Plugins bundle skills and hooks so a whole lab installs them at once. And subagents are helpers that start with a fresh context, which is how I get an independent review. So, how does that play out? <small>Sources: Claude Code docs: overview, hooks, skills, plugins, sub-agents, MCP, worktrees, headless.</small></aside>
+  <aside class="notes">Claude Code is the opposite design. It runs in your repository and your terminal. It reads your code, edits files, and runs the same commands you would. Around that sit the pieces that make it mine. Hooks are rules it can't skip, which I'll demo. Plugins bundle skills and hooks so a whole lab installs them at once. And subagents are helpers that start with a fresh context, which is how I get an independent review. On the right, MCP connects outside tools, worktrees let sessions run side by side, and claude dash p runs it from scripts. So, how does that play out? <small>Sources: Claude Code docs: overview, hooks, skills, plugins, sub-agents, MCP, worktrees, headless.</small></aside>
 </section>
 
 <section data-chapter="3 · Why I live in Claude Code">
@@ -181,7 +181,7 @@ $ claude</code></div>
     </div>
   </div>
   <p class="footnote">Similarity score: centered kernel alignment (CKA). Registered report: a study whose methods are reviewed before results exist.</p>
-  <aside class="notes">Now my opinion, and it's my experience, not a measurement: for my work, this is where I get the most out of Claude. Here's one week. For Richard Lange's lab I opened three pull requests, each measured and checked by a second agent, and now with the lab for review; one step of a similarity calculation went from about a gigabyte of memory to under a megabyte. I refreshed all 169 video pages on my channel, and every edit was read back. My registered report's rules went through fresh reviewers until the fifth found nothing. All of it ran as many sessions at once, which I watch on one dashboard. Let me show you the smallest piece. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; ajbarea/sphragis #233.</small></aside>
+  <aside class="notes">Now my opinion, and it's my experience, not a measurement: for my work, this is where I get the most out of Claude. Here's one week. For Richard Lange's lab I opened three pull requests, each with before-and-after measurements, reviewed by a second agent before I opened it, and now with the lab; one step of a similarity calculation went from about a gigabyte of memory to under a megabyte. I refreshed all 169 video pages on my channel, and every edit was read back. My registered report's rules went through fresh reviewers until the fifth found nothing. I ran all of it as several sessions at once, and I watch them on one dashboard. Let me show you the smallest piece. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; ajbarea/sphragis #233.</small></aside>
 </section>
 
 <section data-chapter="4 · A short demo">
@@ -207,7 +207,7 @@ fi</code></pre>
     </figure>
   </div>
   <p class="footnote">A real headless run (claude -p, Claude Haiku 5.5, permission prompts off), October 31, 2026, trimmed. Exit code 2 blocks the command and hands Claude the message.</p>
-  <aside class="notes">Here's a hook. Say your lab has settled on uv instead of pip, so packages land in the project file and everyone gets the same versions. Writing that in a README is a suggestion. A hook is a rule. This one reads the command Claude is about to run, and if it's a pip install, it blocks it and says why. I asked Claude to pip install requests. It tried, the hook refused, and Claude read the message, ran uv add instead, and the package landed in the project file. I never stepped in, and this run had permission prompts switched off, so the hook held on its own. Here's how you could try it. <small>Sources: Claude Code hooks guide and reference; the run's transcript, October 31.</small></aside>
+  <aside class="notes">Here's a hook. Say your lab has settled on uv instead of pip, so packages land in the project file and everyone gets the same versions. Writing that in a README is a suggestion. A hook is a rule. This one reads the command Claude is about to run, and if it's a pip install, it blocks it and says why. I asked Claude to pip install requests. It tried, the hook refused, and Claude read the message, ran uv add instead, and the package landed in the project file. I never stepped in, and this run had permission prompts switched off, so the hook held on its own. Live, on Opus, it stops at the block; I tell it to follow the hook, and it runs uv add. Here's how you could try it. <small>Sources: Claude Code hooks guide and reference; the run's transcript, October 31.</small></aside>
 </section>
 
 <section data-chapter="5 · Start Monday">
@@ -268,7 +268,7 @@ fi</code></pre>
       <pre><code>{
   "hooks": {
     "PreToolUse": [{
-      "matcher": "Bash",
+      "matcher": "Bash|PowerShell",
       "hooks": [{
         "type": "command",
         "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/no-pip.sh"
@@ -288,7 +288,7 @@ if grep -Eq "$pat" &lt;&lt;&lt;"$cmd"; then
 fi</code></pre>
     </figure>
   </div>
-  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>, and Git for Windows on Windows; without them every command is refused. Also blocks <code>uv pip install</code> and a commit message that mentions pip install; misses <code>pip -q install</code>.</p>
+  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>, and Git for Windows on Windows; without them every command is refused. The matcher covers Windows' PowerShell tool too. Also blocks <code>uv pip install</code> and a commit message that mentions pip install; misses <code>pip -q install</code>.</p>
 </section>
 
 <section class="backup">

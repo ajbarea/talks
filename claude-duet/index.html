@@ -162,7 +162,7 @@ $ claude</code></div>
   <div class="week">
     <div class="card" data-motion="rise">
       <b>A neuroscience lab's code</b>
-      <p><span data-value="week.labPrs"></span> pull requests, each with before-and-after measurements and a second agent's review. Memory for one step of a similarity score:</p>
+      <p><span data-value="week.labPrs"></span> pull requests, each measured and reviewed. Memory for one step of a similarity score:</p>
       <div class="membar"><span>before</span><div class="bar" style="width:100%" data-motion="growx"></div><span>after</span><div class="bar after" style="width:0.1%"></div></div>
       <p class="check"><span data-value="week.memBefore"></span> down to <span data-value="week.memAfter"></span></p>
     </div>
@@ -180,7 +180,7 @@ $ claude</code></div>
       <p>Each in its own copy of the repository, watched on one dashboard I built.</p>
     </div>
   </div>
-  <p class="footnote">Surveys and benchmarks compare coding tools (Stack Overflow 2026, Terminal-Bench 2.0); this slide claims neither. Similarity score: centered kernel alignment (CKA). Registered report: a study whose methods are reviewed before results exist.</p>
+  <p class="footnote">Similarity score: centered kernel alignment (CKA). Registered report: a study whose methods are reviewed before results exist.</p>
   <aside class="notes">Now my opinion, and it's my experience, not a measurement: for my work, this is where I get the most out of Claude. Here's one week. For Richard Lange's lab I opened three pull requests, each with measurements and a second agent's review; one step of a similarity calculation went from about a gigabyte of memory to under a megabyte. I refreshed all 169 video pages on my channel, and every edit was read back. My registered report's rules went through fresh reviewers until the fifth found nothing. All of it ran as many sessions at once, which I watch on one dashboard. Let me show you the smallest piece. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; ajbarea/sphragis #233.</small></aside>
 </section>
 
@@ -214,13 +214,13 @@ fi</code></pre>
   <span class="kicker">5 · Start Monday</span>
   <h2>You can start Monday with one install, one hook and one small task</h2>
   <ol class="steps4" data-motion="stagger" data-child="rise" data-step="160">
-    <li><b>Install</b>one command, below; on Windows, the PowerShell one</li>
+    <li><b>Install</b>one command, below</li>
     <li><b>Open your repository</b>run <code>claude</code>, then <code>/init</code> writes a <code>CLAUDE.md</code> of your project's rules</li>
     <li><b>Add one rule as a hook</b>the pip hook from the last slide is a good first one</li>
     <li><b>Give it one small task</b>a failing test or a stale README; read the change before you commit</li>
   </ol>
   <p class="install"><code>curl -fsSL https://claude.ai/install.sh | bash</code><code>irm https://claude.ai/install.ps1 | iex</code></p>
-  <p class="lead">Before you start: it needs a paid plan (Pro or above). It makes confident mistakes, so read every change. What it reads goes to Anthropic's servers: keep private data out, and check your training setting.</p>
+  <p class="lead">Needs Pro or above. Read every change. What it reads goes to Anthropic: keep private data out.</p>
   <aside class="notes">So how would you start? Monday morning, install it with one command. Open your repository, run claude, and type slash init: it reads your code and writes a starting file with your build commands and conventions. Add one rule you care about as a hook. Then give it one small, checkable task, like a failing test. Three cautions. It needs a paid plan; Anthropic also has a discounted Team plan for scientists. It makes confident mistakes, so read every change before you commit. And what it reads is sent to Anthropic, so keep private data out and check your training setting. I'm happy to sit with anyone for half an hour to set it up. <small>Sources: Claude Code overview, memory and data-usage docs; Claude pricing; Team plan for scientists.</small></aside>
 </section>
 
@@ -281,8 +281,6 @@ fi</code></pre>
     <figure class="hookfile">
       <figcaption>.claude/hooks/no-pip.sh (then chmod +x)</figcaption>
       <pre><code>#!/usr/bin/env bash
-# Refuse pip installs; the lab uses uv.
-# Needs jq: without it, every command is refused.
 cmd=$(jq -r '.tool_input.command') || exit 2
 pat='(^|[;&amp;|(/[:space:]])pip[0-9.]*[[:space:]]+install'
 if grep -Eq "$pat" &lt;&lt;&lt;"$cmd"; then
@@ -291,7 +289,7 @@ if grep -Eq "$pat" &lt;&lt;&lt;"$cmd"; then
 fi</code></pre>
     </figure>
   </div>
-  <p class="footnote">Commit both and everyone's Claude Code follows the rule. It also blocks <code>uv pip install</code>, which skips the project file, and a commit message that mentions pip install.</p>
+  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>; without it every command is refused. Also blocks <code>uv pip install</code> and a commit message that mentions pip install.</p>
 </section>
 
 <section class="backup">

@@ -426,7 +426,7 @@
     </div>
   </div>
   <p class="footnote">Each dot in the middle panel is one run; on the right, one simulated study. Filled: found.</p>
-  <aside class="notes">I made sure the test can't fool me. It scores how much probability each assistant gives the reviewer's fix. On the left, each dot is one way of dividing the data; any one can mislead, so the test averages many. I also planted a fake house rule in half the training lessons. <span data-if="readings.planted_all">The test found it in every run.</span><span data-unless="readings.planted_all">It was missed in some runs, so the test is on hold until that is fixed.</span> In simulations, it finds a real effect of the smallest size that matters almost every time. Now, the bigger plan.</aside>
+  <aside class="notes">I made sure the test can't fool me. It scores how much probability each assistant gives the reviewer's fix, and it must win twice: on the whole fix, and on the fix without its names, so a team's names alone cannot pass it. On the left, each dot is one way of dividing the data; any one can mislead, so the test averages many. I also planted a fake house rule in half the training lessons. <span data-if="readings.planted_all">The test found it in every run.</span><span data-unless="readings.planted_all">It was missed in some runs, so the test is on hold until that is fixed.</span> In simulations of the whole-fix score, it finds a real effect of the smallest size that matters almost every time; the simulations for the second score are not read yet. Now, the bigger plan.</aside>
 </section>
 
 <section data-chapter="5 · Where it stands">
@@ -453,8 +453,8 @@
       <ul data-motion="stagger" data-child="rise" data-delay="250">
         <li class="in">OpenStack <span>in</span></li>
         <li class="in">Wikimedia <span>in</span></li>
-        <li class="in">Qt <span>granted; first runs done, test sized</span></li>
-        <li class="in">Qt vs. another company <span data-if="readings.foreign_sized">Chromium, the browser; test sized</span><span data-unless="readings.foreign_sized">Chromium, the browser; first runs unsettled, test size open</span></li>
+        <li class="in">Qt <span>granted; first runs done</span></li>
+        <li class="in">Qt vs. another company <span data-if="readings.foreign_sized">Chromium, the browser; test sized</span><span data-unless="readings.foreign_sized">Chromium, the browser; first runs unsettled, sizing in progress</span></li>
       </ul>
     </div>
     <div class="group">
@@ -468,7 +468,7 @@
     </div>
   </div>
   <p class="footnote">Membership is fixed by November 20, before any test result exists.</p>
-  <aside class="notes">OpenStack, Wikimedia and Qt decide the answer; each must pass. Qt has said yes in writing, passes the same data checks, and simulations have now sized its test; in first runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>, a development reading. Qt's comparison with another company's code takes the first of three open-source Google projects with enough review data to match Qt's: Chromium, the browser, then Fuchsia, an operating system, then Android, which has too little. Chromium's main project alone has enough, so Chromium is the comparison. In first runs against an assistant tuned on Chromium, Qt's own assistant <span data-value="readings.foreign_qt"></span>.<span data-unless="readings.foreign_sized"> Simulations found no number of splits the plan allows that keeps false alarms at the planned rate, so sizing that test is a decision for the registered report.</span><span data-if="readings.foreign_sized"> Simulations have sized that test too.</span> GitHub, where review is often optional, is a separate replication, read under GitHub's open-access research terms; Apache and .NET qualify. Membership is fixed by November 20th, before any test result exists.</aside>
+  <aside class="notes">OpenStack, Wikimedia and Qt decide the answer; each must pass. Qt has said yes in writing and passes the same data checks; in first runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>, a development reading. Qt's comparison with another company's code takes the first of three open-source Google projects with enough review data to match Qt's: Chromium, the browser, then Fuchsia, an operating system, then Android, which has too little. Chromium's main project alone has enough, so Chromium is the comparison. In first runs against an assistant tuned on Chromium, Qt's own assistant <span data-value="readings.foreign_qt"></span>.<span data-unless="readings.foreign_sized"> In simulations, no number of splits the plan allows kept false alarms at the planned rate, so I take the most it allows, declared as a change to the plan, and set the pass mark from simulated false alarms; that simulation runs next.</span><span data-if="readings.foreign_sized"> Simulations have sized that test too.</span> Fuchsia now trains a second comparison beside Chromium, exploratory and binding nothing, so the answer does not rest on one kind of software; its first runs have not been read yet. GitHub, where review is often optional, is a separate replication, read under GitHub's open-access research terms; Apache and .NET qualify. Membership is fixed by November 20th, before any test result exists.</aside>
 </section>
 
 <section class="dark closing" data-background-color="#14181f">
@@ -532,8 +532,8 @@
 
 <section id="faq-test" class="backup">
   <h2>What are the pre-registered test and the privacy attacks?</h2>
-  <p><b>The test:</b> does an add-on trained on an organization's own reviews beat one trained on a sibling slice of the same organization, on months the model has not seen? It passes only if that holds in every organization tested. The rule and the sealed test months were fixed before any test result existed.</p>
-  <p><b>The second contrast:</b> on Qt, does an add-on from a sibling slice of Qt beat one from Chromium, another organization? First runs are not settled, and whether this contrast is a registered test or an exploratory one is still open.</p>
+  <p><b>The test:</b> does an add-on trained on an organization's own reviews beat one trained on a sibling slice of the same organization, on months the model has not seen? It passes only if that holds in every organization tested, on the whole fix and without its names. The rule and the sealed test months were fixed before any test result existed.</p>
+  <p><b>The second contrast:</b> on Qt, does an add-on from a sibling slice of Qt beat one from Chromium, another organization? It is a registered test; first runs are not settled. Fuchsia, another organization, is read beside it, exploratory.</p>
   <p><b>The attacks:</b> does the shared part still reveal its source?</p>
   <ul>
     <li><em>Source attribution</em>: which organization did this add-on come from?</li>
@@ -543,7 +543,7 @@
   </ul>
   <p>A measurement, not a guarantee.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
-  <aside class="notes"><span data-if="readings.planted_all">Word-for-word matching missed the planted rule in most runs, so the test scores probability. </span><span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>Changes stacked on one another in review, Gerrit's relation chains, are not independent, so the test resamples whole chains, not single changes; I fixed that before reading anything under it. <span data-if="readings.chains_hold">On development data, no community's reading moves under chains. </span><span data-unless="readings.chains_hold">On development data, a community's reading moves under chains. </span>The test is sized to the standard registered reports ask for.</aside>
+  <aside class="notes"><span data-if="readings.planted_all">Word-for-word matching missed the planted rule in most runs, so the test scores probability. </span><span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>Changes stacked on one another in review, Gerrit's relation chains, are not independent, so the test resamples whole chains, not single changes; I fixed that before reading anything under it. <span data-if="readings.chains_hold">On development data, no community's reading moves under chains. </span><span data-unless="readings.chains_hold">On development data, a community's reading moves under chains. </span>For the Chromium contrast, no number of splits the plan allows held false alarms at the planned rate, so it takes the most allowed, declared as a change, with its pass mark set from simulated false alarms. The test is sized to the standard registered reports ask for.</aside>
 </section>
 
 <section id="faq-data" class="backup">
@@ -676,7 +676,7 @@
   <p>Each decides the split by evidence on a server or an LLM's judgment, not by the owner declaring it from where each example came from. Three things here are not done elsewhere:</p>
   <ul>
     <li><b>The owner declares the boundary before training</b>, by where each example came from, and that declaration decides which examples may teach the shared part.</li>
-    <li><b>Tacit review conventions</b> are what is learned, with a pre-registered test of whether they are learned, and a planned test, its status still open, of whether the organization is where learning stops transferring.</li>
+    <li><b>Tacit review conventions</b> are what is learned, with a pre-registered test of whether they are learned, and a second registered test of whether the organization is where learning stops transferring.</li>
     <li><b>The shared part is audited by attribution</b>: can someone tell which organization it came from?</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>

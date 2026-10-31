@@ -97,7 +97,7 @@
 .hookfile pre { margin: 8px 0 0; font-size: 0.64em; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
 
 /* Start Monday: four steps. */
-.steps4 { display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr; gap: 18px; margin: 22px 0 0; padding: 0; list-style: none; counter-reset: s; }
+.steps4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin: 22px 0 0; padding: 0; list-style: none; counter-reset: s; }
 .steps4 li { position: relative; padding: 52px 16px 16px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.68em; counter-increment: s; }
 .steps4 li::before {
   content: counter(s); position: absolute; top: 12px; left: 16px; width: 30px; height: 30px; border-radius: 50%;
@@ -132,6 +132,10 @@
 .phone .need { font-size: 0.8em; }
 .phone .need th, .phone .need td { padding: 8px 6px; }
 .phone .sources { columns: 1; }
+.phone .facts div, .phone .membar, .phone .week .card .check, .phone .hookfile figcaption, .phone .sources { font-size: 0.7em; }
+.phone .steps4 { gap: 10px; margin-top: 14px; }
+.phone .steps4 li { padding: 10px 12px 10px 54px; }
+.phone .steps4 li::before { top: 10px; left: 12px; }
 .phone .hookfile pre, .phone .term, .phone .install code { font-size: 0.72em; overflow-wrap: anywhere; }
 .relmap.wide { display: block; }
 .relmap .col { stroke: var(--line); stroke-width: 1.5; }

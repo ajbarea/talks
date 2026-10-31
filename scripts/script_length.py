@@ -19,7 +19,7 @@ from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 WORDS_PER_MINUTE = 140
-CAP_MINUTES = {"federated-agents": 10, "claude-duet": 12}
+CAP_MINUTES = {"federated-agents": 10, "claude-duet": 10}
 # Tags that end a word even with no space around them; inline ones such as <b> do not.
 BREAKS = {"br", "p", "li", "ul", "ol", "div", "section", "aside", "td", "tr"}
 VOID = {"br", "img", "hr", "wbr"}

@@ -1,9 +1,10 @@
-# IMPL: channel refresh (talks #44), done 2026-10-30
+# IMPL: Halloween upload package (videos/05-haunted-terminal), 2026-10-30
 
 ## State
-- ✅ #43 merged as #45: upload package, `make videos-verify ID=... [AI=1] [AUTO_THUMB=1]`.
-- ✅ #44 live on all 169 public videos (PR #46): 20 Tier 1 by hand (descriptions with caption chapters, tags, 6 title fixes, 19 end screens, 20 pinned questions), 113 concert uploads from one template, 36 gaming clips formatting only. Categories: Webots Labs 1-5 to Education, 24 concert uploads to Music.
+- ✅ #43/#45 upload package; ✅ #44/#46 channel refresh (all 169 public videos).
 - AI disclosure: zc_W9tCGO1I (Google Vids avatar) and UtOHEHz2pWw (Microsoft Read Aloud TTS, per AJ); both have the narrator line and "AI use" set.
+- ✅ 05-haunted-terminal: description.txt, short-description.txt, metadata.md, checklist.md, delivered.md, TOOLING-NOTES.md. Media (two mp4s, srt, three thumbnails) in `Desktop/spooky-youtube/`, never committed.
+- 📋 Upload both cuts Sat Oct 31 (16:9 at 10:00 AM ET, Short at 12:00 PM ET), tick AI use, then `make videos-verify ID=<id> AI=1`.
 
 ## Next (not started)
 - Custom thumbnails for Tier 1 uploads that still show an auto frame (upload-package.md recipe).

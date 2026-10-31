@@ -1,0 +1,136 @@
+/* ------------------------------------------------------------ claude duet -- */
+/* Presented in a lit room, so every slide stays on the light paper, title and close included. */
+
+.subtitle { max-width: 34ch; font-size: 1.05em; color: var(--muted); }
+.lead { margin: 16px 0 0; font-size: 0.8em; max-width: 62ch; }
+.title-slide h1 { margin-top: 120px; max-width: 18ch; }
+.title-slide .when { margin-top: 28px; font-size: 0.8em; color: var(--muted); }
+.qr-label { color: var(--muted); }
+.qr-label b { color: var(--ink); }
+.qr-follow .qr-code, .qr-close .qr-code { outline: 2px solid var(--line); }
+.discussion { background: var(--band); }
+.discussion h2 { margin-top: 120px; }
+.tag {
+  display: inline-block; padding: 4px 12px; border: 2px solid var(--limit); border-radius: 999px;
+  font-size: 0.66em; font-weight: 700; color: var(--limit); letter-spacing: 0.02em;
+}
+
+/* Duet: you hand it a job, it works on its own computer, the results come back. */
+.duet-flow { display: grid; grid-template-columns: 210px 60px 1fr 60px 300px; align-items: center; margin-top: 26px; }
+.duet-flow .who, .duet-flow .box, .duet-flow .out {
+  padding: 16px 18px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.72em;
+}
+.duet-flow b { display: block; font-size: 1.1em; font-weight: 700; margin-bottom: 4px; }
+.facts b, .hubfig b, .steps4 b, .week b, .gate h3 { font-weight: 700; }
+.duet-flow small { display: block; color: var(--muted); font-size: 0.92em; line-height: 1.3; }
+.duet-flow .box { background: var(--night); color: var(--night-ink); border-color: var(--night); }
+.duet-flow .box b { color: var(--night-label); }
+.duet-flow .box small { color: var(--night-muted); }
+.duet-flow .box .closed { margin-top: 12px; padding-top: 10px; border-top: 1px solid #44403c; }
+.duet-flow .arrow { height: 4px; background: var(--mark); margin: 0 6px; }
+.duet-flow .out ul { margin: 6px 0 0; padding-left: 1.1em; }
+.duet-flow .out li { margin: 2px 0; }
+
+/* Duet's two kinds of action: done on its own, or brought to you first. */
+.gate { display: grid; grid-template-columns: 1fr 120px 1fr; align-items: stretch; margin-top: 22px; gap: 0; }
+.gate .side { padding: 16px 20px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); }
+.gate .side.ask { border: 3px solid var(--mark-ours); }
+.gate h3 { font-size: 0.75em; margin-bottom: 10px; }
+.gate .side.ask h3 { color: var(--limit); }
+.gate ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+.gate li { padding: 6px 14px; border-radius: 999px; background: var(--band); font-size: 0.7em; font-weight: 600; }
+.gate .side.ask li { background: #fdebd8; }
+.gate .hinge { display: grid; place-items: center; text-align: center; font-size: 0.66em; color: var(--muted); padding: 0 6px; }
+.gate .hinge span { display: block; font-size: 2em; color: var(--mark-ours); line-height: 1; }
+.facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 22px; }
+.facts div { padding: 10px 14px; border-left: 5px solid var(--mark); background: var(--band); border-radius: 4px; font-size: 0.64em; }
+.facts b { display: block; color: var(--label); }
+
+/* Where Duet falls short: what research code needs, ticked per tool. */
+.need { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 0.7em; }
+.need th, .need td { padding: 9px 14px; border-bottom: 1px solid var(--line); text-align: left; }
+.need th { font-size: 0.9em; color: var(--label); }
+.need td.y, .need td.n, .need td.p { text-align: center; font-weight: 700; width: 280px; }
+.need td.y { color: #005a8c; }
+.need td.n { color: var(--limit); }
+.need td.p { color: var(--muted); }
+.need .mark { display: inline-block; width: 26px; height: 26px; border-radius: 50%; line-height: 26px; text-align: center; margin-right: 6px; }
+.need td.y .mark { background: #d7e9f5; }
+.need td.n .mark { background: #fdebd8; }
+.need td.p .mark { background: var(--band); }
+
+/* Claude Code: the session in the middle, what extends it around the edge. */
+.hubfig { display: grid; grid-template-columns: 1fr 360px 1fr; grid-auto-rows: auto; grid-auto-flow: row dense; gap: 12px 22px; margin-top: 16px; align-items: center; }
+.hubfig .core {
+  grid-column: 2; grid-row: 1 / span 4; padding: 22px; border-radius: 14px; background: var(--night); color: var(--night-ink);
+  font-size: 0.78em; text-align: center;
+}
+.hubfig .core b { display: block; color: var(--night-label); font-size: 1.2em; margin-bottom: 8px; }
+.hubfig .core code { display: block; white-space: pre; margin-top: 12px; padding: 8px; border-radius: 6px; background: #000; color: #f5f5f4; font-size: 0.9em; text-align: left; }
+.hubfig .ext { padding: 10px 14px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.72em; }
+.hubfig .ext b { display: block; color: var(--label); font-size: 1.1em; }
+.hubfig .ext.l { grid-column: 1; border-right: 5px solid var(--mark); }
+.hubfig .ext.r { grid-column: 3; border-left: 5px solid var(--mark); }
+
+/* This week's evidence: four panels, each with its own check. */
+.week { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 22px; margin-top: 14px; }
+.week .card p { font-size: 0.7em; }
+.week .card .check { margin-top: 8px; font-size: 0.64em; color: var(--muted); }
+.membar { display: grid; grid-template-columns: 90px 1fr; gap: 6px 10px; align-items: center; margin: 8px 0 4px; font-size: 0.64em; }
+.membar .bar { height: 18px; border-radius: 3px; background: var(--mark-rival); transform-origin: 0 50%; }
+.membar .bar.after { background: var(--mark-ours); min-width: 3px; }
+.membar .bar span { display: block; }
+.vgrid { display: grid; grid-template-columns: repeat(26, 1fr); gap: 3px; margin: 8px 0 4px; }
+.vgrid i { display: block; aspect-ratio: 1; border-radius: 2px; background: var(--mark); }
+
+/* The demo: one exchange, in three steps. */
+.term { margin-top: 16px; padding: 16px 20px; border-radius: 10px; background: #1c1917; color: #f5f5f4; font: 0.64em/1.4 var(--mono); }
+.term p { margin: 0 0 10px; }
+.term .you { color: #fde68a; }
+.term .tool { color: #bae6fd; }
+.term .no { color: #fecaca; }
+.term .ok { color: #bbf7d0; }
+.term b { font-weight: 700; }
+.demo { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+.hookfile { min-width: 0; margin: 16px 0 0; padding: 14px 16px; border-radius: 10px; background: var(--card); border: 2px solid var(--mark); }
+.hookfile figcaption { font-size: 0.64em; font-weight: 700; color: var(--label); }
+.hookfile pre { margin: 8px 0 0; font-size: 0.64em; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* Start Monday: four steps. */
+.steps4 { display: grid; grid-template-columns: 1.7fr 1fr 1fr 1fr; gap: 18px; margin: 22px 0 0; padding: 0; list-style: none; counter-reset: s; }
+.steps4 li { position: relative; padding: 52px 16px 16px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.68em; counter-increment: s; }
+.steps4 li::before {
+  content: counter(s); position: absolute; top: 12px; left: 16px; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--label); color: #fff; font-weight: 700; text-align: center; line-height: 30px;
+}
+.steps4 b { display: block; margin-bottom: 4px; font-size: 1.1em; }
+.steps4 code { font-size: 1em; background: var(--band); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+
+/* Backup: sources. */
+.sources { margin: 4px 0 0; padding-left: 1.1em; font-size: 0.64em; columns: 2; column-gap: 36px; line-height: 1.25; }
+.sources li { margin: 0 0 6px; break-inside: avoid; overflow-wrap: anywhere; }
+.sources a { color: var(--label); }
+
+/* Phones: everything stacks. */
+.phone .duet-flow,
+.phone .gate,
+.phone .facts,
+.phone .hubfig,
+.phone .week,
+.phone .demo,
+.phone .steps4 { grid-template-columns: 1fr; }
+.phone .duet-flow .arrow { width: 4px; height: 20px; justify-self: center; margin: 0; }
+.phone .gate .hinge { padding: 8px 0; }
+.phone .hubfig { grid-template-rows: none; }
+.phone .hubfig .core { grid-column: auto; grid-row: auto; }
+.phone .hubfig .ext.l, .phone .hubfig .ext.r { grid-column: auto; }
+.phone .need td.y, .phone .need td.n, .phone .need td.p { width: auto; }
+.phone .need { font-size: 0.8em; }
+.phone .need th, .phone .need td { padding: 8px 6px; }
+.phone .sources { columns: 1; }
+.phone .hookfile pre, .phone .term { font-size: 0.72em; }
+.relmap.wide { display: block; }
+.relmap .col { stroke: var(--line); stroke-width: 1.5; }
+.phone .vgrid { grid-template-columns: repeat(13, 1fr); }
+.phone .title-slide h1 { margin-top: 40px; }
+.phone .discussion h2 { margin-top: 40px; }

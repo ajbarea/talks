@@ -6,6 +6,7 @@ AJ Barea's research talks as web decks, published at https://ajbarea.github.io/t
 |---|---|
 | Federated Agents | https://ajbarea.github.io/talks/federated-agents/ |
 | Kourai Khryseai | https://ajbarea.github.io/talks/kourai-khryseai/ |
+| Claude Duet, and why Claude Code is the tool I live in | https://ajbarea.github.io/talks/claude-duet/ |
 
 Each talk opens in any browser, with no network needed once loaded. Press `S` for the speaker
 view (the script, a timer and the next slide), `O` for the overview and `F` for full screen. A

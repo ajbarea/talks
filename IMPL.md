@@ -8,8 +8,9 @@ Issue #52. Branch `talk/claude-duet`, worktree `.claude/worktrees/claude-duet`.
 - ✅ Demo run for real (headless `claude -p`, 10-30): hook blocked `pip install requests`, Claude ran `uv add requests`.
 - ✅ Demo re-run 10-31: Haiku 5.5 shows the block then `uv add`; Opus 5.5 reads the hook first, so the live script (README) asks for the exact command.
 - ✅ make check green 10-31 (0 blockers; phone clip on slides 10, 12, 16 fixed by trimming words and compacting phone step cards).
-- 🔄 Fresh-reader review round 1 (Opus, web-verifies every claim); cap 3 rounds.
-- 📋 PR (assignee ajbarea, short top, depth folded), report deck URL to Heph.
+- ✅ Fresh-reader review rounds 1-3 (Opus, web-verified every claim; cap 3 reached). Round 3: 0 blocking, 3 should-fix + 9 nits, all applied (abf831c); lab PRs confirmed open, so "now with the lab" stays.
+- ✅ Verify pass on round 3 fixes: CLEAN.
+- 🔄 PR open (assignee ajbarea); merge publishes ajbarea.github.io/talks/claude-duet/; report URL to Heph.
 
 ## Verify
 - `make slides-check SLIDES=<techne>/plugins/graphe/skills/slides/scripts/slides.py SPHRAGIS=<sphragis>`

@@ -50,5 +50,6 @@ New in this track:
 - `tools/`: thumbnail and slow-zoom helpers.
 - `channel/`: the refresh of every public upload: hand-written Tier 1 descriptions in `tier1/`, the concert and gaming tables that `refresh.py` renders, and `review.md`.
 - `youtube-director/`: the director skill, with its worked examples in `references/`.
+- `vids-reference.md`: what Google Vids can do, its limits and quotas, and the UI paths a browser agent uses (no API exists).
 
 The site build skips this folder: it has no `index.html`, so it is not a talk.

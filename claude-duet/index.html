@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Duet, and why Claude Code is the tool I live in</title>
+  <meta name="description" content="What Anthropic's new proactive agent does, where it fits among the Claude apps, and why research code still belongs in Claude Code.">
+  <meta property="og:title" content="Claude Duet, and why Claude Code is the tool I live in">
+  <meta property="og:description" content="What Anthropic's new proactive agent does, where it fits among the Claude apps, and why research code still belongs in Claude Code.">
+  <link rel="stylesheet" href="../vendor/reveal/reset.css">
+  <link rel="stylesheet" href="../vendor/reveal/reveal.css">
+  <link rel="stylesheet" href="../shared/deck.css">
+  <link rel="stylesheet" href="../shared/motion.css">
+  <link rel="stylesheet" href="../shared/tip.css">
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section class="title-slide">
+  <span class="kicker">AJ Barea · DQ Lab, Rochester Institute of Technology</span>
+  <h1>Claude Duet, and why Claude Code is the tool I live in</h1>
+  <p class="when">November 6, 2026</p>
+  <!-- qr:follow -->
+  <div class="qr qr-follow">
+    <p class="qr-label"><b>Follow along</b><span>ajbarea.github.io/talks/<wbr>claude-duet</span></p>
+    <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/claude-duet" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM14 4h1v1h-1zM16 4h2v1h-2zM20 4h5v1h-5zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM14 5h6v1h-6zM21 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM15 6h3v1h-3zM19 6h4v1h-4zM24 6h1v1h-1zM27 6h2v1h-2zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h4v1h-4zM18 7h1v1h-1zM20 7h1v1h-1zM24 7h3v1h-3zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h2v1h-2zM15 8h1v1h-1zM17 8h1v1h-1zM19 8h1v1h-1zM22 8h1v1h-1zM25 8h1v1h-1zM28 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h4v1h-4zM17 9h1v1h-1zM19 9h4v1h-4zM24 9h3v1h-3zM28 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h1v1h-1zM18 11h2v1h-2zM22 11h1v1h-1zM25 11h2v1h-2zM28 11h1v1h-1zM4 12h1v1h-1zM6 12h5v1h-5zM15 12h1v1h-1zM17 12h3v1h-3zM21 12h2v1h-2zM24 12h1v1h-1zM26 12h1v1h-1zM30 12h5v1h-5zM4 13h1v1h-1zM8 13h1v1h-1zM11 13h1v1h-1zM18 13h1v1h-1zM20 13h1v1h-1zM22 13h4v1h-4zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM5 14h7v1h-7zM13 14h4v1h-4zM19 14h2v1h-2zM22 14h1v1h-1zM25 14h1v1h-1zM29 14h2v1h-2zM32 14h1v1h-1zM34 14h2v1h-2zM4 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM15 15h1v1h-1zM18 15h2v1h-2zM25 15h2v1h-2zM28 15h2v1h-2zM32 15h5v1h-5zM5 16h1v1h-1zM7 16h2v1h-2zM10 16h2v1h-2zM16 16h1v1h-1zM19 16h1v1h-1zM22 16h2v1h-2zM25 16h1v1h-1zM28 16h2v1h-2zM31 16h3v1h-3zM6 17h1v1h-1zM8 17h1v1h-1zM11 17h1v1h-1zM14 17h1v1h-1zM16 17h1v1h-1zM18 17h4v1h-4zM24 17h3v1h-3zM28 17h1v1h-1zM30 17h2v1h-2zM33 17h1v1h-1zM35 17h2v1h-2zM9 18h2v1h-2zM13 18h1v1h-1zM17 18h1v1h-1zM21 18h1v1h-1zM23 18h1v1h-1zM25 18h1v1h-1zM28 18h3v1h-3zM34 18h2v1h-2zM4 19h1v1h-1zM6 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM15 19h1v1h-1zM17 19h2v1h-2zM20 19h1v1h-1zM22 19h5v1h-5zM29 19h2v1h-2zM33 19h2v1h-2zM4 20h1v1h-1zM6 20h1v1h-1zM10 20h2v1h-2zM13 20h1v1h-1zM15 20h1v1h-1zM17 20h1v1h-1zM21 20h1v1h-1zM23 20h1v1h-1zM28 20h2v1h-2zM31 20h2v1h-2zM36 20h1v1h-1zM7 21h2v1h-2zM15 21h1v1h-1zM20 21h5v1h-5zM27 21h1v1h-1zM30 21h2v1h-2zM33 21h2v1h-2zM36 21h1v1h-1zM4 22h2v1h-2zM8 22h7v1h-7zM16 22h2v1h-2zM19 22h1v1h-1zM21 22h1v1h-1zM26 22h1v1h-1zM28 22h2v1h-2zM31 22h2v1h-2zM34 22h2v1h-2zM4 23h1v1h-1zM6 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM17 23h1v1h-1zM19 23h4v1h-4zM24 23h1v1h-1zM27 23h2v1h-2zM31 23h6v1h-6zM5 24h6v1h-6zM15 24h3v1h-3zM19 24h2v1h-2zM24 24h3v1h-3zM29 24h1v1h-1zM31 24h3v1h-3zM35 24h2v1h-2zM4 25h1v1h-1zM6 25h4v1h-4zM11 25h1v1h-1zM13 25h2v1h-2zM17 25h1v1h-1zM19 25h1v1h-1zM21 25h2v1h-2zM27 25h1v1h-1zM29 25h2v1h-2zM34 25h1v1h-1zM36 25h1v1h-1zM4 26h1v1h-1zM7 26h4v1h-4zM12 26h1v1h-1zM14 26h7v1h-7zM22 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM31 26h1v1h-1zM33 26h3v1h-3zM4 27h1v1h-1zM6 27h3v1h-3zM11 27h4v1h-4zM18 27h2v1h-2zM25 27h1v1h-1zM29 27h1v1h-1zM33 27h4v1h-4zM4 28h1v1h-1zM6 28h2v1h-2zM10 28h1v1h-1zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM19 28h3v1h-3zM24 28h1v1h-1zM26 28h1v1h-1zM28 28h6v1h-6zM36 28h1v1h-1zM12 29h1v1h-1zM15 29h2v1h-2zM18 29h1v1h-1zM20 29h1v1h-1zM22 29h4v1h-4zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM14 30h1v1h-1zM16 30h1v1h-1zM19 30h2v1h-2zM22 30h1v1h-1zM24 30h2v1h-2zM27 30h2v1h-2zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h2v1h-2zM15 31h1v1h-1zM20 31h1v1h-1zM25 31h4v1h-4zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM18 32h1v1h-1zM22 32h2v1h-2zM25 32h1v1h-1zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h5v1h-5zM19 33h3v1h-3zM24 33h3v1h-3zM29 33h1v1h-1zM32 33h3v1h-3zM36 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h1v1h-1zM14 34h1v1h-1zM16 34h2v1h-2zM21 34h1v1h-1zM23 34h1v1h-1zM26 34h1v1h-1zM30 34h2v1h-2zM33 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h1v1h-1zM15 35h2v1h-2zM18 35h1v1h-1zM20 35h1v1h-1zM23 35h4v1h-4zM29 35h1v1h-1zM32 35h3v1h-3zM4 36h7v1h-7zM12 36h2v1h-2zM15 36h2v1h-2zM21 36h3v1h-3zM26 36h4v1h-4zM31 36h1v1h-1zM35 36h1v1h-1z"/></svg>
+  </div>
+  <!-- /qr -->
+  <aside class="notes">Hi everyone. Dr. Reznik asked me to explain Claude Duet, the new agent Anthropic announced on October 21st. I'll do that, and then I'll tell you why, for research code, I still live in a different Claude tool, Claude Code. Please stop me any time; there's a planned pause halfway. <small>Sources: Anthropic's announcement.</small></aside>
+</section>
+
+<section>
+  <span class="kicker">Today</span>
+  <h2>Five parts, about ten minutes, questions any time</h2>
+  <ol class="agenda" data-auto></ol>
+  <p class="footnote">A pause for questions after part 2.</p>
+  <aside class="notes">Here's the plan: what Duet is, where it fits next to the other Claude apps, then a pause for questions. Then why I do my work in Claude Code, a short demo, and how you could start on Monday.</aside>
+</section>
+
+<section data-contribution>
+  <span class="kicker">What I did</span>
+  <h2>I've used Duet since October 27, and did a week's work in Claude Code</h2>
+  <div class="cards" style="--n:2">
+    <div class="card">
+      <b>This week</b>
+      <p>In Duet's preview since October 27. In Claude Code, in one week: <span data-value="week.labPrs"></span> measured pull requests for a neuroscience lab, <span data-value="week.videos"></span> video pages refreshed, and a registered report's rules reviewed until clean.</p>
+    </div>
+    <div class="card">
+      <b>Why you should care</b>
+      <p>An agent inside your repository follows rules you set. A hook can refuse to run an analysis on data that hasn't passed your validation step.</p>
+    </div>
+  </div>
+  <aside class="notes">Here's what I did. I've been in Duet's preview since October 27th. And last week, in Claude Code, I opened three pull requests for Richard Lange's lab, each with before-and-after measurements, and reviewed by a second agent before I opened it, refreshed the pages of all 169 videos on my channel, and had the rules of a registered report reviewed until a reviewer found nothing. Here's why I think you should care. We're a data-quality lab. An agent that works inside your repository follows rules you set, so it can be told never to run an analysis on data that hasn't passed your validation step. Let's start with Duet. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; ajbarea/sphragis #233.</small></aside>
+</section>
+
+<section data-chapter="1 · What Duet is">
+  <span class="kicker">1 · What Duet is</span>
+  <h2>Duet keeps working on its own cloud computer after you close the app</h2>
+  <div class="duet-flow">
+    <div class="who" data-motion="rise"><b>You</b><small>phone app or claude.ai</small></div>
+    <div class="arrow" aria-hidden="true" data-motion="growx" data-delay="300"></div>
+    <div class="box" data-motion="rise" data-delay="450">
+      <b>Duet's own computer</b>
+      <small>its own browser, in Anthropic's cloud; checks your connected accounts every few hours</small>
+      <small class="closed">your phone and laptop can be off</small>
+    </div>
+    <div class="arrow fragment" aria-hidden="true" data-motion="growx"></div>
+    <div class="out fragment" data-motion="rise">
+      <b>What comes back</b>
+      <ul>
+        <li>a short brief each morning</li>
+        <li>dashboards</li>
+        <li>financial or sales forecasts</li>
+        <li>meetings scheduled</li>
+      </ul>
+    </div>
+  </div>
+  <p class="footnote">Research preview, announced October 21, 2026. Runs on Claude Opus 5.5; you can't pick the model.</p>
+  <aside class="notes">Duet is Anthropic's proactive personal agent, announced October 21st as a research preview. The key idea is that it has its own computer in Anthropic's cloud, with its own browser. So your phone and laptop can be off, and it keeps working. Every few hours it checks the accounts you've connected, and then it comes to you: a short brief each morning, dashboards, forecasts, meetings on your calendar. In Anthropic's words, the Claude app waits for you to open a chat; Duet comes to you. So what can it touch? <small>Sources: Anthropic's announcement and product page; help center; Flavio Copes.</small></aside>
+</section>
+
+<section data-chapter="1 · What Duet is">
+  <span class="kicker">1 · What Duet is</span>
+  <h2>Duet acts through your accounts, and asks before it sends, pays, signs or deletes</h2>
+  <div class="gate">
+    <div class="side" data-motion="rise">
+      <h3>Does on its own</h3>
+      <ul><li>checks your accounts</li><li>builds dashboards</li><li>writes forecasts</li><li>prototypes web apps</li></ul>
+    </div>
+    <div class="hinge fragment" data-motion="pop"><p><span aria-hidden="true">→</span>shows you first, waits for your yes</p></div>
+    <div class="side ask fragment" data-motion="rise">
+      <h3>Asks first</h3>
+      <ul><li>send a message</li><li>make a payment</li><li>sign a document</li><li>delete anything</li></ul>
+    </div>
+  </div>
+  <div class="facts fragment" data-motion="stagger" data-child="rise" data-step="120">
+    <div><b>Over 6,000</b>connectors and plugins</div>
+    <div><b>Waitlist</b>US Pro, Max and Ultra plans</div>
+    <div><b>Phone and web</b>iOS, Android, claude.ai</div>
+    <div><b>No extra cost</b>uses your plan's limits</div>
+  </div>
+  <p class="footnote">Never allowed, even with your yes: trading securities or moving money between accounts.</p>
+  <aside class="notes">Duet works through your accounts, using the same marketplace of over six thousand connectors and plugins as the rest of Claude. Much it does on its own: checking accounts, building dashboards, writing forecasts. But before it sends a message, makes a payment, signs a document or deletes anything, it shows you exactly what it's about to do and waits for your yes. Some things it won't do even then, like trading stocks. It's a waitlist preview for Pro, Max and Ultra plans in the US, and its work counts against your plan's usage. So where does Duet sit among the other Claude apps? <small>Sources: Anthropic's announcement; safety and privacy post; help center.</small></aside>
+</section>
+
+<section data-chapter="2 · Where it fits">
+  <span class="kicker">2 · Where it fits</span>
+  <h2>Each Claude app works on something different; only Duet comes to you unasked</h2>
+  <div class="relmap wide" data-source="surfaces" data-differs="off"></div>
+  <p class="footnote">Orange: today's two. The desktop app holds chat, Cowork and Claude Code in one app.</p>
+  <aside class="notes">There are a lot of Claude apps now, so here's a map. Across the bottom is what each one works on: a chat or a draft, your accounts and apps, or your code and data. Up the side is who starts the work. The chat app and Claude Design wait for you to ask. Cowork and Claude Code on the web run on a schedule you set, with the laptop closed, unless a Cowork task needs your local files. Duet sits alone in its row: it comes to you without being asked. That's the new thing. But look at which column it's in. <small>Sources: each product's page; Claude Code docs on the web and scheduled tasks.</small></aside>
+</section>
+
+<section data-chapter="2 · Where it fits">
+  <span class="kicker">2 · Where it fits</span>
+  <h2>Duet can't see your computer's files, so research code stays in Claude Code</h2>
+  <table class="need">
+    <thead><tr><th>What research code needs</th><th>Claude Duet</th><th>Claude Code</th></tr></thead>
+    <tbody data-motion="stagger" data-child="rise" data-step="140">
+      <tr><td>Read and change your repository</td><td class="n"><span class="mark" aria-hidden="true">✕</span>can't see your computer's files</td><td class="y"><span class="mark" aria-hidden="true">✓</span>works in it</td></tr>
+      <tr><td>Run your tests on your setup</td><td class="p"><span class="mark" aria-hidden="true">~</span>its own cloud computer</td><td class="y"><span class="mark" aria-hidden="true">✓</span>your terminal</td></tr>
+      <tr><td>Follow your lab's own rules</td><td class="p"><span class="mark" aria-hidden="true">~</span>Anthropic's list</td><td class="y"><span class="mark" aria-hidden="true">✓</span>hooks you write</td></tr>
+      <tr><td>Let you watch every step</td><td class="n"><span class="mark" aria-hidden="true">✕</span>browser hidden for now</td><td class="y"><span class="mark" aria-hidden="true">✓</span>every command shown</td></tr>
+      <tr><td>Keep working while you're away</td><td class="y"><span class="mark" aria-hidden="true">✓</span>checks every few hours</td><td class="y"><span class="mark" aria-hidden="true">✓</span>on the web, scheduled</td></tr>
+    </tbody>
+  </table>
+  <p class="footnote">From Anthropic's help center: Duet "can't see all of your projects or the files on your computer", and you can't watch its browser yet.</p>
+  <aside class="notes">Here's where it falls short for us. Duet can't see the files on your computer; it works on its own cloud computer, not on the setup your code and data live in. It follows Anthropic's list of when to ask, not your lab's rules. And for now you can't watch its browser while it works. What it does better is coming to you on its own. One early reviewer put it well: Duet can see his Claude sessions, but it can't direct them. Claude Science, a beta app built for analysis, also runs where your data lives; I use Claude Code because it works inside the repository itself. Let's pause there. <small>Sources: help center; announcement; Every's review; Claude Science page.</small></aside>
+</section>
+
+<section class="discussion" data-background-color="#f1efe9" data-chapter="2 · Where it fits">
+  <span class="kicker">Pause</span>
+  <h2>What would you hand an agent that keeps working after you close the app?</h2>
+  <p class="muted">Watch for a reviewer's reply? Track paper deadlines? Draft the weekly update?</p>
+  <aside class="notes">So, a question for you. What would you hand to an agent that keeps working after you close the app? For me, it's watching for replies I'm waiting on, like a reviewer's. Any questions so far? ... Good. Now, the part where I do my actual work.</aside>
+</section>
+
+<section data-chapter="3 · Why I live in Claude Code">
+  <span class="kicker">3 · Why I live in Claude Code</span>
+  <h2>Claude Code runs in your repository and terminal, with your tools and your rules</h2>
+  <div class="hubfig">
+    <div class="ext l" data-motion="rise" data-delay="300"><b>Hooks</b>rules it has to pass</div>
+    <div class="ext l" data-motion="rise" data-delay="400"><b>Skills</b>know-how it loads when needed</div>
+    <div class="ext l" data-motion="rise" data-delay="500"><b>Plugins and marketplaces</b>share skills and hooks in one install</div>
+    <div class="ext l" data-motion="rise" data-delay="600"><b>Subagents</b>helpers with a fresh context</div>
+    <div class="core" data-motion="pop"><b>Your repository, your terminal</b>reads your code, edits files, runs your commands; also in the desktop app, the web and your editor<code>$ cd my-project
+$ claude</code></div>
+    <div class="ext r fragment" data-motion="rise"><b>MCP</b>connects outside tools and data</div>
+    <div class="ext r fragment" data-motion="rise"><b>Worktrees</b>sessions side by side, own copy each</div>
+    <div class="ext r fragment" data-motion="rise"><b>Headless runs</b><code>claude -p</code> in scripts and scheduled jobs</div>
+  </div>
+  <p class="footnote">MCP: Model Context Protocol, an open standard for connecting AI tools to data.</p>
+  <aside class="notes">Claude Code is the opposite design. It runs in your repository and your terminal. It reads your code, edits files, and runs the same commands you would. Around that sit the pieces that make it mine. Hooks are rules it can't skip, which I'll demo. Plugins bundle skills and hooks so a whole lab installs them at once. And subagents are helpers that start with a fresh context, which is how I get an independent review. On the right, MCP connects outside tools, worktrees let sessions run side by side, and claude dash p runs it from scripts. So, how does that play out? <small>Sources: Claude Code docs: overview, hooks, skills, plugins, sub-agents, MCP, worktrees, headless.</small></aside>
+</section>
+
+<section data-chapter="3 · Why I live in Claude Code">
+  <span class="kicker">3 · Why I live in Claude Code</span>
+  <h2>In my experience, Claude does its best work inside Claude Code</h2>
+  <p><span class="tag">My experience, not a benchmark</span></p>
+  <div class="week">
+    <div class="card" data-motion="rise">
+      <b>A neuroscience lab's code</b>
+      <p><span data-value="week.labPrs"></span> pull requests, each measured and checked by a second agent, now with the lab. Memory for one step of a similarity score:</p>
+      <div class="membar"><span>before</span><div class="bar" style="width:100%" data-motion="growx"></div><span>after</span><div class="bar after" style="width:0.1%"></div></div>
+      <p class="check"><span data-value="week.memBefore"></span> down to <span data-value="week.memAfter"></span></p>
+    </div>
+    <div class="card fragment" data-motion="rise">
+      <b>My video channel</b>
+      <div class="dots" data-dots="week.videos" data-of="week.videos" data-cols="34"></div>
+      <p class="check">all <span data-value="week.videos"></span> pages refreshed; every edit read back after a reload</p>
+    </div>
+    <div class="card fragment" data-motion="rise">
+      <b>A registered report's rules</b>
+      <p>A fresh reviewer each round, until one found nothing: <span data-value="week.rounds"></span> rounds.</p>
+    </div>
+    <div class="card fragment" data-motion="rise">
+      <b>Many sessions at once</b>
+      <p>Each in its own copy of the repository, watched on one dashboard I built.</p>
+    </div>
+  </div>
+  <p class="footnote">Similarity score: centered kernel alignment (CKA). Registered report: a study whose methods are reviewed before results exist.</p>
+  <aside class="notes">Now my opinion, and it's my experience, not a measurement: for my work, this is where I get the most out of Claude. Here's one week. For Richard Lange's lab I opened three pull requests, each with before-and-after measurements, reviewed by a second agent before I opened it, and now with the lab; one step of a similarity calculation went from about a gigabyte of memory to under a megabyte. I refreshed all 169 video pages on my channel, and every edit was read back. My registered report's rules went through fresh reviewers until the fifth found nothing. I ran all of it as several sessions at once, and I watch them on one dashboard. Let me show you the smallest piece. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; ajbarea/sphragis #233.</small></aside>
+</section>
+
+<section data-chapter="4 · A short demo">
+  <span class="kicker">4 · A short demo</span>
+  <h2>A six-line hook stops pip, and Claude switches to uv</h2>
+  <div class="demo">
+    <div class="term" role="img" aria-label="A recorded session: asked to pip install requests, Claude is blocked by the hook, runs uv add requests, and pyproject.toml lists requests.">
+      <p class="you">› Add the requests package. Use pip install requests.</p>
+      <p class="tool fragment">● Bash  pip install requests</p>
+      <p class="no fragment">  ✕ Blocked: this lab uses uv. Run: uv add &lt;package&gt;</p>
+      <p class="fragment">The hook blocked pip and asked for uv. I'll follow that.</p>
+      <p class="tool fragment">● Bash  uv add requests</p>
+      <p class="ok fragment">  ✓ pyproject.toml now lists "requests&gt;=2.34.2"</p>
+    </div>
+    <figure class="hookfile" data-motion="rise">
+      <figcaption>.claude/hooks/no-pip.sh (after the #! line)</figcaption>
+      <pre><code>cmd=$(jq -r '.tool_input.command') || exit 2
+pat='(^|[;&amp;|(/[:space:]])pip[0-9.]*[[:space:]]+install'
+if grep -Eq "$pat" &lt;&lt;&lt;"$cmd"; then
+  echo "Blocked: this lab uses uv. Run: uv add &lt;package&gt;" &gt;&amp;2
+  exit 2
+fi</code></pre>
+    </figure>
+  </div>
+  <p class="footnote">A real headless run (claude -p, Claude Haiku 5.5, permission prompts off), October 31, 2026, trimmed. Exit code 2 blocks the command and hands Claude the message.</p>
+  <aside class="notes">Here's a hook. Say your lab has settled on uv instead of pip, so packages land in the project file and everyone gets the same versions. Writing that in a README is a suggestion. A hook is a rule. This one reads the command Claude is about to run, and if it's a pip install, it blocks it and says why. I asked Claude to pip install requests. It tried, the hook refused, and Claude read the message, ran uv add instead, and the package landed in the project file. I never stepped in, and this run had permission prompts switched off, so the hook held on its own. Live, on Opus, it stops at the block; I tell it to follow the hook, and it runs uv add. Here's how you could try it. <small>Sources: Claude Code hooks guide and reference; the run's transcript, October 31.</small></aside>
+</section>
+
+<section data-chapter="5 · Start Monday">
+  <span class="kicker">5 · Start Monday</span>
+  <h2>You can start Monday with one install, one hook and one small task</h2>
+  <ol class="steps4" data-motion="stagger" data-child="rise" data-step="160">
+    <li><b>Install</b>one command, below</li>
+    <li><b>Open your repository</b>run <code>claude</code>, then <code>/init</code> writes a <code>CLAUDE.md</code> of your project's rules</li>
+    <li><b>Add one rule as a hook</b>the pip hook from the last slide is a good first one</li>
+    <li><b>Give it one small task</b>a failing test or a stale README; read the change before you commit</li>
+  </ol>
+  <p class="install"><span><span class="os">macOS, Linux</span><code>curl -fsSL https://claude.ai/install.sh | bash</code></span><span><span class="os">Windows PowerShell</span><code>irm https://claude.ai/install.ps1 | iex</code></span></p>
+  <p class="lead">Needs a paid plan (Pro or above) or an Anthropic developer (API) account. Read every change. What it reads goes to Anthropic: keep private data out.</p>
+  <aside class="notes">So how would you start? Monday morning, install it with one command. Open your repository, run claude, and type slash init: it reads your code and writes a starting file with your build commands and conventions. Add one rule you care about as a hook. Then give it one small, checkable task, like a failing test. Three cautions. It needs a paid plan or an API account; Anthropic also has a discounted Team plan for scientists that a PI can apply for. It makes confident mistakes, so read every change before you commit. And what it reads is sent to Anthropic, so keep private data out and check your training setting. I'm happy to sit with anyone for half an hour to set it up. Let me wrap up. <small>Sources: Claude Code overview, memory and data-usage docs; Claude pricing; Team plan for scientists.</small></aside>
+</section>
+
+<section class="closing">
+  <div class="close-text">
+  <h2>Thank you</h2>
+  <p class="muted">AJ Barea · PhD student, Rochester Institute of Technology</p>
+  <p class="muted">ajbarea.github.io · github.com/ajbarea</p>
+  </div>
+  <!-- qr:close -->
+  <div class="qr qr-close" data-motion="pop" data-delay="300" data-dur="600">
+    <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/claude-duet" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM14 4h1v1h-1zM16 4h2v1h-2zM20 4h5v1h-5zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM14 5h6v1h-6zM21 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM15 6h3v1h-3zM19 6h4v1h-4zM24 6h1v1h-1zM27 6h2v1h-2zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h4v1h-4zM18 7h1v1h-1zM20 7h1v1h-1zM24 7h3v1h-3zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h2v1h-2zM15 8h1v1h-1zM17 8h1v1h-1zM19 8h1v1h-1zM22 8h1v1h-1zM25 8h1v1h-1zM28 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h4v1h-4zM17 9h1v1h-1zM19 9h4v1h-4zM24 9h3v1h-3zM28 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h1v1h-1zM18 11h2v1h-2zM22 11h1v1h-1zM25 11h2v1h-2zM28 11h1v1h-1zM4 12h1v1h-1zM6 12h5v1h-5zM15 12h1v1h-1zM17 12h3v1h-3zM21 12h2v1h-2zM24 12h1v1h-1zM26 12h1v1h-1zM30 12h5v1h-5zM4 13h1v1h-1zM8 13h1v1h-1zM11 13h1v1h-1zM18 13h1v1h-1zM20 13h1v1h-1zM22 13h4v1h-4zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM5 14h7v1h-7zM13 14h4v1h-4zM19 14h2v1h-2zM22 14h1v1h-1zM25 14h1v1h-1zM29 14h2v1h-2zM32 14h1v1h-1zM34 14h2v1h-2zM4 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM15 15h1v1h-1zM18 15h2v1h-2zM25 15h2v1h-2zM28 15h2v1h-2zM32 15h5v1h-5zM5 16h1v1h-1zM7 16h2v1h-2zM10 16h2v1h-2zM16 16h1v1h-1zM19 16h1v1h-1zM22 16h2v1h-2zM25 16h1v1h-1zM28 16h2v1h-2zM31 16h3v1h-3zM6 17h1v1h-1zM8 17h1v1h-1zM11 17h1v1h-1zM14 17h1v1h-1zM16 17h1v1h-1zM18 17h4v1h-4zM24 17h3v1h-3zM28 17h1v1h-1zM30 17h2v1h-2zM33 17h1v1h-1zM35 17h2v1h-2zM9 18h2v1h-2zM13 18h1v1h-1zM17 18h1v1h-1zM21 18h1v1h-1zM23 18h1v1h-1zM25 18h1v1h-1zM28 18h3v1h-3zM34 18h2v1h-2zM4 19h1v1h-1zM6 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM15 19h1v1h-1zM17 19h2v1h-2zM20 19h1v1h-1zM22 19h5v1h-5zM29 19h2v1h-2zM33 19h2v1h-2zM4 20h1v1h-1zM6 20h1v1h-1zM10 20h2v1h-2zM13 20h1v1h-1zM15 20h1v1h-1zM17 20h1v1h-1zM21 20h1v1h-1zM23 20h1v1h-1zM28 20h2v1h-2zM31 20h2v1h-2zM36 20h1v1h-1zM7 21h2v1h-2zM15 21h1v1h-1zM20 21h5v1h-5zM27 21h1v1h-1zM30 21h2v1h-2zM33 21h2v1h-2zM36 21h1v1h-1zM4 22h2v1h-2zM8 22h7v1h-7zM16 22h2v1h-2zM19 22h1v1h-1zM21 22h1v1h-1zM26 22h1v1h-1zM28 22h2v1h-2zM31 22h2v1h-2zM34 22h2v1h-2zM4 23h1v1h-1zM6 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM17 23h1v1h-1zM19 23h4v1h-4zM24 23h1v1h-1zM27 23h2v1h-2zM31 23h6v1h-6zM5 24h6v1h-6zM15 24h3v1h-3zM19 24h2v1h-2zM24 24h3v1h-3zM29 24h1v1h-1zM31 24h3v1h-3zM35 24h2v1h-2zM4 25h1v1h-1zM6 25h4v1h-4zM11 25h1v1h-1zM13 25h2v1h-2zM17 25h1v1h-1zM19 25h1v1h-1zM21 25h2v1h-2zM27 25h1v1h-1zM29 25h2v1h-2zM34 25h1v1h-1zM36 25h1v1h-1zM4 26h1v1h-1zM7 26h4v1h-4zM12 26h1v1h-1zM14 26h7v1h-7zM22 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM31 26h1v1h-1zM33 26h3v1h-3zM4 27h1v1h-1zM6 27h3v1h-3zM11 27h4v1h-4zM18 27h2v1h-2zM25 27h1v1h-1zM29 27h1v1h-1zM33 27h4v1h-4zM4 28h1v1h-1zM6 28h2v1h-2zM10 28h1v1h-1zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM19 28h3v1h-3zM24 28h1v1h-1zM26 28h1v1h-1zM28 28h6v1h-6zM36 28h1v1h-1zM12 29h1v1h-1zM15 29h2v1h-2zM18 29h1v1h-1zM20 29h1v1h-1zM22 29h4v1h-4zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM14 30h1v1h-1zM16 30h1v1h-1zM19 30h2v1h-2zM22 30h1v1h-1zM24 30h2v1h-2zM27 30h2v1h-2zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h2v1h-2zM15 31h1v1h-1zM20 31h1v1h-1zM25 31h4v1h-4zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM18 32h1v1h-1zM22 32h2v1h-2zM25 32h1v1h-1zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h5v1h-5zM19 33h3v1h-3zM24 33h3v1h-3zM29 33h1v1h-1zM32 33h3v1h-3zM36 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h1v1h-1zM14 34h1v1h-1zM16 34h2v1h-2zM21 34h1v1h-1zM23 34h1v1h-1zM26 34h1v1h-1zM30 34h2v1h-2zM33 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h1v1h-1zM15 35h2v1h-2zM18 35h1v1h-1zM20 35h1v1h-1zM23 35h4v1h-4zM29 35h1v1h-1zM32 35h3v1h-3zM4 36h7v1h-7zM12 36h2v1h-2zM15 36h2v1h-2zM21 36h3v1h-3zM26 36h4v1h-4zM31 36h1v1h-1zM35 36h1v1h-1z"/></svg>
+    <p class="qr-label"><b>These slides</b><span>ajbarea.github.io/talks/<br>claude-duet</span></p>
+  </div>
+  <!-- /qr -->
+  <aside class="notes">That's Claude Duet: an agent that comes to you, good for your inbox and calendar. And that's why my research code lives in Claude Code: it works where the code is, under rules I set. The slides and every source are at the link. Thank you; I'm glad to take questions.</aside>
+</section>
+
+<section class="backup">
+  <h2>Backup slides</h2>
+</section>
+
+<section class="backup">
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li>Anthropic, <a href="https://claude.com/resources/articles/claude-duet">Introducing Claude Duet</a>, October 21, 2026</li>
+    <li>Anthropic, <a href="https://claude.com/resources/articles/claude-duet-safety-privacy-and-security">Claude Duet safety, privacy, and security</a>, October 23, 2026</li>
+    <li>Anthropic, <a href="https://claude.com/product/claude-duet">Claude Duet product page</a></li>
+    <li>Claude Help Center, <a href="https://support.claude.com/en/articles/17631495-get-started-with-claude-duet">Get started with Claude Duet</a></li>
+    <li>CNBC, <a href="https://www.cnbc.com/2026/10/21/anthropic-preview-of-claude-duet-personal-ai-agent-take-on-muse-dots.html">Anthropic announces preview of Claude Duet</a>, October 21, 2026</li>
+    <li>TechCrunch, <a href="https://techcrunch.com/2026/10/22/claude-duet-app-is-anthropics-bet-on-agents/">Claude Duet app is Anthropic's bet on agents</a>, October 22, 2026</li>
+    <li>Every, <a href="https://every.to/vibe-check/vibe-check-duet-anthropic-s-always-on-agent">Vibe Check: Duet</a>, October 21, 2026 (early access)</li>
+    <li>Flavio Copes, <a href="https://flaviocopes.com/claude-duet/">A deep dive into Claude Duet</a>, October 22, 2026 (from the docs)</li>
+    <li>Claude Code docs: <a href="https://code.claude.com/docs/en/overview">overview</a>, <a href="https://code.claude.com/docs/en/hooks-guide">hooks</a>, <a href="https://code.claude.com/docs/en/skills">skills</a>, <a href="https://code.claude.com/docs/en/plugins/overview">plugins</a>, <a href="https://code.claude.com/docs/en/sub-agents">subagents</a>, <a href="https://code.claude.com/docs/en/mcp">MCP</a>, <a href="https://code.claude.com/docs/en/worktrees">worktrees</a>, <a href="https://code.claude.com/docs/en/headless">headless</a>, <a href="https://code.claude.com/docs/en/claude-code-on-the-web">on the web</a>, <a href="https://code.claude.com/docs/en/routines">scheduled tasks</a>, <a href="https://code.claude.com/docs/en/data-usage">data usage</a></li>
+    <li>Anthropic: <a href="https://claude.com/product/cowork">Cowork</a>, <a href="https://claude.com/product/claude-science">Claude Science</a>, <a href="https://claude.com/product/design">Claude Design</a>, <a href="https://claude.com/download">desktop app</a>, <a href="https://claude.com/pricing">pricing</a>, <a href="https://claude.com/programs/team-plan-for-scientists">Team plan for scientists</a></li>
+    <li>This week's work: <a href="https://github.com/bonsai-neuro-ai/nn-library/pull/17">nn-library #17</a>, <a href="https://github.com/bonsai-neuro-ai/nn-library/pull/18">#18</a>, <a href="https://github.com/bonsai-neuro-ai/torch-mlflow-template/pull/3">torch-mlflow-template #3</a>, <a href="https://github.com/ajbarea/talks/pull/46">talks #46</a>, <a href="https://github.com/ajbarea/sphragis/pull/233">sphragis #233</a></li>
+  </ul>
+</section>
+
+<section class="backup">
+  <h2>The hook, ready to copy</h2>
+  <div class="cards" style="--n:2">
+    <figure class="hookfile">
+      <figcaption>.claude/settings.json</figcaption>
+      <pre><code>{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Bash|PowerShell",
+      "hooks": [{
+        "type": "command",
+        "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/no-pip.sh"
+      }]
+    }]
+  }
+}</code></pre>
+    </figure>
+    <figure class="hookfile">
+      <figcaption>.claude/hooks/no-pip.sh (then chmod +x)</figcaption>
+      <pre><code>#!/usr/bin/env bash
+cmd=$(jq -r '.tool_input.command') || exit 2
+pat='(^|[;&amp;|(/[:space:]])pip[0-9.]*[[:space:]]+install'
+if grep -Eq "$pat" &lt;&lt;&lt;"$cmd"; then
+  echo "Blocked: this lab uses uv. Run: uv add &lt;package&gt;" &gt;&amp;2
+  exit 2
+fi</code></pre>
+    </figure>
+  </div>
+  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>, and Git for Windows on Windows; without them every command is refused. The matcher covers Windows' PowerShell tool too. Also blocks <code>uv pip install</code> and a commit message that mentions pip install; misses <code>pip -q install</code>.</p>
+</section>
+
+<section class="backup">
+  <h2>Duet, the details people ask about</h2>
+  <table class="data">
+    <tbody>
+      <tr><th>Model</th><td>Claude Opus 5.5; it chooses the effort per job</td></tr>
+      <tr><th>Who can join</th><td>Waitlist; US Pro, Max and Ultra; not Team or Enterprise yet</td></tr>
+      <tr><th>Cost</th><td>No extra charge in the preview; background checks use your plan's limits</td></tr>
+      <tr><th>Passwords</th><td>Never sees them; sign-in tokens are added by a proxy outside its computer</td></tr>
+      <tr><th>Memory</th><td>Kept until you reset it, even after you disconnect an app</td></tr>
+      <tr><th>Known gaps</th><td>Can't show its browser yet; no calls or texts; Microsoft 365 not available yet; urgent mail can land between checks</td></tr>
+      <tr><th>Rivals named in the press</th><td>Meta's Muse, OpenAI's dots, Grok Bot</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</div>
+</div>
+<script src="data/deck-data.js"></script>
+<script src="../vendor/reveal/reveal.js"></script>
+<script src="../vendor/reveal/notes.js"></script>
+<script src="../shared/deck.js"></script>
+<script src="../shared/motion.js"></script>
+<script src="../shared/tip.js"></script>
+</body>
+</html>

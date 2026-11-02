@@ -453,22 +453,27 @@
       <ul data-motion="stagger" data-child="rise" data-delay="250">
         <li class="in">OpenStack <span>in</span></li>
         <li class="in">Wikimedia <span>in</span></li>
-        <li class="in">Qt <span>granted; first runs done</span></li>
-        <li class="in">Qt vs. another company <span data-if="readings.foreign_sized">Chromium, the browser; test sized</span><span data-unless="readings.foreign_sized">Chromium, the browser; first runs unsettled, sizing in progress</span></li>
+        <li class="in">Qt <span>in, by written permission</span></li>
+      </ul>
+      <b class="sub">Qt against another company, in first runs</b>
+      <ul data-motion="stagger" data-child="rise" data-delay="450">
+        <li class="in">Chromium <span>registered; <i data-value="readings.foreign_status_chromium"></i></span></li>
+        <li class="in">Fuchsia <span>exploratory; <i data-value="readings.foreign_status_fuchsia"></i></span></li>
       </ul>
     </div>
     <div class="group">
       <b>The replication, on GitHub</b>
       <p>Review is often optional there, so it is read apart, under GitHub's open-access research terms.</p>
-      <ul data-motion="stagger" data-child="rise" data-delay="450">
+      <ul data-motion="stagger" data-child="rise" data-delay="650">
         <li class="in">Apache <span>qualifies</span></li>
         <li class="in">.NET <span>qualifies</span></li>
-        <li class="out">LLVM, Grafana <span>cannot qualify</span></li>
+        <li class="out">LLVM <span>no: one project dominates</span></li>
+        <li class="out">Grafana <span>no: too little data</span></li>
       </ul>
     </div>
   </div>
-  <p class="footnote">Membership is fixed by November 20, before any test result exists.</p>
-  <aside class="notes">OpenStack, Wikimedia and Qt decide the answer; each must pass. Qt has said yes in writing and passes the same data checks; in first runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>, a development reading. Qt's comparison with another company's code takes the first of three open-source Google projects with enough review data to match Qt's: Chromium, the browser, then Fuchsia, an operating system, then Android, which has too little. Chromium's main project alone has enough, so Chromium is the comparison. In first runs against an assistant tuned on Chromium, Qt's own assistant <span data-value="readings.foreign_qt"></span>.<span data-unless="readings.foreign_sized"> In simulations, no number of splits the plan allows kept false alarms at the planned rate, so I take the most it allows, declared as a change to the plan, and set the pass mark from simulated false alarms; that simulation runs next.</span><span data-if="readings.foreign_sized"> Simulations have sized that test too.</span> Fuchsia is a second comparison beside Chromium, exploratory and binding nothing, so the answer does not rest on one kind of software; in its first runs, Qt's own assistant <span data-value="readings.foreign_fuchsia_qt"></span>. GitHub, where review is often optional, is a separate replication, read under GitHub's open-access research terms; Apache and .NET qualify. Membership is fixed by November 20th, before any test result exists.</aside>
+  <p class="footnote">Qualifies: two halves, each large enough, neither ruled by one project. Membership is fixed by November 20.</p>
+  <aside class="notes">OpenStack, Wikimedia and Qt decide the answer; each must pass. Qt has said yes in writing and passes the same data checks; in first runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>, a development reading. The second question is whether Qt's own data beats another company's. That comparison takes the first of three open-source Google projects with enough review data to match Qt's: Chromium, the browser, then Fuchsia, an operating system, then Android, which has too little. Chromium's main project alone has enough, so Chromium is the registered comparison. In first runs against an assistant tuned on Chromium, Qt's own assistant <span data-value="readings.foreign_qt"></span>.<span data-unless="readings.foreign_sized"> In simulations, no number of splits the plan allows kept false alarms at the planned rate, so the test takes the most it allows, declared as a change to the plan, and its pass mark comes from simulated false alarms; that simulation is the last step before the test is sized.</span><span data-if="readings.foreign_sized"> Simulations have sized that test too.</span> Fuchsia is read beside Chromium, exploratory and binding nothing, so the answer does not rest on one kind of software; in its first runs, Qt's own assistant <span data-value="readings.foreign_fuchsia_qt"></span>. GitHub, where review is often optional, is a separate replication. A community qualifies when its data splits into two halves that are each large enough, with no one project taking over either half. Apache and .NET do. LLVM cannot: one project, LLVM itself, holds so much of its data that it would be more than half of whichever half it landed in. Grafana cannot: it has too little data to fill two halves. Membership is fixed by November 20th, before any test result exists.</aside>
 </section>
 
 <section class="dark closing" data-background-color="#14181f">
@@ -552,7 +557,7 @@
   <ul>
     <li>Author comments are excluded, so the signal is a reviewer's, not a self-edit.</li>
     <li>Near-duplicates are removed before the split; leftover overlap is reported.</li>
-    <li>Label quality is audited blind, by model raters and a human. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, about <span data-value="readings.audit_valid_openstack"></span> have a rewrite that answers its comment; the rest stay in and are scored in every arm, so they dilute a difference rather than favour one side.</li>
+    <li>Label quality is audited blind, by two model raters, a human, and an open-weight model anyone can rerun. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, about <span data-value="readings.audit_valid_openstack"></span> have a rewrite that answers its comment; the rest stay in and are scored in every arm, so they dilute a difference rather than favour one side.</li>
     <li>Every filtering rule and what it removed is published: ajbarea.github.io/sphragis/dataset</li>
     <li>Contamination rests on provenance: every month of data starts after the model's weights were uploaded. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; leaving them out <span data-if="readings.found_holds">changes neither OpenStack's nor Wikimedia's reading</span><span data-unless="readings.found_holds">changes a reading</span>. Dropping AI-assisted commits (by trailer) moves OpenStack's estimate by <span data-value="readings.ai_shift_openstack"></span>.</li>
     <li>Everything derived is pseudonymised, with addresses swept from comments. RIT's human-subjects office ruled in writing that this is not human-subjects research.</li>

@@ -280,6 +280,7 @@ figure.code pre {
 
 .group > b { display: block; font-size: 1em; }
 .group > p { margin: 4px 0 12px; font-size: 0.7em; color: var(--muted); }
+.group > b.sub { margin: 12px 0 8px; font-size: 0.85em; }
 
 .group ul {
   margin: 0;
@@ -290,6 +291,7 @@ figure.code pre {
 .group li {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
   gap: 12px;
   margin-bottom: 8px;
   padding: 8px 14px;
@@ -299,6 +301,7 @@ figure.code pre {
 }
 
 .group li span {
+  text-align: right;
   font-weight: 500;
   font-size: 0.85em;
   text-transform: uppercase;
@@ -307,6 +310,7 @@ figure.code pre {
 
 .group li.in { background: var(--band); }
 .group li.out { border: 2px dashed var(--line); }
+.group li span i { font-style: normal; }
 
 /* The rivals map across the whole slide. */
 .relmap.wide { display: block; }
@@ -381,7 +385,12 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .road li { flex-direction: row; flex-wrap: wrap; gap: 0 8px; text-align: left; }
 .phone .road .when { margin: 0; }
 .phone .road b { flex-basis: 100%; }
-.phone .group li { padding: 6px 10px; }
+.phone .groups { gap: 14px; }
+.phone .group { padding: 12px 14px; }
+.phone .group > p { margin-bottom: 8px; }
+.phone .group > b.sub { margin: 8px 0 6px; }
+.phone .group li { padding: 5px 10px; margin-bottom: 5px; flex-wrap: wrap; gap: 0 12px; }
+.phone .group li span { margin-left: auto; }
 .phone table.data { font-size: 0.9em; }
 .phone .figure text.s { font-size: 23px; }
 .phone .panels { gap: 10px; }

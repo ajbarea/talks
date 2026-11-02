@@ -46,6 +46,17 @@ def test_an_unworded_state_or_another_metric_fails_the_build(figures, pilot: dic
         figures.team_reading(pilot)
 
 
+def test_the_foreign_status_words_every_state_the_team_reading_does(figures) -> None:
+    assert set(figures.FOREIGN_STATUS) == set(figures.TEAM_READING)
+    assert all(figures.FOREIGN_STATUS.values())
+
+
+@pytest.mark.parametrize("pilot", [_pilot("contradicted", True), _pilot("supported", False, metric="exact_match")])
+def test_an_unworded_foreign_state_or_another_metric_fails_the_build(figures, pilot: dict) -> None:
+    with pytest.raises(SystemExit):
+        figures.foreign_status(pilot)
+
+
 def test_the_title_names_each_community_only_when_they_differ(figures) -> None:
     gain = figures.TEAM_READING[("supported", False)]
     none = figures.TEAM_READING[("inconclusive", True)]

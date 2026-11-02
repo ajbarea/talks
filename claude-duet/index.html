@@ -105,7 +105,7 @@
     </div>
   </div>
   <p class="footnote">Research preview, announced October 21, 2026. Runs on Claude Opus 5.5; you can't pick the model.</p>
-  <aside class="notes">Duet is Anthropic's proactive personal agent, announced October 21st as a research preview. The key idea: it has its own computer in Anthropic's cloud, with its own browser, so it keeps working with your phone and laptop off. Every few hours it checks the accounts you've connected, and then it comes to you. Here's a real one from Sunday: it read Richard Lange's emails and offered to draft my rotation wrap-up note. It also does morning briefs, dashboards, forecasts and meetings. In Anthropic's words, the Claude app waits for you to open a chat; Duet comes to you. So what can it touch? <small>Sources: Anthropic's announcement and product page; help center; Flavio Copes; my Duet app, November 1.</small></aside>
+  <aside class="notes">Duet is Anthropic's proactive personal agent, announced October 21st as a research preview. The key idea: it has its own computer in Anthropic's cloud, with its own browser, so it keeps working with your phone and laptop off. Every few hours it checks the accounts you've connected, and then it comes to you. Here's a real one from Sunday: it read my email from Richard Lange and offered to draft my rotation wrap-up note. It also does morning briefs, dashboards, forecasts and meetings. In Anthropic's words, the Claude app waits for you to open a chat; Duet comes to you. So what can it touch? <small>Sources: Anthropic's announcement and product page; help center; Flavio Copes; my Duet app, November 1.</small></aside>
 </section>
 
 <section data-chapter="2 · Claude Duet">
@@ -147,15 +147,15 @@
   <table class="need">
     <thead><tr><th>What lab code needs</th><th>Claude chat</th><th>Claude Science</th><th>Claude Duet</th><th>Claude Code</th></tr></thead>
     <tbody data-motion="stagger" data-child="rise" data-step="140">
-      <tr><td>Reads and changes your repository</td><td class="n"><span class="mark" aria-hidden="true">✕</span>sees what you upload</td><td class="p"><span class="mark" aria-hidden="true">~</span>runs your scripts</td><td class="n"><span class="mark" aria-hidden="true">✕</span>can't see your computer's files</td><td class="y"><span class="mark" aria-hidden="true">✓</span>works in it</td></tr>
+      <tr><td>Reads and changes your repository</td><td class="p"><span class="mark" aria-hidden="true">~</span>sees what you upload or connect</td><td class="p"><span class="mark" aria-hidden="true">~</span>runs your scripts</td><td class="n"><span class="mark" aria-hidden="true">✕</span>can't see your computer's files</td><td class="y"><span class="mark" aria-hidden="true">✓</span>works in it</td></tr>
       <tr><td>Runs on your own computer or cluster</td><td class="n"><span class="mark" aria-hidden="true">✕</span>Anthropic's cloud</td><td class="y"><span class="mark" aria-hidden="true">✓</span>laptop, lab server or cluster</td><td class="n"><span class="mark" aria-hidden="true">✕</span>its own cloud computer</td><td class="y"><span class="mark" aria-hidden="true">✓</span>your terminal</td></tr>
       <tr><td>Follows your lab's own rules</td><td class="p"><span class="mark" aria-hidden="true">~</span>skills you add</td><td class="p"><span class="mark" aria-hidden="true">~</span>skills you save</td><td class="p"><span class="mark" aria-hidden="true">~</span>Anthropic's list</td><td class="y"><span class="mark" aria-hidden="true">✓</span>hooks it can't skip</td></tr>
-      <tr><td>Comes to you unasked</td><td class="n"><span class="mark" aria-hidden="true">✕</span>waits for you</td><td class="n"><span class="mark" aria-hidden="true">✕</span>waits for you</td><td class="y"><span class="mark" aria-hidden="true">✓</span>checks every few hours</td><td class="p"><span class="mark" aria-hidden="true">~</span>on a schedule you set</td></tr>
+      <tr><td>Comes to you unasked</td><td class="n"><span class="mark" aria-hidden="true">✕</span>waits for you</td><td class="n"><span class="mark" aria-hidden="true">✕</span>you start each analysis</td><td class="y"><span class="mark" aria-hidden="true">✓</span>checks every few hours</td><td class="p"><span class="mark" aria-hidden="true">~</span>on a schedule you set</td></tr>
     </tbody>
   </table>
   </div>
   <p class="footnote">From Anthropic's help center: Duet "can't see all of your projects or the files on your computer". Claude Desktop holds the chat, Cowork and Claude Code in one window.</p>
-  <aside class="notes">Here's where Duet falls short for us. It can't see the files on your computer, and it follows Anthropic's list of when to ask, not your lab's rules. The chat app sees only what you upload. Claude Science runs where your data lives, and saves a pipeline as a skill it reuses. Claude Code works inside the repository itself, under hooks it can't skip. What Duet does better than all of them is coming to you on its own. One early reviewer put it well: Duet can see his Claude sessions but can't direct them. Let's pause there. <small>Sources: Duet help center and announcement; Every's review; Claude Science page; skills in Claude help article; Claude Code hooks and scheduled tasks docs.</small></aside>
+  <aside class="notes">Here's where Duet falls short for us. It can't see the files on your computer, and it follows Anthropic's list of when to ask, not your lab's rules. The chat app sees what you upload or connect. Claude Science runs where your data lives, and saves a pipeline as a skill it reuses. Claude Code works inside the repository itself, under hooks it can't skip. What Duet does better than all of them is coming to you on its own. One early reviewer put it well: Duet can see his Claude sessions but can't direct them. Let's pause there. <small>Sources: Duet help center and announcement; Every's review; Claude Science page; skills in Claude help article; Claude Code hooks and scheduled tasks docs.</small></aside>
 </section>
 
 <section class="pause" data-background-color="#f1efe9" data-chapter="2 · Claude Duet">
@@ -184,7 +184,7 @@ $ claude</code></div>
 
 <section data-chapter="3 · Why Claude Code is my favorite">
   <span class="kicker">3 · Why Claude Code is my favorite</span>
-  <h2>Of every coding agent, rivals' included, Claude Code is my favorite</h2>
+  <h2>Of every coding agent I've tried, rivals' included, Claude Code is my favorite</h2>
   <p><span class="tag">My experience, not a benchmark</span></p>
   <div class="week three">
     <div class="card" data-motion="rise">
@@ -235,11 +235,11 @@ fi</code></pre>
   <aside class="notes">Here's a hook. Say your lab has settled on uv instead of pip, so packages land in the project file and everyone gets the same versions. Writing that in a README is a suggestion. A hook is a rule. This one reads the command Claude is about to run, and if it's a pip install, it blocks it and says why. I asked Claude to pip install requests. It tried, the hook refused, and Claude read the message, ran uv add instead, and the package landed in the project file. I never stepped in, and this run had permission prompts switched off, so the hook held on its own. Live, on Opus, it stops at the block; I tell it to follow the hook, and it runs uv add. Now, a question for you. <small>Sources: Claude Code hooks guide and reference; the run's transcript, October 31.</small></aside>
 </section>
 
-<section class="discussion" data-background-color="#f1efe9" data-chapter="4 · A short demo">
+<section class="discussion dark" data-background-color="#14181f" data-chapter="4 · A short demo">
   <span class="kicker">Discussion</span>
   <h2>What rule would you want every agent in our lab to follow?</h2>
   <p class="muted">Never touch the raw data? Validate before every analysis? Keep private data out?</p>
-  <aside class="notes">If you could give every agent in our lab one rule it can't skip, what would it be? For me, it's never running an analysis on data that hasn't passed validation. ... Each of those could be a hook like the one you just saw. So how would you start?</aside>
+  <aside class="notes">If you could give every agent in our lab one rule it can't skip, what would it be? For me, it's never running an analysis on data that hasn't passed validation. ... Each of those could be a hook like the one you just saw.</aside>
 </section>
 
 <section data-chapter="5 · Start Monday">
@@ -248,7 +248,7 @@ fi</code></pre>
   <ol class="steps4" data-motion="stagger" data-child="rise" data-step="160">
     <li><b>Install</b>one command, below</li>
     <li><b>Open your repository</b>run <code>claude</code>, then <code>/init</code> writes a <code>CLAUDE.md</code> of your project's rules</li>
-    <li><b>Add one rule as a hook</b>the pip hook from the last slide is a good first one</li>
+    <li><b>Add one rule as a hook</b>the pip hook from the demo is a good first one</li>
     <li><b>Give it one small task</b>a failing test or a stale README; read the change before you commit</li>
   </ol>
   <p class="install"><span><span class="os">macOS, Linux</span><code>curl -fsSL https://claude.ai/install.sh | bash</code></span><span><span class="os">Windows PowerShell</span><code>irm https://claude.ai/install.ps1 | iex</code></span></p>

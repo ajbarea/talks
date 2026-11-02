@@ -11,6 +11,7 @@
 .qr-label b { color: var(--ink); }
 .qr-follow .qr-code, .qr-close .qr-code { outline: 2px solid var(--line); }
 .discussion, .pause { background: var(--band); }
+.discussion.dark { background: var(--night); }
 .discussion h2, .pause h2 { margin-top: 120px; }
 .pause h2 { font-size: 1.7em; max-width: 22ch; }
 .tag {
@@ -154,7 +155,7 @@
 .term .no { color: #fecaca; }
 .term .ok { color: #bbf7d0; }
 .term b { font-weight: 700; }
-.demo { display: grid; grid-template-columns: 1fr 1.25fr; gap: 26px; align-items: start; }
+.demo { display: grid; grid-template-columns: 0.85fr 1.4fr; gap: 26px; align-items: start; }
 .hookfile { min-width: 0; margin: 16px 0 0; padding: 14px 16px; border-radius: 10px; background: var(--card); border: 2px solid var(--mark); }
 .hookfile figcaption { font-size: 0.64em; font-weight: 700; color: var(--label); }
 .hookfile pre { margin: 8px 0 0; font-size: 0.64em; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -220,3 +221,5 @@
 .phone .app-row .where { display: inline; margin: 0 0 0 6px; padding: 0; border: 0; }
 .phone .app-row .where::after { content: ""; display: block; }
 .phone .mine { margin-top: 10px; padding: 8px 12px; }
+.phone .need th:nth-child(5), .phone .need td:nth-child(5) { position: sticky; right: 0; box-shadow: -6px 0 8px -6px rgba(0, 0, 0, 0.25); }
+.phone .title-slide .kicker { display: block; line-height: 1.45; }

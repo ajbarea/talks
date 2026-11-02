@@ -3,20 +3,81 @@
 
 .subtitle { max-width: 34ch; font-size: 1.05em; color: var(--muted); }
 .lead { margin: 16px 0 0; font-size: 0.8em; max-width: 62ch; }
-.title-slide h1 { margin-top: 120px; max-width: 18ch; }
+.title-slide .kicker { color: var(--limit); }
+.title-slide h1 { margin-top: 120px; max-width: 16ch; }
+.title-slide h1::after { content: ""; display: block; width: 140px; height: 8px; margin-top: 26px; border-radius: 4px; background: var(--mark-ours); }
 .title-slide .when { margin-top: 28px; font-size: 0.8em; color: var(--muted); }
 .qr-label { color: var(--muted); }
 .qr-label b { color: var(--ink); }
 .qr-follow .qr-code, .qr-close .qr-code { outline: 2px solid var(--line); }
-.discussion { background: var(--band); }
-.discussion h2 { margin-top: 120px; }
+.discussion, .pause { background: var(--band); }
+.discussion h2, .pause h2 { margin-top: 120px; }
+.pause h2 { font-size: 1.7em; max-width: 22ch; }
 .tag {
   display: inline-block; padding: 4px 12px; border: 2px solid var(--limit); border-radius: 999px;
   font-size: 0.66em; font-weight: 700; color: var(--limit); letter-spacing: 0.02em;
 }
 
+/* The title's robot: an original drawing (not an Anthropic mark) that dances; it stands still under
+   reduced motion, where deck.css stops every animation. Origins are in the drawing's own units. */
+.robot { position: absolute; right: 90px; top: 70px; width: 300px; height: auto; overflow: visible; }
+.robot * { transform-box: view-box; }
+.robot .glow { fill: #fbe6da; }
+.robot .shadow { fill: #e7d3c7; transform-origin: 130px 324px; }
+.robot .note { fill: #b4532f; opacity: 0.85; }
+.robot .body, .robot .skull { fill: #d97757; }
+.robot .leg rect, .robot .arm rect { fill: #c2603f; }
+.robot .arm circle { fill: #d97757; }
+.robot .panel { fill: #f6c9b3; }
+.robot .light { fill: #fff8f2; }
+.robot .light.b { fill: #ffd166; }
+.robot .face { fill: #2b1d16; }
+.robot .eye { fill: #ffe9dc; transform-box: fill-box; transform-origin: center; }
+.robot .smile { fill: none; stroke: #ffe9dc; stroke-width: 5; stroke-linecap: round; }
+.robot .stalk { stroke: #c2603f; stroke-width: 6; stroke-linecap: round; }
+.robot .bulb { fill: #f6b48f; transform-box: fill-box; transform-origin: center; }
+.robot .bot { transform-origin: 130px 310px; animation: r-groove 1.1s ease-in-out infinite alternate; }
+.robot .head { transform-origin: 130px 144px; animation: r-nod 0.55s ease-in-out infinite alternate; }
+.robot .arm.l { transform-origin: 86px 169px; animation: r-arm-l 0.55s ease-in-out infinite alternate; }
+.robot .arm.r { transform-origin: 174px 169px; animation: r-arm-r 0.55s ease-in-out infinite alternate-reverse; }
+.robot .leg.l { animation: r-step 0.55s ease-in-out infinite alternate; }
+.robot .leg.r { animation: r-step 0.55s ease-in-out infinite alternate-reverse; }
+.robot .shadow { animation: r-shadow 1.1s ease-in-out infinite alternate; }
+.robot .bulb { animation: r-pulse 0.55s ease-in-out infinite alternate; }
+.robot .eye { animation: r-blink 3.2s infinite; }
+.robot .note { animation: r-float 2.2s ease-out infinite; }
+.robot .note.n2 { animation-delay: 0.7s; }
+.robot .note.n3 { animation-delay: 1.4s; }
+@keyframes r-groove {
+  0% { transform: translateX(-10px) rotate(-5deg); }
+  50% { transform: translateY(-14px); }
+  100% { transform: translateX(10px) rotate(5deg); }
+}
+@keyframes r-nod { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+@keyframes r-arm-l { from { transform: rotate(-10deg); } to { transform: rotate(45deg); } }
+@keyframes r-arm-r { from { transform: rotate(10deg); } to { transform: rotate(-45deg); } }
+@keyframes r-step { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+@keyframes r-shadow { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
+@keyframes r-pulse { from { transform: scale(0.85); } to { transform: scale(1.15); } }
+@keyframes r-blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+@keyframes r-float { 0% { transform: translateY(10px); opacity: 0; } 30% { opacity: 0.85; } 100% { transform: translateY(-34px); opacity: 0; } }
+
+/* Five apps, placed from Anthropic's cloud to your own computer. */
+.apps { margin-top: 22px; }
+.apps .axis { display: flex; justify-content: space-between; margin: 0 0 8px; padding: 6px 12px; border-radius: 6px; font-size: 0.64em; font-weight: 700; color: var(--label);
+  background: linear-gradient(90deg, #dbe7f3, #fbe6da); }
+.apps .axis span:first-child::before { content: "← "; }
+.apps .axis span:last-child::after { content: " →"; }
+.app-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.app-row li { padding: 14px 14px 16px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.66em; line-height: 1.3; }
+.app-row li.today { border: 3px solid var(--mark-ours); background: #fff8f3; }
+.app-row b { display: block; font-size: 1.12em; font-weight: 700; color: var(--ink); }
+.app-row .where { display: block; margin: 6px 0 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); color: var(--label); font-weight: 600; }
+.mine { margin: 20px 0 0; padding: 12px 18px; border-left: 6px solid var(--mark-ours); background: var(--band); border-radius: 4px; font-size: 0.66em; max-width: 64ch; }
+.mine b { color: var(--limit); }
+
 /* Duet: you hand it a job, it works on its own computer, the results come back. */
-.duet-flow { display: grid; grid-template-columns: 210px 60px 1fr 60px 300px; align-items: center; margin-top: 26px; }
+.duet-flow { display: grid; grid-template-columns: 200px 50px 1fr 50px 420px; align-items: center; margin-top: 26px; }
 .duet-flow .who, .duet-flow .box, .duet-flow .out {
   padding: 16px 18px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.72em;
 }
@@ -28,8 +89,7 @@
 .duet-flow .box small { color: var(--night-muted); }
 .duet-flow .box .closed { margin-top: 12px; padding-top: 10px; border-top: 1px solid #44403c; }
 .duet-flow .arrow { height: 4px; background: var(--mark); margin: 0 6px; }
-.duet-flow .out ul { margin: 6px 0 0; padding-left: 1.1em; }
-.duet-flow .out li { margin: 2px 0; }
+.duet-flow .out img { display: block; width: 100%; height: auto; margin: 6px 0 8px; border-radius: 8px; }
 
 /* Duet's two kinds of action: done on its own, or brought to you first. */
 .gate { display: grid; grid-template-columns: 1fr 120px 1fr; align-items: stretch; margin-top: 22px; gap: 0; }
@@ -47,10 +107,11 @@
 .facts b { display: block; color: var(--label); }
 
 /* Where Duet falls short: what research code needs, ticked per tool. */
-.need { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 0.7em; }
+.need { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 0.64em; }
 .need th, .need td { padding: 9px 14px; border-bottom: 1px solid var(--line); text-align: left; }
-.need th { font-size: 0.9em; color: var(--label); }
-.need td.y, .need td.n, .need td.p { text-align: center; font-weight: 700; width: 280px; }
+.need th { color: var(--label); }
+.need td.y, .need td.n, .need td.p { text-align: center; font-weight: 700; width: 210px; }
+.need th:nth-child(5), .need td:nth-child(5) { background: #fff8f3; }
 .need td.y { color: #005a8c; }
 .need td.n { color: var(--limit); }
 .need td.p { color: var(--muted); }
@@ -123,7 +184,13 @@
 .phone .hubfig,
 .phone .week,
 .phone .demo,
-.phone .steps4 { grid-template-columns: 1fr; }
+.phone .steps4,
+.phone .app-row { grid-template-columns: 1fr; }
+.phone .robot { position: static; display: block; width: 170px; margin: 18px 0 0; }
+.phone .apps .axis { font-size: 0.7em; }
+.phone .app-row li, .phone .mine { font-size: 0.72em; }
+.phone .need-wrap { overflow-x: auto; }
+.phone .need { min-width: 640px; }
 .phone .duet-flow .arrow { width: 4px; height: 20px; justify-self: center; margin: 0; }
 .phone .gate .hinge { padding: 8px 0; }
 .phone .hubfig { grid-template-rows: none; }
@@ -142,4 +209,4 @@
 .relmap .col { stroke: var(--line); stroke-width: 1.5; }
 .phone .vgrid { grid-template-columns: repeat(13, 1fr); }
 .phone .title-slide h1 { margin-top: 40px; }
-.phone .discussion h2 { margin-top: 40px; }
+.phone .discussion h2, .phone .pause h2 { margin-top: 40px; }

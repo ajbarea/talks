@@ -18,7 +18,7 @@
 - `videos/channel/refresh.py extract META PLAYLISTS` rebuilds the tables from a fresh `yt-dlp` pull (`uvx yt-dlp --js-runtimes node ...`); it refuses an upload that fits no tier.
 
 ## Claude Duet talk (claude-duet/), LDQIS Fri Nov 6
-- ✅ #52 / #54 merged 11-01; ✅ #63 / #64 merged 11-02 (AJ's slide-by-slide read: LDQIS, the five Claude apps, robot title, question pause on slide 8 and discussion pause on slide 12, slide 10 for Dr. Reznik with the hooks card). Live at https://ajbarea.github.io/talks/claude-duet/; 18 slides (13 talk + pauses + backup), script 1,386 words of 1,400.
+- ✅ #52 / #54 merged 11-01; ✅ #63 / #64 merged 11-02 (AJ's slide-by-slide read: LDQIS, the five Claude apps, robot title, question pause on slide 8 and discussion pause on slide 12, slide 10 for Dr. Reznik with the hooks card). Live at https://ajbarea.github.io/talks/claude-duet/; 14 talk slides and 4 backup, script 1,386 words of 1,400.
 - ✅ techne#269 / #270 merged: graphe:slides tells a question pause from a discussion pause.
 - 📋 Present Fri 11-06 about 2:00; live demo script in `claude-duet/README.md`.
 - 📋 Hook counts on slide 10 are as of 11-02 (data/deck-data.js `hooks`); recount from each tool's hooks page before any later reuse.

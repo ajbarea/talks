@@ -57,6 +57,13 @@ def test_an_unworded_foreign_state_or_another_metric_fails_the_build(figures, pi
         figures.foreign_status(pilot)
 
 
+def test_an_exploratory_arm_read_bounded_fails_the_build(figures) -> None:
+    pilot = {**_pilot("bounded", True), "exploratory": True}
+    with pytest.raises(SystemExit):
+        figures.foreign_status(pilot)
+    assert figures.foreign_status(_pilot("bounded", True)) == figures.FOREIGN_STATUS[("bounded", True)]
+
+
 def test_the_title_names_each_community_only_when_they_differ(figures) -> None:
     gain = figures.TEAM_READING[("supported", False)]
     none = figures.TEAM_READING[("inconclusive", True)]

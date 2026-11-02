@@ -188,7 +188,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "foreign_status_chromium": "no answer yet",
   "foreign_sized": false,
   "foreign_fuchsia_qt": "is better on its own code",
-  "foreign_status_fuchsia": "Qt's own is better",
+  "foreign_status_fuchsia": "Qt's assistant wins",
   "planted_runs": 20,
   "planted_found": 20,
   "planted_all": true,

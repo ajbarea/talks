@@ -310,6 +310,7 @@ figure.code pre {
 
 .group li.in { background: var(--band); }
 .group li.out { border: 2px dashed var(--line); }
+.group li.vs { border: 2px solid var(--line); }
 .group li span i { font-style: normal; }
 
 /* The rivals map across the whole slide. */

@@ -85,8 +85,8 @@ TEAM_READING = {
 #: How H2's development pilot (Qt's sibling half against an adapter from another organization)
 #: reads on the status slide, keyed as TEAM_READING. A state not listed fails the build.
 FOREIGN_STATUS = {
-    ("supported", False): "Qt's own is better",
-    ("supported", True): "Qt's own is better, by less than matters",
+    ("supported", False): "Qt's assistant wins",
+    ("supported", True): "Qt's assistant wins, by less than matters",
     ("inconclusive", True): "at most a small gain",
     ("inconclusive", False): "no answer yet",
     ("bounded", True): "no gain that matters",
@@ -103,11 +103,17 @@ def team_reading(pilot: dict) -> tuple[str, str, str]:
 
 
 def foreign_status(pilot: dict) -> str:
-    """H2's development reading against one foreign organization, as the status slide words it."""
+    """H2's development reading against one foreign organization, as the status slide words it.
+
+    An exploratory arm takes no simulation, so it can never read bounded (sphragis
+    registered-decisions: a cell is bounded only once its sensitivity simulation is registered).
+    """
+    if pilot.get("exploratory") and pilot["verdicts"]["0.975"] == "bounded":
+        raise SystemExit("an exploratory arm read bounded, but it takes no simulation")
     return _worded(pilot, FOREIGN_STATUS, "FOREIGN_STATUS")
 
 
-def _worded(pilot: dict, wording: dict, name: str):
+def _worded[T](pilot: dict, wording: dict[tuple[str, bool], T], name: str) -> T:
     """A pilot's wording, keyed by its verdict at the stricter Holm level and its SESOI flag."""
     if pilot.get("metric") != METRIC:
         raise SystemExit(f"the pilot is on {pilot.get('metric')}, not {METRIC}")

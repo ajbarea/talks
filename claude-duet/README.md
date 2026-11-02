@@ -1,8 +1,17 @@
-# Claude Duet, and why Claude Code is the tool I live in
+# Claude Duet, the Claude apps, and my favorite: Claude Code
 
-DQ Lab meeting, November 6, 2026. About ten minutes, light theme for a lit room. Every product fact is checked against Anthropic's pages and the press coverage
+LDQIS meeting, November 6, 2026. About ten minutes, light theme for a lit room. Every product fact is checked against Anthropic's pages and the press coverage
 of October 30, 2026; the Sources backup slide links each one, and each slide's notes end with a
 short source line.
+
+## Pictures
+
+- The title's robot is an original SVG drawing, not an Anthropic mark: Anthropic's [trademark guidelines](https://www.anthropic.com/legal/trademark-guidelines) allow its marks only in materials it approves. It dances, and stands still under reduced motion.
+- Slide 4's card is cropped from a phone screenshot of my Duet app (November 1, IMG_1281), below a blurred line that quoted a classmate's review. The other screenshots show unrelated research and course items, so they stay out.
+
+## The pauses
+
+Slide 8 is a pause for questions only. Slide 12 is the discussion: one question, example answers on the slide.
 
 ## The demo (slide 11)
 

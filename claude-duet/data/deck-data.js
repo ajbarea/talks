@@ -1,15 +1,24 @@
-// Every number and map entry this deck shows, each with its source. Checked October 30, 2026.
+// Every number and map entry this deck shows, each with its source. Checked October 30, 2026; apps and hooks November 2.
 window.DECK_DATA = {
   week: {
     // bonsai-neuro-ai: nn-library #17 and #18, torch-mlflow-template #3, each verified and reviewed.
     labPrs: 3,
-    // nn-library #18: peak memory one chunsum call (one step of the CKA score) adds, without and with opt-einsum (m = 100, n = 25,088, CPU).
-    memBefore: "968 MiB",
-    memAfter: "0.9 MiB",
+    // nn-library #18: peak memory one chunsum call (one step of the CKA score) adds, without and with
+    // opt-einsum (m = 100, n = 25,088, CPU): 968 MiB (1.02 GB) and 0.9 MiB (0.94 MB), said in plain units.
+    memBefore: "about 1 GB",
+    memAfter: "under 1 MB",
     // ajbarea/talks #46: every public video's page refreshed, each edit read back after a reload.
     videos: 169,
-    // ajbarea/sphragis #233: "reviewed until clean (five rounds, a fresh reviewer each; the fifth found nothing)".
-    rounds: 5,
+  },
+  // Hook events each tool documents, counted November 2, 2026, from its hooks page (Sources slide).
+  hooks: {
+    claudeCode: 33, // code.claude.com/docs/en/hooks, the event table
+    cursor: 21, // cursor.com/docs/agent/hooks
+    codex: 14, // learn.chatgpt.com/docs/hooks; Copilot CLI also documents 14
+    antigravity: 6, // antigravity.google/docs/hooks
+    // techne plugins/phylax/hooks/hooks.json: PreToolUse, UserPromptSubmit, Stop, Notification,
+    // SessionStart, SessionEnd.
+    mine: 6,
   },
   // Placement from each product's own page; see the Sources slide.
   surfaces: {

@@ -186,6 +186,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "team_qt": "is better on its own code",
   "foreign_qt": "is not settled yet",
   "foreign_sized": false,
+  "foreign_fuchsia_qt": "is better on its own code",
   "planted_runs": 20,
   "planted_found": 20,
   "planted_all": true,

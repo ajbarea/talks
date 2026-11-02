@@ -486,6 +486,17 @@ def readings() -> dict[str, str | int | bool]:
         raise SystemExit("the Chromium pilot is not H2's by chain")
     values["foreign_qt"] = team_reading(foreign)[0]
     values["foreign_sized"] = any(RESULTS.glob("k-coverage-qt-foreign*.json"))
+    # Fuchsia's exploratory arm, read beside Chromium's on the same runs, by chain; it binds
+    # nothing and takes no simulation (sphragis research log, 2026-11-01).
+    fuchsia = load("partition-pilot-qt-foreignfuchsia-likelihood-chains.json")
+    if (
+        fuchsia.get("hypothesis") != "H2"
+        or fuchsia.get("foreign_source") != "fuchsia"
+        or not fuchsia.get("exploratory")
+        or fuchsia["cluster_unit"]["unit"] != "chain"
+    ):
+        raise SystemExit("the Fuchsia pilot is not H2's exploratory arm by chain")
+    values["foreign_fuchsia_qt"] = team_reading(fuchsia)[0]
     # Check 5: each half's own marker planted in half its training lessons; how many runs found it.
     planted = {org: planted_runs(org) for org in ("openstack", "wikimedia")}
     if len({len(v) for v in planted.values()}) != 1:

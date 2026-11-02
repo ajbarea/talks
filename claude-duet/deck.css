@@ -135,7 +135,9 @@
 
 /* This week's evidence: four panels, each with its own check. */
 .week { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 22px; margin-top: 14px; }
-.week .card p { font-size: 0.7em; }
+.week .card p { font-size: 0.68em; }
+.week.three .card:first-child { grid-row: span 2; }
+.week b { font-size: 0.86em; }
 .week .card .check { margin-top: 8px; font-size: 0.64em; color: var(--muted); }
 .membar { display: grid; grid-template-columns: 90px 1fr; gap: 6px 10px; align-items: center; margin: 8px 0 4px; font-size: 0.64em; }
 .membar .bar { height: 18px; border-radius: 3px; background: var(--mark-rival); transform-origin: 0 50%; }
@@ -183,6 +185,7 @@
 .phone .facts,
 .phone .hubfig,
 .phone .week,
+
 .phone .demo,
 .phone .steps4,
 .phone .app-row { grid-template-columns: 1fr; }
@@ -210,3 +213,10 @@
 .phone .vgrid { grid-template-columns: repeat(13, 1fr); }
 .phone .title-slide h1 { margin-top: 40px; }
 .phone .discussion h2, .phone .pause h2 { margin-top: 40px; }
+.phone .week.three .card:first-child { grid-row: auto; }
+.phone .app-row { gap: 6px; }
+.phone .app-row li { padding: 6px 10px; }
+.phone .app-row b { display: inline; }
+.phone .app-row .where { display: inline; margin: 0 0 0 6px; padding: 0; border: 0; }
+.phone .app-row .where::after { content: ""; display: block; }
+.phone .mine { margin-top: 10px; padding: 8px 12px; }

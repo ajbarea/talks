@@ -81,8 +81,8 @@
       <li class="today"><b>Claude Code</b><span class="where">your repository</span>reads, edits and runs your code</li>
     </ol>
   </div>
-  <p class="mine fragment" data-motion="rise"><b>What I did:</b> Duet's preview since October 27, and my lab work in Claude Code. <b>Why you should care:</b> an agent inside your repository follows your rules, so it can refuse data that hasn't passed validation.</p>
-  <p class="footnote">Orange: today's two. Claude Science is a beta, Duet a research preview, Desktop on Linux a beta.</p>
+  <p class="mine fragment" data-motion="rise"><b>What I did:</b> Duet since October 27; my lab work in Claude Code. <b>Why you should care:</b> an agent in your repository can refuse data that hasn't passed your validation.</p>
+  <p class="footnote">Orange: today's two. Science is a beta; Duet, a research preview.</p>
   <aside class="notes">Here are five Claude apps, from Anthropic's cloud on the left to your own computer on the right. The plain Claude chat answers and drafts. Duet, the new one, works on its own cloud computer. Claude Desktop is one window holding the chat, Cowork for longer tasks, and Claude Code. Claude Science, a beta from June, is installed where your data lives and traces every step of an analysis. And Claude Code works inside your code's own folder, your repository. Here's what I did: I've been in Duet's preview since October 27th, and I do my lab work in Claude Code. Here's why you should care. We're a data-quality lab. An agent inside your repository follows rules you set, so it can refuse to analyze data that hasn't passed validation. Let's start with Duet. <small>Sources: claude.com overview and download pages; Claude Code desktop docs; Claude Science page and announcement; Duet announcement.</small></aside>
 </section>
 
@@ -101,7 +101,7 @@
     <div class="out fragment" data-motion="rise">
       <b>What comes back</b>
       <img src="img/duet-card.png" width="840" height="436" alt="A card from my Duet app: Draft your BONSAI rotation wrap-up for Richard? Your BONSAI rotation ends Friday, and Richard welcomed ideas on his lab's library and project template. I'll draft a short thank-you and wrap-up note, leaving gaps for what you found. Noticed Sun 5:38 AM.">
-      <small>A real one from my Duet, November 1. Also: morning briefs, dashboards, forecasts, meetings.</small>
+      <small>A real card from my Duet, Sunday. It also sends morning briefs, dashboards, forecasts.</small>
     </div>
   </div>
   <p class="footnote">Research preview, announced October 21, 2026. Runs on Claude Opus 5.5; you can't pick the model.</p>
@@ -136,7 +136,7 @@
   <span class="kicker">2 · Claude Duet</span>
   <h2>Each Claude app works on something different; only Duet comes to you unasked</h2>
   <div class="relmap wide" data-source="surfaces" data-differs="off"></div>
-  <p class="footnote">Orange: today's two. The desktop app holds chat, Cowork and Claude Code in one app.</p>
+  <p class="footnote">Orange: today's two. Claude Science sits beside Claude Code: both work on your code and data when you ask. Claude Desktop holds chat, Cowork and Claude Code in one app.</p>
   <aside class="notes">Here's Duet on a second map. Across the bottom is what each app works on: a chat or a draft, your accounts and apps, or your code and data. Up the side is who starts the work. The chat app, Claude Design, Claude Science and Claude Code wait for you to ask. Cowork and Claude Code on the web can run on a schedule you set. Duet sits alone in the top row: it comes to you without being asked. That's the new thing. But look at which column it's in. <small>Sources: each product's page; Claude Code docs on the web and scheduled tasks.</small></aside>
 </section>
 
@@ -186,7 +186,7 @@ $ claude</code></div>
   <span class="kicker">3 · Why Claude Code is my favorite</span>
   <h2>Of every coding agent, rivals' included, Claude Code is my favorite</h2>
   <p><span class="tag">My experience, not a benchmark</span></p>
-  <div class="week">
+  <div class="week three">
     <div class="card" data-motion="rise">
       <b>Code for a neuroscience lab</b>
       <p><span data-value="week.labPrs"></span> changes sent to Richard Lange's lab, each measured before and after, and checked by a second AI agent. One step that compares two neural networks now needs about a thousandth of the memory:</p>
@@ -200,17 +200,13 @@ $ claude</code></div>
     </div>
     <div class="card fragment" data-motion="rise">
       <b>My rules, at more moments</b>
-      <p>Hooks can run at <span data-value="hooks.claudeCode"></span> moments in a session, more than any rival I checked. My own rules plugin uses <span data-value="hooks.mine"></span>:</p>
-      <div class="dots" data-dots="hooks.mine" data-of="hooks.claudeCode" data-cols="17"></div>
-      <p class="check">before a command, a helper agent or an email draft; at start, prompt, stop, idle and end</p>
-    </div>
-    <div class="card fragment" data-motion="rise">
-      <b>Many sessions at once</b>
-      <p>Each in its own copy of the repository, watched on one dashboard I built.</p>
+      <p>Its hooks can run at <span data-value="hooks.claudeCode"></span> moments in a session, more than any rival I checked.</p>
+      <div class="dots" data-dots="hooks.mine" data-of="hooks.claudeCode" data-cols="33"></div>
+      <p class="check">filled: the <span data-value="hooks.mine"></span> my own rules plugin uses</p>
     </div>
   </div>
-  <p class="footnote">Hook moments in each tool's documentation, November 2, 2026: Claude Code <span data-value="hooks.claudeCode"></span>, Cursor <span data-value="hooks.cursor"></span>, Codex and Copilot <span data-value="hooks.codex"></span>, Antigravity <span data-value="hooks.antigravity"></span>.</p>
-  <aside class="notes">Now my opinion, from experience, not a measurement: of every coding agent I've tried, rivals' included, Claude Code is my favorite. Here's one week. For Richard Lange's lab I sent three changes to their code, each measured before and after and checked by a second AI agent. One step that compares two neural networks went from about a gigabyte of memory to under a megabyte. I refreshed all 169 video pages on my channel, each edit read back. Then the clearest thing it does better than its rivals: hooks, the rules it can't skip, can run at 33 different moments in a session. The rivals I checked document between 6 and 21. My own rules plugin uses six, to check every commit, helper agent and email draft before it happens. And I watch several sessions at once on one dashboard. Let me show you the smallest piece. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; hooks pages of Claude Code, Cursor, Codex, Copilot CLI and Antigravity CLI; techne phylax hooks.json.</small></aside>
+  <p class="footnote">Documented hook moments, November 2: Claude Code <span data-value="hooks.claudeCode"></span>, Cursor <span data-value="hooks.cursor"></span>, Codex and Copilot <span data-value="hooks.codex"></span>, Antigravity <span data-value="hooks.antigravity"></span>.</p>
+  <aside class="notes">Now my opinion, from experience, not a measurement: of every coding agent I've tried, rivals' included, Claude Code is my favorite. Here's one week. For Richard Lange's lab I sent three changes to their code, each measured before and after and checked by a second AI agent. One step that compares two neural networks went from about a gigabyte of memory to under a megabyte. I refreshed all 169 video pages on my channel, each edit read back. Then the clearest thing it does better than its rivals: hooks, the rules it can't skip, can run at 33 different moments in a session. The rivals I checked document between 6 and 21. My own rules plugin uses six, to check every commit, helper agent and email draft before it happens. Let me show you the smallest piece. <small>Sources: bonsai-neuro-ai nn-library #17, #18, torch-mlflow-template #3; ajbarea/talks #46; hooks pages of Claude Code, Cursor, Codex, Copilot CLI and Antigravity CLI; techne phylax hooks.json.</small></aside>
 </section>
 
 <section data-chapter="4 · A short demo">

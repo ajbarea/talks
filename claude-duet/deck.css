@@ -107,7 +107,7 @@
 .facts div { padding: 10px 14px; border-left: 5px solid var(--mark); background: var(--band); border-radius: 4px; font-size: 0.64em; }
 .facts b { display: block; color: var(--label); }
 
-/* Where Duet falls short: what research code needs, ticked per tool. */
+/* Where Duet falls short: what lab code needs, ticked per tool. */
 .need { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 0.64em; }
 .need th, .need td { padding: 9px 14px; border-bottom: 1px solid var(--line); text-align: left; }
 .need th { color: var(--label); }
@@ -193,8 +193,6 @@
 .phone .robot { position: static; display: block; width: 170px; margin: 18px 0 0; }
 .phone .apps .axis { font-size: 0.7em; }
 .phone .app-row li, .phone .mine { font-size: 0.72em; }
-.phone .need-wrap { overflow-x: auto; }
-.phone .need { min-width: 640px; }
 .phone .duet-flow .arrow { width: 4px; height: 20px; justify-self: center; margin: 0; }
 .phone .gate .hinge { padding: 8px 0; }
 .phone .hubfig { grid-template-rows: none; }
@@ -221,5 +219,12 @@
 .phone .app-row .where { display: inline; margin: 0 0 0 6px; padding: 0; border: 0; }
 .phone .app-row .where::after { content: ""; display: block; }
 .phone .mine { margin-top: 10px; padding: 8px 12px; }
-.phone .need th:nth-child(5), .phone .need td:nth-child(5) { position: sticky; right: 0; box-shadow: -6px 0 8px -6px rgba(0, 0, 0, 0.25); }
 .phone .title-slide .kicker { display: block; line-height: 1.45; }
+/* Phones: the table becomes one card per need, each answer labelled with its app. */
+.phone .need thead { display: none; }
+.phone .need, .phone .need tbody, .phone .need tr, .phone .need td { display: block; width: auto; }
+.phone .need tr { margin: 0 0 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+.phone .need td, .phone .need td.y, .phone .need td.n, .phone .need td.p { padding: 1px 0; border: 0; text-align: left; background: none; }
+.phone .need td:first-child { font-weight: 700; color: var(--ink); }
+.phone .need td[data-label]::before { content: attr(data-label) ": "; font-weight: 400; color: var(--muted); }
+.phone .need .mark { width: 20px; height: 20px; line-height: 20px; margin-right: 4px; }

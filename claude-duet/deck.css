@@ -198,9 +198,7 @@
 .phone .hubfig { grid-template-rows: none; }
 .phone .hubfig .core { grid-column: auto; grid-row: auto; }
 .phone .hubfig .ext.l, .phone .hubfig .ext.r { grid-column: auto; }
-.phone .need td.y, .phone .need td.n, .phone .need td.p { width: auto; }
 .phone .need { font-size: 0.8em; }
-.phone .need th, .phone .need td { padding: 8px 6px; }
 .phone .sources { columns: 1; }
 .phone .facts div, .phone .membar, .phone .week .card .check, .phone .hookfile figcaption, .phone .sources { font-size: 0.7em; }
 .phone .steps4 { gap: 10px; margin-top: 14px; }
@@ -225,6 +223,7 @@
 .phone .need, .phone .need tbody, .phone .need tr, .phone .need td { display: block; width: auto; }
 .phone .need tr { margin: 0 0 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
 .phone .need td, .phone .need td.y, .phone .need td.n, .phone .need td.p { padding: 1px 0; border: 0; text-align: left; background: none; }
+.phone .need td:nth-child(5) { padding-left: 8px; border-left: 4px solid var(--mark-ours); }
 .phone .need td:first-child { font-weight: 700; color: var(--ink); }
 .phone .need td[data-label]::before { content: attr(data-label) ": "; font-weight: 400; color: var(--muted); }
 .phone .need .mark { width: 20px; height: 20px; line-height: 20px; margin-right: 4px; }

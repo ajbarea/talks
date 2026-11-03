@@ -24,7 +24,6 @@
 - 📋 Hook counts on slide 10 are as of 11-02 (data/deck-data.js `hooks`); recount from each tool's hooks page before any later reuse.
 - 📋 Optional YouTube cut (youtube-director Mode B): notes are the narration; each slide's `Sources:` line goes in the description.
 
-## FA deck slide 5 audit (#61, PR #62, branch deck/slide5-audit)
-- ✅ Slide 5 facts checked against sphragis main b9e8ccd: Chromium registered and inconclusive, Fuchsia exploratory and supported, GitHub rule (3+ projects a half, no project over half, N = 1,850). H2's calibrated K source is in sphragis#246; `foreign_sized` flips when it merges.
-- ✅ Routine audit: nine refresh PRs judged in #61; guardrails proposed there; applying them waits on the personal login (needs-you.md).
-- 📋 Round 2 put slide 15 past the phone edge (CI phone-clip). Round 3 shortens the subhead and footnote; gate, render at 1920 and 390, review, merge.
+## FA deck slide 5 audit (#61, PR #62 merged 11-02)
+- ✅ Slide 5 matches sphragis main b9e8ccd; live. `foreign_sized` flips to "sized" when sphragis#246 merges; no deck edit needed then.
+- 📋 Refresh routine guardrails (in #61) wait on AJ's personal login (needs-you.md).

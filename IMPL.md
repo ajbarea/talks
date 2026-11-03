@@ -21,3 +21,8 @@
 - ✅ #52 / #54 merged 11-01; live at https://ajbarea.github.io/talks/claude-duet/ (13 talk slides + backup, light theme, about 9 minutes).
 - 📋 Present Fri 11-06 about 2:00; live demo script and fallback recording plan in `claude-duet/README.md`.
 - 📋 Optional YouTube cut (youtube-director Mode B): notes are the narration; each slide's `Sources:` line goes in the description.
+
+## FA deck slide 5 audit (#61, PR #62, branch deck/slide5-audit)
+- ✅ Slide 5 facts checked against sphragis main b9e8ccd: Chromium registered and inconclusive, Fuchsia exploratory and supported, GitHub rule (3+ projects a half, no project over half, N = 1,850). H2's calibrated K source is in sphragis#246; `foreign_sized` flips when it merges.
+- ✅ Routine audit: nine refresh PRs judged in #61; guardrails proposed there; applying them waits on the personal login (needs-you.md).
+- 📋 Round 2 put slide 15 past the phone edge (CI phone-clip). Round 3 shortens the subhead and footnote; gate, render at 1920 and 390, review, merge.

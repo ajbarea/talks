@@ -82,19 +82,46 @@ TEAM_READING = {
     ("bounded", False): ("shows no gain that matters", "none that matters", "no team-specific gain that matters"),
 }
 
+#: How H2's development pilot (Qt's sibling half against an adapter from another organization)
+#: reads on the status slide, keyed as TEAM_READING. A state not listed fails the build.
+FOREIGN_STATUS = {
+    ("supported", False): "Qt's assistant wins",
+    ("supported", True): "Qt's assistant wins, by less than matters",
+    ("inconclusive", True): "at most a small gain",
+    ("inconclusive", False): "no answer yet",
+    ("bounded", True): "no gain that matters",
+    ("bounded", False): "no gain that matters",
+}
+
 #: The communities on the slides, in the order they are named.
 ORGS = {"openstack": "OpenStack", "wikimedia": "Wikimedia"}
 
 
 def team_reading(pilot: dict) -> tuple[str, str, str]:
     """One community's development reading of H1 on the registered score, in words."""
+    return _worded(pilot, TEAM_READING, "TEAM_READING")
+
+
+def foreign_status(pilot: dict) -> str:
+    """H2's development reading against one foreign organization, as the status slide words it.
+
+    An exploratory arm takes no simulation, so it can never read bounded (sphragis
+    registered-decisions: a cell is bounded only once its sensitivity simulation is registered).
+    """
+    if pilot.get("exploratory") and pilot["verdicts"]["0.975"] == "bounded":
+        raise SystemExit("an exploratory arm read bounded, but it takes no simulation")
+    return _worded(pilot, FOREIGN_STATUS, "FOREIGN_STATUS")
+
+
+def _worded[T](pilot: dict, wording: dict[tuple[str, bool], T], name: str) -> T:
+    """A pilot's wording, keyed by its verdict at the stricter Holm level and its SESOI flag."""
     if pilot.get("metric") != METRIC:
         raise SystemExit(f"the pilot is on {pilot.get('metric')}, not {METRIC}")
     level = "0.975"
     key = (pilot["verdicts"][level], pilot["within_sesoi"][level])
-    if key not in TEAM_READING:
-        raise SystemExit(f"no wording for a pilot reading {key}; add one to TEAM_READING")
-    return TEAM_READING[key]
+    if key not in wording:
+        raise SystemExit(f"no wording for a pilot reading {key}; add one to {name}")
+    return wording[key]
 
 
 def team_title(readings: dict[str, tuple[str, str, str]]) -> str:
@@ -485,6 +512,7 @@ def readings() -> dict[str, str | int | bool]:
     if foreign.get("hypothesis") != "H2" or foreign["cluster_unit"]["unit"] != "chain":
         raise SystemExit("the Chromium pilot is not H2's by chain")
     values["foreign_qt"] = team_reading(foreign)[0]
+    values["foreign_status_chromium"] = foreign_status(foreign)
     values["foreign_sized"] = any(RESULTS.glob("k-coverage-qt-foreign*.json"))
     # Fuchsia's exploratory arm, read beside Chromium's on the same runs, by chain; it binds
     # nothing and takes no simulation (sphragis research log, 2026-11-01).
@@ -497,6 +525,7 @@ def readings() -> dict[str, str | int | bool]:
     ):
         raise SystemExit("the Fuchsia pilot is not H2's exploratory arm by chain")
     values["foreign_fuchsia_qt"] = team_reading(fuchsia)[0]
+    values["foreign_status_fuchsia"] = foreign_status(fuchsia)
     # Check 5: each half's own marker planted in half its training lessons; how many runs found it.
     planted = {org: planted_runs(org) for org in ("openstack", "wikimedia")}
     if len({len(v) for v in planted.values()}) != 1:

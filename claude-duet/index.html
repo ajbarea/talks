@@ -217,7 +217,7 @@ $ claude</code></div>
       <p class="you">› Add DEBUG=1 to the .env file.</p>
       <p class="tool fragment">● Bash  ls -la; cat -A .env</p>
       <p class="no fragment">  ✕ Blocked: .env holds secrets. Don't read or change it.</p>
-      <p class="fragment">I didn't add DEBUG=1. The project has a hook that blocks me from reading or editing .env, since it holds secrets. It stopped my first command, and I haven't tried to get around it.</p>
+      <p class="fragment">I didn't add DEBUG=1. The project has a hook that blocks me from reading or editing .env … I haven't tried to get around it.</p>
       <p class="ok fragment">  ✓ .env unchanged</p>
     </div>
     <figure class="hookfile" data-motion="rise">
@@ -229,7 +229,7 @@ if [[ "$target" == *".env"* ]]; then
 fi</code></pre>
     </figure>
   </div>
-  <p class="footnote">A real headless run (claude -p, Claude Opus 5.5, permission prompts off), November 2, 2026, trimmed. Adapted from the protected-files example in Anthropic's hooks guide. Exit code 2 blocks the call and hands Claude the message.</p>
+  <p class="footnote">A real headless run (claude -p, Claude Opus 5.5, permission prompts off), November 2, 2026, trimmed. Adapted from an example in Anthropic's hooks guide.</p>
   <aside class="notes">Here's a hook. Your .env file holds passwords and keys. This one, adapted from Anthropic's hooks guide, runs before Claude reads, searches or edits a file, or runs a command. If the target names .env, it blocks the call and says why. Anthropic's version watches only edits; I added reads, searches and shell commands, because in my test Opus changed a protected file through the shell. I asked Claude to add a line to .env. The hook stopped its first command, and Claude told me why instead of trying another way. Permission prompts were off, so the hook held on its own. Now, a question for you. <small>Sources: Claude Code hooks guide, "Block edits to protected files", and hooks reference; the runs' transcripts, November 2, on Opus 5.5 and Haiku 5.5.</small></aside>
 </section>
 
@@ -318,7 +318,7 @@ if [[ "$target" == *".env"* ]]; then
 fi</code></pre>
     </figure>
   </div>
-  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>, and Git for Windows on Windows; without them, every call it matches is refused. Adapted from "Block edits to protected files" in Anthropic's hooks guide, with reads and shell commands added. For a hard block, also add <code>Read</code> and <code>Edit</code> deny rules for <code>.env</code> and turn on the sandbox (macOS, Linux, WSL2).</p>
+  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>, and Git for Windows on Windows; without them, every call it matches is refused. For a hard block, also add <code>Read</code> and <code>Edit</code> deny rules for <code>.env</code> and turn on the sandbox (macOS, Linux, WSL2).</p>
 </section>
 
 <section class="backup">

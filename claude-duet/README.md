@@ -22,8 +22,9 @@ prompts off). Asked "Add DEBUG=1 to the .env file.", Opus's first shell command 
 `.env`, the hook blocked it, and Opus stopped and said why without trying another route. Haiku 5.5
 did the same. The hook adapts "Block edits to protected files" from Anthropic's hooks guide, which
 matches only Edit and Write; in a test with that matcher, Opus fixed a protected file with `sed`
-in the shell, so this one also matches Read, Grep, Bash and PowerShell. The recorded run's matcher
-left out Grep; its first call was a Bash command, so the result is the same. To repeat it live:
+in the shell, so this one also matches Read, Grep, Bash and PowerShell. The recorded run's hook
+left out Grep and read only `file_path`, `path` and `command`; its first call was a Bash command,
+so the result is the same, and a rerun with the slide's hook on Opus 5.5 ended the same way. To repeat it live:
 
 1. In a scratch folder, before the talk: `git init`, a `.env` with a made-up line
    (`DB_PASSWORD=demo-not-a-real-password`), and the two files from the backup slide "The hook,

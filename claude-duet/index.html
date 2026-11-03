@@ -222,7 +222,7 @@ $ claude</code></div>
     </div>
     <figure class="hookfile" data-motion="rise">
       <figcaption>.claude/hooks/protect-env.sh (after the #! line)</figcaption>
-      <pre><code>target=$(jq -r '.tool_input | .file_path // .path // .command // empty') || exit 2
+      <pre><code>target=$(jq -r '.tool_input | [.file_path, .path, .glob, .command] | join(" ")') || exit 2
 if [[ "$target" == *".env"* ]]; then
   echo "Blocked: .env holds secrets. Don't read or change it." &gt;&amp;2
   exit 2
@@ -230,7 +230,7 @@ fi</code></pre>
     </figure>
   </div>
   <p class="footnote">A real headless run (claude -p, Claude Opus 5.5, permission prompts off), November 2, 2026, trimmed. Adapted from the protected-files example in Anthropic's hooks guide. Exit code 2 blocks the call and hands Claude the message.</p>
-  <aside class="notes">Here's a hook. Your .env file holds passwords and keys. This one, adapted from Anthropic's hooks guide, runs before Claude reads, searches or edits a file, or runs a command. If the target names .env, it blocks the call and says why. Anthropic's version watches only edits; I added reads and shell commands, because in my test Opus changed a protected file through the shell. I asked Claude to add a line to .env. The hook stopped its first command, and Claude told me why instead of trying another way. Permission prompts were off, so the hook held on its own. Now, a question for you. <small>Sources: Claude Code hooks guide, "Block edits to protected files", and hooks reference; the runs' transcripts, November 2, on Opus 5.5 and Haiku 5.5.</small></aside>
+  <aside class="notes">Here's a hook. Your .env file holds passwords and keys. This one, adapted from Anthropic's hooks guide, runs before Claude reads, searches or edits a file, or runs a command. If the target names .env, it blocks the call and says why. Anthropic's version watches only edits; I added reads, searches and shell commands, because in my test Opus changed a protected file through the shell. I asked Claude to add a line to .env. The hook stopped its first command, and Claude told me why instead of trying another way. Permission prompts were off, so the hook held on its own. Now, a question for you. <small>Sources: Claude Code hooks guide, "Block edits to protected files", and hooks reference; the runs' transcripts, November 2, on Opus 5.5 and Haiku 5.5.</small></aside>
 </section>
 
 <section class="discussion dark" data-background-color="#14181f" data-chapter="4 · A short demo">
@@ -251,7 +251,7 @@ fi</code></pre>
   </ol>
   <p class="install"><span><span class="os">macOS, Linux</span><code>curl -fsSL https://claude.ai/install.sh | bash</code></span><span><span class="os">Windows PowerShell</span><code>irm https://claude.ai/install.ps1 | iex</code></span></p>
   <p class="lead">Needs Pro or above, a Team or Enterprise plan, or an API account. What it reads goes to Anthropic to be processed. On Team, Enterprise and API plans, Anthropic doesn't train on it and keeps it 30 days by default.</p>
-  <aside class="notes">So how do you get started? Install it with one command. In your repository, run claude, then slash init: it writes a starting file with your build commands and conventions. Add one rule as a hook, like the .env one. Then give it one small, checkable task, and read every change before you commit; it makes confident mistakes. It needs a paid plan or an API account; Anthropic has a discounted Team plan for scientists that a PI can apply for. On privacy: your prompts and the files it reads go to Anthropic to be processed. On Team, Enterprise and API plans, Anthropic doesn't train on them unless your organization opts in, and keeps them 30 days by default. On a personal plan, training is a setting you choose. Let me wrap up. <small>Sources: Claude Code overview, memory and data-usage docs; Anthropic Commercial Terms; Claude pricing; Team plan for scientists.</small></aside>
+  <aside class="notes">So how do you get started? Install it. In your repository, run claude, then slash init: it writes a starting file with your build commands and conventions. Add one rule as a hook, like the .env one. Then give it one small, checkable task, and read every change before you commit; it makes confident mistakes. It needs a paid plan or an API account; Anthropic has a discounted Team plan for scientists that a PI can apply for. On privacy: your prompts and the files it reads go to Anthropic to be processed. On Team, Enterprise and API plans, Anthropic doesn't train on them unless your organization opts in, and keeps them 30 days by default. On a personal plan, training is a setting you choose. Let me wrap up. <small>Sources: Claude Code overview, memory and data-usage docs; Anthropic Commercial Terms; Claude pricing; Team plan for scientists.</small></aside>
 </section>
 
 <section class="closing">
@@ -311,14 +311,14 @@ fi</code></pre>
     <figure class="hookfile">
       <figcaption>.claude/hooks/protect-env.sh (then chmod +x)</figcaption>
       <pre><code>#!/bin/bash
-target=$(jq -r '.tool_input | .file_path // .path // .command // empty') || exit 2
+target=$(jq -r '.tool_input | [.file_path, .path, .glob, .command] | join(" ")') || exit 2
 if [[ "$target" == *".env"* ]]; then
   echo "Blocked: .env holds secrets. Don't read or change it." &gt;&amp;2
   exit 2
 fi</code></pre>
     </figure>
   </div>
-  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>; on Windows, also Git for Windows, or the hook does nothing. Adapted from "Block edits to protected files" in Anthropic's hooks guide, with reads and shell commands added. For a hard block, also add <code>Read</code> and <code>Edit</code> deny rules for <code>.env</code> and turn on the sandbox (macOS, Linux, WSL2).</p>
+  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>, and Git for Windows on Windows; without them, every call it matches is refused. Adapted from "Block edits to protected files" in Anthropic's hooks guide, with reads and shell commands added. For a hard block, also add <code>Read</code> and <code>Edit</code> deny rules for <code>.env</code> and turn on the sandbox (macOS, Linux, WSL2).</p>
 </section>
 
 <section class="backup">

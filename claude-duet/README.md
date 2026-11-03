@@ -37,6 +37,9 @@ so the result is the same, and a rerun with the slide's hook on Opus 5.5 ended t
 In the recorded run, Opus also suggested putting the line in `.env.local`, "a file the hook doesn't
 cover". That is wrong: the hook blocks any path or command containing `.env`, `.env.local` included.
 
+Without `jq`, or Git Bash on Windows, the hook refuses every call it matches, so install both first.
+On macOS, Linux and WSL2, `Read` and `Edit` deny rules for `.env` plus the sandbox give a hard block.
+
 If the room has no network, play a recording instead: record the same steps once beforehand at
 1920x1080 with a large terminal font (Windows: Win+Alt+R, Xbox Game Bar), about 40 seconds, and
 open it from the slide.

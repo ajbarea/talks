@@ -514,6 +514,10 @@ def readings() -> dict[str, str | int | bool]:
     values["foreign_qt"] = team_reading(foreign)[0]
     values["foreign_status_chromium"] = foreign_status(foreign)
     values["foreign_sized"] = any(RESULTS.glob("k-coverage-qt-foreign*.json"))
+    # H2's registered K, once its simulation sized one (sphragis research log, 2026-11-02: K = 40,
+    # calibrated); 0 until then, and the slide binds it only when foreign_sized holds.
+    sized = sorted(RESULTS.glob("k-coverage-qt-foreignchromium-likelihood-chains.json"))
+    values["k_foreign"] = json.loads(sized[0].read_text())["runs"] if sized else 0
     # Fuchsia's exploratory arm, read beside Chromium's on the same runs, by chain; it binds
     # nothing and takes no simulation (sphragis research log, 2026-11-01).
     fuchsia = load("partition-pilot-qt-foreignfuchsia-likelihood-chains.json")

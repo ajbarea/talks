@@ -65,7 +65,7 @@
   <h2>Five parts in about ten minutes, with two pauses for you</h2>
   <ol class="agenda" data-auto></ol>
   <p class="footnote">A pause for questions after part 2, and a discussion after the demo. Questions any time, too.</p>
-  <aside class="notes">Here's the plan. A quick map of the Claude apps. Then Duet: what it does, where it falls short, and a pause for your questions. Then why Claude Code is my favorite, a short demo, a discussion, and how you could start on Monday.</aside>
+  <aside class="notes">Here's the plan. A quick map of the Claude apps. Then Duet: what it does, where it falls short, and a pause for your questions. Then why Claude Code is my favorite, a short demo, a discussion, and how to get started.</aside>
 </section>
 
 <section data-contribution data-chapter="1 · Five Claude apps">
@@ -83,7 +83,7 @@
   </div>
   <p class="mine fragment" data-motion="rise"><b>What I did:</b> Duet since October 27; my lab work in Claude Code. <b>Why you should care:</b> an agent in your repository can refuse data that hasn't passed your validation.</p>
   <p class="footnote">Orange: today's two. Science is a beta; Duet, a research preview.</p>
-  <aside class="notes">Here are five Claude apps, from Anthropic's cloud on the left to your own computer on the right. The plain Claude chat answers and drafts. Duet, the new one, works on its own cloud computer. Claude Desktop is one window holding the chat, Cowork for longer tasks, and Claude Code. Claude Science, a beta from June, is installed where your data lives and traces every step of an analysis. And Claude Code works inside your code's own folder, your repository. Here's what I did: I've been in Duet's preview since October 27th, and I do my lab work in Claude Code. Here's why you should care. We're a data-quality lab. An agent inside your repository follows rules you set, so it can refuse to analyze data that hasn't passed validation. Let's start with Duet. <small>Sources: claude.com overview and download pages; Claude Code desktop docs; Claude Science page and announcement; Duet announcement.</small></aside>
+  <aside class="notes">Here are five Claude apps, from Anthropic's cloud on the left to your own computer on the right. The plain Claude chat answers and drafts. Duet, the new one, works on its own cloud computer. Claude Desktop is one window holding the chat, Cowork for longer tasks, and Claude Code. Claude Science, a beta from June, is installed where your data lives and traces every step of an analysis. And Claude Code works inside your code's own folder, your repository. Here's what I did: I've been in Duet's preview since October 27th, and I do my lab work in Claude Code. Here's why you should care. An agent inside your repository follows rules you set, so it can refuse to analyze data that hasn't passed your validation. Let's start with Duet. <small>Sources: claude.com overview and download pages; Claude Code desktop docs; Claude Science page and announcement; Duet announcement.</small></aside>
 </section>
 
 <section data-chapter="2 · Claude Duet">
@@ -136,8 +136,8 @@
   <span class="kicker">2 · Claude Duet</span>
   <h2>Each Claude app works on something different; only Duet comes to you unasked</h2>
   <div class="relmap wide" data-source="surfaces" data-differs="off"></div>
-  <p class="footnote">Orange: today's two. Claude Science sits beside Claude Code: both work on your code and data when you ask. Claude Desktop holds chat, Cowork and Claude Code in one app.</p>
-  <aside class="notes">Here's Duet on a second map. Across the bottom is what each app works on: a chat or a draft, your accounts and apps, or your code and data. Up the side is who starts the work. The chat app, Claude Design, Claude Science and Claude Code wait for you to ask. Cowork and Claude Code on the web can run on a schedule you set. Duet sits alone in the top row: it comes to you without being asked. That's the new thing. But look at which column it's in. <small>Sources: each product's page; Claude Code docs on the web and scheduled tasks.</small></aside>
+  <p class="footnote">Orange: today's two. Claude Design now works inside any Claude chat, and Cowork is moving in, plan by plan. Claude Science sits beside Claude Code: both work on your code and data when you ask.</p>
+  <aside class="notes">Here's Duet on a second map. Across the bottom is what each app works on: a chat or a draft, your accounts and apps, or your code and data. Up the side is who starts the work. The Claude chat, which now includes Claude Design, waits for you to ask, and so do Claude Science and Claude Code. Cowork, now moving into the chat, and Claude Code on the web can run on a schedule you set. Duet sits alone in the top row: it comes to you without being asked. That's the new thing. But look at which column it's in. <small>Sources: each product's page; Cowork and chat are now one Claude, September 16; help center, moving from standalone Claude Design; Claude Code docs on the web and scheduled tasks.</small></aside>
 </section>
 
 <section data-chapter="2 · Claude Duet">
@@ -155,7 +155,7 @@
   </table>
   </div>
   <p class="footnote">From Anthropic's help center: Duet "can't see all of your projects or the files on your computer". Claude Desktop holds the chat, Cowork and Claude Code in one window.</p>
-  <aside class="notes">Here's where Duet falls short for us. It can't see the files on your computer, and it follows Anthropic's list of when to ask, not your lab's rules. The chat app sees what you upload or connect. Claude Science runs where your data lives, and saves a pipeline as a skill it reuses. Claude Code works inside the repository itself, under hooks it can't skip. What Duet does better than all of them is coming to you on its own. One early reviewer put it well: Duet can see his Claude sessions but can't direct them. Let's pause there. <small>Sources: Duet help center and announcement; Every's review; Claude Science page; skills in Claude help article; Claude Code hooks and scheduled tasks docs.</small></aside>
+  <aside class="notes">Here's where Duet falls short for lab work. It can't see the files on your computer, and it follows Anthropic's list of when to ask, not your lab's rules. The chat app sees what you upload or connect. Claude Science runs where your data lives, and saves a pipeline as a skill it reuses. Claude Code works inside the repository itself, under hooks it can't skip. What Duet does better than all of them is coming to you on its own. One early reviewer put it well: Duet can see his Claude sessions but can't direct them. Let's pause there. <small>Sources: Duet help center and announcement; Every's review; Claude Science page; skills in Claude help article; Claude Code hooks and scheduled tasks docs.</small></aside>
 </section>
 
 <section class="pause" data-background-color="#f1efe9" data-chapter="2 · Claude Duet">
@@ -211,49 +211,47 @@ $ claude</code></div>
 
 <section data-chapter="4 · A short demo">
   <span class="kicker">4 · A short demo</span>
-  <h2>A six-line hook stops pip, and Claude switches to uv</h2>
+  <h2>A five-line hook blocks reads, edits and commands that name your secrets file</h2>
   <div class="demo">
-    <div class="term" role="img" aria-label="A recorded session: asked to pip install requests, Claude is blocked by the hook, runs uv add requests, and pyproject.toml lists requests.">
-      <p class="you">› Add the requests package. Use pip install requests.</p>
-      <p class="tool fragment">● Bash  pip install requests</p>
-      <p class="no fragment">  ✕ Blocked: this lab uses uv. Run: uv add &lt;package&gt;</p>
-      <p class="fragment">The hook blocked pip and asked for uv. I'll follow that.</p>
-      <p class="tool fragment">● Bash  uv add requests</p>
-      <p class="ok fragment">  ✓ pyproject.toml now lists "requests&gt;=2.34.2"</p>
+    <div class="term" role="img" aria-label="A recorded session: asked to add a line to the .env file, Claude's first command tries to read it, the hook blocks it, and Claude stops and says why; the file is unchanged.">
+      <p class="you">› Add DEBUG=1 to the .env file.</p>
+      <p class="tool fragment">● Bash  ls -la; cat -A .env</p>
+      <p class="no fragment">  ✕ Blocked: .env holds secrets. Don't read or change it.</p>
+      <p class="fragment">I didn't add DEBUG=1. The project has a hook that blocks me from reading or editing .env … I haven't tried to get around it.</p>
+      <p class="ok fragment">  ✓ .env unchanged</p>
     </div>
     <figure class="hookfile" data-motion="rise">
-      <figcaption>.claude/hooks/no-pip.sh (after the #! line)</figcaption>
-      <pre><code>cmd=$(jq -r '.tool_input.command') || exit 2
-pat='(^|[;&amp;|(/[:space:]])pip[0-9.]*[[:space:]]+install'
-if grep -Eq "$pat" &lt;&lt;&lt;"$cmd"; then
-  echo "Blocked: this lab uses uv. Run: uv add &lt;package&gt;" &gt;&amp;2
+      <figcaption>.claude/hooks/protect-env.sh (after the #! line)</figcaption>
+      <pre><code>target=$(jq -r '.tool_input | [.file_path, .path, .glob, .command] | join(" ")') || exit 2
+if [[ "$target" == *".env"* ]]; then
+  echo "Blocked: .env holds secrets. Don't read or change it." &gt;&amp;2
   exit 2
 fi</code></pre>
     </figure>
   </div>
-  <p class="footnote">A real headless run (claude -p, Claude Haiku 5.5, permission prompts off), October 31, 2026, trimmed. Exit code 2 blocks the command and hands Claude the message.</p>
-  <aside class="notes">Here's a hook. Say your lab has settled on uv instead of pip, so packages land in the project file and everyone gets the same versions. Writing that in a README is a suggestion. A hook is a rule. This one reads the command Claude is about to run, and if it's a pip install, it blocks it and says why. I asked Claude to pip install requests. It tried, the hook refused, and Claude read the message, ran uv add instead, and the package landed in the project file. I never stepped in, and this run had permission prompts switched off, so the hook held on its own. Live, on Opus, it stops at the block; I tell it to follow the hook, and it runs uv add. Now, a question for you. <small>Sources: Claude Code hooks guide and reference; the run's transcript, October 31.</small></aside>
+  <p class="footnote">A real headless run (claude -p, Claude Opus 5.5, permission prompts off), November 2, 2026, trimmed. Adapted from an example in Anthropic's hooks guide.</p>
+  <aside class="notes">Here's a hook. Your .env file holds passwords and keys. This one, adapted from Anthropic's hooks guide, runs before Claude reads, searches or edits a file, or runs a command. If the target names .env, it blocks the call and says why. Anthropic's version watches only edits; I added reads, searches and shell commands, because in my test Opus changed a protected file through the shell. I asked Claude to add a line to .env. The hook stopped its first command, and Claude told me why instead of trying another way. Permission prompts were off, so the hook held on its own. Now, a question for you. <small>Sources: Claude Code hooks guide, "Block edits to protected files", and hooks reference; the runs' transcripts, November 2, on Opus 5.5 and Haiku 5.5.</small></aside>
 </section>
 
 <section class="discussion dark" data-background-color="#14181f" data-chapter="4 · A short demo">
   <span class="kicker">Discussion</span>
-  <h2>What rule would you want every agent in our lab to follow?</h2>
+  <h2>What rule would you want every agent in your lab to follow?</h2>
   <p class="muted">Never touch the raw data? Validate before every analysis? Keep private data out?</p>
-  <aside class="notes">If you could give every agent in our lab one rule it can't skip, what would it be? For me, it's never running an analysis on data that hasn't passed validation. ... Each of those could be a hook like the one you just saw.</aside>
+  <aside class="notes">If you could give every agent in your lab one rule it can't skip, what would it be? For me, it's never running an analysis on data that hasn't passed validation. ... Each of those could be a hook like the one you just saw.</aside>
 </section>
 
-<section data-chapter="5 · Start Monday">
-  <span class="kicker">5 · Start Monday</span>
-  <h2>You can start Monday with one install, one hook and one small task</h2>
+<section data-chapter="5 · Getting started">
+  <span class="kicker">5 · Getting started</span>
+  <h2>Four steps put Claude Code to work in your own repository</h2>
   <ol class="steps4" data-motion="stagger" data-child="rise" data-step="160">
     <li><b>Install</b>one command, below</li>
     <li><b>Open your repository</b>run <code>claude</code>, then <code>/init</code> writes a <code>CLAUDE.md</code> of your project's rules</li>
-    <li><b>Add one rule as a hook</b>the pip hook from the demo is a good first one</li>
+    <li><b>Add one rule as a hook</b>the <code>.env</code> hook from the demo is a good first one</li>
     <li><b>Give it one small task</b>a failing test or a stale README; read the change before you commit</li>
   </ol>
   <p class="install"><span><span class="os">macOS, Linux</span><code>curl -fsSL https://claude.ai/install.sh | bash</code></span><span><span class="os">Windows PowerShell</span><code>irm https://claude.ai/install.ps1 | iex</code></span></p>
-  <p class="lead">Needs a paid plan (Pro or above) or an Anthropic developer (API) account. Read every change. What it reads goes to Anthropic: keep private data out.</p>
-  <aside class="notes">So how would you start? Monday morning, install it with one command. Open your repository, run claude, and type slash init: it reads your code and writes a starting file with your build commands and conventions. Add one rule you care about as a hook. Then give it one small, checkable task, like a failing test. Three cautions. It needs a paid plan or an API account; Anthropic also has a discounted Team plan for scientists that a PI can apply for. It makes confident mistakes, so read every change before you commit. And what it reads is sent to Anthropic, so keep private data out and check your training setting. I'm happy to sit with anyone for half an hour to set it up. Let me wrap up. <small>Sources: Claude Code overview, memory and data-usage docs; Claude pricing; Team plan for scientists.</small></aside>
+  <p class="lead">Needs Pro or above, a Team or Enterprise plan, or an API account. What it reads goes to Anthropic to be processed. On Team, Enterprise and API plans, Anthropic doesn't train on it and keeps it 30 days by default.</p>
+  <aside class="notes">So how do you get started? Install it. In your repository, run claude, then slash init: it writes a starting file with your build commands and conventions. Add one rule as a hook, like the .env one. Then give it one small, checkable task, and read every change before you commit; it makes confident mistakes. It needs a paid plan or an API account; Anthropic has a discounted Team plan for scientists that a PI can apply for. On privacy: your prompts and the files it reads go to Anthropic to be processed. On Team, Enterprise and API plans, Anthropic doesn't train on them unless your organization opts in, and keeps them 30 days by default. On a personal plan, training is a setting you choose. Let me wrap up. <small>Sources: Claude Code overview, memory and data-usage docs; Anthropic Commercial Terms; Claude pricing; Team plan for scientists.</small></aside>
 </section>
 
 <section class="closing">
@@ -286,8 +284,8 @@ fi</code></pre>
     <li>TechCrunch, <a href="https://techcrunch.com/2026/10/22/claude-duet-app-is-anthropics-bet-on-agents/">Claude Duet app is Anthropic's bet on agents</a>, October 22, 2026</li>
     <li>Every, <a href="https://every.to/vibe-check/vibe-check-duet-anthropic-s-always-on-agent">Vibe Check: Duet</a>, October 21, 2026 (early access)</li>
     <li>Flavio Copes, <a href="https://flaviocopes.com/claude-duet/">A deep dive into Claude Duet</a>, October 22, 2026 (from the docs)</li>
-    <li>Claude Code docs: <a href="https://code.claude.com/docs/en/overview">overview</a>, <a href="https://code.claude.com/docs/en/hooks-guide">hooks</a> and <a href="https://code.claude.com/docs/en/hooks">their reference</a>, <a href="https://code.claude.com/docs/en/skills">skills</a>, <a href="https://code.claude.com/docs/en/plugins/overview">plugins</a>, <a href="https://code.claude.com/docs/en/sub-agents">subagents</a>, <a href="https://code.claude.com/docs/en/mcp">MCP</a>, <a href="https://code.claude.com/docs/en/worktrees">worktrees</a>, <a href="https://code.claude.com/docs/en/headless">headless</a>, <a href="https://code.claude.com/docs/en/claude-code-on-the-web">on the web</a>, <a href="https://code.claude.com/docs/en/routines">scheduled tasks</a>, <a href="https://code.claude.com/docs/en/data-usage">data usage</a></li>
-    <li>Anthropic: <a href="https://claude.com/product/overview">Claude</a>, <a href="https://claude.com/product/cowork">Cowork</a>, <a href="https://claude.com/product/claude-science">Claude Science</a> and <a href="https://www.anthropic.com/news/claude-science-ai-workbench">its announcement</a>, June 30, 2026, <a href="https://support.claude.com/en/articles/12512180-using-skills-in-claude">skills in Claude</a>, <a href="https://code.claude.com/docs/en/desktop">desktop app docs</a>, <a href="https://claude.com/product/design">Claude Design</a>, <a href="https://claude.com/download">desktop app</a>, <a href="https://claude.com/pricing">pricing</a>, <a href="https://claude.com/programs/team-plan-for-scientists">Team plan for scientists</a></li>
+    <li>Claude Code docs: <a href="https://code.claude.com/docs/en/overview">overview</a>, <a href="https://code.claude.com/docs/en/hooks-guide">hooks</a> and <a href="https://code.claude.com/docs/en/hooks">their reference</a>, <a href="https://code.claude.com/docs/en/skills">skills</a>, <a href="https://code.claude.com/docs/en/plugins/overview">plugins</a>, <a href="https://code.claude.com/docs/en/sub-agents">subagents</a>, <a href="https://code.claude.com/docs/en/mcp">MCP</a>, <a href="https://code.claude.com/docs/en/worktrees">worktrees</a>, <a href="https://code.claude.com/docs/en/headless">headless</a>, <a href="https://code.claude.com/docs/en/claude-code-on-the-web">on the web</a>, <a href="https://code.claude.com/docs/en/routines">scheduled tasks</a>, <a href="https://code.claude.com/docs/en/data-usage">data usage</a>, <a href="https://code.claude.com/docs/en/permissions">permissions</a></li>
+    <li>Anthropic: <a href="https://claude.com/product/overview">Claude</a>, <a href="https://claude.com/product/cowork">Cowork</a>, <a href="https://claude.com/product/claude-science">Claude Science</a> and <a href="https://www.anthropic.com/news/claude-science-ai-workbench">its announcement</a>, June 30, 2026, <a href="https://support.claude.com/en/articles/12512180-using-skills-in-claude">skills in Claude</a>, <a href="https://code.claude.com/docs/en/desktop">desktop app docs</a>, <a href="https://claude.com/product/design">Claude Design</a> and <a href="https://support.claude.com/en/articles/17440474-move-from-standalone-claude-design-to-claude">its move into Claude</a>, <a href="https://claude.com/resources/articles/cowork-is-now-claude">Cowork and chat are now one Claude</a>, September 16, 2026, <a href="https://claude.com/download">desktop app</a>, <a href="https://claude.com/pricing">pricing</a>, <a href="https://claude.com/programs/team-plan-for-scientists">Team plan for scientists</a>, <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms</a></li>
     <li>This week's work: <a href="https://github.com/bonsai-neuro-ai/nn-library/pull/17">nn-library #17</a>, <a href="https://github.com/bonsai-neuro-ai/nn-library/pull/18">#18</a>, <a href="https://github.com/bonsai-neuro-ai/torch-mlflow-template/pull/3">torch-mlflow-template #3</a>, <a href="https://github.com/ajbarea/talks/pull/46">talks #46</a>, <a href="https://github.com/ajbarea/techne/blob/main/plugins/phylax/hooks/hooks.json">my rules plugin's hooks</a></li>
     <li>Rivals' hooks, November 2, 2026: <a href="https://cursor.com/docs/agent/hooks">Cursor</a>, <a href="https://learn.chatgpt.com/docs/hooks">Codex</a>, <a href="https://docs.github.com/en/copilot/reference/hooks-configuration">Copilot CLI</a>, <a href="https://antigravity.google/docs/hooks/">Antigravity CLI</a></li>
   </ul>
@@ -301,27 +299,26 @@ fi</code></pre>
       <pre><code>{
   "hooks": {
     "PreToolUse": [{
-      "matcher": "Bash|PowerShell",
+      "matcher": "Read|Edit|Write|Grep|Bash|PowerShell",
       "hooks": [{
         "type": "command",
-        "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/no-pip.sh"
+        "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/protect-env.sh"
       }]
     }]
   }
 }</code></pre>
     </figure>
     <figure class="hookfile">
-      <figcaption>.claude/hooks/no-pip.sh (then chmod +x)</figcaption>
-      <pre><code>#!/usr/bin/env bash
-cmd=$(jq -r '.tool_input.command') || exit 2
-pat='(^|[;&amp;|(/[:space:]])pip[0-9.]*[[:space:]]+install'
-if grep -Eq "$pat" &lt;&lt;&lt;"$cmd"; then
-  echo "Blocked: this lab uses uv. Run: uv add &lt;package&gt;" &gt;&amp;2
+      <figcaption>.claude/hooks/protect-env.sh (then chmod +x)</figcaption>
+      <pre><code>#!/bin/bash
+target=$(jq -r '.tool_input | [.file_path, .path, .glob, .command] | join(" ")') || exit 2
+if [[ "$target" == *".env"* ]]; then
+  echo "Blocked: .env holds secrets. Don't read or change it." &gt;&amp;2
   exit 2
 fi</code></pre>
     </figure>
   </div>
-  <p class="footnote">Commit both and everyone's Claude Code follows the rule. Needs <code>jq</code>, and Git for Windows on Windows; without them every command is refused. The matcher covers Windows' PowerShell tool too. Also blocks <code>uv pip install</code> and a commit message that mentions pip install; misses <code>pip -q install</code>.</p>
+  <p class="footnote">Commit both, and everyone's Claude Code follows the rule. Needs <code>jq</code>, and Git for Windows on Windows. For a hard block, also add <code>.env</code> deny rules and the sandbox.</p>
 </section>
 
 <section class="backup">

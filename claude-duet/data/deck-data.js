@@ -27,14 +27,14 @@ window.DECK_DATA = {
       y: { label: "Who starts the work:", levels: ["You ask", "On a schedule\nyou set", "It comes to\nyou unasked"] },
     },
     works: [
-      { id: "web", label: "claude.ai", x: "A chat or\na draft", y: "You ask",
-        oneLine: "The chat app, on the web, desktop and phone." },
-      { id: "design", label: "Claude Design", x: "A chat or\na draft", y: "You ask",
-        oneLine: "Designs, prototypes, slides and one-pagers, now inside any Claude chat." },
+      // Claude Design moved into the chat on September 16, 2026, and Cowork began to, plan by plan (claude.com "Claude Cowork and
+      // chat are now one Claude"; help center "Move from standalone Claude Design to Claude").
+      { id: "web", label: "Claude chat", x: "A chat or\na draft", y: "You ask",
+        oneLine: "The chat app on the web, desktop and phone; since September 16 it also makes the designs, design systems and slide decks Claude Design made on its own site." },
       { id: "science", label: "Claude Science", x: "Your code\nand data", y: "You ask",
         oneLine: "A desktop app (beta) that pairs Claude with an analysis environment on your computer." },
       { id: "cowork", label: "Claude Cowork", x: "Your accounts\nand apps", y: "On a schedule\nyou set",
-        oneLine: "Longer tasks on the web, phone or desktop app; schedule one for any cadence and close the laptop." },
+        oneLine: "Longer tasks, moving into Claude chat since September 16 (Pro, Max, Ultra and Enterprise first); schedule one for any cadence and close the laptop." },
       { id: "web-code", label: "Code on the web", x: "Your code\nand data", y: "On a schedule\nyou set",
         oneLine: "Claude Code on a cloud computer, on a copy of your GitHub repository; a scheduled task runs it hourly, nightly or weekly." },
       { id: "code", label: "Claude Code", x: "Your code\nand data", y: "You ask", ours: true,

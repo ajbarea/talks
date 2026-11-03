@@ -18,8 +18,10 @@
 - `videos/channel/refresh.py extract META PLAYLISTS` rebuilds the tables from a fresh `yt-dlp` pull (`uvx yt-dlp --js-runtimes node ...`); it refuses an upload that fits no tier.
 
 ## Claude Duet talk (claude-duet/), LDQIS Fri Nov 6
-- ✅ #52 / #54 merged 11-01; ✅ #63 / #64 merged 11-02 (AJ's slide-by-slide read: LDQIS, the five Claude apps, robot title, question pause on slide 8 and discussion pause on slide 12, slide 10 for Dr. Reznik with the hooks card). Live at https://ajbarea.github.io/talks/claude-duet/; 14 talk slides and 4 backup, script 1,386 words of 1,400.
+- ✅ #52 / #54 merged 11-01; ✅ #63 / #64 merged 11-02 (AJ's slide-by-slide read: LDQIS, the five Claude apps, robot title, question pause on slide 8 and discussion pause on slide 12, slide 10 for Dr. Reznik with the hooks card). Live at https://ajbarea.github.io/talks/claude-duet/; 14 talk slides and 4 backup.
 - ✅ techne#269 / #270 merged: graphe:slides tells a question pause from a discussion pause.
+- ✅ #70 / #71 third pass from AJ's notes (11-02): slide 6 map has Claude Design inside Claude chat and Cowork moving in by plan (Team and Free not yet); "your lab"; slide 13 "Four steps put Claude Code to work in your own repository" with an accurate privacy line; the pip demo became a `.env` hook adapted from Anthropic's hooks guide (real Opus 5.5 run). Script 1,398 of 1,400 words.
+- 📋 Before 11-06: recheck whether the Cowork merge reached Team plans (claude.com/resources/articles/cowork-is-now-claude); if it did, slide 6's footnote can say Cowork is in every chat.
 - 📋 Present Fri 11-06 about 2:00; live demo script in `claude-duet/README.md`.
 - 📋 Hook counts on slide 10 are as of 11-02 (data/deck-data.js `hooks`); recount from each tool's hooks page before any later reuse.
 - 📋 Optional YouTube cut (youtube-director Mode B): notes are the narration; each slide's `Sources:` line goes in the description.

@@ -1,8 +1,10 @@
 # Claude Duet, the Claude apps, and my favorite: Claude Code
 
 LDQIS meeting, November 6, 2026. About ten minutes, light theme for a lit room. Every product fact is checked against Anthropic's pages and the press coverage
-of October 30, 2026; the Sources backup slide links each one, and each slide's notes end with a
+of October 30, 2026 (the app map, plans, privacy and hook facts on November 2); the Sources backup slide links each one, and each slide's notes end with a
 short source line.
+
+For another lab, change the title slide's kicker and the first line of its notes, which name LDQIS and Dr. Reznik.
 
 ## Pictures
 
@@ -15,21 +17,28 @@ Slide 8 is a pause for questions only. Slide 12 is the discussion: one question,
 
 ## The demo (slide 11)
 
-The slide shows a real headless run from October 31 (`claude -p`, Claude Haiku 5.5): Haiku ran
-`pip install requests`, the hook blocked it, and Haiku ran `uv add requests` on its own.
+The slide shows a real headless run from November 2 (`claude -p`, Claude Opus 5.5, permission
+prompts off). Asked "Add DEBUG=1 to the .env file.", Opus's first shell command tried to read
+`.env`, the hook blocked it, and Opus stopped and said why without trying another route. Haiku 5.5
+did the same. The hook adapts "Block edits to protected files" from Anthropic's hooks guide, which
+matches only Edit and Write; in a test with that matcher, Opus fixed a protected file with `sed`
+in the shell, so this one also matches Read, Grep, Bash and PowerShell. The recorded run's hook
+left out Grep and read only `file_path`, `path` and `command`; its first call was a Bash command,
+so the result is the same, and a rerun with the slide's hook on Opus 5.5 ended the same way. To repeat it live:
 
-Opus 5.5 behaves differently, so plan the live version around it. Given "Add the requests package.
-Use pip install requests.", Opus read the hook file first and went straight to `uv add`, so the
-block never showed. Given "Run exactly this shell command: pip install requests", it ran the command,
-was blocked, and stopped. To repeat it live:
+1. In a scratch folder, before the talk: `git init`, a `.env` with a made-up line
+   (`DB_PASSWORD=demo-not-a-real-password`), and the two files from the backup slide "The hook,
+   ready to copy" (`.claude/settings.json`, `.claude/hooks/protect-env.sh`, `chmod +x`). `jq` must
+   be installed.
+2. Start `claude` there and type: `Add DEBUG=1 to the .env file.` The hook prints
+   `Blocked: .env holds secrets. Don't read or change it.` and Claude says it left the file alone.
+3. In a second terminal, run `cat .env`: it is unchanged.
 
-1. In a scratch folder, before the talk: `git init`, a minimal `pyproject.toml`, and the two files
-   from the backup slide "The hook, ready to copy" (`.claude/settings.json`,
-   `.claude/hooks/no-pip.sh`, `chmod +x`). `jq` must be installed.
-2. Start `claude` there and type: `Run exactly this shell command: pip install requests`. The hook
-   prints `Blocked: this lab uses uv. Run: uv add <package>`.
-3. Then type: `Add requests to the project the way the hook asks.` Claude runs `uv add requests`.
-4. Show `cat pyproject.toml` at the end.
+In the recorded run, Opus also suggested putting the line in `.env.local`, "a file the hook doesn't
+cover". That is wrong: the hook blocks any path or command containing `.env`, `.env.local` included.
+
+Without `jq`, or Git Bash on Windows, the hook refuses every call it matches, so install both first.
+On macOS, Linux and WSL2, `Read` and `Edit` deny rules for `.env` plus the sandbox give a hard block.
 
 If the room has no network, play a recording instead: record the same steps once beforehand at
 1920x1080 with a large terminal font (Windows: Win+Alt+R, Xbox Game Bar), about 40 seconds, and

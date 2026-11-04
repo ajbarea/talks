@@ -77,9 +77,9 @@
     <li><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-sci"/></svg><b>Your research</b><span class="to" aria-hidden="true">↓</span><span class="app">Claude Science</span></li>
     <li><svg class="ico" viewBox="0 0 48 48" aria-hidden="true"><use href="#i-mail"/></svg><b>Your accounts</b><span class="to" aria-hidden="true">↓</span><span class="app">Claude Duet</span></li>
   </ol>
-  <p class="mine fragment" data-motion="rise"><b>What I did:</b> <span data-value="week.labPrs"></span> changes to Richard Lange's lab code with Claude Code, and Duet on my phone since October 27. <b>Why you should care:</b> an app can only help with work it can reach. Duet can't see your lab's files.</p>
+  <p class="mine fragment" data-motion="rise"><b>What I did:</b> <span data-value="week.labPrs"></span> changes sent to Richard Lange's lab code with Claude Code, and Duet on my phone since October 27. <b>Why you should care:</b> an app can only help with work it can reach. Duet can't see your lab's files.</p>
   <p class="footnote">Orange: the one I'd start with for code. Apps in the order they launched, left to right.</p>
-  <aside class="notes">Here's the map. Your work lives in five places: a conversation, your computer, your code, your research, and your accounts, like email and calendar. Anthropic has built one app for each: Claude chat, Claude Desktop, Claude Code, Claude Science and Claude Duet. Here's what I did with them. Last week I sent three changes to Richard Lange's lab code with Claude Code, and I've been in Duet's preview since October 27th. Here's why you should care. An app can only help with work it can reach. Duet can't see your lab's files, and the chat in your browser can't open your lab server. So pick the app by the place. Let's take them in the order they came out. <small>Sources: each app's announcement; nn-library #17, #18, torch-mlflow-template #3.</small></aside>
+  <aside class="notes">Your work lives in five places: a conversation, your computer, your code, your research, and your accounts, like email and calendar. Anthropic has built one app for each: Claude chat, Claude Desktop, Claude Code, Claude Science and Claude Duet. Here's what I did with them. Last week I sent three changes to Richard Lange's lab code with Claude Code, and I've been in Duet's preview since October 27th. Here's why you should care. An app can only help with work it can reach. Duet can't see your lab's files, and the chat in your browser can't open your lab server. So pick the app by the place. Let's take them in the order they came out. <small>Sources: each app's announcement; nn-library #17, #18, torch-mlflow-template #3.</small></aside>
 </section>
 
 <section class="app-slide" data-chapter="2 · Five apps">
@@ -146,7 +146,7 @@ $ claude</pre>
     </div>
     <dl class="facts">
       <div><dt>What it does</dt><dd>Works in your project's folder, from the terminal, your editor, the desktop app or the web: reads code, edits files, runs your tests.</dd></div>
-      <div class="use"><dt>In my work</dt><dd>My change for Richard Lange's lab cuts one step that compares two neural networks to about a thousandth of the memory.</dd></div>
+      <div class="use"><dt>In my work</dt><dd>My open change for Richard Lange's lab cuts one step that compares two neural networks to about a thousandth of the memory.</dd></div>
       <div class="lim"><dt>One limit</dt><dd>It makes confident mistakes, so read every change before you commit it.</dd></div>
     </dl>
   </div>
@@ -277,8 +277,8 @@ fi</code></pre>
     </ol>
     <p class="install"><span><span class="os">macOS, Linux</span><code>curl -fsSL https://claude.ai/install.sh | bash</code></span><span><span class="os">Windows PowerShell</span><code>irm https://claude.ai/install.ps1 | iex</code></span></p>
   </div>
-  <p class="lead">Claude Code needs Pro or above, Team, Enterprise or an API account. What it reads goes to Anthropic. Team, Enterprise and API: no training on it, kept 30 days by default. Pro and Max: training follows your privacy setting.</p>
-  <aside class="notes">So, try one this week. For the chat, paste a paragraph you're stuck on and ask for three rewrites. For Desktop, on a paid plan, let Cowork summarize one folder. For Claude Science, rebuild one figure you've already made; on a Team plan, the owner turns it on first. For Duet, join the waitlist. And for Claude Code, four steps. Install it. In your repository, run claude, then slash init, which writes down your build commands and conventions. Add one rule as a hook, like the .env one. Then give it one small task, and read the change. It needs a paid plan or an API account; Anthropic has a discounted Team plan for scientists that a PI can apply for. On privacy: what it reads goes to Anthropic. On Team, Enterprise and API plans, Anthropic doesn't train on it unless your organization opts in, and keeps it 30 days by default. On Pro and Max, that's your privacy setting. Let me wrap up. <small>Sources: Claude Code overview and data-usage docs; Commercial Terms; pricing; Team plan for scientists; help center pages for Cowork, Science and Duet.</small></aside>
+  <p class="lead">Claude Code needs Pro or above, Team, Enterprise or an API account. What it reads goes to Anthropic. Team, Enterprise and API: no training on it, kept 30 days by default. Pro, Max and Ultra: training follows your privacy setting.</p>
+  <aside class="notes">So, try one this week. For the chat, paste a paragraph you're stuck on and ask for three rewrites. For Desktop, on a paid plan, let Cowork summarize one folder. For Claude Science, rebuild one figure you've already made; on a Team plan, the owner turns it on first. For Duet, join the waitlist. And for Claude Code, four steps. Install it. In your repository, run claude, then slash init, which writes down your build commands and conventions. Add one rule as a hook, like the .env one. Then give it one small task, and read the change. It needs a paid plan or an API account; Anthropic has a discounted Team plan for scientists that a PI can apply for. On privacy: what it reads goes to Anthropic. On Team, Enterprise and API plans, Anthropic doesn't train on it unless your organization opts in, and keeps it 30 days by default. On Pro, Max and Ultra, that's your privacy setting. Let me wrap up. <small>Sources: Claude Code overview and data-usage docs; Commercial Terms; pricing; Team plan for scientists; help center pages for Cowork, Science and Duet.</small></aside>
 </section>
 
 <section class="closing">
@@ -287,7 +287,6 @@ fi</code></pre>
   <p class="asks">I'm glad to take questions.</p>
   <p class="muted">AJ Barea · PhD student, Rochester Institute of Technology</p>
   <p class="muted">ajbarea.github.io · github.com/ajbarea</p>
-  <p class="muted slides-url">These slides: ajbarea.github.io/talks/claude-duet</p>
   </div>
   <!-- qr:close -->
   <div class="qr qr-close" data-motion="pop" data-delay="300" data-dur="600">

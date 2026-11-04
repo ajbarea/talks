@@ -152,8 +152,6 @@
 .code-start .steps4 li { padding: 10px 12px 10px 50px; font-size: 0.64em; }
 .code-start .steps4 li::before { top: 10px; left: 12px; }
 .code-start .install { margin-top: 10px; }
-/* My favorite: three cards in a row. */
-.week.row3 { grid-template-columns: repeat(3, 1fr); }
 .closing .asks { margin: 6px 0 18px; font-size: 0.9em; }
 
 /* Bold labels inside cards. */
@@ -310,5 +308,3 @@
 .phone .duet-scene img { width: 80%; }
 .phone .facts > div { padding: 6px 10px; }
 .phone .chat-scene p { margin-bottom: 6px; padding: 8px 12px; }
-.closing .slides-url { display: none; }
-.phone .closing .slides-url { display: block; }

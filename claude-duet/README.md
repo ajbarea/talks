@@ -11,11 +11,11 @@ For another lab, change the title slide's kicker and the first line of its notes
 - The title's robot is an original SVG drawing, not an Anthropic mark: Anthropic's [trademark guidelines](https://www.anthropic.com/legal/trademark-guidelines) allow its marks only in materials it approves. It dances, and stands still under reduced motion.
 - Slide 5's card is cropped from a phone screenshot of my Duet app (November 1, IMG_1281), below a blurred line that quoted a classmate's review. The other screenshots show unrelated research and course items, so they stay out.
 
-## The pauses
+## Order and questions
 
-The five apps come in launch order, oldest first, so Duet, the newest, leads, after the pause, into Claude Code. Slide 6 is a pause for questions only. Slide 10 is the discussion: one question, example answers on the slide.
+The five apps come in launch order, oldest first, so Duet, the newest, leads straight into Claude Code. The title slide invites questions any time, and the closing slide takes them at the end. The first backup slide is a discussion prompt, one question with example answers, for a quiet Q&A.
 
-## The demo (slide 9)
+## The demo (slide 8)
 
 The slide shows a real headless run from November 2 (`claude -p`, Claude Opus 5.5, permission
 prompts off). Asked "Add DEBUG=1 to the .env file.", Opus's first shell command tried to read

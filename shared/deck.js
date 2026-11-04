@@ -10,8 +10,13 @@
   // A narrow portrait screen gets a vertical feed; anything wider gets slides scaled to fit.
   // Crossing the line (a rotation, a resized window) reloads, and the hash keeps the slide.
   const narrow = matchMedia("(max-width: 600px)");
-  const phone = narrow.matches;
+  // Speaker view previews slides in narrow iframes (?receiver); they keep the slide layout.
+  const phone = narrow.matches && !/receiver/i.test(location.search);
   narrow.addEventListener("change", () => location.reload());
+
+  const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  const focusableInside = (sel) =>
+    [...document.querySelectorAll(`${sel} :is(${FOCUSABLE})`)].some((n) => n.getClientRects().length);
 
   function lookup(path) {
     const value = path.split(".").reduce((o, k) => (o == null ? undefined : o[k]), DATA);
@@ -471,6 +476,12 @@
     scrollActivationWidth: null,
     plugins: [RevealNotes],
   }).then(() => {
+    // Reveal's arrow <aside> would be a landmark nested in its role=application wrapper.
+    document.querySelector(".reveal .controls")?.setAttribute("role", "none");
+    // Safari gives a scroller no keyboard stop; add one when nothing inside can take focus.
+    if (phone && !focusableInside(".reveal .slides")) {
+      document.querySelector(".reveal-viewport")?.setAttribute("tabindex", "0");
+    }
     if (!phone) buildRail(chs);
   });
 })();

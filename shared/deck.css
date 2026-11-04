@@ -405,11 +405,13 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 }
 
 .reveal .slide-number {
-  padding: 4px 8px;
+  padding: 2px 8px;
   font: 600 14px var(--sans);
   color: var(--muted);
   background: var(--paper);
 }
+/* WCAG 2.2 target size: the number is a link, so give it at least 24px. */
+.reveal .slide-number a { display: inline-block; min-height: 24px; line-height: 24px; }
 
 /* ------------------------------------------------------------------ phone -- */
 
@@ -473,3 +475,18 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 .forest .forest-ci.whole, .forest .forest-pt.whole { stroke: var(--mark); fill: var(--mark); }
 .forest .forest-ci.part, .forest .forest-pt.part { stroke: var(--mark-rival); fill: var(--mark-rival); }
 .forest .forest-ci.ours, .forest .forest-pt.ours { stroke: var(--mark-ours); fill: var(--mark-ours); }
+
+/* The phone feed's keyboard stop is the page itself, under the slides, so its ring is a frame on top. */
+.reveal-viewport:focus-visible {
+  outline: none;
+}
+
+.reveal-viewport:focus-visible::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  border: 3px solid var(--label);
+  box-shadow: inset 0 0 0 2px #ffffff; /* two tones, so the frame shows on light and dark slides */
+  pointer-events: none;
+  z-index: 100;
+}

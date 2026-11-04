@@ -559,7 +559,7 @@
     <li>Near-duplicates are removed before the split; leftover overlap is reported.</li>
     <li>Label quality is audited blind, by two model raters, a human, and an open-weight model anyone can rerun. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, about <span data-value="readings.audit_valid_openstack"></span> have a rewrite that answers its comment; the rest stay in and are scored in every arm, so they dilute a difference rather than favour one side.</li>
     <li>Every filtering rule and what it removed is published: ajbarea.github.io/sphragis/dataset</li>
-    <li>Contamination rests on provenance: every month of data starts after the model's weights were uploaded. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; leaving them out <span data-if="readings.found_holds">changes neither OpenStack's nor Wikimedia's reading</span><span data-unless="readings.found_holds">changes a reading</span>. Dropping AI-assisted commits (by trailer) moves OpenStack's estimate by <span data-value="readings.ai_shift_openstack"></span>.</li>
+    <li>Contamination rests on provenance: every month of data starts after the model's weights were uploaded. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; leaving them out <span data-if="readings.found_holds">does not change OpenStack's or Wikimedia's reading</span><span data-unless="readings.found_holds">changes a reading</span>. Dropping AI-assisted commits (by trailer) moves OpenStack's estimate by <span data-value="readings.ai_shift_openstack"></span>.</li>
     <li>Everything derived is pseudonymised, with addresses swept from comments. RIT's human-subjects office ruled in writing that this is not human-subjects research.</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -643,7 +643,7 @@
   <h2>Would showing the model past reviews do the same?</h2>
   <p>That is the cheapest competitor: no training, just the most similar past reviews pasted into the prompt. The study ran it, before the test window, on the same split as the adapters: the base model given the one or three closest past reviews from its own half or from the sibling half, over the first <span data-value="readings.retrieval_partitions_openstack"></span> ways of splitting each organization's projects.</p>
   <table class="data">
-    <thead><tr><th scope="col"></th><th scope="col">one past review</th><th scope="col">three past reviews</th><th scope="col">adapters, same splits</th></tr></thead>
+    <thead><tr><td></td><th scope="col">one past review</th><th scope="col">three past reviews</th><th scope="col">adapters, same splits</th></tr></thead>
     <tbody>
       <tr><th scope="row">OpenStack</th><td class="num" data-value="readings.retrieval_k1_openstack"></td><td class="num" data-value="readings.retrieval_k3_openstack"></td><td class="num" data-value="readings.retrieval_adapters_openstack"></td></tr>
       <tr><th scope="row">Wikimedia</th><td class="num" data-value="readings.retrieval_k1_wikimedia"></td><td class="num" data-value="readings.retrieval_k3_wikimedia"></td><td class="num" data-value="readings.retrieval_adapters_wikimedia"></td></tr>
@@ -665,7 +665,7 @@
   <h2>What did the rules file do?</h2>
   <p>The study ran it before the test window, on the same <span data-value="readings.rules_partitions_openstack"></span> splits of each organization as retrieval: the base model given the rules file distilled from its own half's reviews, or from the sibling half's.</p>
   <table class="data">
-    <thead><tr><th scope="col"></th><th scope="col">rules file</th><th scope="col">adapters, same splits</th></tr></thead>
+    <thead><tr><td></td><th scope="col">rules file</th><th scope="col">adapters, same splits</th></tr></thead>
     <tbody>
       <tr><th scope="row">OpenStack</th><td class="num" data-value="readings.rules_distilled_openstack"></td><td class="num" data-value="readings.rules_adapters_openstack"></td></tr>
       <tr><th scope="row">Wikimedia</th><td class="num" data-value="readings.rules_distilled_wikimedia"></td><td class="num" data-value="readings.rules_adapters_wikimedia"></td></tr>

@@ -262,7 +262,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
 <section class="backup">
   <h2>Case 6: the count moved with the run, not with the bibliography</h2>
   <figure class="runs-fig">
-    <p class="ylabel">Entries reported unresolved, of <span data-value="case6.entries"></span>, five runs on one day</p>
+    <p class="ylabel">Entries reported unresolved, five runs on one day</p>
     <div class="bars runs" data-runs="case6.runs" data-of="case6.entries"></div>
   </figure>
   <p class="lead">arXiv was refusing requests sent close together (HTTP 406), and the fetch caught every exception and returned nothing, so a refusal, a timeout and a missing identifier looked the same. The last run, on the fixed code, waited out each refusal, resolved <span data-value="case6.resolvedMore"></span> more and gave a reason for each of the <span data-value="case6.refusedLast"></span> left: all refused. Two weeks later, with no identifier changed, a scheduled run left none unresolved.</p>

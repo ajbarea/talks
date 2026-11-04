@@ -210,3 +210,4 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .phone .stages .arrow { display: none; }
 .phone .stages { gap: 8px; }
 .phone table.matrix, .phone .key { font-size: 0.66em; }
+.steps li b { font-weight: 700; }

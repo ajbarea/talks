@@ -61,7 +61,7 @@
       <p><b>Why you should care:</b> your tests, CI and linters say "all clear" too. If a tool can't fail, "all clear" tells you nothing.</p>
     </div>
   </div>
-  <p class="footnote">Real output, excerpt: HalRef v0.1.0, given my paper's PDF cut to its first 2,000 bytes, October 2026.</p>
+  <p class="footnote">Real output, excerpt, command shortened: HalRef v0.1.0, given my paper's PDF cut to its first 2,000 bytes, October 2026.</p>
   <aside class="notes">This is what a public citation checker printed when I gave it a PDF cut down to its first 2,000 bytes. First: no references extracted. Then: all references verified OK. Its own first line says it found nothing, and the next says everything passed anyway. That's my one point today. A clean report counts only if the checker can fail, and tells you what it skipped. Here's what I did. In four weeks of use, I found six times my own checker had failed silently. I sorted those failures into three groups, found a guard for each, and tested two of the guards on five public checkers. Here's why you should care, whatever your area. Think of the last green check you saw in your CI. How do you know it ran? If a tool can't fail, all clear tells you nothing. So why citation checkers?</aside>
 </section>
 
@@ -89,7 +89,7 @@
   </div>
   <p class="lead fragment">So the trust moves to the checker.</p>
   <p class="footnote">Sources: Xu et al., GhostCite, 2026 (first two panels); ACL 2026 program chairs' statement.</p>
-  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. So conferences are turning to software. ACL 2026, a top language conference, ran an automated checker, and it flagged over a hundred accepted papers that cited work that doesn't exist. The program chairs confirmed each flag by hand. So the trust moves to the checker. An empty report looks like a clean bibliography, but only if the checker would have complained when it couldn't do its job. So I looked hard at my own.</aside>
+  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. So one top conference turned to software. ACL 2026, a top language conference, ran an automated checker, and it flagged over a hundred accepted papers that cited work that doesn't exist. The program chairs confirmed each flag by hand. So the trust moves to the checker. An empty report means a clean bibliography only if the checker would have complained when it couldn't do its job. So I looked hard at my own.</aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -100,7 +100,7 @@
     <div class="bars" data-bars="cases"></div>
     <figcaption class="legend"><span class="g-norun">Did not run</span><span class="g-input">Wrong inputs</span><span class="g-report">Misreported</span></figcaption>
   </figure>
-  <p class="footnote">Bar: days from the commit that let a run go wrong to its fix, from the repository history.</p>
+  <p class="footnote">Bar: days from the commit that let a run go wrong to its fix (case 3: how long the flawed score existed), from the repository history.</p>
   <aside class="notes">My checker is called dokimasia. It checks one bibliography of 103 entries that seven of my papers share. Each bar is one silent failure, and its length is how long it could affect a result, from the commit that caused it to the fix. The worst was the first. One paper looked for its bibliography in the wrong folder. All <span data-value="case1.citations"></span> of its citations came out as question marks, and its reference list was empty. But the build said success, because the build script ignored the error. That lasted 71 days. Every time, the output looked valid, and none of them said anything was wrong. Lined up, they fell into three groups.</aside>
 </section>
 
@@ -143,7 +143,7 @@
     <p class="after fragment">Both misses now have tests.</p>
   </figure>
   <p class="footnote">One change at a time, at techne commit dae4ca4. Paper term: fault injection.</p>
-  <aside class="notes">To test the guards as they stand today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each one. For cases 1 and 2, a change breaks the new guard, the code that works out what to check; the old defects lived outside the tool, where no test reaches. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. This shows my tests hold. It doesn't show the guards find new kinds of bugs. So I asked whether other checkers have the same gaps.</aside>
+  <aside class="notes">To test the guards as they stand today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each one. For cases 1 and 2, a change breaks the guard that replaced the old defect, like the build gate or the code that works out what to check; the old defects were outside the tool, so I couldn't put them back. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. This shows my tests hold. It doesn't show the guards find new kinds of bugs. So I asked whether other checkers have the same gaps.</aside>
 </section>
 
 <section data-chapter="4 · Other checkers">
@@ -154,7 +154,7 @@
   </table>
   <p class="key"><span class="k-bad"><span class="mark" aria-hidden="true">✕</span>clean verdict, or "not found" for a lookup that failed</span><span class="k-good"><span class="mark" aria-hidden="true">✓</span>said so</span><span class="k-warn"><span class="mark" aria-hidden="true">!</span>warned, then went on</span><span class="k-mixed"><span class="mark" aria-hidden="true">~</span>mixed</span><span class="k-none"><span class="mark" aria-hidden="true">–</span>does not apply</span></p>
   <p class="footnote">The five tools a 2026 comparison study tested, each at its cited version, run once per input with no API keys, October 2026.</p>
-  <aside class="notes">These are the five tools a 2026 comparison study looked at. I gave each one two kinds of nothing to check: a PDF it couldn't read, and a PDF with no reference section. A tool passes if it says it checked nothing. A red cross means it printed a clean verdict anyway. Three of the five did: all clear, all references verified OK, all verified successfully. Then I cut the network while each tool checked ten real references. Two of them reported all ten as not found. Only one came close: its report said inconclusive, but its progress lines still said not found. In their public code and issues, each of my three groups turns up in at least two of these five tools. That shows these failures happen; it doesn't show how often. Let me wrap up.</aside>
+  <aside class="notes">These are the five tools a 2026 comparison study looked at. I gave each one two kinds of nothing to check: a PDF it couldn't read, and a PDF with no reference section. A tool passes if it says it checked nothing. A red cross means it printed a clean verdict anyway. Three of the five did: all clear, all references verified OK, all verified successfully. Then I cut the network while each tool checked ten real references. Two of them reported all ten as not found. The other two came closer: they called the lookups inconclusive or unverified, but still printed a not found or a non-existent page for some. In their public code and issues, each of my three groups turns up in at least two of these five tools. That shows these failures happen; it doesn't show how often. Let me wrap up.</aside>
 </section>
 
 <section class="closing">
@@ -190,30 +190,19 @@
       <tr><td>6</td><td data-label="What failed">Refused lookups reported as missing</td><td data-label="Found by"><span data-value="case6.runs.0"></span> of <span data-value="case6.entries"></span> unresolved in one run</td></tr>
     </tbody>
   </table>
-  <p class="lead">Each fix was then confirmed by putting its defect back; that practice found none of the six. The test suite had <span data-value="checker.testsThen"></span> tests then. Case 1 went wrong at two steps (no check covered the bibliography, and the build ignored the error) and sits at the first.</p>
+  <p class="lead">Each fix was then confirmed by putting its defect back; that practice found none of the six. The test suite had <span data-value="checker.testsThen"></span> tests then.</p>
   <aside class="notes">Each one showed up as a result that didn't make sense, not through a test.</aside>
 </section>
 
 <section class="backup">
-  <h2>What my checker prints now, where it used to stay silent</h2>
-  <div class="cards" style="--n:2">
-    <div class="card"><b>A document it could not check</b><p>It finds every file with a <code>\documentclass</code> itself and names each document it could not check, instead of reading a hand-kept list.</p></div>
+  <h2>What my checker printed after the fixes, where it used to stay silent</h2>
+  <div class="cards" style="--n:1">
     <div class="card"><b>A lookup that got no answer</b><pre class="mini-out">bibcheck: unresolved -- identifier present, lookup did not answer (HTTP 406 x61):
 bibcheck: at least one host was throttling this run, so these say nothing about the entries; rerun later rather than editing them</pre></div>
   </div>
   <p class="lead">It was not given the two guard inputs from the other checkers: it checks a bibliography several papers share, inside their build, not one paper's PDF.</p>
   <p class="footnote">Output from the fixed code's run on the day of case 6 (September 21, 2026), when the checker was still named bibcheck.</p>
   <aside class="notes">Failed lookups are never cached now, and each carries its reason.</aside>
-</section>
-
-<section class="backup">
-  <h2>Three guards to take to your own tests and CI</h2>
-  <ul class="steps">
-    <li><b>Work out what a check covers</b>derive the set it runs on instead of listing it by hand, and name what it skipped</li>
-    <li><b>Break each check on purpose</b>list the ways it could report the wrong thing, put each one in, and confirm the check fails</li>
-    <li><b>Keep "no answer" as its own result</b>a timeout or a refused request is not "not found"</li>
-  </ul>
-  <p class="footnote">A check that never ran at all, like case 7, needs its guard in the workflow that should call it.</p>
 </section>
 
 <section class="backup">
@@ -262,7 +251,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
 </section>
 
 <section class="backup">
-  <h2>Why a false "not found" matters even when people check the flags</h2>
+  <h2>At a 2% fabrication rate, most flags are false even for a precise verifier</h2>
   <div class="cards" style="--n:2">
     <div class="card"><b>Most flags are already false</b><p>Fabricated entries are rare: if 2% were fabricated, the most precise independent verifier Kim et al. tested would be right on about one flag in six.</p></div>
     <div class="card limit"><b>A checker's own failures add more</b><p>Badalova and Mayr advise checking by hand every reference marked "not found". Case 6 shows that label is not always a finding: the server refused, and the checker called it missing.</p></div>
@@ -282,7 +271,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
 
 <section class="backup">
   <h2>How the five other checkers were tested</h2>
-  <ul class="steps">
+  <ul class="steps" style="--n:4">
     <li><b>Which tools</b>the five that Badalova and Mayr compared, at the cited versions</li>
     <li><b>Nothing to check</b>my paper's PDF cut to 2,000 bytes, and a PDF with no reference section; pass if it says it checked nothing and prints no clean verdict</li>
     <li><b>Network cut</b>the same paper's 10 real references; pass if no line calls a reference not found or wrong</li>
@@ -304,7 +293,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
 
 <section class="backup">
   <h2>What "verified" means here, and what it does not</h2>
-  <ul class="steps">
+  <ul class="steps" style="--n:3">
     <li><b>Lint, offline</b>every entry has an identifier; no duplicate keys, dangling citations or orphaned entries; can block a commit</li>
     <li><b>Verify</b>looks each identifier up in arXiv or Crossref and compares title, first author and year; a mismatch is reported as drift</li>
     <li><b>Rendered</b>checks that the keys a paper cites appear in its compiled bibliography</li>
@@ -323,8 +312,6 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
     <li>K. Kim, W. Brendel, P. Reizinger, HALLMARK, arXiv:2607.18360v2, 2026</li>
     <li>E. Hill, Four ways to forge a bundle my own verifier calls clean: refusal-site mutation testing of an evidence-bundle verifier, arXiv:2608.26183, 2026</li>
     <li>D. Yuan et al., Simple testing can prevent most critical failures, OSDI 2014</li>
-    <li>R. A. DeMillo, R. J. Lipton, F. G. Sayward, Hints on test data selection, Computer, 1978</li>
-    <li>J. H. Saltzer, M. D. Schroeder, The protection of information in computer systems, Proc. IEEE, 1975</li>
     <li>H. Jergas, C. Baethge, Quotation accuracy in medical journal articles, PeerJ, 2015</li>
     <li>Tools: CheckIfExist e460565, HalluCiteChecker v0.1.2, Hallucinator v0.2.4, HalRef v0.1.0, RefChecker v3.1.6; <a href="https://github.com/ajbarea/techne">techne</a> 13e74ff</li>
   </ul>

@@ -291,7 +291,7 @@
 .phone .install { gap: 4px; margin-top: 6px; }
 .phone .code-start { padding: 8px 10px; }
 .phone .firsts li { padding: 6px 8px; }
-.phone .lead { margin-top: 8px; font-size: 0.64em; }
+.phone .lead { margin-top: 6px; font-size: 0.66em; line-height: 1.25; }
 
 /* Phones: the place strip repeats the slide's title, so it goes; the pictures shrink. */
 .phone .strip { display: none; }

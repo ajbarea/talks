@@ -505,6 +505,15 @@
     // history entries. Once the
     // screen has turned, a reload is coming and the feed's relayout scrolls: not the reader's slide.
     if (phone || sideways) {
+      // reveal.js 6's scroll view opens a deep link part of a page short, and scroll snap then
+      // settles past the deck's middle on the slide before. Go to the slide's page directly.
+      const want = decodeURIComponent(location.hash.replace(/^#\/?/, "").split("/")[0]);
+      if (want) {
+        const target = /^\d+$/.test(want) ? Reveal.getSlides()[Number(want)] : document.getElementById(want);
+        const page = target && target.closest(".scroll-page");
+        const view = document.querySelector(".reveal-viewport");
+        if (page && view) view.scrollTop = page.offsetTop;
+      }
       const turned = () => narrow.matches !== phone || short.matches !== sideways;
       let timer = 0;
       Reveal.on("slidechanged", (e) => {

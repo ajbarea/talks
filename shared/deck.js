@@ -472,12 +472,9 @@
     plugins: [RevealNotes],
   }).then(() => {
     // Reveal puts its arrows in an <aside> inside its role=application wrapper, a nested
-    // complementary landmark (axe landmark-complementary-is-top-level). They are a control group.
-    const arrows = document.querySelector(".reveal .controls");
-    if (arrows) {
-      arrows.setAttribute("role", "group");
-      arrows.setAttribute("aria-label", "Slide controls");
-    }
+    // complementary landmark (axe landmark-complementary-is-top-level). Each arrow is a labelled
+    // button, so the aside needs no role; `none` is one an <aside> may take.
+    document.querySelector(".reveal .controls")?.setAttribute("role", "none");
     if (!phone) buildRail(chs);
   });
 })();

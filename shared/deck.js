@@ -11,8 +11,9 @@
   // Crossing the line (a rotation, a resized window) reloads, and the hash keeps the slide.
   const narrow = matchMedia("(max-width: 600px)");
   // Speaker view previews slides in narrow iframes (?receiver); they keep the slide layout.
-  const phone = narrow.matches && !/receiver/i.test(location.search);
-  narrow.addEventListener("change", () => location.reload());
+  const receiver = /receiver/i.test(location.search);
+  const phone = narrow.matches && !receiver;
+  if (!receiver) narrow.addEventListener("change", () => location.reload());
 
   const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
   const focusableInside = (sel) =>
@@ -482,6 +483,6 @@
     if (phone && !focusableInside(".reveal .slides")) {
       document.querySelector(".reveal-viewport")?.setAttribute("tabindex", "0");
     }
-    if (!phone) buildRail(chs);
+    if (!phone && !receiver) buildRail(chs);
   });
 })();

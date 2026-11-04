@@ -62,7 +62,7 @@
     </div>
   </div>
   <p class="footnote">Real output, excerpt, command shortened: HalRef v0.1.0, given my paper's PDF cut to its first 2,000 bytes, October 2026.</p>
-  <aside class="notes">This is what a public citation checker printed when I gave it a PDF cut down to its first 2,000 bytes. First: no references extracted. Then: all references verified OK. Its own first line says it found nothing, and the next says everything passed anyway. That's my one point today. A clean report counts only if the checker can fail, and tells you what it skipped. Here's what I did. In four weeks of use, I found six times my own checker had failed silently. I sorted those failures into three groups, found a guard for each, and tested two of the guards on five public checkers. Here's why you should care, whatever your area. Think of the last green check you saw in your CI. How do you know it ran? If a tool can't fail, all clear tells you nothing. So why citation checkers?</aside>
+  <aside class="notes">This is what a public citation checker printed when I gave it a PDF cut down to its first 2,000 bytes. First: no references extracted. Then: all references verified OK. One line says it found nothing, and a later line says everything passed anyway. That's my one point today. A clean report counts only if the checker can fail, and tells you what it skipped. Here's what I did. In four weeks of use, I found six times my own checker had failed silently. I sorted those failures into three groups, found a guard for each, and tested two of the guards on five public checkers. Here's why you should care, whatever your area. Think of the last green check you saw in your CI. How do you know it ran? If a tool can't fail, all clear tells you nothing. So why citation checkers?</aside>
 </section>
 
 <section data-chapter="2 · Why it matters">
@@ -89,19 +89,19 @@
   </div>
   <p class="lead fragment">So the trust moves to the checker.</p>
   <p class="footnote">Sources: Xu et al., GhostCite, 2026 (first two panels); ACL 2026 program chairs' statement.</p>
-  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. So one top conference turned to software. ACL 2026, a top language conference, ran an automated checker, and it flagged over a hundred accepted papers that cited work that doesn't exist. The program chairs confirmed each flag by hand. So the trust moves to the checker. An empty report means a clean bibliography only if the checker would have complained when it couldn't do its job. So I looked hard at my own.</aside>
+  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. One top conference turned to software: ACL 2026 ran an automated checker, and it flagged over a hundred accepted papers that cited work that doesn't exist. The program chairs confirmed each flag by hand. So the trust moves to the checker. An empty report means a clean bibliography only if the checker would have complained when it couldn't do its job. So I looked hard at my own.</aside>
 </section>
 
 <section data-chapter="3 · My checker">
   <span class="kicker">3 · My checker</span>
-  <h2>My own checker failed silently six times, and one failure lasted <span data-value="case1.days"></span> days</h2>
+  <h2>Six silent failures in my own checks; one let a broken paper pass for <span data-value="case1.days"></span> days</h2>
   <p class="context">My checker, dokimasia, checks one bibliography of <span data-value="checker.entries"></span> entries that <span data-value="checker.papers"></span> of my papers share.</p>
   <figure class="cases-fig">
     <div class="bars" data-bars="cases"></div>
     <figcaption class="legend"><span class="g-norun">Did not run</span><span class="g-input">Wrong inputs</span><span class="g-report">Misreported</span></figcaption>
   </figure>
   <p class="footnote">Bar: days from the commit that let a run go wrong to its fix (case 3: how long the flawed score existed), from the repository history.</p>
-  <aside class="notes">My checker is called dokimasia. It checks one bibliography of 103 entries that seven of my papers share. Each bar is one silent failure, and its length is how long it could affect a result, from the commit that caused it to the fix. The worst was the first. One paper looked for its bibliography in the wrong folder. All <span data-value="case1.citations"></span> of its citations came out as question marks, and its reference list was empty. But the build said success, because the build script ignored the error. That lasted 71 days. Every time, the output looked valid, and none of them said anything was wrong. Lined up, they fell into three groups.</aside>
+  <aside class="notes">My checker is called dokimasia. It checks one bibliography of 103 entries that seven of my papers share. Each bar is one silent failure, and its length is how long it could affect a result, from the commit that caused it to the fix. The worst was the first. One paper looked for its bibliography in the wrong folder. All <span data-value="case1.citations"></span> of its citations came out as question marks, and its reference list was empty. But the build said success, because the build script ignored the error. That lasted 71 days, and my checks only covered the last 25 of them. Every time, the output looked valid, and none of them said anything was wrong. Lined up, they fell into three groups.</aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -143,7 +143,7 @@
     <p class="after fragment">Both misses now have tests.</p>
   </figure>
   <p class="footnote">One change at a time, at techne commit dae4ca4. Paper term: fault injection.</p>
-  <aside class="notes">To test the guards today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each. For cases 1 and 2, a change breaks the guard that replaced the old defect, like the build gate or the code that works out what to check; the old defects were outside the tool, so I couldn't put them back. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. This shows my tests hold. It doesn't show the guards find new kinds of bugs. So I asked whether other checkers have the same gaps.</aside>
+  <aside class="notes">To test the guards today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each. For cases 1 and 2, a change breaks the guard that replaced the old defect, like the build gate or the code that works out what to check; the old defects were outside the tool, so a test of the tool can't reach them. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. This shows my tests hold. It doesn't show the guards find new kinds of bugs. So I asked whether other checkers have the same gaps.</aside>
 </section>
 
 <section data-chapter="4 · Other checkers">
@@ -190,7 +190,7 @@
       <tr><td>6</td><td data-label="What failed">Refused lookups reported as missing</td><td data-label="Found by"><span data-value="case6.runs.0"></span> of <span data-value="case6.entries"></span> unresolved in one run</td></tr>
     </tbody>
   </table>
-  <p class="lead">Each fix was then confirmed by putting its defect back; that practice found none of the six. The test suite had <span data-value="checker.testsThen"></span> tests then.</p>
+  <p class="lead">Each fix was then confirmed by putting its defect back; that practice found none of the six. The test suite had <span data-value="checker.testsThen"></span> tests then. Case 1's paper was broken for <span data-value="case1.days"></span> days, but checks existed for only the last <span data-value="cases.1.days"></span>.</p>
   <aside class="notes">Each one showed up as a result that didn't make sense, not through a test.</aside>
 </section>
 
@@ -306,7 +306,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
 <section class="backup">
   <h2>References</h2>
   <ul class="sources">
-    <li>Z. Xu et al., GhostCite: citation validity in the age of large language models, arXiv:2602.06718v2, 2026</li>
+    <li>Z. Xu et al., GhostCite: A large-scale analysis of citation validity in the age of large language models, arXiv:2602.06718v2, 2026</li>
     <li>D. Jurgens, M. Liakata, V. Moreira, J. Zhang, ACL statement on desk rejecting papers with hallucinated references, ACL 2026</li>
     <li>F. Badalova, P. Mayr, Detecting hallucinated and suspicious citations, arXiv:2607.22693, 2026</li>
     <li>K. Kim, W. Brendel, P. Reizinger, HALLMARK, arXiv:2607.18360v2, 2026</li>

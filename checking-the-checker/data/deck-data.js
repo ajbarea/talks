@@ -48,7 +48,7 @@ window.DECK_DATA = {
     caught: 9,
     total: 11,
     mutations: [
-      { id: "1a", n: 1, group: "norun", failed: 0, miss: "An empty compiled bibliography passed" },
+      { id: "1a", n: 1, group: "norun", failed: 0, miss: "an empty compiled bibliography passed" },
       { id: "1b", n: 1, group: "norun", failed: 2 },
       { id: "2a", n: 2, group: "norun", failed: 4 },
       { id: "2b", n: 2, group: "norun", failed: 11 },
@@ -58,7 +58,7 @@ window.DECK_DATA = {
       { id: "5", n: 5, group: "input", failed: 1 },
       { id: "6a", n: 6, group: "report", failed: 1 },
       { id: "6b", n: 6, group: "report", failed: 5 },
-      { id: "6c", n: 6, group: "report", failed: 0, miss: "The note that a server refused requests, removed" },
+      { id: "6c", n: 6, group: "report", failed: 0, miss: "the note that a server refused requests, removed" },
     ],
   },
   // Table III: two guards run once per input on each tool, at its cited version, with no API keys.

@@ -18,7 +18,7 @@
 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const printing = /[?&]print-pdf/.test(location.search);
-  if (reduce || printing || root.classList.contains("phone") || !window.Reveal) return;
+  if (reduce || printing || root.classList.contains("phone") || root.classList.contains("sideways") || !window.Reveal) return;
 
   const probe = document.createElement("i");
   probe.className = "m-probe";

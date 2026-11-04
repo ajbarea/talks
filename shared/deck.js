@@ -11,13 +11,15 @@
   // Crossing the line (a rotation, a resized window) reloads, and the hash keeps the slide.
   const narrow = matchMedia("(max-width: 600px)");
   // Speaker view previews slides in narrow iframes (?receiver); they keep the slide layout.
-  const phone = narrow.matches && !/receiver/i.test(location.search);
-  narrow.addEventListener("change", () => location.reload());
-  // A phone on its side keeps the slide's layout, fitted to the screen's width rather than its
-  // height, and scrolls: fitted to the height, a 16:9 slide's small text drew at 10px.
+  const receiver = /receiver/i.test(location.search);
+  const phone = narrow.matches && !receiver;
+  if (!receiver) narrow.addEventListener("change", () => location.reload());
+  // A phone on its side, on a screen wider than 16:9, keeps the slide's layout fitted to the
+  // screen's width rather than its height, and scrolls: fitted to the height, a 16:9 slide's small
+  // text drew at 10px. On a 16:9 phone the two fits are the same, so it keeps the paged slides.
   const short = matchMedia("(max-height: 500px) and (pointer: coarse) and (orientation: landscape)");
-  const sideways = short.matches && !phone && !/receiver/i.test(location.search);
-  short.addEventListener("change", () => location.reload());
+  const sideways = short.matches && !phone && !receiver && innerWidth / innerHeight > 1.9;
+  if (!receiver) short.addEventListener("change", () => location.reload());
 
   const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
   const focusableInside = (sel) =>
@@ -458,6 +460,7 @@
   const chs = chapters();
   buildAgenda(chs);
   if (phone) document.documentElement.classList.add("phone");
+  if (sideways) document.documentElement.classList.add("sideways");
   if (phone || sideways) {
     // A feed has no stepping: a fragment would hide its content and stretch the page by a screen.
     for (const f of document.querySelectorAll(".reveal .fragment")) f.classList.remove("fragment");
@@ -495,13 +498,22 @@
     if (phone && !focusableInside(".reveal .slides")) {
       document.querySelector(".reveal-viewport")?.setAttribute("tabindex", "0");
     }
-    if (!phone && !sideways) buildRail(chs);
+    if (!phone && !sideways && !receiver) buildRail(chs);
     // Scroll view leaves the hash alone, so a rotation's reload would reopen the feed at slide 1.
-    // Write the slide being read, without adding a history entry per slide. Once the screen has
-    // turned, a reload is coming and the feed's relayout scrolls; that slide is not the reader's.
+    // Write the slide being read (its id when it has one, as reveal.js does) once the feed settles,
+    // so a fast scroll makes few replaceState calls (Safari limits them), and without adding
+    // history entries. Once the
+    // screen has turned, a reload is coming and the feed's relayout scrolls: not the reader's slide.
     if (phone || sideways) {
       const turned = () => narrow.matches !== phone || short.matches !== sideways;
-      Reveal.on("slidechanged", (e) => turned() || history.replaceState(null, "", `#/${e.indexh}`));
+      let timer = 0;
+      Reveal.on("slidechanged", (e) => {
+        if (turned()) return;
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          if (!turned()) history.replaceState(null, "", `#/${e.currentSlide.id || e.indexh}`);
+        }, 300);
+      });
     }
   });
 })();

@@ -405,26 +405,30 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
   .rail button { padding: 3px 10px; font-size: 13px; }
 }
 
-/* Touch screens: every control is at least 44px to a finger (WCAG 2.5.5), drawn the same size.
-   The arrows' hit area grows past the drawn arrow; the rail's chips grow themselves. */
+/* Touch screens: the rail's chips are at least 44px to a finger (WCAG 2.5.5). reveal.js already
+   draws its arrows larger on a touch screen. */
 @media (pointer: coarse) {
-  .reveal .controls button::after { content: ""; position: absolute; inset: -4px; }
   .rail button { min-height: 44px; }
-  .reveal .slide-number a { min-height: 44px; line-height: 44px; }
 }
 
+/* WCAG 2.2 target size: the number is a link, so give it at least 24px, and 44px to a finger. */
+.reveal .slide-number a { display: inline-block; min-height: 24px; line-height: 24px; }
+@media (pointer: coarse) { .reveal .slide-number a { min-height: 44px; line-height: 44px; } }
+
 /* The number sits left of the arrows: reveal.js puts it under the next arrow, where it takes
-   that arrow's taps. */
+   that arrow's taps. The arrows are sized in the controls' font size (10px, or up to 40px on a
+   touch screen), so the offset is too. */
+.reveal { --ctl: 10px; }
+@media (pointer: coarse) { .reveal { --ctl: clamp(10px, 2.5vmin, 40px); } }
 .reveal .slide-number {
-  right: 112px;
-  bottom: 26px;
+  right: calc(12px + 10 * var(--ctl));
+  bottom: calc(12px + 1.4 * var(--ctl));
   padding: 2px 8px;
   font: 600 14px var(--sans);
   color: var(--muted);
   background: var(--paper);
 }
-/* WCAG 2.2 target size: the number is a link, so give it at least 24px. */
-.reveal .slide-number a { display: inline-block; min-height: 24px; line-height: 24px; }
+
 
 /* ------------------------------------------------------------------ phone -- */
 

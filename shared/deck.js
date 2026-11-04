@@ -471,10 +471,10 @@
     scrollActivationWidth: null,
     plugins: [RevealNotes],
   }).then(() => {
-    // Reveal puts its arrows in an <aside> inside its role=application wrapper, a nested
-    // complementary landmark (axe landmark-complementary-is-top-level). Each arrow is a labelled
-    // button, so the aside needs no role; `none` is one an <aside> may take.
+    // Reveal's arrow <aside> would be a landmark nested in its role=application wrapper.
     document.querySelector(".reveal .controls")?.setAttribute("role", "none");
+    // The scroll view scrolls the viewport, which a deck with no links gives no keyboard stop.
+    if (phone) document.querySelector(".reveal-viewport")?.setAttribute("tabindex", "0");
     if (!phone) buildRail(chs);
   });
 })();

@@ -1,4 +1,4 @@
-# Claude Duet, the Claude apps, and my favorite: Claude Code
+# The Claude apps, from Duet to Claude Code
 
 LDQIS meeting, November 6, 2026. About ten minutes, light theme for a lit room. Every product fact is checked against Anthropic's pages and the press coverage
 of October 30, 2026 (the app map, plans, privacy and hook facts on November 2); the Sources backup slide links each one, and each slide's notes end with a

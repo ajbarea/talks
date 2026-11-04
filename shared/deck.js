@@ -471,6 +471,13 @@
     scrollActivationWidth: null,
     plugins: [RevealNotes],
   }).then(() => {
+    // Reveal puts its arrows in an <aside> inside its role=application wrapper, a nested
+    // complementary landmark (axe landmark-complementary-is-top-level). They are a control group.
+    const arrows = document.querySelector(".reveal .controls");
+    if (arrows) {
+      arrows.setAttribute("role", "group");
+      arrows.setAttribute("aria-label", "Slide controls");
+    }
     if (!phone) buildRail(chs);
   });
 })();

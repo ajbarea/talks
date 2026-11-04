@@ -62,7 +62,7 @@
     </div>
   </div>
   <p class="footnote">Real output, excerpt, command shortened: HalRef v0.1.0, given my paper's PDF cut to its first 2,000 bytes, October 2026.</p>
-  <aside class="notes">This is what a public citation checker printed when I gave it a PDF cut down to its first 2,000 bytes. First: no references extracted. Then: all references verified OK. One line says it found nothing, and a later line says everything passed anyway. That's my one point today. A clean report counts only if the checker can fail, and tells you what it skipped. Here's what I did. In four weeks of use, I found six times my own checker had failed silently. I sorted those failures into three groups, found a guard for each, and tested two of the guards on five public checkers. Here's why you should care, whatever your area. Think of the last green check you saw in your CI. How do you know it ran? If a tool can't fail, all clear tells you nothing. So why citation checkers?</aside>
+  <aside class="notes">This is what a public citation checker printed when I gave it a PDF cut down to its first 2,000 bytes. First: no references extracted. Then: all references verified OK. One line says it found nothing, and a later line says everything passed anyway. That's my one point today. A clean report counts only if the checker can fail, and tells you what it skipped. Here's what I did. In four weeks of use, I found six times my own checker had failed silently. I sorted those failures into three groups, found a guard for each, and tested two of the guards on five public checkers. Here's why you should care. Think of the last green check you saw in your CI. How do you know it ran? If a tool can't fail, all clear tells you nothing. So why citation checkers?</aside>
 </section>
 
 <section data-chapter="2 · Why it matters">
@@ -89,7 +89,7 @@
   </div>
   <p class="lead fragment">So the trust moves to the checker.</p>
   <p class="footnote">Sources: Xu et al., GhostCite, 2026 (first two panels); ACL 2026 program chairs' statement.</p>
-  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. One top conference turned to software: ACL 2026 ran an automated checker, and it flagged over a hundred accepted papers that cited work that doesn't exist. The program chairs confirmed each flag by hand. So the trust moves to the checker. An empty report means a clean bibliography only if the checker would have complained when it couldn't do its job. So I looked hard at my own.</aside>
+  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. One top conference turned to software: ACL 2026 ran an automated checker, and it flagged over a hundred accepted papers that cited work that doesn't exist. So the trust moves to the checker, and I looked hard at my own.</aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -101,7 +101,7 @@
     <figcaption class="legend"><span class="g-norun">Did not run</span><span class="g-input">Wrong inputs</span><span class="g-report">Misreported</span></figcaption>
   </figure>
   <p class="footnote">Bar: days from the commit that let a run go wrong to its fix (case 3: how long the flawed score existed), from the repository history.</p>
-  <aside class="notes">My checker is called dokimasia. It checks one bibliography of 103 entries that seven of my papers share. Each bar is one silent failure, and its length is how long it could affect a result, from the commit that caused it to the fix. The worst was the first. One paper looked for its bibliography in the wrong folder. All <span data-value="case1.citations"></span> of its citations came out as question marks, and its reference list was empty. But the build said success, because the build script ignored the error. That lasted 71 days, and my checks only existed for the last 25 of them. Every time, the output looked valid, and none of them said anything was wrong. Lined up, they fell into three groups.</aside>
+  <aside class="notes">My checker is called dokimasia. It checks one bibliography of 103 entries that seven of my papers share. Each bar is one silent failure; its length is how long it lasted, from the commit that caused it to the fix. The worst was the first. One paper looked for its bibliography in the wrong folder. All <span data-value="case1.citations"></span> of its citations came out as question marks, and its reference list was empty. But the build said success, because the build script ignored the error. That lasted 71 days, and my checks only existed for the last 25 of them. Every time, the output looked valid. Lined up, they fell into three groups.</aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -143,18 +143,36 @@
     <p class="after fragment">Both misses now have tests.</p>
   </figure>
   <p class="footnote">One change at a time, at techne commit dae4ca4. Paper term: fault injection.</p>
-  <aside class="notes">To test the guards today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each. For cases 1 and 2, a change breaks the guard that replaced the old defect, like the build gate or the code that works out what to check; the old defects were outside the tool, so a test of the tool can't reach them. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. This shows my tests hold. It doesn't show the guards find new kinds of bugs. So I asked whether other checkers have the same gaps.</aside>
+  <aside class="notes">To test the guards today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each. For cases 1 and 2, a change breaks the guard that replaced the old defect, like the build gate or the code that works out what to check; the old defects were outside the tool, so a test of the tool can't reach them. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. So I asked whether other checkers have the same gaps.</aside>
 </section>
 
 <section data-chapter="4 · Other checkers">
   <span class="kicker">4 · Other checkers</span>
   <h2>Three of five public checkers printed a clean result after checking nothing</h2>
-  <table class="matrix" data-matrix="checkers.tools" data-clean="checkers.cleanAfterNothing" data-all="checkers.allNotFound">
+  <table class="matrix" data-matrix="checkers.tools" data-clean="checkers.cleanAfterNothing" data-all="checkers.allNotFound" data-count="checkers.toolCount">
     <thead><tr><th scope="col">Tool</th><th scope="col" class="g-norun" data-short="Unreadable PDF"><span class="hg">Did not run</span>Unreadable PDF</th><th scope="col" class="g-norun" data-short="No references"><span class="hg">Did not run</span>No reference section</th><th scope="col" class="g-report fragment" data-fragment-index="1" data-short="Network cut"><span class="hg">Misreported</span>Network cut, 10 real references</th></tr></thead>
   </table>
   <p class="key"><span class="k-bad"><span class="mark" aria-hidden="true">✕</span>clean verdict, or "not found" for a lookup that failed</span><span class="k-good"><span class="mark" aria-hidden="true">✓</span>said so</span><span class="k-warn"><span class="mark" aria-hidden="true">!</span>warned, then went on</span><span class="k-mixed"><span class="mark" aria-hidden="true">~</span>mixed</span><span class="k-none"><span class="mark" aria-hidden="true">–</span>does not apply</span></p>
   <p class="footnote">The five tools a 2026 comparison study tested, each at its cited version, run once per input with no API keys, October 2026.</p>
-  <aside class="notes">These are the five tools a 2026 comparison study looked at. I gave each one two kinds of nothing to check: a PDF it couldn't read, and a PDF with no reference section. A tool passes if it says it checked nothing. A red cross means it printed a clean verdict anyway. Three of the five did: all clear, all references verified OK, all verified successfully. Then I cut the network while each tool checked ten real references. Two of them reported all ten as not found. The other two came closer: they called the lookups inconclusive or unverified, but still printed a not found or a non-existent page for some. In their public code and issues, each of my three groups turns up in at least two of these five tools. That shows these failures happen; it doesn't show how often. Let me wrap up.</aside>
+  <aside class="notes">These are the five tools a 2026 comparison study looked at. I gave each one two kinds of nothing to check: a PDF it couldn't read, and a PDF with no reference section. A tool passes if it says it checked nothing. A red cross means it printed a clean verdict anyway. Three of the five did: all clear, all references verified OK, all verified successfully. Then I cut the network while each tool checked ten real references. Two of them reported all ten as not found. The other two called them inconclusive or unverified, but some lines still said not found or non-existent. In their public code and issues, each of my three groups turns up in at least two of these five tools. Let me sum up.</aside>
+</section>
+
+<section data-chapter="5 · Conclusion">
+  <span class="kicker">5 · Conclusion</span>
+  <h2>A checker's all-clear counts only if it can fail and names what it skipped</h2>
+  <div class="recap" data-motion="stagger" data-child="rise" data-step="150">
+    <div class="tile"><p class="num">6 <span aria-hidden="true">→</span> 3</p><p>silent failures in my checker, in three groups, each with its own guard</p></div>
+    <div class="tile"><p class="num"><span data-value="rebreak.caught"></span> of <span data-value="rebreak.total"></span></p><p>re-breaks of my six fixes caught by today's tests</p></div>
+    <div class="tile"><p class="num"><span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span></p><p>public checkers printed a clean result after checking nothing</p></div>
+  </div>
+  <div class="open">
+    <p class="open-h">Open problems</p>
+    <ul>
+      <li>How often these failures occur: one tool, seen by its author, shows only that they do</li>
+      <li>Whether the guards find new defects, or find them earlier than other practices</li>
+    </ul>
+  </div>
+  <aside class="notes">To sum up. An empty report is evidence only if the checker can fail and says what it measured. My own checker failed silently six times, in three groups, and each group has its own guard. When I broke my fixes again, today's tests caught nine of eleven. That shows the tests hold, not that the guards find new bugs. And three of five public checkers printed a clean result after checking nothing. Two problems stay open. Six cases from one tool show these failures happen, not how often. And I haven't tested whether the guards find new defects, or find them sooner than another practice would. That's my talk.</aside>
 </section>
 
 <section class="closing">
@@ -170,7 +188,7 @@
     <p class="qr-label"><b>These slides</b><span>ajbarea.github.io/talks/<br>checking-the-checker</span></p>
   </div>
   <!-- /qr -->
-  <aside class="notes">So, one point. A clean report counts only if the checker can fail and says what it skipped. Three guards get you there: work out what to check and name what you skipped, break each check on purpose, and keep no answer apart from not found. The slides are at the link. Thank you; I'm glad to take questions.</aside>
+  <aside class="notes">Thank you. The slides are at the link, and I'm glad to take questions.</aside>
 </section>
 
 <section class="backup">

@@ -68,6 +68,7 @@ window.DECK_DATA = {
   checkers: {
     // HalRef's lines for the unreadable PDF, an excerpt of the run log (evidence/other-checkers-run.md).
     halrefNothing: ["No references extracted from /in/trunc.pdf", "All references verified OK"],
+    toolCount: 5,
     cleanAfterNothing: 3,
     allNotFound: 2,
     tools: [

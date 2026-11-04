@@ -20,6 +20,7 @@
 ## Checking the Checker talk (checking-the-checker/), CISC-810 Group 1
 - ✅ #82: 8 main slides + 12 backup, from the revised manuscript and its evidence/ only (every value in `data/deck-data.js` with its source); `figs.js` draws the charts and recounts the counts the titles state. Script 966 words, cap 7 minutes.
 - ✅ Five rounds of independent Opus review against the rubric and the manuscript; round 5 clean.
+- 📋 deck/checking-the-checker-conclusion: a conclusion slide (key results, open problems from the Limitations) per Dr. Shi's lecture (topic-04: tell them what you told them, give open problems, say the talk is over).
 - 📋 Upload `Desktop/CISC-810 talk/checking-the-checker.pdf` to myCourses by Mon Nov 9 23:59 (AJ); revised slides due Nov 18. Rehearsal brief in the same folder.
 - 📋 Title says "November 2026": set the exact date once AJ's slot (Nov 10, 12 or 17) is known.
 - 📋 The manuscript folder is outside this repo, so CI cannot recheck the numbers; recheck by hand if the paper changes before Nov 18.

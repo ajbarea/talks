@@ -35,7 +35,7 @@
 .qr-follow .qr-code, .qr-close .qr-code { outline: 2px solid var(--line); }
 
 /* Slide 2: the real output, then what I did and why it matters. */
-.point { display: grid; grid-template-columns: 600px 1fr; gap: 34px; align-items: start; margin-top: 10px; }
+.point { display: grid; grid-template-columns: 680px 1fr; gap: 34px; align-items: start; margin-top: 10px; }
 .term-fig { margin: 0; }
 .term { padding: 26px 30px; border-radius: 12px; background: #1c1917; font: 0.9em/1.7 var(--mono); color: #f5f5f4; }
 .term p { margin: 0; }
@@ -194,3 +194,19 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .phone .stage .scases, .phone .stage .guard { font-size: 0.68em; }
 .phone .reach { font-size: 0.66em; }
 .phone .glabel { font-size: 0.96em; }
+
+/* Round-1 review: excerpt marks, group-labelled matrix heads, neutral misses and slide 3 accents. */
+.term .gap { color: #a8a29e; }
+.matrix thead th.g-norun, .matrix thead th.g-report { border-top: 5px solid var(--g); color: var(--ink); }
+.matrix .hg { display: block; font-size: 1em; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g-ink); }
+.col.miss .col-fill { border-color: var(--muted) !important; }
+.col.miss .col-num, .misses li::before, .misses b { color: var(--ink) !important; }
+.axis-bar .range, .hbar.now .fill { background: var(--ink); }
+.hbar .fill { background: #a8a29e; }
+.ends b, .hbar.now b, .panel .big { color: var(--ink); }
+.panel.accent { border-color: var(--ink); }
+.mini-out { margin: 6px 0 0; padding: 10px 12px; border-radius: 8px; background: #1c1917; color: #f5f5f4; font: 0.66em/1.4 var(--mono); white-space: pre-wrap; }
+.phone .reveal h2 { font-size: 1.32em; }
+.phone .stages .arrow { display: none; }
+.phone .stages { gap: 8px; }
+.phone table.matrix, .phone .key { font-size: 0.66em; }

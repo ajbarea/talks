@@ -14,7 +14,7 @@ window.DECK_DATA = {
     quoteErrors: 25.4, // Limitations: percent of quotations in medical journals that misdescribe the work (Jergas and Baethge)
   },
   // Section III-A: the shared bibliography the six cases come from.
-  checker: { entries: 103, papers: 7 },
+  checker: { entries: 103, papers: 7, testsThen: 45 }, // testsThen: Section III-B, the suite during the four weeks
   // Table I. Days: from the commit that let a run produce the wrong result to its fix (evidence/hidden-for.md).
   // Case 5 took 21 minutes from trigger to fix; the paper prints it as under one day.
   cases: [
@@ -42,6 +42,7 @@ window.DECK_DATA = {
       guard: "Report “no answer” apart from “not found”" },
   },
   // Sections III-C and IV-G; per-mutation counts from evidence/rebreak.md, techne dae4ca4, 490 tests.
+  // 1b's two failures are the LaTeX build runner's tests, outside the 490.
   rebreak: {
     tests: 490,
     caught: 9,
@@ -57,7 +58,7 @@ window.DECK_DATA = {
       { id: "5", n: 5, group: "input", failed: 1 },
       { id: "6a", n: 6, group: "report", failed: 1 },
       { id: "6b", n: 6, group: "report", failed: 5 },
-      { id: "6c", n: 6, group: "report", failed: 0, miss: "The “a host was throttling” line removed" },
+      { id: "6c", n: 6, group: "report", failed: 0, miss: "The note that a server refused requests, removed" },
     ],
   },
   // Table III: two guards run once per input on each tool, at its cited version, with no API keys.
@@ -65,8 +66,8 @@ window.DECK_DATA = {
   // warn (warned, then went on), good (said it checked nothing, or kept failed lookups apart),
   // mixed, none (not applicable). cleanAfterNothing and allNotFound are checked against the cells.
   checkers: {
-    // HalRef's two lines for the unreadable PDF (evidence/other-checkers-run.md, run log).
-    halrefNothing: ["No references extracted", "All references verified OK"],
+    // HalRef's lines for the unreadable PDF, an excerpt of the run log (evidence/other-checkers-run.md).
+    halrefNothing: ["No references extracted from /in/trunc.pdf", "All references verified OK"],
     cleanAfterNothing: 3,
     allNotFound: 2,
     tools: [
@@ -81,7 +82,7 @@ window.DECK_DATA = {
       { name: "Hallucinator", cells: [
         { kind: "good", text: "“No references to check”" },
         { kind: "good", text: "“No references to check”" },
-        { kind: "good", text: "10 of 10 “inconclusive”" } ] },
+        { kind: "mixed", text: "10 of 10 “inconclusive”, but progress lines say “not found”" } ] },
       { name: "HalRef", cells: [
         { kind: "bad", text: "“All references verified OK”", clean: true },
         { kind: "warn", text: "Warns, then flags prose as references" },

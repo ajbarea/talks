@@ -72,15 +72,15 @@
     });
   }
 
-  // <table data-matrix="checkers.tools">: one row per tool, one cell per fault. The marks repeat the
+  // <table data-matrix="checkers.tools" data-clean=... data-all=...>: one row per tool, one cell per fault. The marks repeat the
   // colour as a symbol, so the table reads the same without colour.
   const MARK = { bad: "✕", good: "✓", warn: "!", mixed: "~", none: "–" };
   function matrix(table) {
     const tools = get(table.dataset.matrix) || [];
     const clean = tools.filter((t) => t.cells.slice(0, 2).some((c) => c.clean)).length;
     const all = tools.filter((t) => t.cells[2].all).length;
-    if (clean !== get("checkers.cleanAfterNothing")) fail(`checkers: ${clean} clean after nothing, not the title's count`);
-    if (all !== get("checkers.allNotFound")) fail(`checkers: ${all} reported all as not found, not the stated count`);
+    if (clean !== get(table.dataset.clean)) fail(`checkers: ${clean} clean after nothing, not the title's count`);
+    if (all !== get(table.dataset.all)) fail(`checkers: ${all} reported all as not found, not the stated count`);
     const heads = [...table.querySelectorAll("thead th")].slice(1).map((th) => th.dataset.short || th.textContent);
     const body = el("tbody", {}, table);
     tools.forEach((t, i) => {

@@ -101,7 +101,7 @@
     <figcaption class="legend"><span class="g-norun">Did not run</span><span class="g-input">Wrong inputs</span><span class="g-report">Misreported</span></figcaption>
   </figure>
   <p class="footnote">Bar: days from the commit that let a run go wrong to its fix (case 3: how long the flawed score existed), from the repository history.</p>
-  <aside class="notes">My checker is called dokimasia. It checks one bibliography of 103 entries that seven of my papers share. Each bar is one silent failure, and its length is how long it could affect a result, from the commit that caused it to the fix. The worst was the first. One paper looked for its bibliography in the wrong folder. All <span data-value="case1.citations"></span> of its citations came out as question marks, and its reference list was empty. But the build said success, because the build script ignored the error. That lasted 71 days, and my checks only covered the last 25 of them. Every time, the output looked valid, and none of them said anything was wrong. Lined up, they fell into three groups.</aside>
+  <aside class="notes">My checker is called dokimasia. It checks one bibliography of 103 entries that seven of my papers share. Each bar is one silent failure, and its length is how long it could affect a result, from the commit that caused it to the fix. The worst was the first. One paper looked for its bibliography in the wrong folder. All <span data-value="case1.citations"></span> of its citations came out as question marks, and its reference list was empty. But the build said success, because the build script ignored the error. That lasted 71 days, and my checks only existed for the last 25 of them. Every time, the output looked valid, and none of them said anything was wrong. Lined up, they fell into three groups.</aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -190,7 +190,7 @@
       <tr><td>6</td><td data-label="What failed">Refused lookups reported as missing</td><td data-label="Found by"><span data-value="case6.runs.0"></span> of <span data-value="case6.entries"></span> unresolved in one run</td></tr>
     </tbody>
   </table>
-  <p class="lead">Each fix was then confirmed by putting its defect back; that practice found none of the six. The test suite had <span data-value="checker.testsThen"></span> tests then. Case 1's paper was broken for <span data-value="case1.days"></span> days, but checks existed for only the last <span data-value="cases.1.days"></span>.</p>
+  <p class="lead">Each fix was then confirmed by putting its defect back; that practice found none of the six. The test suite had <span data-value="checker.testsThen"></span> tests then. Case 1's paper was broken for <span data-value="case1.days"></span> days, but checks existed for only the last <span data-value="case1.checkedDays"></span>.</p>
   <aside class="notes">Each one showed up as a result that didn't make sense, not through a test.</aside>
 </section>
 

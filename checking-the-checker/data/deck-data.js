@@ -26,7 +26,7 @@ window.DECK_DATA = {
     { n: 6, group: "report", what: "Refused lookups reported as missing entries", days: 27, shown: "27 days" },
   ],
   // Section IV: the details behind cases 1, 3, 5 and 7.
-  case1: { citations: 20, days: 71 },
+  case1: { citations: 20, days: 71, checkedDays: 25 }, // checkedDays: days any check existed (hidden-for.md; Response #8)
   case3: { entries: 77, realScore: 26 }, // entries then in the shared file; score of a paper citing 20
   case5: { fromCache: 29 }, // records read from the cache on the first run after the fix
   case7: { missing: 21, cited: 31 }, // Table I, the open seventh failure: missing of cited, stale local build
@@ -58,7 +58,7 @@ window.DECK_DATA = {
       { id: "5", n: 5, group: "input", failed: 1 },
       { id: "6a", n: 6, group: "report", failed: 1 },
       { id: "6b", n: 6, group: "report", failed: 5 },
-      { id: "6c", n: 6, group: "report", failed: 0, miss: "the note that a server refused requests, removed" },
+      { id: "6c", n: 6, group: "report", failed: 0, miss: "the line saying a server refused requests was removed" },
     ],
   },
   // Table III: two guards run once per input on each tool, at its cited version, with no API keys.

@@ -10,10 +10,9 @@
 .qr-label { color: var(--muted); }
 .qr-label b { color: var(--ink); }
 .qr-follow .qr-code, .qr-close .qr-code { outline: 2px solid var(--line); }
-.discussion, .pause { background: var(--band); }
+.discussion { background: var(--band); }
 .discussion.dark { background: var(--night); }
-.discussion h2, .pause h2 { margin-top: 120px; }
-.pause h2 { font-size: 1.7em; max-width: 22ch; }
+.discussion h2 { margin-top: 120px; }
 .tag {
   display: inline-block; padding: 4px 12px; border: 2px solid var(--limit); border-radius: 999px;
   font-size: 0.66em; font-weight: 700; color: var(--limit); letter-spacing: 0.02em;
@@ -205,7 +204,7 @@
 .relmap .col { stroke: var(--line); stroke-width: 1.5; }
 .phone .vgrid { grid-template-columns: repeat(13, 1fr); }
 .phone .title-slide h1 { margin-top: 40px; }
-.phone .discussion h2, .phone .pause h2 { margin-top: 40px; }
+.phone .discussion h2 { margin-top: 40px; }
 .phone .week.three .card:first-child { grid-row: auto; }
 .phone .app-row { gap: 6px; }
 .phone .app-row li { padding: 6px 10px; }

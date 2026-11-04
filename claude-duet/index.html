@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Claude Duet, the Claude apps, and my favorite: Claude Code</title>
-  <meta name="description" content="What Anthropic's new proactive agent does, how it compares with the other Claude apps, and why Claude Code is my favorite for working on code.">
-  <meta property="og:title" content="Claude Duet, the Claude apps, and my favorite: Claude Code">
-  <meta property="og:description" content="What Anthropic's new proactive agent does, how it compares with the other Claude apps, and why Claude Code is my favorite for working on code.">
+  <title>Five Claude apps, one favorite</title>
+  <meta name="description" content="Five Claude apps in the order they launched, from the Claude chat to Anthropic's new proactive agent, Duet, and why Claude Code is my favorite for working on code.">
+  <meta property="og:title" content="Five Claude apps, one favorite">
+  <meta property="og:description" content="Five Claude apps in the order they launched, from the Claude chat to Anthropic's new proactive agent, Duet, and why Claude Code is my favorite for working on code.">
   <link rel="stylesheet" href="../vendor/reveal/reset.css">
   <link rel="stylesheet" href="../vendor/reveal/reveal.css">
   <link rel="stylesheet" href="../shared/deck.css">
@@ -20,7 +20,7 @@
 
 <section class="title-slide">
   <span class="kicker">AJ Barea · LDQIS, Rochester Institute of Technology</span>
-  <h1>Claude Duet, the Claude apps, and my favorite: Claude Code</h1>
+  <h1>Five Claude apps, one favorite</h1>
   <p class="when">November 6, 2026</p>
   <svg class="robot" viewBox="0 0 260 340" role="img" aria-label="An orange cartoon robot, dancing">
     <circle class="glow" cx="130" cy="176" r="124"/>
@@ -57,7 +57,7 @@
     <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/claude-duet" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM14 4h1v1h-1zM16 4h2v1h-2zM20 4h5v1h-5zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM14 5h6v1h-6zM21 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM15 6h3v1h-3zM19 6h4v1h-4zM24 6h1v1h-1zM27 6h2v1h-2zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h4v1h-4zM18 7h1v1h-1zM20 7h1v1h-1zM24 7h3v1h-3zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h2v1h-2zM15 8h1v1h-1zM17 8h1v1h-1zM19 8h1v1h-1zM22 8h1v1h-1zM25 8h1v1h-1zM28 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h4v1h-4zM17 9h1v1h-1zM19 9h4v1h-4zM24 9h3v1h-3zM28 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h1v1h-1zM18 11h2v1h-2zM22 11h1v1h-1zM25 11h2v1h-2zM28 11h1v1h-1zM4 12h1v1h-1zM6 12h5v1h-5zM15 12h1v1h-1zM17 12h3v1h-3zM21 12h2v1h-2zM24 12h1v1h-1zM26 12h1v1h-1zM30 12h5v1h-5zM4 13h1v1h-1zM8 13h1v1h-1zM11 13h1v1h-1zM18 13h1v1h-1zM20 13h1v1h-1zM22 13h4v1h-4zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM5 14h7v1h-7zM13 14h4v1h-4zM19 14h2v1h-2zM22 14h1v1h-1zM25 14h1v1h-1zM29 14h2v1h-2zM32 14h1v1h-1zM34 14h2v1h-2zM4 15h1v1h-1zM7 15h1v1h-1zM9 15h1v1h-1zM15 15h1v1h-1zM18 15h2v1h-2zM25 15h2v1h-2zM28 15h2v1h-2zM32 15h5v1h-5zM5 16h1v1h-1zM7 16h2v1h-2zM10 16h2v1h-2zM16 16h1v1h-1zM19 16h1v1h-1zM22 16h2v1h-2zM25 16h1v1h-1zM28 16h2v1h-2zM31 16h3v1h-3zM6 17h1v1h-1zM8 17h1v1h-1zM11 17h1v1h-1zM14 17h1v1h-1zM16 17h1v1h-1zM18 17h4v1h-4zM24 17h3v1h-3zM28 17h1v1h-1zM30 17h2v1h-2zM33 17h1v1h-1zM35 17h2v1h-2zM9 18h2v1h-2zM13 18h1v1h-1zM17 18h1v1h-1zM21 18h1v1h-1zM23 18h1v1h-1zM25 18h1v1h-1zM28 18h3v1h-3zM34 18h2v1h-2zM4 19h1v1h-1zM6 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM15 19h1v1h-1zM17 19h2v1h-2zM20 19h1v1h-1zM22 19h5v1h-5zM29 19h2v1h-2zM33 19h2v1h-2zM4 20h1v1h-1zM6 20h1v1h-1zM10 20h2v1h-2zM13 20h1v1h-1zM15 20h1v1h-1zM17 20h1v1h-1zM21 20h1v1h-1zM23 20h1v1h-1zM28 20h2v1h-2zM31 20h2v1h-2zM36 20h1v1h-1zM7 21h2v1h-2zM15 21h1v1h-1zM20 21h5v1h-5zM27 21h1v1h-1zM30 21h2v1h-2zM33 21h2v1h-2zM36 21h1v1h-1zM4 22h2v1h-2zM8 22h7v1h-7zM16 22h2v1h-2zM19 22h1v1h-1zM21 22h1v1h-1zM26 22h1v1h-1zM28 22h2v1h-2zM31 22h2v1h-2zM34 22h2v1h-2zM4 23h1v1h-1zM6 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM17 23h1v1h-1zM19 23h4v1h-4zM24 23h1v1h-1zM27 23h2v1h-2zM31 23h6v1h-6zM5 24h6v1h-6zM15 24h3v1h-3zM19 24h2v1h-2zM24 24h3v1h-3zM29 24h1v1h-1zM31 24h3v1h-3zM35 24h2v1h-2zM4 25h1v1h-1zM6 25h4v1h-4zM11 25h1v1h-1zM13 25h2v1h-2zM17 25h1v1h-1zM19 25h1v1h-1zM21 25h2v1h-2zM27 25h1v1h-1zM29 25h2v1h-2zM34 25h1v1h-1zM36 25h1v1h-1zM4 26h1v1h-1zM7 26h4v1h-4zM12 26h1v1h-1zM14 26h7v1h-7zM22 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM31 26h1v1h-1zM33 26h3v1h-3zM4 27h1v1h-1zM6 27h3v1h-3zM11 27h4v1h-4zM18 27h2v1h-2zM25 27h1v1h-1zM29 27h1v1h-1zM33 27h4v1h-4zM4 28h1v1h-1zM6 28h2v1h-2zM10 28h1v1h-1zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM19 28h3v1h-3zM24 28h1v1h-1zM26 28h1v1h-1zM28 28h6v1h-6zM36 28h1v1h-1zM12 29h1v1h-1zM15 29h2v1h-2zM18 29h1v1h-1zM20 29h1v1h-1zM22 29h4v1h-4zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM14 30h1v1h-1zM16 30h1v1h-1zM19 30h2v1h-2zM22 30h1v1h-1zM24 30h2v1h-2zM27 30h2v1h-2zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h2v1h-2zM15 31h1v1h-1zM20 31h1v1h-1zM25 31h4v1h-4zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM18 32h1v1h-1zM22 32h2v1h-2zM25 32h1v1h-1zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h5v1h-5zM19 33h3v1h-3zM24 33h3v1h-3zM29 33h1v1h-1zM32 33h3v1h-3zM36 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h1v1h-1zM14 34h1v1h-1zM16 34h2v1h-2zM21 34h1v1h-1zM23 34h1v1h-1zM26 34h1v1h-1zM30 34h2v1h-2zM33 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h1v1h-1zM15 35h2v1h-2zM18 35h1v1h-1zM20 35h1v1h-1zM23 35h4v1h-4zM29 35h1v1h-1zM32 35h3v1h-3zM4 36h7v1h-7zM12 36h2v1h-2zM15 36h2v1h-2zM21 36h3v1h-3zM26 36h4v1h-4zM31 36h1v1h-1zM35 36h1v1h-1z"/></svg>
   </div>
   <!-- /qr -->
-  <aside class="notes">Hi everyone. Dr. Reznik asked me to explain Claude Duet, the new agent Anthropic announced on October 21st. I'll do that, and I'll place it among the other Claude apps. Then I'll tell you which one is my favorite of all of them, rivals' tools included: Claude Code. Please stop me any time; there are two planned pauses. <small>Sources: Anthropic's announcement.</small></aside>
+  <aside class="notes">Hi everyone. Dr. Reznik asked me to explain Claude Duet, the new agent Anthropic announced on October 21st. I'll do that, and I'll place it among the other Claude apps, oldest first. Then I'll tell you which one is my favorite of all of them, rivals' tools included: Claude Code. Please stop me any time; there are two planned pauses. <small>Sources: Anthropic's announcement.</small></aside>
 </section>
 
 <section>
@@ -65,30 +65,38 @@
   <h2>Five parts in about ten minutes, with two pauses for you</h2>
   <ol class="agenda" data-auto></ol>
   <p class="footnote">A pause for questions after part 2, and a discussion after the demo. Questions any time, too.</p>
-  <aside class="notes">Here's the plan. A quick map of the Claude apps. Then Duet: what it does, where it falls short, and a pause for your questions. Then why Claude Code is my favorite, a short demo, a discussion, and how to get started.</aside>
+  <aside class="notes">Here's the plan. A quick tour of five Claude apps, oldest first. Then Duet, the newest: what it does, what it can't do, and a pause for your questions. Then why Claude Code is my favorite, a short demo, a discussion, and how to get started.</aside>
 </section>
 
 <section data-contribution data-chapter="1 · Five Claude apps">
   <span class="kicker">1 · Five Claude apps</span>
-  <h2>Five Claude apps, and they differ most in where they do the work</h2>
+  <h2>Five Claude apps since 2023, from chat to an agent that comes to you</h2>
   <div class="apps">
-    <p class="axis" aria-hidden="true"><span>in Anthropic's cloud</span><span>on your own computer</span></p>
+    <p class="axis" aria-hidden="true"><span>oldest</span><span>newest</span></p>
     <ol class="app-row" data-motion="stagger" data-child="rise" data-step="140">
-      <li><b>Claude</b><span class="where">claude.ai and phone</span>answers, drafts and files</li>
-      <li class="today"><b>Claude Duet</b><span class="where">its own cloud computer</span>checks your accounts, comes to you</li>
-      <li><b>Claude Desktop</b><span class="where">Mac, Windows, Linux</span>chat, Cowork and Code in one window</li>
-      <li><b>Claude Science</b><span class="where">your machine or cluster</span>analyses, every step traced</li>
-      <li class="today"><b>Claude Code</b><span class="where">your repository</span>reads, edits and runs your code</li>
+      <li><span class="launch">Jul 2023</span><b>Claude chat</b><span class="where">claude.ai and phone</span>answers, drafts and files</li>
+      <li><span class="launch">Oct 2024</span><b>Claude Desktop</b><span class="where">Mac, Windows, Linux</span>chat, Cowork and Code in one window</li>
+      <li class="today"><span class="launch">Feb 2025</span><b>Claude Code</b><span class="where">your repository</span>reads, edits and runs your code</li>
+      <li><span class="launch">Jun 2026</span><b>Claude Science</b><span class="where">your machine or cluster</span>analyses, every result traced</li>
+      <li class="today"><span class="launch">Oct 2026</span><b>Claude Duet</b><span class="where">its own cloud computer</span>checks your accounts, comes to you</li>
     </ol>
   </div>
   <p class="mine fragment" data-motion="rise"><b>What I did:</b> Duet since October 27; my lab work in Claude Code. <b>Why you should care:</b> an agent in your repository can refuse data that hasn't passed your validation.</p>
-  <p class="footnote">Orange: today's two. Science is a beta; Duet, a research preview.</p>
-  <aside class="notes">Here are five Claude apps, from Anthropic's cloud on the left to your own computer on the right. The plain Claude chat answers and drafts. Duet, the new one, works on its own cloud computer. Claude Desktop is one window holding the chat, Cowork for longer tasks, and Claude Code. Claude Science, a beta from June, is installed where your data lives and traces every step of an analysis. And Claude Code works inside your code's own folder, your repository. Here's what I did: I've been in Duet's preview since October 27th, and I do my lab work in Claude Code. Here's why you should care. An agent inside your repository follows rules you set, so it can refuse to analyze data that hasn't passed your validation. Let's start with Duet. <small>Sources: claude.com overview and download pages; Claude Code desktop docs; Claude Science page and announcement; Duet announcement.</small></aside>
+  <p class="footnote">Orange: today's two. Dates are each app's first public release, each as a beta or research preview.</p>
+  <aside class="notes">Here are five Claude apps, oldest first. The Claude chat opened as a beta in July 2023; it answers and drafts. Claude Desktop followed in October 2024, also a beta: one window that now holds the chat, Cowork for longer tasks, and Claude Code. Claude Code came in February 2025 as a research preview, and was generally available that May; it works inside your code's own folder, your repository. Claude Science, a beta from this June, runs where your data lives and keeps a history of how every result was made. And the newest, Duet, a research preview from October 21st, works on its own cloud computer. Here's what I did: I've been in Duet's preview since October 27th, and I do my lab work in Claude Code. Here's why you should care. An agent inside your repository follows rules you set, so it can refuse to analyze data that hasn't passed your validation. First, how the apps compare. <small>Sources: Anthropic's Claude 2, Claude 3.7 Sonnet and Claude 4 announcements; Anthropic on X, October 31, 2024, and TechCrunch the same day; claude.com overview and download pages; Claude Code desktop docs; Claude Science page and announcement; Duet announcement.</small></aside>
+</section>
+
+<section data-chapter="1 · Five Claude apps">
+  <span class="kicker">1 · Five Claude apps</span>
+  <h2>Only Duet comes to you unasked; the rest wait for you or a schedule</h2>
+  <div class="relmap wide" data-source="surfaces" data-differs="off"></div>
+  <p class="footnote">Orange: today's two. Cowork runs in Claude Desktop and is moving into the chat, plan by plan; Claude Design now works inside any Claude chat.</p>
+  <aside class="notes">Here's a second map of the same apps. Across the bottom is what each one works on: a chat or a draft, your accounts and apps, or your code and data. Up the side is who starts the work. The Claude chat, which now includes Claude Design, waits for you to ask, and so do Claude Code and Claude Science. Claude Desktop's Cowork, now moving into the chat too, and Claude Code on the web can run on a schedule you set. And Duet sits alone in the top row: it comes to you without being asked. That's the new thing, so let's look closer at Duet. <small>Sources: each product's page; Cowork and chat are now one Claude, September 16; help center, moving from standalone Claude Design, and release notes, April 9; Claude Code docs on the web and scheduled tasks.</small></aside>
 </section>
 
 <section data-chapter="2 · Claude Duet">
   <span class="kicker">2 · Claude Duet</span>
-  <h2>Duet keeps working on its own cloud computer after you close the app</h2>
+  <h2>Duet checks your accounts from its own cloud computer, then comes to you</h2>
   <div class="duet-flow">
     <div class="who" data-motion="rise"><b>You</b><small>phone app or claude.ai</small></div>
     <div class="arrow" aria-hidden="true" data-motion="growx" data-delay="300"></div>
@@ -101,61 +109,15 @@
     <div class="out fragment" data-motion="rise">
       <b>What comes back</b>
       <img src="img/duet-card.png" width="840" height="436" alt="A card from my Duet app: Draft your BONSAI rotation wrap-up for Richard? Your BONSAI rotation ends Friday, and Richard welcomed ideas on his lab's library and project template. I'll draft a short thank-you and wrap-up note, leaving gaps for what you found. Noticed Sun 5:38 AM.">
-      <small>A real card from my Duet, Sunday. It also sends morning briefs, dashboards, forecasts.</small>
+      <small>A real card from my Duet, Sunday.</small>
     </div>
   </div>
-  <p class="footnote">Research preview, announced October 21, 2026. Runs on Claude Opus 5.5; you can't pick the model.</p>
-  <aside class="notes">Duet is Anthropic's proactive personal agent, announced October 21st as a research preview. The key idea: it has its own computer in Anthropic's cloud, with its own browser, so it keeps working with your phone and laptop off. Every few hours it checks the accounts you've connected, and then it comes to you. Here's a real one from Sunday: it read my email from Richard Lange and offered to draft my rotation wrap-up note. It also does morning briefs, dashboards, forecasts and meetings. In Anthropic's words, the Claude app waits for you to open a chat; Duet comes to you. So what can it touch? <small>Sources: Anthropic's announcement and product page; help center; Flavio Copes; my Duet app, November 1.</small></aside>
-</section>
-
-<section data-chapter="2 · Claude Duet">
-  <span class="kicker">2 · Claude Duet</span>
-  <h2>Duet acts through your accounts, and asks before it sends, pays, signs or deletes</h2>
-  <div class="gate">
-    <div class="side" data-motion="rise">
-      <h3>Does on its own</h3>
-      <ul><li>checks your accounts</li><li>builds dashboards</li><li>writes forecasts</li><li>prototypes web apps</li></ul>
-    </div>
-    <div class="hinge fragment" data-motion="pop"><p><span aria-hidden="true">→</span>shows you first, waits for your yes</p></div>
-    <div class="side ask fragment" data-motion="rise">
-      <h3>Asks first</h3>
-      <ul><li>send a message</li><li>make a payment</li><li>sign a document</li><li>delete anything</li></ul>
-    </div>
+  <div class="duet-limits fragment" data-motion="stagger" data-child="rise" data-step="140">
+    <p class="ask"><b>Asks first</b><span>send a message</span><span>make a payment</span><span>sign a document</span><span>delete anything</span></p>
+    <p class="cant"><b>Can't see</b><span>the files on your computer, so lab code stays in Claude Code</span></p>
   </div>
-  <div class="facts fragment" data-motion="stagger" data-child="rise" data-step="120">
-    <div><b>Over 6,000</b>connectors and plugins</div>
-    <div><b>Waitlist</b>US Pro, Max and Ultra plans</div>
-    <div><b>Phone and web</b>iOS, Android, claude.ai</div>
-    <div><b>No extra cost</b>uses your plan's limits</div>
-  </div>
-  <p class="footnote">Never allowed, even with your yes: trading securities or moving money between accounts.</p>
-  <aside class="notes">Duet works through your accounts, using the same marketplace of over six thousand connectors and plugins as the rest of Claude. Much it does on its own. But before it sends a message, makes a payment, signs a document or deletes anything, it shows you exactly what it's about to do and waits for your yes. Some things it won't do even then, like trading stocks. It's a waitlist preview for Pro, Max and Ultra plans in the US, and its work counts against your plan's usage. So where does Duet sit among the other Claude apps? <small>Sources: Anthropic's announcement; safety and privacy post; help center.</small></aside>
-</section>
-
-<section data-chapter="2 · Claude Duet">
-  <span class="kicker">2 · Claude Duet</span>
-  <h2>Each Claude app works on something different; only Duet comes to you unasked</h2>
-  <div class="relmap wide" data-source="surfaces" data-differs="off"></div>
-  <p class="footnote">Orange: today's two. Claude Design now works inside any Claude chat, and Cowork is moving in, plan by plan. Claude Science sits beside Claude Code: both work on your code and data when you ask.</p>
-  <aside class="notes">Here's Duet on a second map. Across the bottom is what each app works on: a chat or a draft, your accounts and apps, or your code and data. Up the side is who starts the work. The Claude chat, which now includes Claude Design, waits for you to ask, and so do Claude Science and Claude Code. Cowork, now moving into the chat, and Claude Code on the web can run on a schedule you set. Duet sits alone in the top row: it comes to you without being asked. That's the new thing. But look at which column it's in. <small>Sources: each product's page; Cowork and chat are now one Claude, September 16; help center, moving from standalone Claude Design; Claude Code docs on the web and scheduled tasks.</small></aside>
-</section>
-
-<section data-chapter="2 · Claude Duet">
-  <span class="kicker">2 · Claude Duet</span>
-  <h2>Duet can't see your computer's files, so code stays in Claude Code</h2>
-  <div class="need-wrap">
-  <table class="need">
-    <thead><tr><th>What lab code needs</th><th>Claude chat</th><th>Claude Science</th><th>Claude Duet</th><th>Claude Code</th></tr></thead>
-    <tbody data-motion="stagger" data-child="rise" data-step="140">
-      <tr><td>Reads and changes your repository</td><td data-label="Chat" class="p"><span class="mark" aria-hidden="true">~</span>sees what you upload or connect</td><td data-label="Science" class="p"><span class="mark" aria-hidden="true">~</span>reads, runs and edits your scripts</td><td data-label="Duet" class="n"><span class="mark" aria-hidden="true">✕</span>can't see your computer's files</td><td data-label="Code" class="y"><span class="mark" aria-hidden="true">✓</span>works in it</td></tr>
-      <tr><td>Runs on your own computer or cluster</td><td data-label="Chat" class="n"><span class="mark" aria-hidden="true">✕</span>Anthropic's cloud</td><td data-label="Science" class="y"><span class="mark" aria-hidden="true">✓</span>laptop, lab server or cluster</td><td data-label="Duet" class="n"><span class="mark" aria-hidden="true">✕</span>its own cloud computer</td><td data-label="Code" class="y"><span class="mark" aria-hidden="true">✓</span>your terminal</td></tr>
-      <tr><td>Follows your lab's own rules</td><td data-label="Chat" class="p"><span class="mark" aria-hidden="true">~</span>skills you add</td><td data-label="Science" class="p"><span class="mark" aria-hidden="true">~</span>skills you save</td><td data-label="Duet" class="p"><span class="mark" aria-hidden="true">~</span>Anthropic's list</td><td data-label="Code" class="y"><span class="mark" aria-hidden="true">✓</span>hooks it can't skip</td></tr>
-      <tr><td>Comes to you unasked</td><td data-label="Chat" class="n"><span class="mark" aria-hidden="true">✕</span>waits for you</td><td data-label="Science" class="n"><span class="mark" aria-hidden="true">✕</span>you start each analysis</td><td data-label="Duet" class="y"><span class="mark" aria-hidden="true">✓</span>checks every few hours</td><td data-label="Code" class="p"><span class="mark" aria-hidden="true">~</span>on a schedule you set</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p class="footnote">From Anthropic's help center: Duet "can't see all of your projects or the files on your computer". Claude Desktop holds the chat, Cowork and Claude Code in one window.</p>
-  <aside class="notes">Here's where Duet falls short for lab work. It can't see the files on your computer, and it follows Anthropic's list of when to ask, not your lab's rules. The chat app sees what you upload or connect. Claude Science runs where your data lives, and saves a pipeline as a skill it reuses. Claude Code works inside the repository itself, under hooks it can't skip. What Duet does better than all of them is coming to you on its own. One early reviewer put it well: Duet can see his Claude sessions but can't direct them. Let's pause there. <small>Sources: Duet help center and announcement; Every's review; Claude Science page; skills in Claude help article; Claude Code hooks and scheduled tasks docs.</small></aside>
+  <p class="footnote">Research preview since October 21, 2026, by waitlist for US Pro, Max and Ultra plans. Runs on Claude Opus 5.5.</p>
+  <aside class="notes">Duet is Anthropic's proactive personal agent, announced October 21st as a research preview. The key idea: it has its own computer in Anthropic's cloud, with its own browser, so it keeps working with your phone and laptop off. Every few hours it checks the accounts you've connected, and then it comes to you. Here's a real one from Sunday: it read my email from Richard Lange and offered to draft my rotation wrap-up note. Much it does on its own, but before it sends a message, makes a payment, signs a document or deletes anything, it shows you first and waits for your yes. And it can't see the files on your computer. So for lab code, the work stays in Claude Code. Let's pause there. <small>Sources: Anthropic's announcement and product page; safety and privacy post; help center; Flavio Copes; my Duet app, November 1.</small></aside>
 </section>
 
 <section class="pause" data-background-color="#f1efe9" data-chapter="2 · Claude Duet">
@@ -284,6 +246,7 @@ fi</code></pre>
     <li>TechCrunch, <a href="https://techcrunch.com/2026/10/22/claude-duet-app-is-anthropics-bet-on-agents/">Claude Duet app is Anthropic's bet on agents</a>, October 22, 2026</li>
     <li>Every, <a href="https://every.to/vibe-check/vibe-check-duet-anthropic-s-always-on-agent">Vibe Check: Duet</a>, October 21, 2026 (early access)</li>
     <li>Flavio Copes, <a href="https://flaviocopes.com/claude-duet/">A deep dive into Claude Duet</a>, October 22, 2026 (from the docs)</li>
+    <li>Launch dates: Anthropic, <a href="https://www.anthropic.com/news/claude-2">Claude 2</a>, July 11, 2023; Anthropic <a href="https://x.com/AnthropicAI/status/1852003248208552331">on X</a> and <a href="https://techcrunch.com/2024/10/31/claude-gets-desktop-apps-and-dictation-support">TechCrunch</a>, October 31, 2024; <a href="https://www.anthropic.com/news/claude-3-7-sonnet">Claude 3.7 Sonnet and Claude Code</a>, February 24, 2025; <a href="https://www.anthropic.com/news/claude-4">Claude 4</a>, May 22, 2025; <a href="https://support.claude.com/en/articles/12138966-release-notes">release notes</a>, April 9, 2026</li>
     <li>Claude Code docs: <a href="https://code.claude.com/docs/en/overview">overview</a>, <a href="https://code.claude.com/docs/en/hooks-guide">hooks</a> and <a href="https://code.claude.com/docs/en/hooks">their reference</a>, <a href="https://code.claude.com/docs/en/skills">skills</a>, <a href="https://code.claude.com/docs/en/plugins/overview">plugins</a>, <a href="https://code.claude.com/docs/en/sub-agents">subagents</a>, <a href="https://code.claude.com/docs/en/mcp">MCP</a>, <a href="https://code.claude.com/docs/en/worktrees">worktrees</a>, <a href="https://code.claude.com/docs/en/headless">headless</a>, <a href="https://code.claude.com/docs/en/claude-code-on-the-web">on the web</a>, <a href="https://code.claude.com/docs/en/routines">scheduled tasks</a>, <a href="https://code.claude.com/docs/en/data-usage">data usage</a>, <a href="https://code.claude.com/docs/en/permissions">permissions</a></li>
     <li>Anthropic: <a href="https://claude.com/product/overview">Claude</a>, <a href="https://claude.com/product/cowork">Cowork</a>, <a href="https://claude.com/product/claude-science">Claude Science</a> and <a href="https://www.anthropic.com/news/claude-science-ai-workbench">its announcement</a>, June 30, 2026, <a href="https://support.claude.com/en/articles/12512180-using-skills-in-claude">skills in Claude</a>, <a href="https://code.claude.com/docs/en/desktop">desktop app docs</a>, <a href="https://claude.com/product/design">Claude Design</a> and <a href="https://support.claude.com/en/articles/17440474-move-from-standalone-claude-design-to-claude">its move into Claude</a>, <a href="https://claude.com/resources/articles/cowork-is-now-claude">Cowork and chat are now one Claude</a>, September 16, 2026, <a href="https://claude.com/download">desktop app</a>, <a href="https://claude.com/pricing">pricing</a>, <a href="https://claude.com/programs/team-plan-for-scientists">Team plan for scientists</a>, <a href="https://www.anthropic.com/legal/commercial-terms">Commercial Terms</a></li>
     <li>This week's work: <a href="https://github.com/bonsai-neuro-ai/nn-library/pull/17">nn-library #17</a>, <a href="https://github.com/bonsai-neuro-ai/nn-library/pull/18">#18</a>, <a href="https://github.com/bonsai-neuro-ai/torch-mlflow-template/pull/3">torch-mlflow-template #3</a>, <a href="https://github.com/ajbarea/talks/pull/46">talks #46</a>, <a href="https://github.com/ajbarea/techne/blob/main/plugins/phylax/hooks/hooks.json">my rules plugin's hooks</a></li>
@@ -325,15 +288,37 @@ fi</code></pre>
   <h2>Duet, the details people ask about</h2>
   <table class="data">
     <tbody>
-      <tr><th>Model</th><td>Claude Opus 5.5; it chooses the effort per job</td></tr>
+      <tr><th>Does on its own</th><td>Checks accounts, builds dashboards, writes forecasts and briefs, helps with meetings, prototypes web apps</td></tr>
+      <tr><th>Never allowed</th><td>Trading securities or moving money between accounts, even with your yes</td></tr>
+      <tr><th>Connectors</th><td>Over 6,000 connectors and plugins, shared with the rest of Claude</td></tr>
+      <tr><th>Where</th><td>iOS and Android apps, and claude.ai</td></tr>
+      <tr><th>Your files</th><td>"Can't see all of your projects or the files on your computer" (help center)</td></tr>
+      <tr><th>Model</th><td>Claude Opus 5.5 only; it picks the effort per job</td></tr>
       <tr><th>Who can join</th><td>Waitlist; US Pro, Max and Ultra; not Team or Enterprise yet</td></tr>
       <tr><th>Cost</th><td>No extra charge in the preview; background checks use your plan's limits</td></tr>
       <tr><th>Passwords</th><td>Never sees them; sign-in tokens are added by a proxy outside its computer</td></tr>
       <tr><th>Memory</th><td>Kept until you reset it, even after you disconnect an app</td></tr>
       <tr><th>Known gaps</th><td>Can't show its browser yet; no calls or texts; Microsoft 365 not available yet; urgent mail can land between checks</td></tr>
+      <tr><th>An early review</th><td>Every: Duet can see the reviewer's Claude sessions but can't direct them</td></tr>
       <tr><th>Rivals named in the press</th><td>Meta's Muse, OpenAI's dots, Grok Bot</td></tr>
     </tbody>
   </table>
+</section>
+
+<section class="backup">
+  <h2>What lab code needs, app by app</h2>
+  <div class="need-wrap">
+  <table class="need">
+    <thead><tr><th>What lab code needs</th><th>Claude chat</th><th>Claude Code</th><th>Claude Science</th><th>Claude Duet</th></tr></thead>
+    <tbody>
+      <tr><td>Reads and changes your repository</td><td data-label="Chat" class="p"><span class="mark" aria-hidden="true">~</span>sees what you upload or connect</td><td data-label="Code" class="y"><span class="mark" aria-hidden="true">✓</span>works in it</td><td data-label="Science" class="p"><span class="mark" aria-hidden="true">~</span>reads, runs and edits your scripts</td><td data-label="Duet" class="n"><span class="mark" aria-hidden="true">✕</span>can't see your computer's files</td></tr>
+      <tr><td>Runs on your own computer or cluster</td><td data-label="Chat" class="n"><span class="mark" aria-hidden="true">✕</span>Anthropic's cloud</td><td data-label="Code" class="y"><span class="mark" aria-hidden="true">✓</span>your terminal</td><td data-label="Science" class="y"><span class="mark" aria-hidden="true">✓</span>laptop, lab server or cluster</td><td data-label="Duet" class="n"><span class="mark" aria-hidden="true">✕</span>its own cloud computer</td></tr>
+      <tr><td>Follows your lab's own rules</td><td data-label="Chat" class="p"><span class="mark" aria-hidden="true">~</span>skills you add</td><td data-label="Code" class="y"><span class="mark" aria-hidden="true">✓</span>hooks it can't skip</td><td data-label="Science" class="p"><span class="mark" aria-hidden="true">~</span>skills you save</td><td data-label="Duet" class="p"><span class="mark" aria-hidden="true">~</span>Anthropic's list</td></tr>
+      <tr><td>Comes to you unasked</td><td data-label="Chat" class="n"><span class="mark" aria-hidden="true">✕</span>waits for you</td><td data-label="Code" class="p"><span class="mark" aria-hidden="true">~</span>on a schedule you set</td><td data-label="Science" class="n"><span class="mark" aria-hidden="true">✕</span>you start each analysis</td><td data-label="Duet" class="y"><span class="mark" aria-hidden="true">✓</span>checks every few hours</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="footnote">Apps in launch order. Claude Science saves a pipeline as a skill it reuses.</p>
 </section>
 
 </div>

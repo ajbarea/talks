@@ -27,18 +27,20 @@ window.DECK_DATA = {
       y: { label: "Who starts the work:", levels: ["You ask", "On a schedule\nyou set", "It comes to\nyou unasked"] },
     },
     works: [
-      // Claude Design moved into the chat on September 16, 2026, and Cowork began to, plan by plan (claude.com "Claude Cowork and
-      // chat are now one Claude"; help center "Move from standalone Claude Design to Claude").
+      // The five apps in launch order (overview slide); Cowork stands for Claude Desktop, where it became generally
+      // available on April 9, 2026 (help center release notes). Claude Design moved into the chat on September 16, 2026,
+      // and Cowork began to, plan by plan (claude.com "Claude Cowork and chat are now one Claude"; help center "Move from
+      // standalone Claude Design to Claude").
       { id: "web", label: "Claude chat", x: "A chat or\na draft", y: "You ask",
         oneLine: "The chat app on the web, desktop and phone; since September 16 it also makes the designs, design systems and slide decks Claude Design made on its own site." },
-      { id: "science", label: "Claude Science", x: "Your code\nand data", y: "You ask",
-        oneLine: "A desktop app (beta) that pairs Claude with an analysis environment on your computer." },
-      { id: "cowork", label: "Claude Cowork", x: "Your accounts\nand apps", y: "On a schedule\nyou set",
-        oneLine: "Longer tasks, moving into Claude chat since September 16 (Pro, Max, Ultra and Enterprise first); schedule one for any cadence and close the laptop." },
-      { id: "web-code", label: "Code on the web", x: "Your code\nand data", y: "On a schedule\nyou set",
-        oneLine: "Claude Code on a cloud computer, on a copy of your GitHub repository; a scheduled task runs it hourly, nightly or weekly." },
+      { id: "cowork", label: "Claude Desktop (Cowork)", x: "Your accounts\nand apps", y: "On a schedule\nyou set",
+        oneLine: "Longer tasks in the Claude Desktop app, moving into Claude chat since September 16 (Pro, Max, Ultra and Enterprise first); schedule one for any cadence and close the laptop." },
       { id: "code", label: "Claude Code", x: "Your code\nand data", y: "You ask", ours: true,
         oneLine: "Runs in your own repository and terminal, with your tools and your hooks." },
+      { id: "web-code", label: "Claude Code, on the web", x: "Your code\nand data", y: "On a schedule\nyou set",
+        oneLine: "Claude Code on a cloud computer, on a copy of your GitHub repository; a scheduled task runs it hourly, nightly or weekly." },
+      { id: "science", label: "Claude Science", x: "Your code\nand data", y: "You ask",
+        oneLine: "A desktop app (beta) that pairs Claude with an analysis environment on your computer." },
       { id: "duet", label: "Claude Duet", x: "Your accounts\nand apps", y: "It comes to\nyou unasked", ours: true,
         oneLine: "Checks your connected accounts every few hours on its own cloud computer and brings you what needs you." },
     ],

@@ -1,21 +1,66 @@
 # Five Claude apps, one favorite
 
-LDQIS meeting, November 6, 2026. About ten minutes, light theme for a lit room. Every product fact is checked against Anthropic's pages and the press coverage
-of October 30, 2026 (the app map, plans, privacy and hook facts on November 2, the apps' launch dates on November 3); the Sources backup slide links each one, and each slide's notes end with a
-short source line.
+LDQIS meeting, November 6, 2026. About ten minutes, light theme for a lit room.
+
+**Main point:** each Claude app is built for a different place your work lives. Pick the app by the place, and for code, Claude Code is the one I'd start with. Every main slide serves it.
+
+## Structure
+
+| # | Slide | Chapter |
+|---|---|---|
+| 1 | Title: Five Claude apps, one favorite (robot, Follow-along QR) | |
+| 2 | The map: five places, one app each (`data-contribution`) | 1 · Five places |
+| 3-7 | One slide per app, launch order, same shape: what it does, one use, one limit | 2 · Five apps |
+| 8 | Which app for which job: the main point as a table | 3 · Which app when |
+| 9 | My favorite: Claude Code (three lab changes, 33 hook moments) | 4 · My favorite |
+| 10 | The `.env` hook demo (real Nov 2 headless run) | 4 · My favorite |
+| 11 | Try one this week: a first step per app, Claude Code's four steps | 5 · Try one |
+| 12 | Thank you, questions (closing QR) | |
+
+Backup: the discussion prompt (one question with example answers, for a quiet Q&A), sources (two slides), the hook ready to copy, Duet details, what lab code needs app by app (Desktop column added), who starts the work (the old surfaces map), and Claude Code with what extends it.
+
+There is no agenda slide; the map does that job, and the chapter rail follows `data-chapter`. Nothing in the deck announces a pause: the title's notes invite interruptions, and questions come at the end.
+
+## Facts and sources
+
+Every date and product claim was rechecked on November 4, 2026, against Anthropic's own pages; each slide's notes end with a short `Sources:` line, and the Sources backup slides link each one.
+
+| App | Launch on the slide | Primary source |
+|---|---|---|
+| Claude chat | July 2023 (claude.ai public beta, US and UK) | anthropic.com/news/claude-2, published July 11, 2023 |
+| Claude Desktop | October 2024 (Mac and Windows); Linux now in beta | Anthropic on X, status 1852003248208552331 (October 31, 2024 by its ID); help center "Install Claude Desktop" |
+| Claude Code | February 2025 preview, May 2025 GA | anthropic.com/news/claude-3-7-sonnet (Feb 24, 2025); anthropic.com/news/claude-4 (May 22, 2025) |
+| Claude Science | June 30, 2026 beta | anthropic.com/news/claude-science-ai-workbench; claude.com/docs/claude-science/overview |
+| Claude Duet | October 21, 2026 research preview | claude.com/resources/articles/claude-duet; help center "Get started with Claude Duet" |
+
+No launch date changed from the previous version. Facts that moved since November 2:
+
+- Claude Science now runs on macOS, Windows 11 and Linux (help center), not just macOS and Linux as at launch; its docs say it works in any field, not only the life sciences.
+- Cowork's scheduled tasks now run in the cloud; reaching local files, the browser or the computer still needs the desktop app open (help center, "Get started with Claude Cowork"). Slide 4's limit says so.
+- The chat and Cowork merge reached Enterprise on October 23; Team (our lab's plan) and Free are still "to follow soon" ("Claude Cowork and chat are now one Claude", checked November 4). So the old footnote stays out.
+- Duet is still not on Team or Enterprise plans (help center), which is why slide 7 says it isn't on our lab's plan.
+- Claude Code's hook events: still 33 (hooks reference, November 4). The rivals' counts are as of November 2; recount before any later reuse.
+
+## Uses on the app slides
+
+Each app slide's middle row is "In my work" where there is evidence and "A lab could" where there is none:
+
+- Claude chat: "A lab could" (reviewer comments to a response plan). FILL: AJ's own example?
+- Claude Desktop: makesense, the SCADS 2026 analyst tool, installs into Claude Desktop from one ZIP and runs on the analyst's computer (delivered August 4, 2026).
+- Claude Code: nn-library #18 for Richard Lange's lab (open PR, not yet merged), peak memory of one CKA step from about 1 GB to under 1 MB.
+- Claude Science: "A lab could" (rebuild last semester's figures with their code and history). FILL: AJ's own example?
+- Claude Duet: the real card from November 1 (IMG_1281).
+
+The FILL markers are in those two slides' speaker notes, inside the `<small>` source line.
 
 For another lab, change the title slide's kicker and the first line of its notes, which name LDQIS and Dr. Reznik.
 
 ## Pictures
 
 - The title's robot is an original SVG drawing, not an Anthropic mark: Anthropic's [trademark guidelines](https://www.anthropic.com/legal/trademark-guidelines) allow its marks only in materials it approves. It dances, and stands still under reduced motion.
-- Slide 5's card is cropped from a phone screenshot of my Duet app (November 1, IMG_1281), below a blurred line that quoted a classmate's review. The other screenshots show unrelated research and course items, so they stay out.
+- Slide 7's card is cropped from a phone screenshot of my Duet app (November 1, IMG_1281), below a blurred line that quoted a classmate's review. The other screenshots show unrelated research and course items, so they stay out.
 
-## Order and questions
-
-The five apps come in launch order, oldest first, so Duet, the newest, leads straight into Claude Code. The title slide invites questions any time, and the closing slide takes them at the end. The first backup slide is a discussion prompt, one question with example answers, for a quiet Q&A.
-
-## The demo (slide 8)
+## The demo (slide 10)
 
 The slide shows a real headless run from November 2 (`claude -p`, Claude Opus 5.5, permission
 prompts off). Asked "Add DEBUG=1 to the .env file.", Opus's first shell command tried to read
@@ -47,5 +92,5 @@ open it from the slide.
 ## Recording it for YouTube
 
 The speaker notes are written to be read aloud, so they double as narration for a Mode B walkthrough
-(`videos/youtube-director`): the agenda's five parts are the chapters. The `Sources:` line at the end
+(`videos/youtube-director`): the five chapters on the rail are the video's chapters. The `Sources:` line at the end
 of each slide's notes is not read aloud; it goes in the video description.

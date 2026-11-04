@@ -1,8 +1,7 @@
 /* ------------------------------------------------------------ claude duet -- */
 /* Presented in a lit room, so every slide stays on the light paper, title and close included. */
 
-.subtitle { max-width: 34ch; font-size: 1.05em; color: var(--muted); }
-.lead { margin: 16px 0 0; font-size: 0.8em; max-width: 62ch; }
+.lead { margin: 12px 0 0; font-size: 0.66em; max-width: 80ch; color: var(--muted); }
 .title-slide .kicker { color: var(--limit); }
 .title-slide h1 { margin-top: 120px; max-width: 16ch; }
 .title-slide h1::after { content: ""; display: block; width: 140px; height: 8px; margin-top: 26px; border-radius: 4px; background: var(--mark-ours); }
@@ -62,49 +61,108 @@
 @keyframes r-blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
 @keyframes r-float { 0% { transform: translateY(10px); opacity: 0; } 30% { opacity: 0.85; } 100% { transform: translateY(-34px); opacity: 0; } }
 
-/* Five apps, oldest first, each with the month it first opened to the public. */
-.apps { margin-top: 22px; }
-.apps .axis { display: flex; justify-content: space-between; margin: 0 0 8px; padding: 6px 12px; border-radius: 6px; font-size: 0.64em; font-weight: 700; color: var(--label);
-  background: var(--band); }
-.apps .axis span:first-child::before { content: "← "; }
-.apps .axis span:last-child::after { content: " →"; }
-.app-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 0; padding: 0; list-style: none; }
-.app-row li { padding: 14px 14px 16px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.66em; line-height: 1.3; }
-.app-row li.today { border: 3px solid var(--mark-ours); background: #fff8f3; }
-.app-row .launch { display: block; margin-bottom: 4px; font-weight: 700; color: var(--limit); }
-.app-row b { display: block; font-size: 1.12em; font-weight: 700; color: var(--ink); }
-.app-row .where { display: block; margin: 6px 0 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); color: var(--label); font-weight: 600; }
-.mine { margin: 20px 0 0; padding: 12px 18px; border-left: 6px solid var(--mark-ours); background: var(--band); border-radius: 4px; font-size: 0.66em; max-width: 64ch; }
+/* Icons for the five places, drawn once in a sprite and reused with <use>. */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ico { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+
+/* The map: five places, one app each, in launch order. */
+.places { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin: 26px 0 0; padding: 0; list-style: none; }
+.places li { display: flex; flex-direction: column; align-items: center; padding: 18px 10px 16px; border-radius: 12px; background: var(--card);
+  border: 2px solid var(--line); text-align: center; color: var(--label); }
+.places .ico { width: 64px; height: 64px; }
+.places b { margin-top: 10px; font-size: 0.8em; font-weight: 700; color: var(--ink); }
+.places .to { margin: 6px 0; font-size: 0.8em; color: var(--muted); }
+.places .app { padding: 6px 14px; border-radius: 999px; background: var(--band); font-size: 0.7em; font-weight: 700; color: var(--label); }
+.places li.fav { border: 3px solid var(--mark-ours); background: #fff8f3; color: var(--limit); }
+.places li.fav .app { background: #fdebd8; color: var(--limit); }
+.mine { margin: 22px 0 0; padding: 12px 18px; border-left: 6px solid var(--mark-ours); background: var(--band); border-radius: 4px; font-size: 0.68em; max-width: 66ch; }
 .mine b { color: var(--limit); }
 
-/* Duet: you hand it a job, it works on its own computer, the results come back. */
-.duet-flow { display: grid; grid-template-columns: 200px 50px 1fr 50px 420px; align-items: center; margin-top: 26px; }
-.duet-flow .who, .duet-flow .box, .duet-flow .out {
-  padding: 16px 18px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.72em;
-}
-.duet-flow b { display: block; font-size: 1.1em; font-weight: 700; margin-bottom: 4px; }
-.hubfig b, .steps4 b, .week b, .duet-limits b { font-weight: 700; }
-.duet-flow small { display: block; color: var(--muted); font-size: 0.92em; line-height: 1.3; }
-.duet-flow .box { background: var(--night); color: var(--night-ink); border-color: var(--night); }
-.duet-flow .box b { color: var(--night-label); }
-.duet-flow .box small { color: var(--night-muted); }
-.duet-flow .box .closed { margin-top: 12px; padding-top: 10px; border-top: 1px solid #44403c; }
-.duet-flow .arrow { height: 4px; background: var(--mark); margin: 0 6px; }
-.duet-flow .out img { display: block; width: 100%; height: auto; margin: 6px 0 8px; border-radius: 8px; }
+/* One slide per app, all one shape: where it sits on the map, a picture, then what it does, one use, one limit. */
+.strip { display: flex; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
+.strip li { flex: 1; padding: 5px 8px; border-radius: 6px; background: var(--band); font-size: 0.64em; font-weight: 600; text-align: center; color: var(--muted); }
+.strip li.on { background: var(--label); color: #fff; }
+.strip li.on.fav { background: var(--limit); }
+.app-body { display: grid; grid-template-columns: 500px 1fr; gap: 30px; align-items: start; }
+.scene { margin: 0; padding: 18px; border-radius: 12px; background: var(--band); }
+.scene > small, .scene small { display: block; margin-top: 8px; font-size: 0.64em; color: var(--muted); }
+.facts { margin: 0; display: grid; gap: 12px; }
+.facts > div { padding: 10px 16px; border-radius: 8px; background: var(--card); border: 2px solid var(--line); }
+.facts dt { font-size: 0.64em; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--label); }
+.facts dd { margin: 4px 0 0; font-size: 0.74em; line-height: 1.32; }
+.facts .use { border-left: 6px solid var(--mark-ours); }
+.facts .lim dt { color: var(--limit); }
 
-/* Duet's limits: what it asks before doing, and what it can't see. */
-.duet-limits { display: grid; gap: 10px; margin-top: 18px; }
-.duet-limits p { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin: 0; font-size: 0.66em; }
-.duet-limits b { min-width: 7.5em; color: var(--limit); }
-.duet-limits .ask span { padding: 4px 14px; border-radius: 999px; background: #fdebd8; font-weight: 600; }
-.duet-limits .cant span { padding: 4px 14px; border-left: 5px solid var(--mark); background: var(--band); border-radius: 4px; }
+/* Claude chat: one exchange. */
+.chat-scene p { margin: 0 0 12px; padding: 12px 16px; border-radius: 14px; font-size: 0.7em; line-height: 1.32; max-width: 88%; }
+.chat-scene .me { margin-left: auto; background: var(--label); color: #fff; border-bottom-right-radius: 4px; }
+.chat-scene .bot { background: var(--card); border: 2px solid var(--line); border-bottom-left-radius: 4px; }
+
+/* Claude Desktop: one window, three tabs, and only the folders you chose. */
+.desk-scene .win { border-radius: 10px; background: var(--card); border: 2px solid var(--line); overflow: hidden; }
+.desk-scene .bar { display: flex; align-items: center; gap: 6px; margin: 0; padding: 8px 12px; background: var(--night); color: var(--night-ink); font-size: 0.64em; font-weight: 700; }
+.desk-scene .bar span { width: 12px; height: 12px; border-radius: 50%; background: var(--night-muted); }
+.desk-scene .bar span:last-of-type { margin-right: 8px; }
+.desk-scene .tabs { display: flex; gap: 8px; margin: 0; padding: 12px; }
+.desk-scene .tabs span { flex: 1; padding: 8px 0; border-radius: 6px; background: var(--band); text-align: center; font-size: 0.68em; font-weight: 700; color: var(--label); }
+.desk-scene .link { width: 4px; height: 22px; margin: 0 auto; background: var(--mark); transform-origin: 50% 0; }
+.desk-scene .folders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
+.desk-scene .folders li { padding: 10px 8px; border-radius: 6px; font: 600 0.66em/1.2 var(--mono); text-align: center; }
+.desk-scene .folders .ok { background: #d7e9f5; color: #003a5c; border: 2px solid var(--mark); }
+.desk-scene .folders .no { background: var(--card); color: var(--muted); border: 2px dashed var(--line); font-family: var(--sans); }
+
+/* Claude Code: the two commands, and the memory one change saved. */
+.mini-term { margin: 0; padding: 14px 18px; border-radius: 10px; background: #1c1917; color: #f5f5f4; font: 0.72em/1.5 var(--mono); }
+.memfig { margin-top: 14px; padding: 12px 16px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); }
+.memfig .cap { margin: 0; font-size: 0.64em; font-weight: 700; color: var(--label); }
+.memfig .check { margin: 4px 0 0; font-size: 0.66em; color: var(--muted); }
+
+/* Claude Science: data to code to figure, with the reviewer alongside. */
+.sci-scene .step { margin: 0; padding: 10px 14px; border-radius: 8px; background: var(--card); border: 2px solid var(--line); font-size: 0.66em; color: var(--muted); }
+.sci-scene .step b { display: block; font-size: 1.08em; color: var(--ink); }
+.sci-scene .step.out { border-color: var(--mark); }
+.sci-scene .down { margin: 2px 0; text-align: center; font-size: 0.7em; line-height: 1; color: var(--mark); }
+.sci-scene .rev { margin: 12px 0 0; padding: 8px 14px; border-radius: 999px; background: #fdebd8; font-size: 0.66em; font-weight: 700; color: var(--limit); text-align: center; }
+
+/* Claude Duet: the real card. */
+.duet-scene img { display: block; width: 100%; height: auto; border-radius: 8px; }
+
+/* Which app for which job. */
+.which { width: 100%; margin-top: 18px; border-collapse: collapse; font-size: 0.74em; }
+.which th { padding: 8px 14px; text-align: left; font-size: 0.86em; color: var(--label); border-bottom: 2px solid var(--line); }
+.which td { padding: 11px 14px; border-bottom: 1px solid var(--line); }
+.which td:nth-child(2) { color: var(--muted); }
+.which td:nth-child(2) .ico { width: 30px; height: 30px; margin-right: 10px; vertical-align: middle; color: var(--label); }
+.which td:last-child { font-weight: 700; }
+.which tr.fav td { background: #fff8f3; }
+.which tr.fav td:first-child { border-left: 6px solid var(--mark-ours); }
+.which tr.fav td:last-child, .which tr.fav .ico { color: var(--limit); }
+
+/* My favorite: the three lab changes, by name. */
+.prs { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
+.prs li { padding: 6px 14px; border-radius: 999px; background: var(--band); font: 600 0.64em/1.3 var(--mono); color: var(--label); }
+
+/* Try one: a first step per app, then Claude Code's four. */
+.firsts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
+.firsts li { padding: 10px 14px; border-radius: 10px; background: var(--card); border: 2px solid var(--line); font-size: 0.64em; line-height: 1.3; }
+.firsts b { display: block; margin-bottom: 2px; font-size: 1.08em; color: var(--label); }
+.code-start { margin-top: 14px; padding: 12px 16px 14px; border-radius: 12px; border: 3px solid var(--mark-ours); background: #fff8f3; }
+.code-start .name { display: block; font-size: 0.74em; font-weight: 700; color: var(--limit); }
+.code-start .steps4 { margin-top: 8px; gap: 12px; }
+.code-start .steps4 li { padding: 10px 12px 10px 50px; font-size: 0.64em; }
+.code-start .steps4 li::before { top: 10px; left: 12px; }
+.code-start .install { margin-top: 10px; }
+.closing .asks { margin: 6px 0 18px; font-size: 0.9em; }
+
+/* Bold labels inside cards. */
+.hubfig b, .steps4 b, .week b { font-weight: 700; }
 
 /* Backup: what lab code needs, ticked per app. */
 .need { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 0.64em; }
 .need th, .need td { padding: 9px 14px; border-bottom: 1px solid var(--line); text-align: left; }
 .need th { color: var(--label); }
-.need td.y, .need td.n, .need td.p { text-align: center; font-weight: 700; width: 210px; }
-.need th:nth-child(3), .need td:nth-child(3) { background: #fff8f3; }
+.need td.y, .need td.n, .need td.p { text-align: center; font-weight: 700; width: 180px; }
+.need th:nth-child(4), .need td:nth-child(4) { background: #fff8f3; }
 .need td.y { color: #005a8c; }
 .need td.n { color: var(--limit); }
 .need td.p { color: var(--muted); }
@@ -128,16 +186,15 @@
 
 /* This week's evidence: four panels, each with its own check. */
 .week { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 22px; margin-top: 14px; }
-.week .card p { font-size: 0.68em; }
-.week.three .card:first-child { grid-row: span 2; }
-.week b { font-size: 0.86em; }
-.week .card .check { margin-top: 8px; font-size: 0.64em; color: var(--muted); }
+.week .card { padding: 22px 26px; }
+.week .card p { font-size: 0.76em; }
+.week .dots { margin-top: 14px; }
+.week b { font-size: 0.96em; }
+.week .card .check { margin-top: 10px; font-size: 0.7em; color: var(--muted); }
 .membar { display: grid; grid-template-columns: 90px 1fr; gap: 6px 10px; align-items: center; margin: 8px 0 4px; font-size: 0.64em; }
 .membar .bar { height: 18px; border-radius: 3px; background: var(--mark-rival); transform-origin: 0 50%; }
 .membar .bar.after { background: var(--mark-ours); min-width: 3px; }
 .membar .bar span { display: block; }
-.vgrid { display: grid; grid-template-columns: repeat(26, 1fr); gap: 3px; margin: 8px 0 4px; }
-.vgrid i { display: block; aspect-ratio: 1; border-radius: 2px; background: var(--mark); }
 
 /* The demo: one exchange, in three steps. */
 .term { margin-top: 16px; padding: 16px 20px; border-radius: 10px; background: #1c1917; color: #f5f5f4; font: 0.64em/1.4 var(--mono); }
@@ -173,23 +230,14 @@
 .sources a { color: var(--label); }
 
 /* Phones: everything stacks. */
-.phone .duet-flow,
 .phone .hubfig,
 .phone .week,
-
 .phone .demo,
 .phone .steps4,
-.phone .app-row { grid-template-columns: 1fr; }
+.phone .app-body,
+.phone .places,
+.phone .firsts { grid-template-columns: 1fr; }
 .phone .robot { position: static; display: block; width: 170px; margin: 18px 0 0; }
-.phone .apps .axis { font-size: 0.7em; }
-.phone .app-row li, .phone .mine { font-size: 0.72em; }
-.phone .duet-flow .arrow { width: 4px; height: 12px; justify-self: center; margin: 0; }
-.phone .duet-flow .who, .phone .duet-flow .box, .phone .duet-flow .out { padding: 8px 12px; }
-.phone .duet-flow .out img { width: 78%; margin: 4px 0; }
-.phone .duet-limits { gap: 6px; margin-top: 10px; }
-.phone .duet-limits p { gap: 4px 6px; }
-.phone .duet-limits b { min-width: 0; flex-basis: 100%; }
-.phone .duet-limits .ask span, .phone .duet-limits .cant span { padding: 2px 10px; }
 .phone .hubfig { grid-template-rows: none; }
 .phone .hubfig .core { grid-column: auto; grid-row: auto; }
 .phone .hubfig .ext.l, .phone .hubfig .ext.r { grid-column: auto; }
@@ -202,24 +250,61 @@
 .phone .hookfile pre, .phone .term, .phone .install code { font-size: 0.72em; overflow-wrap: anywhere; }
 .relmap.wide { display: block; }
 .relmap .col { stroke: var(--line); stroke-width: 1.5; }
-.phone .vgrid { grid-template-columns: repeat(13, 1fr); }
 .phone .title-slide h1 { margin-top: 40px; }
 .phone .discussion h2 { margin-top: 40px; }
-.phone .week.three .card:first-child { grid-row: auto; }
-.phone .app-row { gap: 6px; }
-.phone .app-row li { padding: 6px 10px; }
-.phone .app-row b { display: inline; }
-.phone .app-row .launch { display: inline; margin: 0 8px 0 0; }
-.phone .app-row .where { display: inline; margin: 0 0 0 6px; padding: 0; border: 0; }
-.phone .app-row .where::after { content: ""; display: block; }
-.phone .mine { margin-top: 10px; padding: 8px 12px; }
 .phone .title-slide .kicker { display: block; line-height: 1.45; }
 /* Phones: the table becomes one card per need, each answer labelled with its app. */
 .phone .need thead { display: none; }
 .phone .need, .phone .need tbody, .phone .need tr, .phone .need td { display: block; width: auto; }
 .phone .need tr { margin: 0 0 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
 .phone .need td, .phone .need td.y, .phone .need td.n, .phone .need td.p { padding: 1px 0; border: 0; text-align: left; background: none; }
-.phone .need td:nth-child(3) { padding-left: 8px; border-left: 4px solid var(--mark-ours); }
+/* Claude Code is the fourth column. */
+.phone .need td:nth-child(4) { padding-left: 8px; border-left: 4px solid var(--mark-ours); }
 .phone .need td:first-child { font-weight: 700; color: var(--ink); }
 .phone .need td[data-label]::before { content: attr(data-label) ": "; font-weight: 400; color: var(--muted); }
 .phone .need .mark { width: 20px; height: 20px; line-height: 20px; margin-right: 4px; }
+
+/* Phones: the app slides and the map stack. */
+.phone .places { gap: 8px; }
+.phone .places li { flex-direction: row; gap: 12px; padding: 8px 12px; text-align: left; }
+.phone .places .ico { width: 36px; height: 36px; flex: none; }
+.phone .places b { margin: 0; flex: 1; }
+.phone .places .to { display: none; }
+
+.phone .app-body { gap: 12px; }
+.phone .scene { padding: 10px; }
+.phone .facts { gap: 8px; }
+.phone .facts dd { font-size: 0.8em; }
+.phone .facts dt, .phone .scene small, .phone .firsts li, .phone .prs li { font-size: 0.7em; }
+.phone .chat-scene p, .phone .sci-scene .step, .phone .sci-scene .rev, .phone .desk-scene .folders li, .phone .memfig .cap, .phone .memfig .check { font-size: 0.72em; }
+.phone .which thead { display: none; }
+.phone .which, .phone .which tbody, .phone .which tr, .phone .which td { display: block; }
+.phone .which tr { margin: 0 0 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+.phone .which td { padding: 1px 0; border: 0; }
+.phone .which tr.fav td:first-child { border-left: 0; }
+.phone .which tr.fav { border: 3px solid var(--mark-ours); }
+/* Phones: the try-one steps pair up, and the install commands wrap. */
+.phone .firsts { grid-template-columns: 1fr 1fr; gap: 6px; }
+.phone .install span, .phone .install code { display: block; white-space: normal; word-break: break-all; }
+.phone .code-start .steps4 { grid-template-columns: 1fr 1fr; gap: 6px; }
+.phone .code-start .steps4 li { padding: 8px; font-size: 0.66em; }
+.phone .code-start .steps4 li::before { position: static; float: left; width: 26px; height: 26px; line-height: 26px; margin: 0 6px 2px 0; }
+.phone .install { gap: 4px; margin-top: 6px; }
+.phone .code-start { padding: 8px 10px; }
+.phone .firsts li { padding: 6px 8px; }
+.phone .lead { margin-top: 6px; font-size: 0.66em; line-height: 1.25; }
+
+/* Phones: the place strip repeats the slide's title, so it goes; the pictures shrink. */
+.phone .strip { display: none; }
+.phone .desk-scene .folders { grid-template-columns: repeat(3, 1fr); }
+.phone .desk-scene .tabs { padding: 6px; }
+.phone .desk-scene .bar { font-size: 0.72em; }
+.phone .desk-scene .tabs span { padding: 4px 0; }
+.phone .code-scene .mini-term { display: none; }
+.phone .memfig { margin-top: 0; }
+.phone .sci-scene .step { padding: 6px 10px; }
+.phone .sci-scene .step b { display: inline; }
+.phone .sci-scene .step span { display: none; }
+.phone .duet-scene img { width: 80%; }
+.phone .facts > div { padding: 6px 10px; }
+.phone .chat-scene p { margin-bottom: 6px; padding: 8px 12px; }

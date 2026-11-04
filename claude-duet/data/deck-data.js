@@ -7,8 +7,6 @@ window.DECK_DATA = {
     // opt-einsum (m = 100, n = 25,088, CPU): 968 MiB (1.02 GB) and 0.9 MiB (0.94 MB), said in plain units.
     memBefore: "about 1 GB",
     memAfter: "under 1 MB",
-    // ajbarea/talks #46: every public video's page refreshed, each edit read back after a reload.
-    videos: 169,
   },
   // Hook events each tool documents, counted November 2, 2026, from its hooks page (Sources slide).
   hooks: {

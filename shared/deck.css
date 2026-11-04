@@ -405,11 +405,13 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 }
 
 .reveal .slide-number {
-  padding: 4px 8px;
+  padding: 2px 8px;
   font: 600 14px var(--sans);
   color: var(--muted);
   background: var(--paper);
 }
+/* WCAG 2.2 target size: the number is a link, so give it at least 24px. */
+.reveal .slide-number a { display: inline-block; min-height: 24px; line-height: 24px; }
 
 /* ------------------------------------------------------------------ phone -- */
 

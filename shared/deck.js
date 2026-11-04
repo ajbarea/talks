@@ -143,7 +143,7 @@
       for (const w of mine) {
         const li = html("li", { class: w.ours ? "ours" : "", tabindex: "0", ...tip(w) }, ul);
         html("b", { "data-tip-anchor": "" }, li, w.label);
-        li.append(` · ${flat(w.x)}`);
+        li.append(`, ${flat(w.x)}`);
       }
     });
   }
@@ -259,6 +259,22 @@
     box.appendChild(fig);
   }
 
+  // "3 · My checker" is shown as a Roman numeral and the name, "III My checker", on the kickers,
+  // the agenda and the rail. The source keeps the plain form, which the gates and exports read.
+  const ROMAN = [[10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]];
+  function roman(n) {
+    let out = "";
+    for (const [v, r] of ROMAN) while (n >= v) { out += r; n -= v; }
+    return out;
+  }
+  function chapterInto(node, text) {
+    const m = /^(\d+)\s*·\s*(.+)$/.exec(text.trim());
+    if (!m) return;
+    node.textContent = "";
+    html("span", { class: "num" }, node, roman(Number(m[1])));
+    node.append(` ${m[2]}`);
+  }
+
   function chapters() {
     const seen = new Map();
     for (const s of document.querySelectorAll(".reveal .slides section[data-chapter]")) {
@@ -270,7 +286,7 @@
   // <ol class="agenda" data-auto>: the chapter names, so agenda and rail never disagree.
   function buildAgenda(chs) {
     for (const ol of document.querySelectorAll("ol.agenda[data-auto]")) {
-      for (const name of chs.keys()) html("li", {}, ol, name);
+      for (const name of chs.keys()) chapterInto(html("li", {}, ol, name), name);
     }
   }
 
@@ -278,7 +294,8 @@
     if (!chs.size) return;
     const rail = html("nav", { class: "rail", "aria-label": "Chapters" }, document.querySelector(".reveal"));
     for (const [name, slide] of chs) {
-      const b = html("button", { type: "button" }, rail, name);
+      const b = html("button", { type: "button", "data-chapter": name }, rail, name);
+      chapterInto(b, name);
       b.addEventListener("click", () => {
         const i = Reveal.getIndices(slide);
         Reveal.slide(i.h, i.v);
@@ -288,7 +305,7 @@
       const current = Reveal.getCurrentSlide();
       const c = current && current.dataset.chapter;
       rail.hidden = !c;
-      for (const b of rail.children) b.setAttribute("aria-current", b.textContent === c ? "step" : "false");
+      for (const b of rail.children) b.setAttribute("aria-current", b.dataset.chapter === c ? "step" : "false");
       const on = rail.querySelector('[aria-current="step"]');
       if (on) rail.scrollLeft = on.offsetLeft - (rail.clientWidth - on.offsetWidth) / 2;
     };
@@ -385,11 +402,12 @@
     box.appendChild(fig);
   }
 
-  // <div class="forest" data-source="readings.split">: a contrast and its parts, each a point
-  // with its interval against a "no gain" line, on one scale for every community. The parts of a
-  // split add up to the whole; each split is a fragment, and the part the claim is about is the
-  // accent mark. Data: { org: { name, whole: { estimate, low, high }, <split>: [part, part] } },
-  // the splits named in data-splits, each split's accented part's index in data-accent.
+  // <div class="forest" data-source="readings.split" data-unit="...">: a contrast and its parts,
+  // each a point with its interval, on one numeric scale for every community, ticked at even steps
+  // with a zero line and the unit under the ticks. The parts of a split add up to the whole; each
+  // split is a fragment, and the part the claim is about is the accent mark.
+  // Data: { org: { name, whole: { estimate, low, high }, <split>: [part, part] } }, the splits
+  // named in data-splits, each split's accented part's index in data-accent.
   function buildForest(box) {
     const data = lookup(box.dataset.source);
     const splits = (box.dataset.splits || "").split(",").filter(Boolean);
@@ -400,40 +418,55 @@
     const accent = (box.dataset.accent || "").split(",").map(Number);
     const orgs = Object.values(data);
     const cells = orgs.flatMap((o) => [o.whole, ...splits.flatMap((k) => o[k])]);
-    const lo = Math.min(0, ...cells.map((c) => c.low)), hi = Math.max(...cells.map((c) => c.high));
-    const pad = (hi - lo) * 0.06;
+    const lo = Math.min(0, ...cells.map((c) => c.low)), hi = Math.max(0, ...cells.map((c) => c.high));
+    const pad = (hi - lo) * 0.04, d0 = lo - pad, d1 = hi + pad;
+    // Ticks inside the data's range at an even step (1, 2 or 5 times a power of ten), at most
+    // four of them, so their labels never touch at the plot's width.
+    const mag = 10 ** Math.floor(Math.log10(hi - lo));
+    const inside = (st) => Math.floor(hi / st + 1e-9) - Math.ceil(lo / st - 1e-9) + 1;
+    const step = [0.1, 0.2, 0.5, 1, 2, 5, 10].map((m) => m * mag).find((st) => inside(st) <= 4);
+    const ticks = [];
+    for (let k = Math.ceil(lo / step - 1e-9); k <= Math.floor(hi / step + 1e-9); k++) ticks.push(k * step);
+    const digits = Math.max(0, -Math.floor(Math.log10(step) + 1e-9));
+    const tickText = (t) => (Math.abs(t) < step / 2 ? "0" : `${t > 0 ? "+" : "\u2212"}${Math.abs(t).toFixed(digits)}`);
     const tall = phone;
     // On a phone each row's label sits above its line, so the plot keeps the screen's width.
     const labelW = tall ? 0 : 236, plotW = tall ? 380 : 300, panelW = labelW + plotW + 20;
-    const rowH = tall ? 50 : 44, groupGap = tall ? 8 : 18;
+    const rowH = tall ? 42 : 44, groupGap = tall ? 8 : 18;
     const rowsPer = 1 + splits.reduce((r, k) => r + data[Object.keys(data)[0]][k].length, 0);
-    const panelH = 54 + rowsPer * rowH + splits.length * groupGap + 40;
+    const unit = box.dataset.unit || "";
+    const foot = unit ? (tall ? 58 : 66) : 40;
+    const panelH = 54 + rowsPer * rowH + splits.length * groupGap + foot;
     const W = tall ? 440 : panelW * orgs.length + 20 * (orgs.length - 1);
     const H = tall ? panelH * orgs.length : panelH;
     const fig = svg("svg", {
       viewBox: `0 0 ${W} ${H}`,
       role: "img",
       "aria-label": orgs
-        .map((o) => `${o.name}: the whole gain, then ${splits.map((k) => o[k].map((p) => p.label).join(" against ")).join("; ")}`)
-        .join(". "),
+        .map((o) => `${o.name}: the whole gain ${tickText(o.whole.estimate)}, then ${splits.map((k) => o[k].map((p) => p.label).join(" against ")).join("; ")}`)
+        .join(". ") + (unit ? `. Gains in ${unit}.` : ""),
     });
     const groups = [svg("g", {}, fig), ...splits.map(() => svg("g", { class: "fragment" }, fig))];
     orgs.forEach((o, oi) => {
       const px = tall ? 10 : oi * (panelW + 20), py = tall ? oi * panelH : 0;
-      const sx = (v) => px + labelW + ((v - lo + pad) / (hi - lo + 2 * pad)) * plotW;
+      const sx = (v) => px + labelW + ((v - d0) / (d1 - d0)) * plotW;
       svg("text", { x: px, y: py + 30, class: "forest-org" }, groups[0], o.name);
-      // The "no gain" line runs the panel's height; on a phone, where labels sit above their
-      // lines, it is a short tick on each row so it never crosses a label.
-      if (!tall) svg("line", { x1: sx(0), x2: sx(0), y1: py + 46, y2: py + panelH - 34, class: "forest-zero" }, groups[0]);
-      svg("text", { x: sx(0), y: py + panelH - 10, class: "forest-axis", "text-anchor": "middle" }, groups[0], "no gain");
-      svg("text", { x: px + labelW + plotW, y: py + panelH - 10, class: "forest-axis", "text-anchor": "end" }, groups[0], "more gain \u2192");
+      const top = py + 46, bottom = py + panelH - foot + 6;
+      // A light rule at each tick and a dashed one at zero, the whole panel's height; on a phone,
+      // where labels sit above their lines, the rules stop short of each label.
+      for (const t of ticks) {
+        if (!tall) svg("line", { x1: sx(t), x2: sx(t), y1: top, y2: bottom, class: t === 0 ? "forest-zero" : "forest-grid" }, groups[0]);
+        svg("text", { x: sx(t), y: bottom + 24, class: "forest-axis", "text-anchor": "middle" }, groups[0], tickText(t));
+      }
+      if (unit) svg("text", { x: px + labelW + plotW, y: bottom + (tall ? 48 : 52), class: "forest-unit", "text-anchor": "end" }, groups[0], unit);
       let ry = py + 54 + rowH / 2;
       const point = (g, c, label, cls) => {
-        if (tall) svg("text", { x: px + 20, y: ry - 18, class: "forest-label" }, g, label);
+        // On a phone the label sits just above its line, clear of the dot in the row above.
+        if (tall) svg("text", { x: px + 20, y: ry - 12, class: "forest-label" }, g, label);
         else svg("text", { x: px + labelW - 14, y: ry + 7, class: "forest-label", "text-anchor": "end" }, g, label);
-        if (tall) svg("line", { x1: sx(0), x2: sx(0), y1: ry - 12, y2: ry + 12, class: "forest-zero" }, g);
+        if (tall) for (const t of ticks) svg("line", { x1: sx(t), x2: sx(t), y1: ry - 8, y2: ry + 8, class: t === 0 ? "forest-zero" : "forest-grid" }, g);
         svg("line", { x1: sx(c.low), x2: sx(c.high), y1: ry, y2: ry, class: `forest-ci ${cls}`, "data-motion": "growx" }, g);
-        svg("circle", { cx: sx(c.estimate), cy: ry, r: 9, class: `forest-pt ${cls}`, "data-motion": "pop" }, g);
+        svg("circle", { cx: sx(c.estimate), cy: ry, r: tall ? 7 : 9, class: `forest-pt ${cls}`, "data-motion": "pop" }, g);
         ry += rowH;
       };
       point(groups[0], o.whole, "whole gain", "whole");
@@ -459,6 +492,7 @@
   document.querySelectorAll(".forest[data-source]").forEach(buildForest);
   const chs = chapters();
   buildAgenda(chs);
+  for (const k of document.querySelectorAll(".reveal .slides .kicker")) chapterInto(k, k.textContent);
   if (phone) document.documentElement.classList.add("phone");
   if (sideways) document.documentElement.classList.add("sideways");
   if (phone || sideways) {

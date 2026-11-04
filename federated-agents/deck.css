@@ -1,21 +1,11 @@
 /* ------------------------------------------------------ federated agents -- */
+/* Roles, as in every forge deck: gold is AJ's own design and findings (the shared add-on he
+   proposes, his datasets, his test); bluish green is what stays safe or passes (the private
+   add-on, a fix, a run that found its mark); vermilion is exposure and wrong code; sky blue is
+   context (other companies, rival designs, the frozen model). */
 
-:root {
-  --shared: #0072b2;
-  --shared-tint: #e1f0fa;
-  --private: #d55e00;
-  --private-tint: #fbe9dd;
-  --frame: #78716c;
-}
-
-.subtitle {
-  max-width: 34ch;
-  font-size: 1.05em;
-  color: var(--night-muted);
-}
-
-.title-slide .kicker { margin-top: 120px; }
-.title-slide h1 { margin-top: 0; font-size: 2.6em; }
+.title-slide .mark-figure { --mark-x: 30%; }
+.title-slide h1 { font-size: 2.35em; }
 
 .lead {
   margin: 14px 0 0;
@@ -24,26 +14,63 @@
 
 .small { font-size: 0.8em; color: var(--muted); }
 
-/* What I did and why you should care: the two counts, then the stakes. */
-.contrib { margin-top: 24px; }
-.contrib .counts { display: flex; gap: 36px; margin: 2px 0 12px; }
-.contrib .counts > span { display: flex; flex-direction: column; font-size: 0.72em; color: var(--muted); }
-.contrib .big { font-size: 2.4em; font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+/* The point: one lesson drawn, the two datasets counted beside it. */
+.contrib {
+  display: grid;
+  grid-template-columns: 1.75fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 26px;
+}
+
+.lesson-fig { margin: 0; }
+.lesson-fig svg { display: block; width: 100%; height: auto; }
+.lesson-fig text { font-family: var(--sans); font-size: 24px; fill: var(--ink); }
+.lesson-fig text.b { font-weight: 700; font-size: 26px; fill: var(--neutral-ink); }
+.lesson-fig .bubble { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 2; }
+.lesson-fig .before { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.lesson-fig .after { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.lesson-fig .code-line { stroke: var(--muted); stroke-width: 6; stroke-linecap: round; }
+.lesson-fig .code-line.bad { stroke: var(--risk); stroke-width: 10; }
+.lesson-fig .code-line.good { stroke: var(--fix); stroke-width: 10; }
+.lesson-fig .link { stroke: var(--frame); stroke-width: 4; fill: none; }
+.lesson-fig .head { fill: var(--frame); }
+
+.contrib-side { display: flex; flex-direction: column; gap: 18px; }
+.contrib-side .count {
+  margin: 0;
+  padding: 10px 0 10px 18px;
+  border-left: 5px solid var(--ours-line);
+  font-size: 0.8em;
+  color: var(--muted);
+}
+.contrib-side .big {
+  display: block;
+  font-family: var(--display);
+  font-variation-settings: "wght" 340;
+  font-size: 2.6em;
+  line-height: 1.05;
+  color: var(--ours-ink);
+  font-variant-numeric: tabular-nums;
+}
+.contrib-side .also { margin: 0; font-size: 0.72em; color: var(--muted); }
 
 /* The house-rule slide: the reviewer's words, then wrong code against required code. */
 blockquote.rule {
   margin: 8px 0 16px;
   padding: 14px 20px;
-  background: var(--band);
-  border-left: 6px solid var(--label);
-  border-radius: 6px;
+  background: var(--neutral-tint);
+  border-left: 5px solid var(--neutral-line);
+  border-radius: 0 3px 3px 0;
   font-size: 0.85em;
 }
 
 blockquote.rule b {
   display: block;
-  font-size: 0.75em;
-  color: var(--label);
+  font-weight: 700;
+  font-weight: 400;
+  font-size: 0.8em;
+  color: var(--neutral-ink);
 }
 
 .versus {
@@ -56,25 +83,38 @@ blockquote.rule b {
 figure.code {
   margin: 0;
   padding: 14px 18px;
-  border-radius: 10px;
-  border: 3px solid var(--private);
-  background: var(--private-tint);
+  border-radius: 3px;
+  border: 2px solid var(--risk-line);
+  border-top-width: 5px;
+  background: var(--risk-tint);
 }
 
 figure.code.right {
-  border-color: var(--shared);
-  background: var(--shared-tint);
+  border-color: var(--fix-line);
+  background: var(--fix-tint);
 }
 
 figure.code figcaption {
-  font-size: 0.66em;
-  font-weight: 650;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.7em;
+  font-weight: 700;
+  color: var(--risk-ink);
 }
 
+figure.code.right figcaption { color: var(--fix-ink); }
+
+.sign { width: 1.6em; height: 1.6em; flex: none; }
+.sign circle { fill: var(--risk); }
+.sign path { stroke: #fff; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+figure.code.right .sign circle { fill: var(--fix); }
+
 figure.code pre {
-  margin: 8px 0 0;
-  font-size: 0.72em;
+  margin: 10px 0 0;
+  font-size: 0.74em;
   white-space: pre-wrap;
+  color: var(--ink);
 }
 
 .then {
@@ -89,24 +129,30 @@ figure.code pre {
 .figure .co rect,
 .figure .company {
   fill: none;
-  stroke: var(--frame);
+  stroke: var(--neutral-line);
   stroke-width: 2;
   stroke-dasharray: 8 6;
 }
-.figure .link { stroke: #57534e; stroke-width: 3; fill: none; }
+.figure .link { stroke: var(--frame); stroke-width: 3; fill: none; }
+.figure marker .head { fill: var(--frame); }
+.figure marker .head-shared { fill: var(--ours-line); }
 .figure .pool,
-.figure .base { fill: #e7e5e4; stroke: var(--frame); stroke-width: 2; }
-.figure .good,
+.figure .base,
+.figure .server { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 2; }
+.figure .good { fill: var(--fix-tint); stroke: var(--fix-line); stroke-width: 2; }
+.figure .bad { fill: var(--risk-tint); stroke: var(--risk-line); stroke-width: 2; }
+.figure text.good-ink { fill: var(--fix-ink); }
+.figure text.bad-ink { fill: var(--risk-ink); }
 .figure .shared,
-.figure .server,
-.mini .shared { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 3; }
-.figure .bad,
-.figure .private,
-.mini .private { fill: var(--private-tint); stroke: var(--private); stroke-width: 3; }
-.figure .flow { stroke: var(--shared); stroke-width: 4; fill: none; }
-.figure .list { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
+.mini .shared { fill: var(--ours-tint); stroke: var(--ours-line); stroke-width: 3; }
+.figure .private { fill: var(--fix-tint); stroke: var(--fix); stroke-width: 3; stroke-dasharray: 10 5; }
+.mini .private { fill: var(--risk-tint); stroke: var(--risk-line); stroke-width: 2; }
+.figure .flow { stroke: var(--ours-line); stroke-width: 4; fill: none; }
+.figure .list { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.figure tspan.yes { fill: var(--fix-ink); }
+.figure tspan.no { fill: var(--risk-ink); }
 
-/* Three panels, each a small figure over one sentence. */
+/* Panels, each a small figure over one sentence. */
 .panels .card {
   display: flex;
   flex-direction: column;
@@ -124,80 +170,111 @@ figure.code pre {
   fill: var(--ink);
 }
 
-.mini .mark { fill: var(--shared); }
-.mini .rival { fill: #a8a29e; }
-.mini .ask { stroke: var(--private); stroke-width: 4; }
-.mini .ask-head { fill: var(--private); }
-.mini .avg { stroke: var(--shared); stroke-width: 4; }
-.mini .dot-grey { fill: #78716c; }
-.mini text.blue { fill: var(--label); }
+.mini .ask { stroke: var(--risk); stroke-width: 4; }
+.mini .ask-head { fill: var(--risk); }
+.mini .ask-dot { fill: var(--risk); }
+.mini .avg { stroke: var(--ink); stroke-width: 4; }
+.mini .dot-split { fill: var(--neutral); stroke: var(--neutral-line); stroke-width: 2; }
+.mini text.avg-ink { fill: var(--ink); }
 
-/* The method pipeline: three rows, solid for built, dashed for planned. */
+/* First runs: direction drawn as arrows, never as bars without a scale. */
+.findings .gain {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 6px 0 4px;
+  font-family: var(--display);
+  font-variation-settings: "wght" 340;
+  font-size: 2.6em;
+  line-height: 1;
+  color: var(--ours-ink);
+}
+.findings .gain .per { margin-left: 10px; font-family: var(--sans); font-size: 0.32em; color: var(--muted); }
+.trend { width: 1em; height: 1em; flex: none; }
+.trend path { fill: none; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+.trend.up path { stroke: var(--fix-line); }
+.trend.flat path { stroke: var(--neutral-line); }
+.findings .trends { margin: 4px 0 6px; padding: 0; list-style: none; }
+.findings .trends li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 0 12px;
+  font-size: 0.74em;
+}
+.findings .trends .trend { width: 1.9em; height: 1.9em; margin-top: 2px; }
+.findings .trends b { display: inline; margin: 0; color: var(--ink); }
+.findings .card > p:last-child { color: var(--muted); font-size: 0.72em; }
+
+/* The four research fields: one drawing and one sentence each, all context. */
+.areas .card p { font-size: 0.72em; }
+.areas .card > b { font-size: 0.8em; }
+.mini .head { fill: var(--frame); }
+.mini .own { fill: none; stroke: var(--neutral-line); stroke-width: 2; stroke-dasharray: 5 4; }
+.mini .hub,
+.mini .add,
+.mini .frozen { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 2; }
+.mini .note { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 2; }
+.mini .code { fill: var(--risk-tint); stroke: var(--risk-line); stroke-width: 2; }
+.mini .fixed { fill: var(--fix-tint); stroke: var(--fix-line); stroke-width: 2; }
+.mini .line { stroke: var(--ink); stroke-width: 3; }
+.mini .arrow { stroke: var(--frame); stroke-width: 3; fill: none; }
+.mini .upd { fill: var(--neutral-line); stroke: #fff; stroke-width: 2; }
+
+/* The forest plot's key, under the figure. */
+.key { margin: 6px 0 0; font-size: 0.66em; color: var(--muted); }
+.key b { color: var(--ink); }
+html:not(.phone) .forest svg { max-height: 430px; }
+
+/* Three stages: built in gold, planned dashed. */
+.stages {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  margin: 70px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.stages li {
+  position: relative;
+  min-height: 300px;
+  padding: 26px 28px 30px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+}
+.stages li.built { border-color: var(--ours-line); border-top-width: 6px; }
+.stages li.next { border: 2px dashed var(--neutral-line); background: transparent; }
+.stages li + li::before {
+  content: "";
+  position: absolute;
+  left: -38px;
+  top: 50%;
+  border: 14px solid transparent;
+  border-left: 20px solid var(--frame);
+  transform: translateY(-50%);
+}
+.stages .state { display: block; font-weight: 700; font-size: 0.74em; color: var(--muted); }
+.stages .built .state { color: var(--ours-ink); }
+.stages b { display: block; margin: 8px 0 14px; font-family: var(--display); font-weight: 400; font-size: 1.5em; }
+.stages p { margin: 0; font-size: 0.92em; }
+
+/* The method pipeline (backup): solid for built, dashed for planned. */
 .pipeline { margin-top: 4px; }
 .figure .lane { font-size: 20px; font-weight: 700; fill: var(--label); }
 .figure .lane-state { font-weight: 400; fill: var(--muted); }
-.figure .stage { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
-.figure .stage.run { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 3; }
-.figure .next { fill: none; stroke: var(--frame); stroke-width: 2; stroke-dasharray: 8 6; }
+.figure .stage { fill: var(--card); stroke: var(--ours-line); stroke-width: 2; }
+.figure .stage.run { fill: var(--ours-tint); stroke: var(--ours-line); stroke-width: 2; }
+.figure .next { fill: none; stroke: var(--neutral-line); stroke-width: 2; stroke-dasharray: 8 6; }
 .figure .win-train,
-.figure .win-dev { fill: #e7e5e4; }
-.figure .win-test { fill: var(--private-tint); stroke: var(--private); stroke-width: 2; }
+.figure .win-dev { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 1.5; }
+.figure .win-test { fill: var(--card); stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 4; }
 
-/* The four research fields: one drawing and one sentence each. */
-.areas .card p { font-size: 0.7em; }
-.areas .card > b { font-size: 0.8em; }
-.mini .head { fill: #57534e; }
-.phone .areas .card {
-  display: grid;
-  grid-template-columns: 1fr 1.25fr;
-  column-gap: 10px;
-  align-items: center;
-  padding: 8px 12px;
-}
-.phone .areas .card > b { grid-column: 1 / -1; }
-.phone .areas .mini { height: auto; }
-.phone .areas .mini text { font-size: 22px; }
-.mini .own { fill: none; stroke: var(--frame); stroke-width: 2; }
-.mini .hub,
-.mini .add,
-.mini .fixed { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 3; }
-.mini .frozen { fill: #e7e5e4; stroke: var(--frame); stroke-width: 2; }
-.mini .note { fill: var(--band); stroke: var(--label); stroke-width: 2; }
-.mini .code { fill: var(--private-tint); stroke: var(--private); stroke-width: 3; }
-.mini .line { stroke: var(--ink); stroke-width: 3; }
-.mini .arrow { stroke: #57534e; stroke-width: 3; fill: none; }
-.mini .upd { fill: var(--shared); stroke: #fff; stroke-width: 2; }
-
+/* A share drawn as dots: a run that found its mark is a pass. */
 .dots.count svg { max-width: 100%; }
-.dots.count .dot { stroke: var(--shared); }
-.dots.count .dot.hit { fill: var(--shared); stroke: var(--shared); }
-
-.card.wide { margin-top: 18px; }
-
-.tiles .card { text-align: center; }
-.tiles .big {
-  display: block;
-  margin: 6px 0;
-  font-size: 1.9em;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-}
-.tiles .pending { border-style: dashed; }
-
-.lesson-parts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin: 6px 0 8px;
-  font-size: 0.8em;
-}
-
-.lesson-parts span:not([aria-hidden]) {
-  padding: 6px 12px;
-  background: var(--band);
-  border-radius: 999px;
-}
+.dots.count .dot { stroke: var(--neutral-line); }
+.dots.count .dot.hit { fill: var(--fix); stroke: var(--fix-line); }
 
 /* The road from stage one to the goal: status by fill and by word, never colour alone. */
 .road {
@@ -225,6 +302,7 @@ figure.code pre {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding-bottom: 6px;
   font-size: 0.66em;
 }
 
@@ -232,19 +310,18 @@ figure.code pre {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  border: 3px solid var(--ink);
+  border: 3px solid var(--ours-line);
   background: var(--paper);
 }
 
-.road .done i { background: var(--ink); }
+.road .done i { background: var(--ours); }
 .road .next i,
-.road .goal i { border-style: dashed; }
+.road .goal i { border: 3px dashed var(--neutral-line); }
 
 .road .when {
   margin: 8px 0;
-  font-weight: 650;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-weight: 700;
+  font-size: 1.1em;
   color: var(--label);
 }
 
@@ -254,15 +331,10 @@ figure.code pre {
   font-size: 1.15em;
 }
 
-.road li > b,
-.road li {
-  padding-bottom: 6px;
-}
-
 .road .goal {
   padding: 0 8px 12px;
-  border: 3px solid var(--ink);
-  border-radius: 10px;
+  border: 2px solid var(--ink);
+  border-radius: 3px;
 }
 
 /* Who is in the test. */
@@ -274,13 +346,13 @@ figure.code pre {
 
 .group {
   padding: 18px 22px;
-  border: 2px solid var(--ink);
-  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 3px;
 }
 
 .group > b { display: block; font-size: 1em; }
 .group > p { margin: 4px 0 12px; font-size: 0.7em; color: var(--muted); }
-.group > b.sub { margin: 12px 0 8px; font-size: 0.85em; }
 
 .group ul {
   margin: 0;
@@ -295,7 +367,7 @@ figure.code pre {
   gap: 12px;
   margin-bottom: 8px;
   padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: 3px;
   font-weight: 650;
   font-size: 0.8em;
 }
@@ -303,15 +375,23 @@ figure.code pre {
 .group li span {
   text-align: right;
   font-weight: 500;
-  font-size: 0.85em;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  font-size: 0.88em;
 }
 
-.group li.in { background: var(--band); }
-.group li.out { border: 2px dashed var(--line); }
-.group li.vs { border: 2px solid var(--line); }
+.group li.in { background: var(--fix-tint); border: 1px solid var(--fix-line); }
+.group li.in span { color: var(--fix-ink); }
+.group li.out { border: 1.5px dashed var(--line); color: var(--muted); }
+.group li.vs { border: 1px solid var(--line); background: var(--paper); }
 .group li span i { font-style: normal; }
+
+/* The exploratory comparison sits apart from the three that decide. */
+.aside-test {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 2px dashed var(--line);
+}
+.aside-test .sub { display: block; margin: 0 0 8px; font-size: 0.72em; font-weight: 700; color: var(--muted); }
+.aside-test li { font-size: 0.72em; padding: 6px 12px; }
 
 /* The rivals map across the whole slide. */
 .relmap.wide { display: block; }
@@ -322,64 +402,94 @@ figure.code pre {
 .reveal .slides section.backup { font-size: 0.82em; }
 .backup p,
 .backup li { margin: 0 0 10px; }
+.backup b { font-weight: 700; }
 .backup h2 { font-size: 1.3em; }
-.back { position: absolute; bottom: 0; right: 8px; font-size: 0.8em; }
-.reveal a { color: var(--label); }
+.reveal .slides section.backup ul {
+  display: block;
+  margin: 0 0 10px;
+  padding-left: 1.2em;
+}
+.backup li::marker { color: var(--muted); }
+
+/* The way back sits bottom left, clear of the slide number and arrows at the right. */
+.back { position: absolute; bottom: 0; left: 8px; margin: 0; font-size: 0.8em; }
+.back a { display: inline-block; padding: 4px 0; }
+.back a::before { content: "\2190  "; }
+.phone .back { position: static; margin-top: 18px; }
+.phone .back a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: var(--card);
+  text-decoration: none;
+}
+
+/* The FAQ index opens the backup like the quiet divider: a muted centred title over its rule. */
+.faq-index h2 {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 1.6em;
+  color: var(--muted);
+}
+.faq-index h2::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 2px;
+  margin: 16px auto 0;
+  background: var(--line);
+}
+.faq-index .faq-sub {
+  margin: 14px 0 18px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85em;
+  color: var(--muted);
+}
 
 .faq {
   columns: 2;
   column-gap: 40px;
   margin: 8px 0 0;
   padding-left: 1.4em;
-  font-size: 0.68em;
+  font-size: 0.8em;
 }
 
 .faq li { margin-bottom: 8px; break-inside: avoid; }
 
 .figure .axis { stroke: var(--frame); stroke-width: 3; }
 .figure .cut { stroke: var(--ink); stroke-width: 3; stroke-dasharray: 8 6; }
-.figure .fair { fill: var(--shared); stroke: var(--shared); stroke-width: 3; }
-.figure .unfair { fill: var(--card); stroke: var(--frame); stroke-width: 3; }
+.figure .fair { fill: var(--fix); stroke: var(--fix-line); stroke-width: 3; }
+.figure .unfair { fill: var(--card); stroke: var(--risk-line); stroke-width: 3; }
 
 table.data th[scope="row"] { font-weight: 650; }
+.backup table.data { font-size: 0.8em; }
 
-.phone .versus,
-.phone .groups,
-.phone .road { grid-template-columns: 1fr; }
-.phone .then { transform: rotate(90deg); justify-self: center; }
-.phone .road::before { display: none; }
-.phone .faq { columns: 1; }
-
-.title-slide .motif {
-  position: absolute;
-  right: 40px;
-  top: 190px;
-  width: 440px;
-  height: auto;
-}
-
-.motif .m-co { fill: none; stroke: #78716c; stroke-width: 2; stroke-dasharray: 6 5; }
-.motif .m-shared,
-.motif .m-server { fill: #56b4e9; }
-.motif .m-priv { fill: #d55e00; }
-.motif .m-base { fill: #44403c; }
-.motif .m-flow { stroke: #56b4e9; stroke-width: 4; }
-
-/* Moving dots: lessons leaving a company, updates between add-ons, the question an attacker asks. */
-.motif .m-dot { fill: #fff; }
-.figure .lessons circle { fill: var(--private); stroke: #fff; stroke-width: 2; }
-.figure .updates circle { fill: var(--shared); stroke: #fff; stroke-width: 2; r: 9px; }
-.mini .ask-dot { fill: var(--private); }
+/* Moving dots: lessons leaving a company (exposure), updates between shared add-ons. */
+.figure .lessons circle { fill: var(--risk); stroke: #fff; stroke-width: 2; }
+.figure .updates circle { fill: var(--ours); stroke: var(--ours-line); stroke-width: 2; r: 9px; }
 
 html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms backwards; transform-origin: 0 50%; }
 
-.road li { font-size: 0.66em; }
-.phone .title-slide .motif { display: none; }
+/* ------------------------------------------------------------------ phone -- */
+
+.phone .versus,
+.phone .groups,
+.phone .road,
+.phone .contrib,
+.phone .stages { grid-template-columns: 1fr; }
+.phone .contrib { gap: 16px; }
+.phone .contrib-side .big { font-size: 1.9em; }
+.phone .stages { gap: 30px; margin-top: 16px; }
+.phone .stages li + li::before { left: 50%; top: -28px; border: 12px solid transparent; border-top: 16px solid var(--frame); transform: translateX(-50%); }
+.phone .then { transform: rotate(90deg); justify-self: center; }
+.phone .road::before { display: none; }
+.phone .faq { columns: 1; }
 .phone .mini { height: 118px; }
 .phone .mini text { font-size: 20px; }
-.phone .steps { grid-template-columns: 1fr 1fr; gap: 10px; }
-.phone .steps li { padding: 10px; }
-.phone .tiles .big { font-size: 1.4em; margin: 2px 0; }
 .phone .tiles .card,
 .phone .panels .card { padding: 12px 14px; }
 .phone .road { gap: 8px; margin-top: 8px; }
@@ -389,7 +499,6 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .groups { gap: 14px; }
 .phone .group { padding: 12px 14px; }
 .phone .group > p { margin-bottom: 8px; }
-.phone .group > b.sub { margin: 8px 0 6px; }
 .phone .group li { padding: 5px 10px; margin-bottom: 5px; flex-wrap: wrap; gap: 0 12px; }
 .phone .group li span { margin-left: auto; }
 .phone table.data { font-size: 0.9em; }
@@ -399,7 +508,28 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .panels .card p { font-size: 0.74em; }
 .phone .reveal h2 { font-size: 1.3em; }
 .phone blockquote.rule b { font-size: 0.85em; }
-.backup table.data { font-size: 0.8em; }
+.phone figure.code pre { font-size: 0.85em; }
+.phone .key { font-size: 0.72em; }
+.phone .findings .card p.gain { font-size: 1.9em; }
+.phone .findings .card p.gain .per { font-size: 0.4em; }
+.phone .stages li { min-height: 0; }
+.phone .lesson-fig text { font-size: 30px; }
+.phone .lesson-fig text.b { font-size: 30px; }
+.phone .areas .card {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  column-gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+}
+.phone .areas .card > b { grid-column: 1 / -1; }
+.phone .areas .mini { height: auto; }
+.phone .areas .mini text { font-size: 22px; }
 
 /* The tall two-company figure is narrowed so the slide's footnote still fits under it. */
 .phone .figure svg.narrow { display: block; width: 76%; margin: 0 auto; }
+
+/* The conclusion: the two counts fit one line. */
+[data-conclusion] .tile .num { font-size: 1.75em; white-space: nowrap; }
+.phone [data-conclusion] .tile .num { font-size: 1.4em; }
+.phone .aside-test li { font-size: 0.8em; }

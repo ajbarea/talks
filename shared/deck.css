@@ -1,24 +1,99 @@
-/* Every text colour clears 7:1 on the surface it sits on. Figure marks use Okabe-Ito
-   hues, which stay distinct under the common colour-vision deficiencies. System fonts only,
-   so the deck looks the same offline. */
+/* The forge: AJ's talks share one look. A cool marble ground, deep forge ink, a classical display
+   face for titles and a hyperlegible sans for reading. Bronze and gold mark AJ's own work and
+   nothing else; vermilion is failure or risk; bluish green is the fix or a pass; sky blue is
+   neutral context. Each role keeps its meaning in every deck and figure.
+
+   Contrast, measured: every text colour below clears 7:1 on marble and on card white, the gold
+   title colour 5.4:1 for large text. Marks: the four role colours sit at CIELAB lightness 78
+   (sky), 65 (gold), 51 (green) and 39 (vermilion), so they part in greyscale too, and stay apart
+   under simulated protan, deutan and tritan vision (CAM02-UCS distance 21 or more between any
+   pair). A pale mark reaches 3:1 through its darker outline, the *-line colour.
+   Sources: Okabe and Ito (2008) for the hues; Paul Tol's high-contrast scheme for the gold;
+   Machado et al. (2009) for the simulation. */
+/* The display face is Marcellus for letters and Atkinson Hyperlegible for figures: Marcellus
+   draws 1 like a Roman I and 0 like an O, so "71" and "100" misread in a title. */
+@font-face {
+  font-family: "Forge Display";
+  src: url("fonts/marcellus-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: block;
+  unicode-range: U+0000-002F, U+003A-FFFF;
+}
+@font-face {
+  font-family: "Forge Display";
+  src: url("fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: block;
+  unicode-range: U+0030-0039;
+  size-adjust: 96%;
+}
+@font-face {
+  font-family: "Marcellus SC";
+  src: url("fonts/marcellus-sc-latin-400-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-display: block;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Next";
+  src: url("fonts/atkinson-hyperlegible-next-latin-wght-italic.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: block;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible Mono";
+  src: url("fonts/atkinson-hyperlegible-mono-latin-wght-normal.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: block;
+}
+
 :root {
-  --paper: #faf8f3;
-  --ink: #1a1a1a;
-  --muted: #44403c;
-  --label: #1e3a8a;
-  --limit: #7c2d12;
+  /* ground and ink */
+  --paper: #f1f4f6;      /* marble */
   --card: #ffffff;
-  --line: #d6d3d1;
-  --band: #f1efe9;
-  --night: #14181f;
-  --night-ink: #f5f5f4;
-  --night-muted: #d6d3d1;
-  --night-label: #93c5fd;
-  --mark: #0072b2;
-  --mark-ours: #d55e00;
-  --mark-rival: #6b7280;
-  --sans: system-ui, "Segoe UI", Calibri, Roboto, "Helvetica Neue", Arial, sans-serif;
-  --mono: ui-monospace, Consolas, "SF Mono", Menlo, monospace;
+  --band: #e4e9ee;
+  --line: #c3ccd5;
+  --ink: #15202b;        /* forge ink, 14.9:1 on marble */
+  --muted: #3b4856;      /* 8.5:1 */
+  --label: #24384c;
+  /* roles: a fill for marks, a -line outline that reaches 3:1, an -ink for text (7:1), a -tint ground */
+  --ours: #cf9426;       /* gold: AJ's own work */
+  --ours-line: #8a5a0c;
+  --ours-ink: #6e4708;
+  --ours-tint: #faf2e3;
+  --risk: #a63309;       /* vermilion: failure, risk */
+  --risk-line: #a63309;
+  --risk-ink: #8f2a06;
+  --risk-tint: #faede7;
+  --fix: #00896a;        /* bluish green: the fix, a pass */
+  --fix-line: #006b52;
+  --fix-ink: #005b46;
+  --fix-tint: #e6f4ef;
+  --neutral: #8cc7ea;    /* sky: context, rivals, the rest */
+  --neutral-line: #1b567d;
+  --neutral-ink: #1b567d;
+  --neutral-tint: #ebf5fb;
+  /* older names, kept so a deck's own rules read the roles */
+  --limit: var(--risk-ink);
+  --mark: var(--neutral-line);
+  --mark-ours: var(--ours);
+  --mark-rival: var(--neutral);
+  --frame: #5b6876;
+  --night: #15202b;
+  --night-ink: #f1f4f6;
+  --night-muted: #c3ccd5;
+  --night-label: #8cc7ea;
+  --display: "Forge Display", Georgia, serif;
+  --display-sc: "Marcellus SC", "Marcellus", Georgia, serif;
+  --sans: "Atkinson Hyperlegible Next", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: "Atkinson Hyperlegible Mono", ui-monospace, Consolas, Menlo, monospace;
 }
 
 html,
@@ -43,46 +118,198 @@ body,
   height: 100%;
 }
 
+/* Claim titles in the inscription face: one weight, carried by size and spacing rather than bold. */
 .reveal h1,
-.reveal h2,
-.reveal h3 {
-  margin: 0 0 18px;
-  font-weight: 650;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+.reveal h2 {
+  margin: 0 0 20px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-variation-settings: "wght" 340; /* the figures, from a variable face, to Marcellus's stroke */
+  line-height: 1.14;
+  letter-spacing: 0;
+  color: var(--ink);
 }
 
-.reveal h1 { font-size: 2.1em; }
-.reveal h2 { font-size: 1.45em; }
+.reveal h3 {
+  margin: 0 0 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.reveal h1 { font-size: 2.2em; }
+.reveal h2 { font-size: 1.5em; }
 .reveal h3 { font-size: 1em; color: var(--label); }
 
 .reveal p,
 .reveal li {
-  line-height: 1.35;
+  line-height: 1.38;
 }
 
 .reveal code {
   font-family: var(--mono);
 }
 
+.reveal a {
+  color: var(--neutral-ink);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+/* The chapter over a title, in small capitals: a Roman numeral, then its name (deck.js splits
+   "3 · My checker" into the two). */
 .kicker {
   display: block;
-  margin-bottom: 6px;
-  font-size: 0.66em;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--label);
+  margin-bottom: 8px;
+  font-family: var(--display-sc);
+  font-size: 0.72em;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+.kicker .num {
+  display: inline-block;
+  margin-right: 0.3em;
+  padding-right: 0.55em;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
 }
 
 .footnote {
   position: absolute;
   bottom: 0;
   left: 8px;
-  right: 8px;
+  right: 96px;
   margin: 0;
   font-size: 0.64em;
   color: var(--muted);
+}
+
+/* ------------------------------------------------------- title and closing -- */
+/* The talk's mark: one of AJ's cast standing in a bronze niche, and a Greek key under the slide.
+   The title is set in the gold, the one place the talk's own colour is used as type. */
+
+.title-slide h1,
+.closing h2 {
+  color: var(--ours-line);
+}
+
+.title-slide .title-text {
+  position: absolute;
+  left: 8px;
+  top: 96px;
+  width: 640px;
+}
+
+.title-slide h1 {
+  margin: 0 0 22px;
+  font-size: 2.6em;
+  line-height: 1.05;
+}
+
+.title-slide .subtitle {
+  margin: 0 0 34px;
+  max-width: 28ch;
+  font-size: 1.05em;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.byline {
+  margin: 0;
+  font-size: 0.72em;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.byline b {
+  display: block;
+  font-family: var(--display-sc);
+  font-weight: 400;
+  font-size: 1.25em;
+  color: var(--ink);
+}
+
+.byline span {
+  display: block;
+}
+
+.mark-figure {
+  position: absolute;
+  right: 340px;
+  top: 34px;
+  width: 300px;
+  height: 540px;
+  margin: 0;
+  overflow: hidden;
+  background: var(--band);
+  border-radius: 150px 150px 0 0;
+}
+
+/* The niche: a round-headed arch drawn in bronze over the figure, standing on a plinth. */
+.mark-figure::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--ours-line);
+  border-bottom-width: 8px;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.mark-figure img {
+  position: absolute;
+  inset: 0 0 8px;
+  width: 100%;
+  height: calc(100% - 8px);
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  object-fit: cover;
+  object-position: var(--mark-x, 50%) 100%;
+  transform: scale(var(--mark-zoom, 1));
+  transform-origin: var(--mark-x, 50%) 100%;
+}
+
+/* The Greek key: a short band under the talk's title and under "Thank you". */
+.title-slide h1::after,
+.closing h2::after {
+  content: "";
+  display: block;
+  width: 200px;
+  height: 20px;
+  margin-top: 26px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M1 19V1H15V13H6V6H10M0 19H20' fill='none' stroke='%238a5a0c' stroke-width='2'/%3E%3C/svg%3E") repeat-x left center / 20px 20px;
+}
+
+.closing .mark-figure {
+  position: relative;
+  right: auto;
+  top: auto;
+  width: 250px;
+  height: 440px;
+}
+
+.closing h2 {
+  font-size: 2.2em;
+}
+
+.closing .asks {
+  margin: 0 0 22px;
+  font-size: 1em;
+}
+
+.closing .contact {
+  margin: 6px 0 0;
+  font-size: 0.72em;
+  color: var(--muted);
+}
+
+.closing .contact b {
+  font-family: var(--display-sc);
+  font-weight: 400;
+  font-size: 1.2em;
+  color: var(--ink);
 }
 
 /* ---------------------------------------------------------------- layouts -- */
@@ -105,7 +332,7 @@ body,
   padding: 18px 20px;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 3px;
 }
 
 .card b {
@@ -116,8 +343,15 @@ body,
 }
 
 .card.limit b {
-  color: var(--limit);
+  color: var(--risk-ink);
 }
+
+.card.ours { border-color: var(--ours-line); border-top-width: 5px; }
+.card.ours b { color: var(--ours-ink); }
+.card.fix { border-color: var(--fix-line); border-top-width: 5px; }
+.card.fix b { color: var(--fix-ink); }
+.card.risk { border-color: var(--risk-line); border-top-width: 5px; }
+.card.risk b { color: var(--risk-ink); }
 
 .card p {
   margin: 0;
@@ -149,8 +383,9 @@ body,
   marker-end: url(#arrowhead);
 }
 
+/* The one mark to look at: emphasis in ink. Gold is kept for the speaker's own work. */
 .figure .accent {
-  fill: var(--mark-ours);
+  fill: var(--ink);
 }
 
 .steps {
@@ -167,17 +402,18 @@ body,
   counter-increment: step;
   padding: 16px;
   background: var(--card);
-  border-top: 6px solid var(--mark);
-  border-radius: 6px;
+  border: 1px solid var(--line);
+  border-top: 5px solid var(--ink);
+  border-radius: 3px;
   font-size: 0.75em;
 }
 
 .steps li::before {
-  content: counter(step);
+  content: counter(step, upper-roman);
   display: block;
-  font-size: 1.6em;
-  font-weight: 700;
-  color: var(--label);
+  font-family: var(--display);
+  font-size: 1.5em;
+  color: var(--ink);
 }
 
 .steps li b {
@@ -205,6 +441,13 @@ table.data td {
   padding: 8px 16px;
   border-bottom: 1px solid var(--line);
   text-align: left;
+  line-height: 1.3;
+}
+
+table.data th {
+  font-weight: 700;
+  color: var(--label);
+  border-bottom: 2px solid var(--ink);
 }
 
 table.data td.num {
@@ -212,28 +455,31 @@ table.data td.num {
   font-variant-numeric: tabular-nums;
 }
 
-/* Dark slides: title, dividers, discussion stops. */
-.reveal .slides section.dark {
-  color: var(--night-ink);
+/* Every slide is light: dark slides wash out under a lit room's lights. A backup divider is a
+   quiet centred title on the marble. */
+.reveal .slides section.divider {
+  display: grid !important;
+  place-content: center;
+  text-align: center;
 }
 
-.dark .kicker,
-.dark h3 {
-  color: var(--night-label);
+.divider h2 {
+  margin: 0;
+  font-size: 1.9em;
+  color: var(--muted);
 }
 
-.dark .muted,
-.dark .footnote {
-  color: var(--night-muted);
+.divider h2::after {
+  content: "";
+  display: block;
+  width: 120px;
+  height: 2px;
+  margin: 22px auto 0;
+  background: var(--line);
 }
 
 .muted {
   color: var(--muted);
-}
-
-.title-slide h1 {
-  margin-top: 140px;
-  max-width: 20ch;
 }
 
 .discussion h2 {
@@ -242,22 +488,41 @@ table.data td.num {
   max-width: 24ch;
 }
 
+/* -------------------------------------------------------------- conclusion -- */
+/* The slide before "Thank you": the main point as a claim, two to four results the talk showed
+   (.recap, one .tile each), and the open problems (.open). */
+/* The results read as one inscription line, each set off by a rule, not as a row of cards. */
+.recap { display: grid; grid-template-columns: repeat(var(--n, 3), 1fr); gap: 0; margin-top: 28px; }
+.tile { padding: 6px 28px 10px; border-left: 2px solid var(--line); }
+.tile:first-child { padding-left: 0; border-left: 0; }
+.tile.ours .num { color: var(--ours-line); }
+.tile p { margin: 0; font-size: 0.8em; line-height: 1.3; }
+.tile .num { margin-bottom: 10px; font-family: var(--display); font-variation-settings: "wght" 340; font-size: 2.1em; line-height: 1; color: var(--ink); }
+.open { margin-top: 30px; padding: 14px 22px; border-left: 5px solid var(--neutral-line); background: var(--neutral-tint); border-radius: 0 3px 3px 0; }
+.open-h { margin: 0 0 4px; font-size: 0.8em; font-weight: 700; color: var(--neutral-ink); }
+.open ul { margin: 0; padding-left: 22px; font-size: 0.8em; }
+.open li { margin: 2px 0; }
+.phone .recap { grid-template-columns: 1fr; gap: 10px; }
+.phone .tile .num { font-size: 1.5em; }
+.phone .tile p, .phone .open ul { font-size: 0.72em; }
+.phone .tile, .phone .tile:first-child { padding: 10px 0 12px; border-left: 0; border-top: 1px solid var(--line); }
+
 /* ---------------------------------------------------------------- QR codes -- */
 /* Written into each talk by scripts/qr.py. Black on a white square that carries its own quiet zone. */
 .qr { position: absolute; margin: 0; }
 .qr-code { display: block; width: 100%; height: auto; }
 .qr-follow { right: 40px; bottom: 34px; display: flex; align-items: center; gap: 18px; }
 .qr-follow .qr-code { width: 132px; flex: none; }
-.qr-label { margin: 0; text-align: right; font-size: 20px; line-height: 1.3; color: var(--night-muted); }
-.qr-label b { display: block; font-weight: 700; color: var(--night-ink); }
+.qr-label { margin: 0; text-align: right; font-size: 20px; line-height: 1.3; color: var(--muted); }
+.qr-label b { display: block; font-weight: 700; color: var(--ink); }
 .qr-label span { display: block; max-width: 260px; }
-html:not(.phone) .reveal .slides section.closing[style*="display: block"] { display: grid !important; grid-template-columns: minmax(0, 1fr) 424px;
-  column-gap: 60px; align-items: center; height: 100%; top: 0 !important; }
-.qr-close { position: static; width: 424px; }
+html:not(.phone) .reveal .slides section.closing[style*="display: block"] { display: grid !important;
+  grid-template-columns: 250px minmax(0, 1fr) 360px; column-gap: 56px; align-items: center; height: 100%; top: 0 !important; }
+.qr-close { position: static; width: 360px; }
 .qr-close .qr-label { margin-top: 18px; font-size: 26px; text-align: center; }
 .qr-close .qr-label span { max-width: none; }
 /* A phone is the screen the code would open on, so it shows none. */
-.phone .qr { display: none; }
+.phone .qr, .sideways .qr { display: none; }
 
 /* ------------------------------------------------------------- data-built -- */
 
@@ -269,13 +534,13 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 
 .dots .dot {
   fill: none;
-  stroke: var(--mark-rival);
+  stroke: var(--neutral-line);
   stroke-width: 2;
 }
 
 .dots .dot.hit {
-  fill: var(--mark-ours);
-  stroke: var(--mark-ours);
+  fill: var(--ours);
+  stroke: var(--ours-line);
 }
 
 .relmap {
@@ -313,11 +578,14 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 }
 
 .work circle {
-  fill: var(--mark-rival);
+  fill: var(--neutral);
+  stroke: var(--neutral-line);
+  stroke-width: 2;
 }
 
 .work.ours circle {
-  fill: var(--mark-ours);
+  fill: var(--ours);
+  stroke: var(--ours-line);
 }
 
 .work.ours text {
@@ -384,20 +652,30 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 
 .rail button {
   flex: none;
-  padding: 5px 14px;
-  font: 600 15px var(--sans);
+  padding: 4px 14px;
+  font: 400 16px var(--display-sc);
+  letter-spacing: 0.02em;
   white-space: nowrap;
   color: var(--muted);
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 999px;
+  border-radius: 2px;
   cursor: pointer;
+}
+
+.rail button .num {
+  margin-right: 0.15em;
+  color: var(--ink);
 }
 
 .rail button[aria-current="step"] {
   color: var(--paper);
-  background: var(--label);
-  border-color: var(--label);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.rail button[aria-current="step"] .num {
+  color: var(--paper);
 }
 
 @media (max-height: 520px) {
@@ -437,7 +715,7 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 .map-list li { margin: 0 0 4px; padding-left: 20px; position: relative; font-size: 0.78em; color: var(--muted); }
 .map-list li::before { content: ""; position: absolute; left: 4px; top: 0.4em; width: 9px; height: 9px;
   border-radius: 50%; background: var(--mark-rival); }
-.map-list li.ours::before { background: var(--mark-ours); width: 12px; height: 12px; left: 2px; }
+.map-list li.ours::before { background: var(--ours); box-shadow: 0 0 0 2px var(--ours-line); width: 12px; height: 12px; left: 2px; }
 .map-list li b { color: var(--ink); }
 
 .phone .reveal { font-size: 26px; }
@@ -445,8 +723,13 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 .phone .relmap { grid-template-columns: 1fr; gap: 20px; }
 .phone .cards,
 .phone .steps { grid-template-columns: 1fr; }
-.phone .title-slide h1,
-.phone .discussion h2 { margin-top: 60px; }
+.phone .title-slide .title-text,
+.phone .mark-figure { position: static; width: auto; }
+.phone .title-slide .title-text { padding-top: 40px; }
+.phone .title-slide h1 { font-size: 2.1em; }
+.phone .mark-figure { position: relative; right: auto; top: auto; width: 220px; height: 400px; margin: 24px 0 40px; }
+.phone .reveal .slides section.divider { display: block !important; }
+.phone .closing .mark-figure { width: 180px; height: 300px; margin: 30px 0 20px; }
 .phone .footnote { position: static; margin-top: 16px; font-size: 0.7em; }
 
 /* ----------------------------------------------------------------- motion -- */
@@ -468,16 +751,16 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 .flow svg { width: 100%; height: auto; overflow: visible; }
 .flow text { fill: var(--ink); font-family: var(--sans); }
 .flow .flow-end.start { fill: var(--card); stroke: var(--line); stroke-width: 2; }
-.flow .flow-end.kept { fill: var(--card); stroke: var(--mark-ours); stroke-width: 4; }
+.flow .flow-end.kept { fill: var(--ours-tint); stroke: var(--ours-line); stroke-width: 4; }
 .flow .flow-big { font-size: 42px; font-weight: 700; }
-.flow .flow-big.kept { fill: var(--limit); }
+.flow .flow-big.kept { fill: var(--ours-ink); }
 .flow .flow-unit { font-size: 23px; fill: var(--muted); }
 .flow .flow-count { font-size: 34px; font-weight: 700; fill: var(--label); }
 .flow .flow-reason { font-size: 22px; fill: var(--ink); }
 .phone .flow .flow-big { font-size: 34px; }
 .phone .flow .flow-unit, .phone .flow .flow-reason { font-size: 19px; }
 .phone .flow .flow-count { font-size: 28px; }
-.flow .flow-bar { fill: var(--mark-rival); }
+.flow .flow-bar { fill: var(--neutral); stroke: var(--neutral-line); stroke-width: 1.5; }
 .flow .flow-rule { stroke: var(--line); stroke-width: 2; }
 .flow .flow-arrow { fill: var(--frame, #78716c); }
 
@@ -488,10 +771,15 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 .forest .forest-label { font-size: 21px; }
 .forest .forest-axis { font-size: 20px; fill: var(--muted); }
 .forest .forest-zero { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 6 6; }
+.forest .forest-grid { stroke: var(--line); stroke-width: 1.5; }
+.forest .forest-unit { font-size: 20px; fill: var(--muted); }
 .forest .forest-ci { stroke-width: 4; stroke-linecap: round; }
-.forest .forest-ci.whole, .forest .forest-pt.whole { stroke: var(--mark); fill: var(--mark); }
-.forest .forest-ci.part, .forest .forest-pt.part { stroke: var(--mark-rival); fill: var(--mark-rival); }
-.forest .forest-ci.ours, .forest .forest-pt.ours { stroke: var(--mark-ours); fill: var(--mark-ours); }
+.forest .forest-ci.whole, .forest .forest-pt.whole { stroke: var(--frame); fill: var(--frame); }
+.forest .forest-ci.part { stroke: var(--neutral-line); }
+.forest .forest-pt.part { fill: var(--neutral); stroke: var(--neutral-line); stroke-width: 2; }
+/* The part the claim is about: emphasis in ink, not the gold that marks the speaker's own work. */
+.forest .forest-ci.ours { stroke: var(--ink); }
+.forest .forest-pt.ours { fill: var(--ink); stroke: var(--ink); stroke-width: 2; }
 
 /* The phone feed's keyboard stop is the page itself, under the slides, so its ring is a frame on top. */
 .reveal-viewport:focus-visible {
@@ -502,8 +790,15 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
   content: "";
   position: fixed;
   inset: 0;
-  border: 3px solid var(--label);
-  box-shadow: inset 0 0 0 2px #ffffff; /* two tones, so the frame shows on light and dark slides */
+  border: 3px solid var(--ink);
+  box-shadow: inset 0 0 0 2px #ffffff; /* two tones, so the frame shows on any ground */
   pointer-events: none;
   z-index: 100;
+}
+
+.agenda .num {
+  display: inline-block;
+  min-width: 2.4em;
+  font-family: var(--display);
+  color: var(--muted);
 }

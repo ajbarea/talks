@@ -15,18 +15,31 @@ link like `.../federated-agents/#/5` opens a given slide.
 
 ## Layout
 
-- One folder per talk, holding its `index.html`, its own `deck.css` and any `data/`. The folder
-  name is the talk's address.
+- One folder per talk, holding its `index.html`, its own `deck.css`, its `script.md` (the full
+  spoken script, one section per talk slide) and any `data/`. The folder name is the talk's address.
 - `vendor/reveal/`: reveal.js, shared by every talk.
 - `videos/`: scripts for AJ's explainer videos, made in Google Vids; see [videos/README.md](videos/README.md).
 - `shared/deck.js`, `shared/deck.css`: the behaviour and base styles every talk loads (chapter rail,
   agenda, figures from data, phone feed); a talk's own `deck.css` adds what is particular to it.
+- `shared/fonts/`: Marcellus for titles and Atkinson Hyperlegible Next for text (SIL Open Font
+  License), served with the decks. `shared/cast/`: the portraits each talk wears as its mark.
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
   by its own `<title>` and description, with its preview, its PowerPoint and PDF downloads and its links.
 - `scripts/exports.py`: exports each talk as `<folder>.pptx` (one picture per slide, the script in
-  the speaker notes, through `graphe:slides pptx`), `<folder>.pdf` (vector, one page per slide,
+  the speaker notes' prompts, through `graphe:slides pptx`), `<folder>.pdf` (vector, one page per slide,
   through `graphe:slides pdf`) and a preview of its title slide. The exports are built in CI,
   never committed.
+
+## The look
+
+Every slide is light, title and closing included: dark slides wash out under a lit room's lights.
+The ground is a cool marble white and the text a deep ink. Four colours keep one meaning in every
+talk and figure: gold for AJ's own work, vermilion for failure or risk, bluish green for the fix,
+sky blue for context. They part by lightness, so they read in greyscale and under colour-vision
+deficiency, and every text colour clears 7:1. Each talk's title and closing slides carry one of
+the kourai cast in a bronze niche: Aletheia (Checking the Checker), the bronze automaton (Five
+Claude apps), Hesychia (Federated Agents) and Hephaestus (Kourai Khryseai). The tokens and their
+measurements are at the top of `shared/deck.css`.
 
 ## Adding a talk
 
@@ -62,17 +75,21 @@ A run on `main` that passes publishes the site; one that fails publishes nothing
 keeps its last good version. GitHub turns off a public repository's scheduled runs after 60
 days without activity; re-enable the daily run from the Actions tab if it stops.
 
-On Linux, the gates and renders draw text only in DejaVu (`scripts/fonts.conf`), the font CI's
-runner draws the decks' system font stack in. Each machine resolves that stack to its own font,
+The decks load their own fonts from `shared/fonts/`, so a slide measures the same everywhere. On
+Linux, the gates and renders draw any other text only in DejaVu (`scripts/fonts.conf`), the font
+CI's runner draws a system font stack in. Each machine resolves that stack to its own font,
 and a slide that fits in a narrower one clips in CI. `make fonts` fails when the stack does not
 resolve to DejaVu (`apt-get install fonts-dejavu-core`). Chromium reads fontconfig on Linux only,
 so on macOS or Windows the gates measure the system font. The exports keep the machine's own
 fonts, so a glyph DejaVu lacks still draws in the published files. `make render TALK=<folder>
 OUT=<dir>` writes a built talk's slides and phone views as PNGs.
 
-`make script-length` prints each talk's spoken script in words and minutes at 140 a minute: the
-speaker notes of the slides before the FAQ, every conditional branch counted, a bound figure as
-one word. The tests fail a talk over its cap (`CAP_MINUTES` in `scripts/script_length.py`).
+`make script-length` prints each talk's spoken script in words and minutes at 140 a minute, from
+its `script.md`: every conditional branch counted, a figure (`{readings.x}`) as one word. It also
+fails a script whose sections do not match the talk slides, or whose figures have no data. The
+speaker notes on the slides are three short prompts each; `python3 scripts/script_length.py
+<talk> --print` prints the full script with today's figures to practise from. The tests fail a talk
+over its cap (`CAP_MINUTES` in `scripts/script_length.py`).
 
 `SPHRAGIS` points at a sphragis checkout (default `../sphragis`) and `SLIDES` at the
 `graphe:slides` script in a techne checkout (default `../techne/...`).

@@ -49,8 +49,8 @@ jobs:
           repository: ajbarea/techne
           # Pinned, so a new gate in techne cannot stop the site publishing unannounced.
           # Dependabot does not bump this; move it by hand when graphe:slides changes.
-          # techne 1.5.0 (#175).
-          ref: 0eb543dcfc21f27abfe886679a43d73b10b7a04c
+          # techne main at #288: every talk ends on a conclusion slide.
+          ref: c40f907dbd0d029f556731ecb427be64e7df4321
           path: .deps/techne
           persist-credentials: false
 

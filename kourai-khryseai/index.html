@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Kourai Khryseai</title>
-  <meta name="description" content="Ten AI agents that build software with you: each shows its work and asks before the choices that matter.">
+  <meta name="description" content="Ten AI agents that build software with you: each shows its work and asks you before the choices that matter.">
   <meta property="og:title" content="Kourai Khryseai">
-  <meta property="og:description" content="Ten AI agents that build software with you: each shows its work and asks before the choices that matter.">
+  <meta property="og:description" content="Ten AI agents that build software with you: each shows its work and asks you before the choices that matter.">
   <link rel="stylesheet" href="../vendor/reveal/reset.css">
   <link rel="stylesheet" href="../vendor/reveal/reveal.css">
   <link rel="stylesheet" href="../shared/deck.css">
@@ -18,38 +18,41 @@
 <div class="reveal">
 <div class="slides">
 
-<section class="title-slide dark" data-background-color="#14181f">
-  <span class="kicker">AJ Barea · Rochester Institute of Technology</span>
-  <h1>Kourai Khryseai</h1>
-  <p class="subtitle">Ten AI agents that build software with you, and show their work as they go</p>
-  <span class="halo" aria-hidden="true" data-motion="ring" data-delay="900" data-iter="2"></span>
-  <img class="hero" data-motion="pop" data-delay="150" data-dur="700" src="img/golden-maidens.webp" alt="" width="560" height="560">
+<section class="title-slide">
+  <div class="title-text">
+    <h1>Kourai Khryseai</h1>
+    <p class="subtitle">Ten AI agents that build software with you: each shows its work and asks you before the choices that matter</p>
+    <p class="byline"><b>AJ Barea</b><span>Rochester Institute of Technology</span></p>
+  </div>
+  <figure class="mark-figure"><img src="../shared/cast/hephaestus.webp" alt="Hephaestus, a painted smith in a leather apron, leaning on his anvil"></figure>
   <!-- qr:follow -->
   <div class="qr qr-follow">
     <p class="qr-label"><b>Follow along</b><span>ajbarea.github.io/talks/<wbr>kourai-khryseai</span></p>
     <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/kourai-khryseai" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM13 4h1v1h-1zM17 4h3v1h-3zM21 4h3v1h-3zM26 4h2v1h-2zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM15 5h1v1h-1zM17 5h4v1h-4zM22 5h1v1h-1zM24 5h2v1h-2zM27 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h1v1h-1zM16 6h2v1h-2zM22 6h1v1h-1zM24 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM13 7h2v1h-2zM17 7h2v1h-2zM20 7h5v1h-5zM26 7h2v1h-2zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM13 8h1v1h-1zM15 8h2v1h-2zM18 8h1v1h-1zM22 8h3v1h-3zM27 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM14 9h1v1h-1zM18 9h4v1h-4zM23 9h1v1h-1zM25 9h2v1h-2zM28 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM13 11h1v1h-1zM15 11h2v1h-2zM18 11h4v1h-4zM25 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM9 12h2v1h-2zM12 12h1v1h-1zM15 12h4v1h-4zM20 12h1v1h-1zM22 12h1v1h-1zM24 12h2v1h-2zM27 12h1v1h-1zM29 12h1v1h-1zM31 12h1v1h-1zM4 13h1v1h-1zM7 13h2v1h-2zM11 13h1v1h-1zM13 13h3v1h-3zM17 13h2v1h-2zM20 13h2v1h-2zM24 13h2v1h-2zM28 13h4v1h-4zM35 13h2v1h-2zM4 14h2v1h-2zM7 14h1v1h-1zM10 14h1v1h-1zM14 14h2v1h-2zM17 14h2v1h-2zM20 14h1v1h-1zM22 14h3v1h-3zM31 14h2v1h-2zM34 14h1v1h-1zM36 14h1v1h-1zM7 15h2v1h-2zM11 15h1v1h-1zM13 15h2v1h-2zM16 15h2v1h-2zM19 15h1v1h-1zM22 15h5v1h-5zM30 15h1v1h-1zM32 15h2v1h-2zM4 16h1v1h-1zM6 16h2v1h-2zM9 16h4v1h-4zM14 16h1v1h-1zM16 16h1v1h-1zM18 16h1v1h-1zM20 16h1v1h-1zM22 16h4v1h-4zM29 16h2v1h-2zM33 16h1v1h-1zM6 17h1v1h-1zM8 17h2v1h-2zM11 17h2v1h-2zM16 17h4v1h-4zM22 17h1v1h-1zM24 17h3v1h-3zM28 17h1v1h-1zM30 17h3v1h-3zM34 17h3v1h-3zM4 18h2v1h-2zM8 18h3v1h-3zM12 18h3v1h-3zM16 18h1v1h-1zM19 18h2v1h-2zM23 18h1v1h-1zM26 18h2v1h-2zM29 18h4v1h-4zM35 18h1v1h-1zM4 19h1v1h-1zM6 19h1v1h-1zM9 19h1v1h-1zM12 19h1v1h-1zM15 19h1v1h-1zM20 19h2v1h-2zM24 19h4v1h-4zM30 19h3v1h-3zM35 19h1v1h-1zM4 20h3v1h-3zM8 20h4v1h-4zM13 20h3v1h-3zM17 20h3v1h-3zM21 20h1v1h-1zM24 20h2v1h-2zM27 20h2v1h-2zM30 20h1v1h-1zM32 20h2v1h-2zM35 20h1v1h-1zM4 21h2v1h-2zM7 21h1v1h-1zM11 21h1v1h-1zM14 21h4v1h-4zM20 21h2v1h-2zM27 21h3v1h-3zM31 21h1v1h-1zM33 21h1v1h-1zM35 21h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM10 22h7v1h-7zM20 22h2v1h-2zM24 22h1v1h-1zM26 22h1v1h-1zM28 22h1v1h-1zM34 22h3v1h-3zM4 23h1v1h-1zM6 23h2v1h-2zM9 23h1v1h-1zM11 23h1v1h-1zM13 23h2v1h-2zM18 23h2v1h-2zM24 23h2v1h-2zM29 23h3v1h-3zM35 23h2v1h-2zM5 24h1v1h-1zM7 24h1v1h-1zM9 24h3v1h-3zM15 24h1v1h-1zM17 24h2v1h-2zM21 24h1v1h-1zM24 24h1v1h-1zM26 24h2v1h-2zM29 24h1v1h-1zM35 24h2v1h-2zM6 25h4v1h-4zM11 25h1v1h-1zM13 25h1v1h-1zM16 25h1v1h-1zM18 25h2v1h-2zM23 25h1v1h-1zM28 25h3v1h-3zM35 25h2v1h-2zM4 26h3v1h-3zM8 26h3v1h-3zM12 26h3v1h-3zM17 26h1v1h-1zM20 26h1v1h-1zM22 26h2v1h-2zM25 26h2v1h-2zM28 26h4v1h-4zM33 26h2v1h-2zM36 26h1v1h-1zM5 27h2v1h-2zM12 27h2v1h-2zM17 27h1v1h-1zM19 27h1v1h-1zM22 27h4v1h-4zM27 27h1v1h-1zM30 27h2v1h-2zM33 27h1v1h-1zM4 28h1v1h-1zM7 28h1v1h-1zM10 28h1v1h-1zM14 28h1v1h-1zM17 28h1v1h-1zM21 28h1v1h-1zM25 28h1v1h-1zM28 28h6v1h-6zM35 28h1v1h-1zM12 29h2v1h-2zM15 29h4v1h-4zM21 29h1v1h-1zM23 29h6v1h-6zM32 29h2v1h-2zM36 29h1v1h-1zM4 30h7v1h-7zM16 30h1v1h-1zM18 30h1v1h-1zM21 30h2v1h-2zM24 30h1v1h-1zM26 30h1v1h-1zM28 30h1v1h-1zM30 30h1v1h-1zM32 30h3v1h-3zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h3v1h-3zM17 31h1v1h-1zM20 31h4v1h-4zM25 31h1v1h-1zM28 31h1v1h-1zM32 31h1v1h-1zM36 31h1v1h-1zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM13 32h1v1h-1zM16 32h2v1h-2zM19 32h1v1h-1zM22 32h1v1h-1zM24 32h1v1h-1zM28 32h6v1h-6zM35 32h2v1h-2zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h1v1h-1zM14 33h4v1h-4zM19 33h5v1h-5zM25 33h1v1h-1zM28 33h1v1h-1zM30 33h1v1h-1zM32 33h1v1h-1zM35 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM13 34h4v1h-4zM19 34h3v1h-3zM23 34h3v1h-3zM32 34h1v1h-1zM36 34h1v1h-1zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h5v1h-5zM21 35h5v1h-5zM28 35h1v1h-1zM30 35h1v1h-1zM4 36h7v1h-7zM12 36h4v1h-4zM17 36h4v1h-4zM22 36h2v1h-2zM25 36h1v1h-1zM28 36h1v1h-1zM32 36h2v1h-2zM35 36h1v1h-1z"/></svg>
   </div>
   <!-- /qr -->
-  <aside class="notes">Hi, I'm AJ Barea, a PhD student at RIT. This is Kourai Khryseai, a team of ten AI agents that builds software with you rather than for you. The name means the Golden Maidens: in Greek myth, the gold attendants Hephaestus built for his workshop, each able to think, speak and work on its own.</aside>
+  <aside class="notes"><ul><li>Hi, I'm AJ Barea, PhD student at RIT</li><li>Ten AI agents that build software with you, not for you</li><li>Kourai Khryseai: the Golden Maidens Hephaestus built for his workshop</li></ul></aside>
 </section>
 
 <section data-contribution>
-  <span class="kicker">What I did</span>
   <h2>I built a team of ten AI agents that writes software with you</h2>
-  <div class="cards contrib" style="--n:2">
-    <div class="card">
-      <b>What I did</b>
-      <div class="faces" data-motion="stagger" data-child="pop" data-step="70" data-delay="150">
-        <img src="img/hephaestus.webp" alt="" width="256" height="256"><img src="img/metis.webp" alt="" width="256" height="256"><img src="img/techne.webp" alt="" width="256" height="256"><img src="img/dokimasia.webp" alt="" width="256" height="256"><img src="img/kallos.webp" alt="" width="256" height="256"><img src="img/mneme.webp" alt="" width="256" height="256"><img src="img/puck.webp" alt="" width="256" height="256"><img src="img/cupid.webp" alt="" width="256" height="256"><img src="img/aidos.webp" alt="" width="256" height="256"><img src="img/aletheia.webp" alt="" width="256" height="256">
-      </div>
-      <p>Open source; each agent is its own server. They plan, code, test, review and commit, showing their reasoning as they go.</p>
-    </div>
-    <div class="card">
-      <b>Why you should care</b>
-      <p>If you use a coding agent, you see its choices as it makes them, and you make the ones that matter.</p>
+  <div class="contrib">
+    <figure class="scene-term" role="img" aria-label="The project's scripted scene as the terminal prints it: Hephaestus sends Metis to plan; Metis reports what it found in the events module, then stops to ask whether the CSV export should stream large files, with the trade-off; the person answers yes, and Metis drafts the plan with streaming.">
+      <p><span class="who">Hephaestus</span> <span class="say">"Metis! Draw up the plans. And no improvising."</span></p>
+      <p><span class="who">Metis</span> <span class="work">analyzing events module...</span></p>
+      <p class="why">found 3 models with datetime fields</p>
+      <p class="why">nested relationships in Attendance and Session</p>
+      <p class="ask"><span class="who">Metis</span> <span class="say">"Should CSV export stream chunked I/O for large files?"</span><br><span class="work">Streaming keeps memory constant but adds about 3 ms a row.</span></p>
+      <p><span class="you">you</span> yes, stream chunked</p>
+      <p><span class="who">Metis</span> <span class="work">drafting spec with streaming I/O...</span></p>
+      <figcaption>The project's scripted demo scene, as the terminal prints it.</figcaption>
+    </figure>
+    <div>
+      <p class="mine"><b>What I did</b>An open-source team of ten AI agents, each its own server. They plan, code, test, review and commit, and show their reasoning as they go.</p>
+      <p class="care"><b>Why you should care</b>If you use a coding agent, you see its choices as it makes them, and you make the ones that matter.</p>
     </div>
   </div>
-  <aside class="notes">Here's what I built: an open-source team of ten AI agents, each running as its own server. Between them they plan, write the code, test it, review the style and write the commit message, and each one shows its reasoning as it works. Here's why you should care. If you use a coding agent today, you find out what it decided only when it hands you the finished change. With this team you watch those choices being made, and the ones that matter come to you first. Let me show you what a lone agent hides.</aside>
+  <aside class="notes"><ul><li>What I did: an open-source team of ten agents, each its own server</li><li>The scene: Metis stops to ask before a real choice</li><li>Why care: you see choices as they're made, and make the ones that matter</li></ul></aside>
 </section>
 
 <section data-chapter="1 · The problem">
@@ -70,8 +73,8 @@
     </ul>
   </div>
   <p class="lead">Plan, code, test, review, document: five jobs for one model, and its decisions surface only at the end.</p>
-  <p class="footnote">The decisions above are examples of the choices a request like this involves.</p>
-  <aside class="notes">Ask a coding agent to add user authentication and it goes away and comes back with a finished change. Along the way it made real decisions: sessions or tokens, what counts as tested, which style rules apply. You find out what it chose only at the end. And one model is being asked to do five jobs well at once: plan, code, test, review and document. So I asked what it would look like if the work were split up, and done in the open.</aside>
+  <p class="footnote">Illustrative: examples of the choices a request like this involves.</p>
+  <aside class="notes"><ul><li>A lone agent hands back a finished change</li><li>Its choices (sessions or tokens, tests, style) surface only at the end</li><li>One model, five jobs at once</li></ul></aside>
 </section>
 
 <section data-chapter="2 · The idea">
@@ -104,8 +107,7 @@
       </ul>
     </div>
   </div>
-  <p class="footnote">Each is named for a Greek idea that matches its job: Metis is wisdom, Techne is technical skill, Dokimasia is scrutiny, Kallos is beauty, Mneme is memory.</p>
-  <aside class="notes">So the work is split across ten agents, each with one job. Six do the development: Hephaestus runs the workshop, Metis plans, Techne writes the code, Dokimasia tests it, Kallos reviews the style, and Mneme writes the commit messages. Two are companions: Puck walks you through your first session, and Cupid coaches the romance side of the game, which I'll come back to. And two check quality: Aidos catches vague, corporate or passive writing, and Aletheia checks citations and facts. Here's how a request moves through them.</aside>
+  <aside class="notes"><ul><li>Six specialists: Hephaestus, Metis, Techne, Dokimasia, Kallos, Mneme</li><li>Two companions: Puck guides, Cupid coaches the romance</li><li>Two quality checks: Aidos for vague writing, Aletheia for citations</li></ul></aside>
 </section>
 
 <section data-chapter="2 · The idea">
@@ -122,10 +124,10 @@
   </ol>
   <div class="baton-track" aria-hidden="true"><span class="baton"></span></div>
   </div>
-  <div class="loopback fragment" data-motion="wipe" data-origin="100% 50%" data-dur="700"><span>Fixable style problems go back to Techne, up to five rounds by default</span></div>
+  <div class="loopback fragment" data-motion="wipe" data-origin="100% 50%" data-dur="700"><span>Fixable style problems go back to Techne, up to five rounds</span></div>
   <div class="transcript-bar fragment" data-motion="rise"><img src="img/hephaestus.webp" alt="" width="256" height="256"><p><b>Hephaestus</b> gives each specialist the whole conversation so far, never a summary.</p></div>
-  <p class="footnote">Project term: the Forge Transcript. A bug fix skips planning; a cleanup is style and commit message only.</p>
-  <aside class="notes">Here's a full feature request. Metis writes the plan. Techne writes the code from that plan. Dokimasia writes and runs the tests. Kallos reviews the style, and if it finds something Techne can fix, the work goes back to Techne, by default up to five rounds; anything still left after that is reported rather than retried forever. Mneme writes the commit message. Underneath all of it, Hephaestus keeps one running record of the whole exchange and hands all of it to each specialist, so Kallos reads everything Techne wrote, and nobody works from a summary. Smaller requests take shorter routes: a bug fix skips planning, and a cleanup is just style and the commit message.</aside>
+  <p class="footnote">Project term: the Forge Transcript.</p>
+  <aside class="notes"><ul><li>Plan, code, test, style, commit message, in turn</li><li>Style problems go back to Techne, up to five rounds</li><li>Hephaestus hands each one the whole conversation, never a summary</li></ul></aside>
 </section>
 
 <section data-chapter="3 · Working together">
@@ -144,8 +146,8 @@
     </figure>
   </div>
   <p class="lead">Every agent streams its reasoning as it works.</p>
-  <p class="footnote">Both exchanges are from the project's documentation. Power users can skip the first check with /yolo.</p>
-  <aside class="notes">You stay in the loop at two points. Before anything runs, Hephaestus reads the order back to you: here's the plan, shall I start? You confirm or redirect before any work is spent. Then, midway, any specialist can stop and ask when a choice is really yours. Here Metis asks whether a CSV export should stream large files, and gives the trade-off for each answer. And the whole time, every agent streams its reasoning as it works, so you watch the plan form instead of waiting for a result.</aside>
+  <p class="footnote">Both exchanges are from the project's documentation.</p>
+  <aside class="notes"><ul><li>Before any work: Hephaestus reads the order back</li><li>Midway: Metis asks, streaming or not, with the trade-off</li><li>Every agent streams its reasoning as it works</li></ul></aside>
 </section>
 
 <section data-chapter="3 · Working together">
@@ -158,7 +160,7 @@
   </div>
   <div class="hub" aria-hidden="true"><span data-motion="grow" data-origin="50% 0%" data-delay="500"></span><span data-motion="grow" data-origin="50% 0%" data-delay="600"></span><span data-motion="grow" data-origin="50% 0%" data-delay="700"></span></div>
   <div class="backend" data-motion="rise" data-delay="900"><img src="img/hephaestus.webp" alt="" width="256" height="256"><p><b>One back end</b>Hephaestus and the specialists, run with Docker</p></div>
-  <aside class="notes">There are three ways in, and they all reach the same agents. The terminal is the fast one: you type a request and watch each agent's work stream past. The desktop app shows each agent's portrait and gives each one a voice. And the visual novel turns the same work into a story game, where your rapport with each agent grows as you work together; that's where Cupid comes in. Behind all three is one back end.</aside>
+  <aside class="notes"><ul><li>Terminal: fast, streams each agent's work</li><li>Desktop app: portraits and voices; visual novel: rapport grows</li><li>One back end behind all three</li></ul></aside>
 </section>
 
 <section data-chapter="4 · How it's built">
@@ -178,15 +180,33 @@
       <div class="card"><b>Every request traced</b><p>Each agent's steps and timing in Jaeger, with metrics in Prometheus</p></div>
     </div>
   </div>
-  <p class="footnote">Python, with LiteLLM between the agents and the models, and OpenTelemetry for the traces.</p>
-  <aside class="notes">Under the hood, each agent is its own small web server, and they talk over A2A, an open agent-to-agent protocol. That means any one agent can be run alone, tested on its own, or replaced with a different implementation. The models are swappable too: Claude, Google's models, or free local models through Ollama. And every request leaves a trace, so you can see exactly what each agent did and how long it took.</aside>
+  <aside class="notes"><ul><li>Each agent its own server, over the open A2A protocol</li><li>Any one can be run alone, tested or swapped</li><li>Claude, Google or local Ollama models; every request traced</li></ul></aside>
 </section>
 
-<section class="dark closing" data-background-color="#14181f">
+<section data-conclusion>
+  <h2>Split across ten agents, a coding job puts its choices in front of you</h2>
+  <div class="recap" style="--n:3" data-motion="stagger" data-child="rise" data-step="150">
+    <div class="tile ours"><p class="num">10 agents</p><p>each with one job, each its own server, run with Docker</p></div>
+    <div class="tile"><p class="num">2 checks</p><p>where you decide: before the work starts, and when a real choice comes up</p></div>
+    <div class="tile"><p class="num">1 record</p><p>of the whole conversation, handed to every specialist, never a summary</p></div>
+  </div>
+  <div class="open">
+    <p class="open-h">Still open</p>
+    <ul>
+      <li>Each agent's own voice is still being cast and tuned for the desktop app</li>
+      <li>Style problems still left after five rounds are reported, not fixed</li>
+    </ul>
+  </div>
+  <aside class="notes"><ul><li>Split the work, and its choices come to you</li><li>10 agents; you decide twice; one whole record for every specialist</li><li>Open: voices still being cast; style left after five rounds. "That's my talk."</li></ul></aside>
+</section>
+
+<section class="closing">
+  <figure class="mark-figure"><img src="../shared/cast/hephaestus.webp" alt=""></figure>
   <div class="close-text">
   <h2>Thank you</h2>
-  <p class="muted">AJ Barea · PhD student, Rochester Institute of Technology</p>
-  <p class="muted">ajbarea.github.io · github.com/ajbarea/kourai-khryseai</p>
+  <p class="asks">I'm glad to take questions.</p>
+  <p class="contact"><b>AJ Barea</b><br>PhD student, Rochester Institute of Technology</p>
+  <p class="contact"><a href="mailto:ajb6289@rit.edu">ajb6289@rit.edu</a><br><a href="https://github.com/ajbarea/kourai-khryseai">github.com/ajbarea/kourai-khryseai</a></p>
   </div>
   <!-- qr:close -->
   <div class="qr qr-close" data-motion="pop" data-delay="300" data-dur="600">
@@ -194,7 +214,52 @@
     <p class="qr-label"><b>These slides</b><span>ajbarea.github.io/talks/<br>kourai-khryseai</span></p>
   </div>
   <!-- /qr -->
-  <aside class="notes">That's Kourai Khryseai: ten agents, each with one job, working in the open and asking you before the choices that matter. The code and the documentation are public. Thank you; I'd be glad to take questions.</aside>
+  <aside class="notes"><ul><li>Thank you</li><li>The code and documentation are public, linked here</li><li>"I'm glad to take questions."</li></ul></aside>
+</section>
+
+<section class="backup divider">
+  <h2>Backup slides</h2>
+</section>
+
+<section class="backup">
+  <h2>How the agents talk to each other</h2>
+  <table class="data qa">
+    <tbody>
+      <tr><th>Protocol</th><td>A2A, the open agent-to-agent protocol: each agent is its own HTTP server, so any one can be deployed alone, tested alone or replaced</td></tr>
+      <tr><th>The route</th><td>Hephaestus calls one specialist at a time and waits for its result before calling the next</td></tr>
+      <tr><th>Streaming</th><td>Each specialist streams its reasoning back as it works; the hosts show it live</td></tr>
+      <tr><th>Tools</th><td>MCP for tools and files; A2A only between agents</td></tr>
+      <tr><th>Built with</th><td>Python; LiteLLM between the agents and the models; OpenTelemetry for the traces</td></tr>
+    </tbody>
+  </table>
+  <p class="footnote">From the project's architecture overview and roadmap.</p>
+</section>
+
+<section class="backup">
+  <h2>Which models it runs, and what a request costs</h2>
+  <table class="data qa">
+    <tbody>
+      <tr><th>Providers</th><td>Anthropic (default), Google, or free local models through Ollama</td></tr>
+      <tr><th>Tiers</th><td>cheap, standard and smart; on Anthropic, cheap is Haiku for every agent</td></tr>
+      <tr><th>A full feature</th><td>Six core model calls, about 12,000 tokens in and 8,000 out</td></tr>
+      <tr><th>Rough cost</th><td>About $0.05 on the cheap tier, $0.25 to $0.70 on the others (Anthropic)</td></tr>
+      <tr><th>Your own count</th><td><code>/usage</code> prints tokens and dollar cost per agent and model</td></tr>
+    </tbody>
+  </table>
+  <p class="footnote">From the project's pricing guide; provider rates change.</p>
+</section>
+
+<section class="backup">
+  <h2>Every request leaves a trace you can follow</h2>
+  <table class="data qa">
+    <tbody>
+      <tr><th>Traces</th><td>Jaeger: every A2A hop and tool call, with the whole route's timing</td></tr>
+      <tr><th>Metrics</th><td>Prometheus: rates and latencies per agent and model</td></tr>
+      <tr><th>Logs</th><td>Each agent's live log, and one line per tool call, tagged with the session</td></tr>
+      <tr><th>Open them</th><td><code>make observe</code> opens all three</td></tr>
+    </tbody>
+  </table>
+  <p class="footnote">From the project's observability guide.</p>
 </section>
 
 </div>

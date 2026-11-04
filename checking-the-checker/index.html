@@ -19,27 +19,19 @@
 <div class="slides">
 
 <section class="title-slide">
-  <span class="kicker">AJ Barea · CISC-810 Research Foundations, Rochester Institute of Technology</span>
-  <h1>Checking the Checker</h1>
-  <p class="sub">Six silent failures in an automated citation verifier</p>
-  <p class="when">November 2026</p>
-  <svg class="lens-art" viewBox="0 0 320 320" role="img" aria-label="Drawing: a magnifying glass held over a green check mark finds the check mark hollow">
-    <rect class="sheet" x="36" y="40" width="200" height="240" rx="16"/>
-    <path class="rule" d="M66 82h140M66 112h110M66 142h126"/>
-    <path class="tick" data-motion="draw" data-dur="700" d="M76 206l34 34 70-80"/>
-    <g class="lens" data-motion="arrive" data-delay="800" data-dur="900">
-      <circle class="glass" cx="190" cy="196" r="62"/>
-      <path class="tick hollow" d="M146 206l34 34 40-46"/>
-      <path class="handle" d="M234 240l52 52"/>
-    </g>
-  </svg>
+  <div class="title-text">
+    <h1>Checking the Checker</h1>
+    <p class="subtitle">Six silent failures in an automated citation verifier</p>
+    <p class="byline"><b>AJ Barea</b><span>CISC-810 Research Foundations</span><span>Rochester Institute of Technology</span><span>November 2026</span></p>
+  </div>
+  <figure class="mark-figure"><img src="../shared/cast/aletheia.webp" alt="Aletheia, a painted figure in a green robe, reading a book"></figure>
   <!-- qr:follow -->
   <div class="qr qr-follow">
     <p class="qr-label"><b>Follow along</b><span>ajbarea.github.io/talks/<wbr>checking-the-checker</span></p>
     <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/checking-the-checker" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM12 4h1v1h-1zM20 4h1v1h-1zM22 4h3v1h-3zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM12 5h2v1h-2zM15 5h1v1h-1zM18 5h1v1h-1zM21 5h1v1h-1zM26 5h2v1h-2zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM13 6h1v1h-1zM16 6h3v1h-3zM23 6h2v1h-2zM27 6h1v1h-1zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h3v1h-3zM22 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM13 8h2v1h-2zM17 8h1v1h-1zM20 8h2v1h-2zM24 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM13 9h1v1h-1zM16 9h1v1h-1zM19 9h3v1h-3zM23 9h1v1h-1zM28 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h3v1h-3zM19 11h3v1h-3zM23 11h2v1h-2zM26 11h3v1h-3zM4 12h1v1h-1zM6 12h2v1h-2zM9 12h3v1h-3zM16 12h1v1h-1zM18 12h4v1h-4zM23 12h3v1h-3zM28 12h1v1h-1zM30 12h1v1h-1zM33 12h1v1h-1zM35 12h2v1h-2zM6 13h2v1h-2zM9 13h1v1h-1zM12 13h3v1h-3zM16 13h3v1h-3zM20 13h6v1h-6zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM8 14h1v1h-1zM10 14h3v1h-3zM16 14h2v1h-2zM20 14h1v1h-1zM22 14h1v1h-1zM24 14h2v1h-2zM27 14h3v1h-3zM31 14h3v1h-3zM35 14h2v1h-2zM4 15h1v1h-1zM6 15h1v1h-1zM8 15h2v1h-2zM11 15h1v1h-1zM13 15h1v1h-1zM20 15h2v1h-2zM23 15h1v1h-1zM29 15h3v1h-3zM33 15h1v1h-1zM36 15h1v1h-1zM4 16h7v1h-7zM12 16h3v1h-3zM16 16h1v1h-1zM18 16h3v1h-3zM23 16h2v1h-2zM26 16h1v1h-1zM28 16h2v1h-2zM31 16h3v1h-3zM6 17h1v1h-1zM15 17h4v1h-4zM23 17h1v1h-1zM28 17h1v1h-1zM31 17h1v1h-1zM33 17h3v1h-3zM7 18h4v1h-4zM12 18h3v1h-3zM21 18h4v1h-4zM26 18h1v1h-1zM30 18h3v1h-3zM4 19h6v1h-6zM13 19h1v1h-1zM15 19h1v1h-1zM19 19h1v1h-1zM22 19h1v1h-1zM24 19h3v1h-3zM28 19h7v1h-7zM4 20h2v1h-2zM7 20h1v1h-1zM10 20h2v1h-2zM15 20h1v1h-1zM22 20h1v1h-1zM24 20h2v1h-2zM29 20h2v1h-2zM32 20h3v1h-3zM5 21h1v1h-1zM8 21h2v1h-2zM11 21h1v1h-1zM15 21h1v1h-1zM17 21h3v1h-3zM24 21h7v1h-7zM32 21h2v1h-2zM35 21h2v1h-2zM6 22h1v1h-1zM8 22h1v1h-1zM10 22h1v1h-1zM15 22h1v1h-1zM18 22h2v1h-2zM22 22h1v1h-1zM25 22h1v1h-1zM28 22h2v1h-2zM31 22h2v1h-2zM34 22h2v1h-2zM4 23h1v1h-1zM8 23h2v1h-2zM11 23h4v1h-4zM16 23h1v1h-1zM20 23h3v1h-3zM29 23h1v1h-1zM32 23h1v1h-1zM35 23h1v1h-1zM4 24h3v1h-3zM9 24h2v1h-2zM12 24h1v1h-1zM15 24h2v1h-2zM20 24h1v1h-1zM23 24h1v1h-1zM25 24h1v1h-1zM29 24h1v1h-1zM33 24h2v1h-2zM36 24h1v1h-1zM4 25h1v1h-1zM6 25h1v1h-1zM13 25h1v1h-1zM15 25h7v1h-7zM23 25h2v1h-2zM27 25h1v1h-1zM30 25h1v1h-1zM33 25h2v1h-2zM36 25h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h1v1h-1zM12 26h3v1h-3zM16 26h1v1h-1zM19 26h1v1h-1zM21 26h1v1h-1zM25 26h3v1h-3zM30 26h3v1h-3zM35 26h2v1h-2zM5 27h1v1h-1zM9 27h1v1h-1zM15 27h2v1h-2zM19 27h1v1h-1zM22 27h1v1h-1zM26 27h1v1h-1zM28 27h1v1h-1zM33 27h1v1h-1zM35 27h1v1h-1zM4 28h1v1h-1zM7 28h1v1h-1zM9 28h2v1h-2zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM20 28h2v1h-2zM23 28h2v1h-2zM26 28h1v1h-1zM28 28h5v1h-5zM35 28h1v1h-1zM12 29h2v1h-2zM17 29h1v1h-1zM19 29h2v1h-2zM23 29h1v1h-1zM27 29h2v1h-2zM32 29h2v1h-2zM4 30h7v1h-7zM12 30h1v1h-1zM14 30h4v1h-4zM21 30h4v1h-4zM27 30h2v1h-2zM30 30h1v1h-1zM32 30h1v1h-1zM35 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h2v1h-2zM15 31h2v1h-2zM20 31h3v1h-3zM25 31h4v1h-4zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM13 32h3v1h-3zM19 32h14v1h-14zM34 32h1v1h-1zM36 32h1v1h-1zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h2v1h-2zM15 33h1v1h-1zM17 33h1v1h-1zM20 33h2v1h-2zM24 33h1v1h-1zM26 33h1v1h-1zM28 33h1v1h-1zM31 33h1v1h-1zM36 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h5v1h-5zM18 34h4v1h-4zM24 34h1v1h-1zM26 34h1v1h-1zM30 34h2v1h-2zM33 34h1v1h-1zM4 35h1v1h-1zM10 35h1v1h-1zM14 35h3v1h-3zM21 35h4v1h-4zM26 35h1v1h-1zM28 35h2v1h-2zM31 35h2v1h-2zM36 35h1v1h-1zM4 36h7v1h-7zM12 36h1v1h-1zM16 36h1v1h-1zM18 36h1v1h-1zM20 36h2v1h-2zM23 36h1v1h-1zM25 36h1v1h-1zM27 36h1v1h-1zM32 36h1v1h-1zM34 36h1v1h-1z"/></svg>
   </div>
   <!-- /qr -->
-  <aside class="notes">Hi, I'm AJ, a first-year PhD student here. This talk is about a tool I wrote to check my papers' references, and the six times it failed without telling me. If a term isn't clear, stop me. Let me start with what a different tool printed.</aside>
+  <aside class="notes"><ul><li>Hi, I'm AJ, a first-year PhD student</li><li>A tool I wrote to check my papers' references, and the six times it failed without telling me</li><li>Stop me any time a term isn't clear</li></ul></aside>
 </section>
 
 <section data-contribution data-chapter="1 · The point">
@@ -62,7 +54,7 @@
     </div>
   </div>
   <p class="footnote">Real output, excerpt, command shortened: HalRef v0.1.0, given my paper's PDF cut to its first 2,000 bytes, October 2026.</p>
-  <aside class="notes">This is what a public citation checker printed for a PDF cut to its first 2,000 bytes. One line says it found nothing, and a later line says everything passed anyway. That's my one point today. A clean report counts only if the checker can fail, and tells you what it skipped. Here's what I did. In four weeks of use, I found six times my own checker had failed silently. I sorted those failures into three groups, found a guard for each, and tested two of the guards on five public checkers. Here's why you should care. Think of the last green check you saw in your CI. How do you know it ran? If a tool can't fail, all clear tells you nothing. So why citation checkers?</aside>
+  <aside class="notes"><ul><li>HalRef, PDF cut to 2,000 bytes: "no references extracted", then "all references verified OK"</li><li>The one point: a clean report counts only if the checker can fail and says what it skipped</li><li>What I did: 6 silent failures, 3 groups, a guard each, 2 guards tried on 5 checkers. Why care: your CI's green check</li></ul></aside>
 </section>
 
 <section data-chapter="2 · Why it matters">
@@ -89,7 +81,7 @@
   </div>
   <p class="lead fragment">So the trust moves to the checker.</p>
   <p class="footnote">Sources: Xu et al., GhostCite, 2026 (first two panels); ACL 2026 program chairs' statement.</p>
-  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. One top conference turned to software: ACL 2026 ran an automated checker, and it flagged over a hundred accepted papers, confirmed by hand, that cited work that doesn't exist. So the trust moves to the checker, and I looked hard at my own.</aside>
+  <aside class="notes"><ul><li><span data-value="field.models"></span> models: <span data-value="field.modelLow"></span> to <span data-value="field.modelHigh"></span>% of citations invalid</li><li><span data-value="field.venues"></span> venues: <span data-value="field.papersBefore"></span>% of accepted papers (2020 to 2024), <span data-value="field.papersAfter"></span>% in 2025</li><li>ACL 2026: <span data-value="field.aclFlagged"></span> papers flagged, confirmed by hand. So the trust moves to the checker</li></ul></aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -101,7 +93,7 @@
     <figcaption class="legend"><span class="g-norun">Did not run</span><span class="g-input">Wrong inputs</span><span class="g-report">Misreported</span></figcaption>
   </figure>
   <p class="footnote">Bar: days from the commit that let a run go wrong to its fix (case 3: how long the flawed score existed), from the repository history.</p>
-  <aside class="notes">My checker is called dokimasia. It checks one bibliography of 103 entries that seven of my papers share. Each bar is one silent failure, and its length is how long it lasted. The worst was the first. One paper looked for its bibliography in the wrong folder. All <span data-value="case1.citations"></span> of its citations came out as question marks, and its reference list was empty. But the build said success, because the build script ignored the error. That lasted 71 days, and my checks only existed for the last 25 of them. Every time, the output looked valid. This is one tool, studied by the person who built it, so it shows these failures happen, not how often; later I find the same groups in five other tools. Lined up, my six fell into three groups.</aside>
+  <aside class="notes"><ul><li>dokimasia: <span data-value="checker.entries"></span> entries shared by <span data-value="checker.papers"></span> papers</li><li>Case 1: build said success with an empty bibliography for <span data-value="case1.days"></span> days</li><li>One tool, studied by its builder: shows these happen, not how often</li></ul></aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -131,7 +123,7 @@
   </div>
   <p class="reach fragment" data-fragment-index="3"><span class="reach-no">A test of a check runs the check, so it can never see a check that didn't run.</span><span class="reach-yes">A test can catch wrong inputs and misreported results.</span></p>
   <p class="footnote">A case sits at the first step whose output was wrong.</p>
-  <aside class="notes">Every check does three things: it chooses what to check, it reads the inputs, and it reports a result. Each group is a failure at one of those steps. First, did not run. In cases 1 and 2, the check never looked at the broken paper, so it had nothing to complain about. Second, wrong inputs. In cases 3, 4 and 5, the check ran but read the wrong thing, like reading only one of the two dates a publisher database keeps for the same article. Third, misreported. In case 6, arXiv, the big preprint server, refused requests sent too fast, and my code reported each refusal as a missing entry. Each group gets its own guard. For did not run, the checker works out what to check by itself, and names what it skipped. For wrong inputs, break the check on purpose and make sure it fails. For misreported, report no answer apart from not found. A test can only reach the last two: a test of a check runs the check, so it never sees a check that didn't run.</aside>
+  <aside class="notes"><ul><li>A check chooses what to check, reads inputs, reports: each group fails one step</li><li>Did not run (cases 1, 2), wrong inputs (3 to 5), misreported (6, arXiv refusals)</li><li>Guards: work out what to check, break it on purpose, no answer but "not found". A test never sees a check that didn't run</li></ul></aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -142,8 +134,8 @@
     <div class="rebreak" data-columns="rebreak.mutations"></div>
     <p class="after fragment">Both misses now have tests.</p>
   </figure>
-  <p class="footnote">One change at a time, at techne commit dae4ca4. Paper term: fault injection.</p>
-  <aside class="notes">To test the guards today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each. For cases 1 and 2, a change breaks the guard that replaced the old defect, like the build gate or the code that works out what to check; the old defects were outside the tool, so a test of the tool can't reach them. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. So I asked whether other checkers have the same gaps.</aside>
+  <p class="footnote">Paper term: fault injection.</p>
+  <aside class="notes"><ul><li><span data-value="rebreak.total"></span> small changes that break my six fixes again</li><li><span data-value="rebreak.caught"></span> caught; 2 got through: an empty compiled bibliography, the removed refusal line</li><li>Both misses have tests now</li></ul></aside>
 </section>
 
 <section data-chapter="4 · Other checkers">
@@ -153,11 +145,11 @@
     <thead><tr><th scope="col">Tool</th><th scope="col" class="g-norun" data-short="Unreadable PDF"><span class="hg">Did not run</span>Unreadable PDF</th><th scope="col" class="g-norun" data-short="No references"><span class="hg">Did not run</span>No reference section</th><th scope="col" class="g-report fragment" data-fragment-index="1" data-short="Network cut"><span class="hg">Misreported</span>Network cut, 10 real references</th></tr></thead>
   </table>
   <p class="key"><span class="k-bad"><span class="mark" aria-hidden="true">✕</span>clean verdict, or "not found" for a lookup that failed</span><span class="k-good"><span class="mark" aria-hidden="true">✓</span>said so</span><span class="k-warn"><span class="mark" aria-hidden="true">!</span>warned, then went on</span><span class="k-mixed"><span class="mark" aria-hidden="true">~</span>mixed</span><span class="k-none"><span class="mark" aria-hidden="true">–</span>does not apply</span></p>
-  <p class="footnote">The five tools a 2026 comparison study tested, each at its cited version, run once per input with no API keys, October 2026.</p>
-  <aside class="notes">These are the five tools a 2026 study compared. I gave each one two kinds of nothing to check: a PDF it couldn't read, and a PDF with no reference section. A tool passes if it says it checked nothing. A red cross means it printed a clean verdict anyway. Three of the five did: all clear, all references verified OK, all verified successfully. Then I cut the network while each tool checked ten real references. Two of them reported all ten as not found. The other two called them inconclusive or unverified, but some lines still said not found or non-existent. In their public code and issues, each of my three groups turns up in at least two of these five tools. Let me sum up.</aside>
+  <p class="footnote">The five tools a 2026 comparison study tested, run once per input with no API keys, October 2026.</p>
+  <aside class="notes"><ul><li>The 5 tools a 2026 study compared; two kinds of nothing to check</li><li><span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span> printed a clean verdict anyway</li><li>Network cut, 10 real references: <span data-value="checkers.allNotFound"></span> reported all as not found</li></ul></aside>
 </section>
 
-<section data-chapter="5 · Conclusion">
+<section data-conclusion data-chapter="5 · Conclusion">
   <span class="kicker">5 · Conclusion</span>
   <h2>A checker's all-clear counts only if it can fail and names what it skipped</h2>
   <div class="recap" data-motion="stagger" data-child="rise" data-step="150">
@@ -172,15 +164,16 @@
       <li>Whether the guards find new defects, or find them earlier than other practices</li>
     </ul>
   </div>
-  <aside class="notes">A checker's all-clear counts only if it can fail and names what it skipped. My own checker failed silently six times, in three groups, each with its own guard: work out what to check, break each check on purpose, and keep no answer apart from not found. When I broke my fixes again, today's tests caught nine of eleven. That shows the tests hold, not that the guards find new bugs. And three of five public checkers printed a clean result after checking nothing. Two problems stay open. These cases show the failures happen, not how often. And I haven't tested whether the guards find new defects, or find them sooner than another practice would. That's my talk.</aside>
+  <aside class="notes"><ul><li>An all-clear counts only if the checker can fail and names what it skipped</li><li>6 failures in 3 groups; <span data-value="rebreak.caught"></span> of <span data-value="rebreak.total"></span> re-breaks caught; <span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span> clean after nothing</li><li>Open: how often these happen; whether the guards find new defects. "That's my talk."</li></ul></aside>
 </section>
 
 <section class="closing">
+  <figure class="mark-figure"><img src="../shared/cast/aletheia.webp" alt=""></figure>
   <div class="close-text">
   <h2>Thank you</h2>
   <p class="asks">I'm glad to take questions.</p>
-  <p class="muted">AJ Barea · PhD student, Rochester Institute of Technology</p>
-  <p class="muted">ajb6289@rit.edu · github.com/ajbarea</p>
+  <p class="contact"><b>AJ Barea</b><br>PhD student, Rochester Institute of Technology</p>
+  <p class="contact"><a href="mailto:ajb6289@rit.edu">ajb6289@rit.edu</a><br><a href="https://github.com/ajbarea">github.com/ajbarea</a></p>
   </div>
   <!-- qr:close -->
   <div class="qr qr-close" data-motion="pop" data-delay="300" data-dur="600">
@@ -188,10 +181,10 @@
     <p class="qr-label"><b>These slides</b><span>ajbarea.github.io/talks/<br>checking-the-checker</span></p>
   </div>
   <!-- /qr -->
-  <aside class="notes">Thank you. The slides are at the link, and I'm glad to take questions.</aside>
+  <aside class="notes"><ul><li>Thank you; the slides are at the link</li><li>"I'm glad to take questions."</li><li>Backup: how each case was found, the tool runs, the sources</li></ul></aside>
 </section>
 
-<section class="backup">
+<section class="backup divider">
   <h2>Backup slides</h2>
 </section>
 
@@ -224,7 +217,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
 </section>
 
 <section class="backup">
-  <h2>Isn't this just ordinary bugs? What is new</h2>
+  <h2>Aren't these just ordinary bugs? What is new</h2>
   <div class="cards" style="--n:3">
     <div class="card"><b>The defects are familiar</b><p>An ignored error code, a list kept by hand, a catch-all exception handler, a cache with no format version. Yuan et al.: 92% of catastrophic failures in five distributed systems came from mishandled non-fatal errors.</p></div>
     <div class="card"><b>The cost is not</b><p>Each one makes a false claim about someone else's document: "unresolved" tells a program chair an author may have cited something that does not exist. Registries keep two dates for one article, and a refusal looks like a missing entry.</p></div>
@@ -303,7 +296,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
   <h2>Cut for time: cases 3 to 5 up close</h2>
   <div class="cards" style="--n:3">
     <div class="card"><b>3 · A score that rewarded citing everything</b><p>Coverage counted all <span data-value="case3.entries"></span> entries in the shared file. A skeleton citing everything scored 100%; a real paper citing 20 scored <span data-value="case3.realScore"></span>% and failed. Now it compares against the keys the paper cites.</p></div>
-    <div class="card"><b>4 · Two dates for one article</b><p>Crossref records an online date and a print year. One article was issued online on 2021-11-02 and printed in 2022; the bibliography cites 2022. Comparing only the first, the check warned on every run. Now either year passes.</p></div>
+    <div class="card"><b>4 · Two dates for one article</b><p>Crossref records an online date and a print year. One article was issued online on November 2, 2021 and printed in 2022; the bibliography cites 2022. Comparing only the first, the check warned on every run. Now either year passes.</p></div>
     <div class="card"><b>5 · A fix the cache undid</b><p>Records were cached for 14 days with no format marker, so on the first run after the fix, <span data-value="case5.fromCache"></span> came from the old cache. Records now carry a schema version, and an older one is fetched again.</p></div>
   </div>
   <aside class="notes">All three are wrong inputs: the check ran, but read the wrong thing.</aside>

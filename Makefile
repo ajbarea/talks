@@ -34,8 +34,8 @@ videos-verify:     ## Check a published video's public page: make videos-verify 
 	@[ -n "$(ID)" ] || { echo "set ID" >&2; exit 1; }
 	uv run python videos/youtube_check.py '--live=$(ID)' $(if $(AI),--ai) $(if $(AUTO_THUMB),--auto-thumbnail)
 
-script-length:     ## Each talk's spoken script in words and minutes; fails a talk over its cap
-	@for t in $(TALKS); do python3 scripts/script_length.py $$t || exit 1; done
+script-length:     ## Each talk's script.md in words and minutes; fails a talk over its cap or off its slides
+	@for t in $(TALKS); do python3 scripts/script_length.py $$t --check || exit 1; done
 
 figures:           ## Regenerate every talk's figures from its artifacts
 	@for f in */figures.py; do echo ">>> $$f"; python3 $$f || exit 1; done

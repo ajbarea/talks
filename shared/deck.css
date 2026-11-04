@@ -256,6 +256,7 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 .qr-close { position: static; width: 424px; }
 .qr-close .qr-label { margin-top: 18px; font-size: 26px; text-align: center; }
 .qr-close .qr-label span { max-width: none; }
+/* A phone is the screen the code would open on, so it shows none. */
 .phone .qr { display: none; }
 
 /* ------------------------------------------------------------- data-built -- */
@@ -404,7 +405,19 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
   .rail button { padding: 3px 10px; font-size: 13px; }
 }
 
+/* Touch screens: every control is at least 44px to a finger (WCAG 2.5.5), drawn the same size.
+   The arrows' hit area grows past the drawn arrow; the rail's chips grow themselves. */
+@media (pointer: coarse) {
+  .reveal .controls button::after { content: ""; position: absolute; inset: -4px; }
+  .rail button { min-height: 44px; }
+  .reveal .slide-number a { min-height: 44px; line-height: 44px; }
+}
+
+/* The number sits left of the arrows: reveal.js puts it under the next arrow, where it takes
+   that arrow's taps. */
 .reveal .slide-number {
+  right: 112px;
+  bottom: 26px;
   padding: 2px 8px;
   font: 600 14px var(--sans);
   color: var(--muted);

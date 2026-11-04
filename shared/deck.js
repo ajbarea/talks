@@ -13,6 +13,11 @@
   // Speaker view previews slides in narrow iframes (?receiver); they keep the slide layout.
   const phone = narrow.matches && !/receiver/i.test(location.search);
   narrow.addEventListener("change", () => location.reload());
+  // A phone on its side keeps the slide's layout, fitted to the screen's width rather than its
+  // height, and scrolls: fitted to the height, a 16:9 slide's small text drew at 10px.
+  const short = matchMedia("(max-height: 500px) and (pointer: coarse) and (orientation: landscape)");
+  const sideways = short.matches && !phone && !/receiver/i.test(location.search);
+  short.addEventListener("change", () => location.reload());
 
   const FOCUSABLE = 'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])';
   const focusableInside = (sel) =>
@@ -452,8 +457,8 @@
   document.querySelectorAll(".forest[data-source]").forEach(buildForest);
   const chs = chapters();
   buildAgenda(chs);
-  if (phone) {
-    document.documentElement.classList.add("phone");
+  if (phone) document.documentElement.classList.add("phone");
+  if (phone || sideways) {
     // A feed has no stepping: a fragment would hide its content and stretch the page by a screen.
     for (const f of document.querySelectorAll(".reveal .fragment")) f.classList.remove("fragment");
   }
@@ -470,9 +475,17 @@
     backgroundTransition: "none",
     autoAnimate: !reduce,
     pdfSeparateFragments: false,
+    // The tutorial bounces the next arrow until a key is pressed, past the five-second motion rule.
+    controlsTutorial: false,
     // A phone gets a portrait canvas and scroll view, and deck.css stacks the columns, so text
     // stays readable instead of a 16:9 slide shrunk to a third of its size.
     ...(phone ? { view: "scroll" } : {}),
+    ...(sideways
+      ? (() => {
+          const fit = (innerWidth * (1 - 0.04)) / 1280;
+          return { view: "scroll", scrollLayout: "compact", minScale: fit, maxScale: fit };
+        })()
+      : {}),
     scrollActivationWidth: null,
     plugins: [RevealNotes],
   }).then(() => {
@@ -482,6 +495,13 @@
     if (phone && !focusableInside(".reveal .slides")) {
       document.querySelector(".reveal-viewport")?.setAttribute("tabindex", "0");
     }
-    if (!phone) buildRail(chs);
+    if (!phone && !sideways) buildRail(chs);
+    // Scroll view leaves the hash alone, so a rotation's reload would reopen the feed at slide 1.
+    // Write the slide being read, without adding a history entry per slide. Once the screen has
+    // turned, a reload is coming and the feed's relayout scrolls; that slide is not the reader's.
+    if (phone || sideways) {
+      const turned = () => narrow.matches !== phone || short.matches !== sideways;
+      Reveal.on("slidechanged", (e) => turned() || history.replaceState(null, "", `#/${e.indexh}`));
+    }
   });
 })();

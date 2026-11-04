@@ -12,12 +12,12 @@ LDQIS meeting, November 6, 2026. About ten minutes, light theme for a lit room.
 | 2 | The map: five places, one app each (`data-contribution`) | 1 · Five places |
 | 3-7 | One slide per app, launch order, same shape: what it does, one use, one limit | 2 · Five apps |
 | 8 | Which app for which job: the main point as a table | 3 · Which app when |
-| 9 | My favorite: Claude Code (lab changes, 169 video pages, 33 hook moments) | 4 · My favorite |
+| 9 | My favorite: Claude Code (three lab changes, 33 hook moments) | 4 · My favorite |
 | 10 | The `.env` hook demo (real Nov 2 headless run) | 4 · My favorite |
 | 11 | Try one this week: a first step per app, Claude Code's four steps | 5 · Try one |
 | 12 | Thank you, questions (closing QR) | |
 
-Backup: the discussion prompt (one question with example answers, for a quiet Q&A), sources (two slides), the hook ready to copy, Duet details, what lab code needs app by app, who starts the work (the old surfaces map), and Claude Code with what extends it.
+Backup: the discussion prompt (one question with example answers, for a quiet Q&A), sources (two slides), the hook ready to copy, Duet details, what lab code needs app by app (Desktop column added), who starts the work (the old surfaces map), and Claude Code with what extends it.
 
 There is no agenda slide; the map does that job, and the chapter rail follows `data-chapter`. Nothing in the deck announces a pause: the title's notes invite interruptions, and questions come at the end.
 
@@ -47,7 +47,7 @@ Each app slide's middle row is "In my work" where there is evidence and "A lab c
 
 - Claude chat: "A lab could" (reviewer comments to a response plan). FILL: AJ's own example?
 - Claude Desktop: makesense, the SCADS 2026 analyst tool, installs into Claude Desktop from one ZIP and runs on the analyst's computer (delivered August 4, 2026).
-- Claude Code: nn-library #18 for Richard Lange's lab, peak memory of one CKA step from about 1 GB to under 1 MB.
+- Claude Code: nn-library #18 for Richard Lange's lab (open PR, not yet merged), peak memory of one CKA step from about 1 GB to under 1 MB.
 - Claude Science: "A lab could" (rebuild last semester's figures with their code and history). FILL: AJ's own example?
 - Claude Duet: the real card from November 1 (IMG_1281).
 

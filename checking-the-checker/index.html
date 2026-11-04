@@ -89,7 +89,7 @@
   </div>
   <p class="lead fragment">So the trust moves to the checker.</p>
   <p class="footnote">Sources: Xu et al., GhostCite, 2026 (first two panels); ACL 2026 program chairs' statement.</p>
-  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. One top conference turned to software: ACL 2026 ran an automated checker, and it flagged over a hundred accepted papers that cited work that doesn't exist. So the trust moves to the checker, and I looked hard at my own.</aside>
+  <aside class="notes">Language models still invent references. Across thirteen recent models, between 14 and 95 percent of the citations they were asked for were invalid. Some reach print: at eight AI and security venues, the share of accepted papers with an invalid citation went from under one percent to 1.61 percent in 2025. One top conference turned to software: ACL 2026 ran an automated checker, and it flagged over a hundred accepted papers, confirmed by hand, that cited work that doesn't exist. So the trust moves to the checker, and I looked hard at my own.</aside>
 </section>
 
 <section data-chapter="3 · My checker">
@@ -161,18 +161,18 @@
   <span class="kicker">5 · Conclusion</span>
   <h2>A checker's all-clear counts only if it can fail and names what it skipped</h2>
   <div class="recap" data-motion="stagger" data-child="rise" data-step="150">
-    <div class="tile"><p class="num">6 <span aria-hidden="true">→</span> 3</p><p>silent failures in my checker, in three groups, each with its own guard</p></div>
+    <div class="tile"><p class="num">6 in 3</p><p>silent failures in my checker, in three groups, each with its own guard</p></div>
     <div class="tile"><p class="num"><span data-value="rebreak.caught"></span> of <span data-value="rebreak.total"></span></p><p>re-breaks of my six fixes caught by today's tests</p></div>
     <div class="tile"><p class="num"><span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span></p><p>public checkers printed a clean result after checking nothing</p></div>
   </div>
   <div class="open">
     <p class="open-h">Open problems</p>
     <ul>
-      <li>How often these failures occur: one tool, seen by its author, shows only that they do</li>
+      <li>How often these failures occur: these cases show only that they do</li>
       <li>Whether the guards find new defects, or find them earlier than other practices</li>
     </ul>
   </div>
-  <aside class="notes">To sum up. An empty report is evidence only if the checker can fail and says what it measured. My own checker failed silently six times, in three groups, and each group has its own guard. When I broke my fixes again, today's tests caught nine of eleven. That shows the tests hold, not that the guards find new bugs. And three of five public checkers printed a clean result after checking nothing. Two problems stay open. Six cases from one tool show these failures happen, not how often. And I haven't tested whether the guards find new defects, or find them sooner than another practice would. That's my talk.</aside>
+  <aside class="notes">A checker's all-clear counts only if it can fail and names what it skipped. My own checker failed silently six times, in three groups, each with its own guard: work out what to check, break each check on purpose, and keep no answer apart from not found. When I broke my fixes again, today's tests caught nine of eleven. That shows the tests hold, not that the guards find new bugs. And three of five public checkers printed a clean result after checking nothing. Two problems stay open. These cases show these failures happen, not how often. And I haven't tested whether the guards find new defects, or find them sooner than another practice would. That's my talk.</aside>
 </section>
 
 <section class="closing">

@@ -104,26 +104,26 @@
       <p class="gname" data-value="groups.norun.name"></p>
       <p class="sname" data-value="groups.norun.stage"></p>
       <p class="scases fragment" data-fragment-index="1">Cases <span data-value="groups.norun.cases"></span>: the broken paper was never checked</p>
-      <p class="guard fragment" data-fragment-index="2"><span class="glabel">Guard</span><span data-value="groups.norun.guard"></span></p>
+      <p class="guard fragment" data-fragment-index="1"><span class="glabel">Guard</span><span data-value="groups.norun.guard"></span></p>
     </div>
     <span class="arrow" aria-hidden="true">→</span>
     <div class="stage g-input">
       <p class="gname" data-value="groups.input.name"></p>
       <p class="sname" data-value="groups.input.stage"></p>
-      <p class="scases fragment" data-fragment-index="1">Cases <span data-value="groups.input.cases"></span>: the check read the wrong thing</p>
+      <p class="scases fragment" data-fragment-index="2">Cases <span data-value="groups.input.cases"></span>: the check read the wrong thing</p>
       <p class="guard fragment" data-fragment-index="2"><span class="glabel">Guard</span><span data-value="groups.input.guard"></span></p>
     </div>
     <span class="arrow" aria-hidden="true">→</span>
     <div class="stage g-report">
       <p class="gname" data-value="groups.report.name"></p>
       <p class="sname" data-value="groups.report.stage"></p>
-      <p class="scases fragment" data-fragment-index="1">Case <span data-value="groups.report.cases"></span>: a refused lookup was reported as a missing entry</p>
-      <p class="guard fragment" data-fragment-index="2"><span class="glabel">Guard</span><span data-value="groups.report.guard"></span></p>
+      <p class="scases fragment" data-fragment-index="3">Case <span data-value="groups.report.cases"></span>: a refused lookup was reported as a missing entry</p>
+      <p class="guard fragment" data-fragment-index="3"><span class="glabel">Guard</span><span data-value="groups.report.guard"></span></p>
     </div>
   </div>
-  <p class="reach fragment" data-fragment-index="3"><span class="reach-no">A test of a check runs the check, so it can never see a check that didn't run.</span><span class="reach-yes">A test can catch wrong inputs and misreported results.</span></p>
+  <p class="reach fragment" data-fragment-index="4"><span class="reach-no">A test of a check runs the check, so it can never see a check that didn't run.</span><span class="reach-yes">A test can catch wrong inputs and misreported results.</span></p>
   <p class="footnote">A case sits at the first step whose output was wrong.</p>
-  <aside class="notes"><ul><li>A check chooses what to check, reads inputs, reports: each group fails one step</li><li>Did not run (cases 1, 2), wrong inputs (3 to 5), misreported (6, arXiv refusals)</li><li>Guards: work out what to check, break it on purpose, no answer but "not found". A test never sees a check that didn't run</li></ul></aside>
+  <aside class="notes"><ul><li>A check chooses what to check, reads inputs, reports: each group fails one step and gets its own guard</li><li>Did not run (cases 1, 2): guard, work out what to check and name what was skipped. Wrong inputs (3 to 5): guard, break the check on purpose</li><li>Misreported (6, arXiv refusals): guard, no answer but "not found". Then: a test never sees a check that didn't run</li></ul></aside>
 </section>
 
 <section data-chapter="3 · My checker">

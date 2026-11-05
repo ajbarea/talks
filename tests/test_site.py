@@ -288,3 +288,13 @@ def test_the_tip_never_reaches_an_export() -> None:
     assert ".tip, .tip-anchor" in (ROOT / "scripts" / "exports.py").read_text()
     assert "@media print" in (ROOT / "shared" / "tip.css").read_text()
     assert "print-pdf" in (ROOT / "shared" / "tip.js").read_text()
+
+
+def test_a_moved_talk_is_published_as_a_redirect_and_not_listed(site, tmp_path):
+    out = tmp_path / "site"
+    site.build(out)
+    moved = [d.name for d in site.moved()]
+    assert "claude-duet" in moved and "claude-duet" not in [t.name for t in site.talks()]
+    page = (out / "claude-duet" / "index.html").read_text()
+    assert 'http-equiv="refresh"' in page and "../claude-tooling/" in page
+    assert "claude-duet/" not in (out / "index.html").read_text()

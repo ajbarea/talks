@@ -33,12 +33,26 @@ SKIP = shutil.ignore_patterns("*.py", "__pycache__", "*.md", "talk.json")
 LINKS = {"code": "Code on GitHub", "docs": "Documentation", "video": "Watch the video"}
 
 
-def talks(root: pathlib.Path = ROOT) -> list[pathlib.Path]:
+def is_moved(d: pathlib.Path) -> bool:
+    """A folder left behind when a talk was renamed: its index.html only redirects."""
+    return 'http-equiv="refresh"' in (d / "index.html").read_text(errors="ignore")[:2000]
+
+
+def candidates(root: pathlib.Path) -> list[pathlib.Path]:
     return sorted(
         d
         for d in root.iterdir()
         if d.is_dir() and d.name not in NOT_TALKS and not d.name.startswith((".", "_")) and (d / "index.html").is_file()
     )
+
+
+def talks(root: pathlib.Path = ROOT) -> list[pathlib.Path]:
+    return [d for d in candidates(root) if not is_moved(d)]
+
+
+def moved(root: pathlib.Path = ROOT) -> list[pathlib.Path]:
+    """Old talk addresses that redirect to the new one; published as-is, never listed."""
+    return [d for d in candidates(root) if is_moved(d)]
 
 
 def claim(out: pathlib.Path, mark: str, sources: list[pathlib.Path]) -> None:
@@ -298,7 +312,11 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | 
                 if not (exports / talk.name / name).is_file():
                     raise SystemExit(f"no {exports / talk.name / name}; run scripts/exports.py first")
     rows = [(talk, *entry(talk), links(talk)) for talk in found]
-    claim(out, MARK, [*found, root / "vendor", root / "shared", *([exports] if exports is not None else [])])
+    sources = [*found, *moved(root), root / "vendor", root / "shared"]
+    claim(out, MARK, [*sources, *([exports] if exports is not None else [])])
+    for old in moved(root):  # keep old links working: copy the redirect page only
+        (out / old.name).mkdir(parents=True)
+        shutil.copy2(old / "index.html", out / old.name / "index.html")
     for shared in ("vendor", "shared"):
         shutil.copytree(root / shared, out / shared)
     items = []

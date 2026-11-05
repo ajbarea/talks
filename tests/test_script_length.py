@@ -120,7 +120,7 @@ def test_check_finds_a_section_count_off_the_slides_and_missing_data(
     assert "a-talk/script.md: no data at readings.ok" in found
 
 
-@pytest.mark.parametrize("talk", ["checking-the-checker", "claude-duet", "federated-agents", "kourai-khryseai"])
+@pytest.mark.parametrize("talk", ["checking-the-checker", "claude-tooling", "federated-agents", "kourai-khryseai"])
 def test_each_talk_has_a_script_that_matches_its_slides(talk: str) -> None:
     if sl.shutil.which("node") is None:
         pytest.skip("needs node")

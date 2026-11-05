@@ -31,7 +31,7 @@ Every date and product claim was rechecked on November 4, 2026, against Anthropi
 | Claude Desktop | October 2024 (Mac and Windows); Linux now in beta | Anthropic on X, status 1852003248208552331 (October 31, 2024 by its ID); help center "Install Claude Desktop" |
 | Claude Code | February 2025 preview, May 2025 GA | anthropic.com/news/claude-3-7-sonnet (Feb 24, 2025); anthropic.com/news/claude-4 (May 22, 2025) |
 | Claude Science | June 30, 2026 beta | anthropic.com/news/claude-science-ai-workbench; claude.com/docs/claude-science/overview |
-| Claude Duet | October 21, 2026 research preview | claude.com/resources/articles/claude-duet; help center "Get started with Claude Duet" |
+| Claude Duet | October 21, 2026 research preview | claude.com/resources/articles/claude-tooling; help center "Get started with Claude Duet" |
 
 No launch date changed from the previous version. Facts that moved since November 2:
 

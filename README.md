@@ -6,7 +6,7 @@ AJ Barea's research talks as web decks, published at https://ajbarea.github.io/t
 |---|---|
 | Federated Agents | https://ajbarea.github.io/talks/federated-agents/ |
 | Kourai Khryseai | https://ajbarea.github.io/talks/kourai-khryseai/ |
-| Five Claude apps, one favorite | https://ajbarea.github.io/talks/claude-duet/ |
+| Five Claude apps, one favorite | https://ajbarea.github.io/talks/claude-tooling/ |
 | Checking the Checker | https://ajbarea.github.io/talks/checking-the-checker/ |
 
 Each talk opens in any browser, with no network needed once loaded. Press `S` for the speaker

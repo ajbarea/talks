@@ -85,7 +85,8 @@
     const heads = [...table.querySelectorAll("thead th")].slice(1).map((th) => th.dataset.short || th.textContent);
     const body = el("tbody", {}, table);
     tools.forEach((t, i) => {
-      const tr = el("tr", {}, body);
+      // A tool that printed a clean result after checking nothing is the slide's point: its row is marked.
+      const tr = el("tr", t.cells.slice(0, 2).some((c) => c.clean) ? { class: "clean-nothing" } : {}, body);
       el("th", { scope: "row", "data-value": `${table.dataset.matrix}.${i}.name` }, tr);
       t.cells.forEach((c, j) => {
         const td = el("td", { class: `k-${c.kind}${j === 2 ? " fragment" : ""}`, "data-label": heads[j] }, tr);

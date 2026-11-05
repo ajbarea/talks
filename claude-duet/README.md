@@ -8,7 +8,7 @@ LDQIS meeting, November 6, 2026. About ten minutes, light theme for a lit room.
 
 | # | Slide | Chapter |
 |---|---|---|
-| 1 | Title: Five Claude apps, one favorite (robot, Follow-along QR) | |
+| 1 | Title: Five Claude apps, one favorite (Hermes, Follow-along QR) | |
 | 2 | The map: five places, one app each (`data-contribution`) | 1 · Five places |
 | 3-7 | One slide per app, launch order, same shape: what it does, one use, one limit | 2 · Five apps |
 | 8 | Which app for which job: the main point as a table | 3 · Which app when |
@@ -57,7 +57,7 @@ For another lab, change the title slide's kicker and the first line of its notes
 
 ## Pictures
 
-- The title's robot is an original SVG drawing, not an Anthropic mark: Anthropic's [trademark guidelines](https://www.anthropic.com/legal/trademark-guidelines) allow its marks only in materials it approves. It dances, and stands still under reduced motion.
+- The title and closing carry Hermes, the messenger between places, from AJ's own cast (kourai portraits). No Anthropic mark appears: Anthropic's [trademark guidelines](https://www.anthropic.com/legal/trademark-guidelines) allow its marks only in materials it approves.
 - Slide 7's card is cropped from a phone screenshot of my Duet app (November 1, IMG_1281), below a blurred line that quoted a classmate's review. The other screenshots show unrelated research and course items, so they stay out.
 
 ## The demo (slide 10)

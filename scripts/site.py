@@ -161,23 +161,28 @@ INDEX = """<!doctype html>
   <meta property="og:description"
     content="Research talks: open one in your browser, or download it as PowerPoint or PDF.">
   <style>
+    @font-face {{ font-family: "Marcellus"; src: url("shared/fonts/marcellus-latin-400-normal.woff2") format("woff2");
+      font-display: swap; }}
+    @font-face {{ font-family: "Atkinson Hyperlegible Next"; font-weight: 200 800;
+      src: url("shared/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
+      font-display: swap; }}
     :root {{
-      --paper: #faf8f3; --ink: #1a1a1a; --muted: #44403c; --label: #1e3a8a;
-      --line: #d6d3d1; --band: #f1efe9; --mark: #0072b2; --ours: #d55e00;
-      --sans: system-ui, "Segoe UI", Calibri, Roboto, "Helvetica Neue", Arial, sans-serif;
+      --paper: #f1f4f6; --card: #ffffff; --ink: #15202b; --muted: #3b4856; --label: #24384c;
+      --line: #c3ccd5; --band: #e4e9ee; --ours-line: #8a5a0c; --neutral-ink: #1b567d;
+      --display: "Marcellus", Georgia, serif;
+      --sans: "Atkinson Hyperlegible Next", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
     }}
     * {{ box-sizing: border-box; }}
     body {{ margin: 0; background: var(--paper); color: var(--ink); font: 1.0625rem/1.55 var(--sans); }}
     main {{ max-width: 108rem; margin: 0 auto; padding: 4rem 2rem 3rem; }}
     header {{ max-width: 44rem; margin-bottom: 3rem; }}
     .talks {{ display: block; }}
-    h1 {{ font-size: clamp(2.5rem, 6vw, 4rem); line-height: 1; letter-spacing: -0.02em; margin: 0 0 1rem;
-      font-weight: 750; }}
+    h1 {{ font: 400 clamp(2.5rem, 6vw, 4.2rem)/1 var(--display); margin: 0 0 1rem; color: var(--ours-line); }}
     header p {{ margin: 0; color: var(--muted); font-size: 1.2rem; }}
-    header a {{ color: var(--label); }}
+    header a {{ color: var(--neutral-ink); display: inline-block; padding: 0.5rem 0; margin: -0.5rem 0; }}
     .talk {{ display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 9fr); gap: 2.5rem;
       align-items: center; padding: 2.5rem 0; border-top: 1px solid var(--line); }}
-    .shot {{ display: block; border-radius: 6px; overflow: hidden; outline: 1px solid var(--line);
+    .shot {{ display: block; border-radius: 3px; overflow: hidden; outline: 1px solid var(--line);
       aspect-ratio: 16 / 9; background: var(--band); }}
     .shot img {{ display: block; width: 100%; height: 100%; object-fit: cover; }}
     @media (prefers-reduced-motion: no-preference) {{
@@ -191,37 +196,37 @@ INDEX = """<!doctype html>
       .shot {{ transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.35s; }}
       .shot img {{ transition: transform 0.6s cubic-bezier(0.22, 0.8, 0.3, 1); }}
       .talk:hover .shot, .talk:focus-within .shot {{
-        transform: translateY(-6px); box-shadow: 0 20px 36px -22px rgba(30, 58, 138, 0.55); }}
+        transform: translateY(-6px); box-shadow: 0 18px 30px -22px rgba(21, 32, 43, 0.5); }}
       .talk:hover .shot img, .talk:focus-within .shot img {{ transform: scale(1.025); }}
     }}
     .shot.blank {{ display: grid; place-items: center; padding: 2rem; font-size: 1.6rem; font-weight: 700; }}
-    h2 {{ font-size: 1.75rem; line-height: 1.15; margin: 0 0 0.6rem; font-weight: 700; }}
-    h2 a {{ color: inherit; text-decoration: none; }}
+    h2 {{ font: 400 1.9rem/1.15 var(--display); margin: 0 0 0.6rem; }}
+    h2 a {{ color: inherit; text-decoration: none; display: inline-block; padding: 0.2rem 0; }}
     h2 a:hover {{ text-decoration: underline; text-decoration-thickness: 2px; }}
     .about > p {{ margin: 0 0 1.4rem; color: var(--muted); max-width: 36rem; }}
     .actions {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }}
     .actions .primary {{ grid-column: 1 / -1; }}
     .button {{ display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; text-align: center;
       gap: 0 0.5rem; padding: 0.7rem 1.1rem;
-      border-radius: 6px; border: 2px solid var(--label); color: var(--label); font-weight: 650;
+      border-radius: 3px; border: 2px solid var(--ink); color: var(--ink); font-weight: 650;
       text-decoration: none; }}
-    .button:hover {{ background: #e9eefb; }}
-    .button.primary {{ background: var(--label); color: #fff; }}
-    .button.primary:hover {{ background: #172f73; }}
+    .button:hover {{ background: var(--band); }}
+    .button.primary {{ background: var(--ink); color: var(--paper); }}
+    .button.primary:hover {{ background: #24384c; }}
     .note {{ font-weight: 400; font-size: 0.9em; white-space: nowrap; }}
     .links {{ list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding: 0; margin: 1.25rem 0 0; }}
-    .links a {{ display: inline-flex; align-items: center; gap: 0.45rem; color: var(--label); font-weight: 600; }}
-    a:focus-visible {{ outline: 3px solid var(--ours); outline-offset: 3px; }}
+    .links a {{ display: inline-flex; align-items: center; gap: 0.45rem; color: var(--neutral-ink); font-weight: 600; }}
+    a:focus-visible {{ outline: 3px solid var(--ink); outline-offset: 3px; }}
     footer {{ margin-top: 2.5rem; border-top: 1px solid var(--line); padding-top: 1.5rem; color: var(--muted);
       font-size: 0.95rem; }}
-    footer a {{ color: var(--label); }}
+    footer a {{ color: var(--neutral-ink); }}
     kbd {{ font: inherit; font-weight: 700; padding: 0 0.35em; border: 1px solid var(--line); border-radius: 4px;
       background: #fff; }}
     @media (min-width: 1400px) {{
       main {{ padding-top: 5rem; }}
       .talks {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; }}
       .talk {{ grid-template-columns: 1fr; gap: 1.75rem; align-items: start; padding: 1.5rem 1.5rem 2rem;
-        border: 1px solid var(--line); border-radius: 10px; }}
+        border: 1px solid var(--line); border-radius: 3px; background: var(--card); }}
       .about > p {{ max-width: none; }}
       .about > p:first-of-type {{ min-height: 3.1em; }}
     }}

@@ -1,10 +1,14 @@
-# IMPL: Halloween upload package (videos/05-haunted-terminal), 2026-10-30
+# IMPL: the forge look for every talk, 2026-11-04
 
 ## State
-- ✅ #43/#45 upload package; ✅ #44/#46 channel refresh (all 169 public videos).
-- AI disclosure: zc_W9tCGO1I (Google Vids avatar) and UtOHEHz2pWw (Microsoft Read Aloud TTS, per AJ); both have the narrator line and "AI use" set.
-- ✅ 05-haunted-terminal: description.txt, short-description.txt, metadata.md, checklist.md, delivered.md, TOOLING-NOTES.md. Media (two mp4s, srt, three thumbnails) in `Desktop/spooky-youtube/`, never committed.
-- 📋 Upload both cuts Sat Oct 31 (16:9 at 10:00 AM ET, Short at 12:00 PM ET), tick AI use, then `make videos-verify ID=<id> AI=1`.
+- ✅ #85 merged: shared controls (rotation keeps the slide, sideways phones fit the width, deep links land on their slide, slide number clears the arrows, #79's speaker-view fix).
+- 📋 style/forge (this branch): one look for all four decks and the index (`shared/deck.css` tokens, `shared/fonts/`, `shared/cast/`), a conclusion slide in every deck (techne#288 gate; CI pin moved to techne c40f907), three-bullet notes with the full script in each talk's `script.md`, footnote audit, the UX audit's Should-fix items per deck.
+- 📋 techne feat/slides-forge-style: the graphe starter template in the same look.
+- 📋 After merge: re-export checking-the-checker PDF/PPTX to `Desktop/CISC-810 talk/` (its script words are unchanged, 973).
+
+## Verify
+- `make check` with `SLIDES` and `SPHRAGIS` set to real checkouts; `make script-length`.
+- Look at `make render` sheets for every deck, desktop and phone.
 
 ## Next (not started)
 - Custom thumbnails for Tier 1 uploads that still show an auto frame (upload-package.md recipe).
@@ -20,7 +24,7 @@
 ## Checking the Checker talk (checking-the-checker/), CISC-810 Group 1
 - ✅ #82: 8 main slides + 12 backup, from the revised manuscript and its evidence/ only (every value in `data/deck-data.js` with its source); `figs.js` draws the charts and recounts the counts the titles state. Script 966 words, cap 7 minutes.
 - ✅ Five rounds of independent Opus review against the rubric and the manuscript; round 5 clean.
-- 📋 deck/checking-the-checker-conclusion: a conclusion slide (key results, open problems from the Limitations) per Dr. Shi's lecture (topic-04: tell them what you told them, give open problems, say the talk is over).
+- ✅ #83 conclusion slide (key results, open problems); marked `data-conclusion` on style/forge.
 - 📋 Upload `Desktop/CISC-810 talk/checking-the-checker.pdf` to myCourses by Mon Nov 9 23:59 (AJ); revised slides due Nov 18. Rehearsal brief in the same folder.
 - 📋 Title says "November 2026": set the exact date once AJ's slot (Nov 10, 12 or 17) is known.
 - 📋 The manuscript folder is outside this repo, so CI cannot recheck the numbers; recheck by hand if the paper changes before Nov 18.
@@ -31,7 +35,7 @@
 - ✅ #70 / #71 third pass from AJ's notes (11-02): slide 6 map has Claude Design inside Claude chat and Cowork moving in by plan (Team and Free not yet); "your lab"; slide 13 "Four steps put Claude Code to work in your own repository" with an accurate privacy line; the pip demo became a `.env` hook adapted from Anthropic's hooks guide (real Opus 5.5 run). Script 1,398 of 1,400 words.
 - ✅ #73 retitle merged; ✅ #76 deck/duet-rebalance (11-03, AJ: "cover them all briefly, then Claude Code in depth", "chronological order", title "Five Claude apps, one favorite"): five apps in launch order on slide 3 (Jul 2023, Oct 2024, Feb 2025, Jun 2026, Oct 2026, each checked against Anthropic's announcements); map now slide 4; Duet down to one slide (5); old "can't see your files" table and the cut Duet facts moved to backup. 12 talk slides, 5 backup; pause slide 6, demo 9, discussion 10.
 - ✅ #80 deck/duet-no-pauses (11-04, AJ: no agenda mentions pauses; no mid-talk question or discussion stops; questions at the end): pause slide cut, agenda "Five parts in about ten minutes", discussion slide moved to the first backup slot for a quiet Q&A. 10 talk slides, 6 backup; Duet 5, demo 8.
-- 📋 talk/duet-one-point (11-04, AJ approved the structure): one main point, "each Claude app is built for a different place your work lives; pick the app by the place, and for code start with Claude Code". 12 talk slides: title, the map (contribution), one slide per app in launch order (does / use / limit), which-app table, favorite, demo, try one, thank you. No agenda slide. 9 backup. Script 1,393 of 1,400 words. Every date rechecked 11-04 on Anthropic's pages (none changed); structure, sources and the FILL list in `claude-duet/README.md`.
+- ✅ #81 one main point; style/forge adds its conclusion slide and cuts the script to 1,169 words.
 - 📋 FILL for AJ: his own example for Claude chat (slide 3) and Claude Science (slide 6); both slides say "A lab could" until then.
 - 📋 Before 11-06: recheck whether the Cowork merge reached Team plans (claude.com/resources/articles/cowork-is-now-claude; 11-04: Enterprise only, Team still to follow).
 - 📋 Present Fri 11-06 about 2:00; live demo script in `claude-duet/README.md`.
@@ -41,3 +45,4 @@
 ## FA deck slide 5 audit (#61, PR #62 merged 11-02)
 - ✅ Slide 5 matches sphragis main b9e8ccd; live. `foreign_sized` flips to "sized" when sphragis#246 merges; no deck edit needed then.
 - 📋 Refresh routine guardrails (in #61) wait on AJ's personal login (needs-you.md).
+

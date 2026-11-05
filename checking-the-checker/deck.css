@@ -1,101 +1,92 @@
 /* ---------------------------------------------------- checking the checker -- */
-/* Presented in a lit room, so every slide stays on the light paper. The three failure groups keep
-   the paper's Okabe-Ito hues: vermillion (did not run), blue (wrong inputs), bluish green
-   (misreported). Text in a group's colour uses its dark ink, which clears 7:1 on paper and tint. */
+/* The three failure groups are all failures, so all three take the risk colour, in the order of
+   the step of a check each breaks: did not run (choosing what to check) darkest, wrong inputs
+   (reading) in the middle, misreported (reporting) lightest. They part by lightness (L* 28, 49,
+   75), so they read in greyscale and under colour-vision deficiency; the light one carries a 3:1
+   outline. Group text is one dark vermilion, 8:1 or more on marble and every tint. */
 
 :root {
-  --g-norun: #d55e00;  --g-norun-ink: #7c2d12;  --g-norun-tint: #fbe6d8;
-  --g-input: #0072b2;  --g-input-ink: #003a5c;  --g-input-tint: #dcebf6;
-  --g-report: #009e73; --g-report-ink: #064e3b; --g-report-tint: #d9f0e7;
-  --bad-tint: #fbe6d8; --good-tint: #d9f0e7; --warn-tint: #f8edc8; --warn-ink: #5c4300;
+  --g-ink-all: #7a2405;
+  --g-norun: #7a2405;  --g-norun-ink: var(--g-ink-all);  --g-norun-tint: #f2dcd2;
+  --g-input: #c4512b;  --g-input-ink: var(--g-ink-all);  --g-input-tint: #f7e5dd;
+  --g-report: #edaa8e; --g-report-ink: var(--g-ink-all); --g-report-tint: #fcf1ec;
+  --bad-tint: var(--risk-tint); --good-tint: var(--fix-tint); --warn-tint: var(--neutral-tint); --warn-ink: var(--neutral-ink);
 }
 
 .g-norun { --g: var(--g-norun); --g-ink: var(--g-norun-ink); --g-tint: var(--g-norun-tint); }
 .g-input { --g: var(--g-input); --g-ink: var(--g-input-ink); --g-tint: var(--g-input-tint); }
-.g-report { --g: var(--g-report); --g-ink: var(--g-report-ink); --g-tint: var(--g-report-tint); }
+.g-report { --g: var(--g-report); --g-ink: var(--g-report-ink); --g-tint: var(--g-report-tint); --g-line: var(--risk-line); }
+.g-norun, .g-input { --g-line: var(--g); }
 
-.lead { margin: 14px 0 0; font-size: 0.72em; max-width: 72ch; color: var(--ink); }
+.lead { margin: 18px 0 0; font-size: 0.86em; max-width: 72ch; color: var(--ink); }
 .context { margin: 0 0 14px; font-size: 0.7em; color: var(--muted); max-width: 70ch; }
 
-/* Title: a magnifying glass finds the check mark hollow. Drawn once, under five seconds. */
-.title-slide .kicker { color: var(--limit); }
-.title-slide h1 { margin-top: 110px; max-width: 14ch; }
-.title-slide h1::after { content: ""; display: block; width: 140px; height: 8px; margin-top: 24px; border-radius: 4px; background: var(--g-report); }
-.title-slide .sub { margin: 0; font-size: 0.95em; color: var(--muted); max-width: 30ch; }
-.title-slide .when { margin-top: 22px; font-size: 0.74em; color: var(--muted); }
-.lens-art { position: absolute; right: 120px; top: 96px; width: 330px; height: auto; overflow: visible; }
-.lens-art .sheet { fill: var(--card); stroke: var(--line); stroke-width: 3; }
-.lens-art .rule { stroke: var(--line); stroke-width: 10; stroke-linecap: round; fill: none; }
-.lens-art .tick { fill: none; stroke: var(--g-report); stroke-width: 18; stroke-linecap: round; stroke-linejoin: round; }
-.lens-art .tick.hollow { stroke: var(--card); stroke-width: 9; }
-.lens-art .glass { fill: rgba(255, 255, 255, 0.55); stroke: var(--ink); stroke-width: 10; }
-.lens-art .handle { stroke: var(--ink); stroke-width: 18; stroke-linecap: round; }
-.qr-label { color: var(--muted); }
-.qr-label b { color: var(--ink); }
 .qr-follow .qr-code, .qr-close .qr-code { outline: 2px solid var(--line); }
 
 /* Slide 2: the real output, then what I did and why it matters. */
-.point { display: grid; grid-template-columns: 680px 1fr; gap: 34px; align-items: start; margin-top: 10px; }
+.point { display: grid; grid-template-columns: 700px 1fr; gap: 36px; align-items: start; margin-top: 26px; }
 .term-fig { margin: 0; }
-.term { padding: 26px 30px; border-radius: 12px; background: #1c1917; font: 0.9em/1.7 var(--mono); color: #f5f5f4; }
+.term { padding: 40px 38px; border-radius: 3px; background: var(--ink); font: 1.02em/1.75 var(--mono); color: #f1f4f6; }
 .term p { margin: 0; }
-.term .cmd { color: #d6d3d1; }
-.term .nothing { color: #fde68a; }
-.term .ok { color: #86efac; font-weight: 700; }
-.term-fig figcaption { display: flex; gap: 14px; margin-top: 14px; }
-.term-fig figcaption span { padding: 6px 14px; border-radius: 999px; font-size: 0.7em; font-weight: 700; }
-.tag-read { background: var(--warn-tint); color: var(--warn-ink); }
-.tag-said { background: var(--good-tint); color: var(--g-report-ink); }
-.claim p { margin: 0 0 16px; padding: 12px 18px; border-left: 6px solid var(--g-report); background: var(--band); border-radius: 4px; font-size: 0.72em; }
-.claim b { color: var(--g-report-ink); }
+.term .cmd { color: #c3ccd5; }
+.term .nothing { color: #f2c66d; }
+.term .ok { color: #7fd8b8; font-weight: 700; }
+.term-fig figcaption { display: flex; gap: 14px; margin-top: 20px; }
+.term-fig figcaption span { padding: 6px 14px; border-radius: 3px; font-size: 0.74em; font-weight: 700; }
+.tag-read { background: var(--risk-tint); color: var(--risk-ink); border: 1px solid var(--risk-line); }
+.tag-said { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
+.claim p { margin: 0 0 22px; padding: 18px 22px; border-left: 5px solid var(--ours-line); background: var(--ours-tint); border-radius: 0 3px 3px 0; font-size: 0.86em; }
+.claim b { color: var(--ours-ink); }
+.claim p + p { border-left-color: var(--neutral-line); background: var(--card); }
+.claim p + p b { color: var(--neutral-ink); }
 
 /* Slide 3: three small panels from the field. */
-.panels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 14px; }
-.panel { margin: 0; padding: 16px 18px; border-radius: 12px; background: var(--card); border: 2px solid var(--line); }
-.panel figcaption { font-size: 0.66em; color: var(--muted); line-height: 1.3; }
-.panel figcaption b { display: block; margin-bottom: 4px; font-size: 1.15em; color: var(--label); }
-.panel p { margin: 6px 0 0; font-size: 0.66em; }
-.axis-bar { position: relative; height: 26px; margin-top: 26px; border-radius: 4px; background: var(--band); }
-.axis-bar .range { position: absolute; top: 0; bottom: 0; border-radius: 4px; background: var(--g-norun); }
+.panels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 28px; }
+.panel { margin: 0; padding: 22px 26px 24px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); }
+.panel figcaption { font-size: 0.8em; color: var(--muted); line-height: 1.3; }
+.panel figcaption b { display: block; margin-bottom: 6px; font-size: 1.15em; color: var(--label); }
+.panel p { margin: 10px 0 0; font-size: 0.76em; }
+.axis-bar { position: relative; height: 40px; margin-top: 40px; border-radius: 2px; background: var(--band); }
+.axis-bar .range { position: absolute; top: 0; bottom: 0; border-radius: 2px; background: var(--risk); }
 .ends { display: flex; justify-content: space-between; margin: 6px 0 0; font-size: 0.8em !important; }
 .ends b { font-size: 1.2em; color: var(--g-norun-ink); }
 .scale-note { color: var(--muted); }
-.hbar { display: grid; grid-template-columns: 92px 1fr auto; gap: 10px; align-items: center; margin-top: 16px; font-size: 0.66em; }
-.hbar .track { height: 24px; border-radius: 4px; background: var(--band); overflow: hidden; }
+.hbar { display: grid; grid-template-columns: 100px 1fr auto; gap: 10px; align-items: center; margin-top: 30px; font-size: 0.8em; }
+.hbar .track { height: 32px; border-radius: 2px; background: var(--band); overflow: hidden; }
 .hbar .fill { display: block; height: 100%; background: var(--mark-rival); }
 .hbar.now .fill { background: var(--g-norun); }
 .hbar.now b { color: var(--g-norun-ink); }
 .panel.accent { border-color: var(--g-norun); }
-.panel .big { margin: 14px 0 4px; font-size: 1.9em; font-weight: 750; line-height: 1; color: var(--g-norun-ink); }
+.panel .big { margin: 18px 0 6px; font-family: var(--display); font-size: 2.6em; line-height: 1; color: var(--g-norun-ink); }
 
 /* Slide 4: one bar per case, coloured by group. */
 .cases-fig { margin: 0; }
 .bars { display: grid; gap: 10px; }
 .bar-row { display: grid; grid-template-columns: 40px 520px 1fr 150px; gap: 14px; align-items: center; }
-.case-n { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--g-tint); border: 2px solid var(--g); font-weight: 700; font-size: 0.7em; color: var(--g-ink); }
+.case-n { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--g-tint); border: 2px solid var(--g-line); font-weight: 700; font-size: 0.7em; color: var(--g-ink); }
 .bar-label { font-size: 0.7em; line-height: 1.25; }
-.bar-track { height: 30px; border-radius: 4px; background: var(--band); overflow: hidden; }
-.bar-fill { display: block; height: 100%; min-width: 4px; background: var(--g); }
+.bar-track { height: 30px; border-radius: 2px; background: var(--band); overflow: hidden; }
+.bar-fill { display: block; height: 100%; min-width: 4px; box-sizing: border-box; background: var(--g); border: 1.5px solid var(--g-line); }
 .bar-value { font-size: 0.7em; font-weight: 700; color: var(--g-ink); }
 .legend { display: flex; gap: 22px; margin-top: 16px; font-size: 0.66em; }
 .legend span { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--g-ink); }
-.legend span::before { content: ""; width: 18px; height: 18px; border-radius: 4px; background: var(--g); }
+.legend span::before { content: ""; width: 18px; height: 18px; box-sizing: border-box; border-radius: 2px; background: var(--g); border: 1.5px solid var(--g-line); }
 
 /* Slide 5: the three steps of a check, a group, its cases and its guard under each. */
 .stages { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; align-items: stretch; margin-top: 8px; }
-.stage { display: flex; flex-direction: column; padding: 14px 16px 16px; border-radius: 12px; border: 3px solid var(--g); background: var(--g-tint); }
+.stage { display: flex; flex-direction: column; padding: 14px 16px 16px; border-radius: 3px; border: 1px solid var(--g-line); border-top: 6px solid var(--g); background: var(--g-tint); }
 .stage p { margin: 0; }
-.stage .gname { font-size: 0.66em; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--g-ink); }
+.stage .gname { font-size: 0.7em; font-weight: 700; color: var(--g-ink); }
 .stage .sname { margin-top: 2px; font-size: 0.92em; font-weight: 700; }
 .stage .scases { margin-top: 10px; font-size: 0.74em; line-height: 1.3; }
-.stage .guard { margin-top: auto; padding: 10px 12px; border: 2px dashed var(--g); border-radius: 8px; background: var(--card); font-size: 0.74em; font-weight: 600; line-height: 1.3; }
+.stage .guard { margin-top: auto; padding: 10px 12px; border: 2px solid var(--fix-line); border-radius: 3px; background: var(--card); font-size: 0.74em; font-weight: 600; line-height: 1.3; }
 .stage .scases + .guard { margin-top: 14px; }
-.glabel { display: block; font-size: 0.88em; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--g-ink); }
+.glabel { display: block; font-size: 0.9em; font-weight: 700; color: var(--fix-ink); }
 .stages .arrow { display: grid; place-items: center; font-size: 1.2em; color: var(--muted); }
 .reach { display: grid; grid-template-columns: 1fr 2fr; gap: 0; margin: 18px 0 0; font-size: 0.72em; font-weight: 600; text-align: center; }
 .reach span { padding: 8px 12px; border-top: 4px solid; }
 .reach-no { border-color: var(--g-norun) !important; color: var(--g-norun-ink); margin-right: 20px; }
-.reach-yes { border-color: var(--label) !important; color: var(--label); }
+.reach-yes { border-color: var(--fix-line) !important; color: var(--fix-ink); }
 
 /* Slide 6: one column per defect put back, grouped by case; an empty dashed column is a miss. */
 .rebreak-fig { margin: 0; }
@@ -106,30 +97,30 @@
 .col-case { margin-top: 6px; text-align: center; font-size: 0.64em; font-weight: 700; color: var(--g-ink); white-space: nowrap; }
 .col { display: flex; flex-direction: column; justify-content: flex-end; width: 76px; height: 100%; }
 .col-num { text-align: center; font-size: 0.66em; font-weight: 700; color: var(--g-ink); }
-.col-fill { display: block; background: var(--g); border-radius: 4px 4px 0 0; transform-origin: 50% 100%; }
+.col-fill { display: block; box-sizing: border-box; background: var(--g); border: 1.5px solid var(--g-line); border-bottom: 0; border-radius: 2px 2px 0 0; transform-origin: 50% 100%; }
 .col.miss .col-fill { height: 34px !important; background: var(--card); border: 3px dashed var(--g-norun); border-bottom: 0; }
 .col.miss .col-num { color: var(--g-norun-ink); }
 .misses { display: flex; gap: 26px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 0.66em; }
 .misses li::before { content: "\2715  "; font-weight: 700; color: var(--g-norun-ink); }
 .misses b { color: var(--g-norun-ink); }
-.after { margin: 10px 0 0; font-size: 0.7em; font-weight: 700; color: var(--g-report-ink); }
+.after { margin: 10px 0 0; font-size: 0.7em; font-weight: 700; color: var(--fix-ink); }
 
 /* Slide 7: five tools by three faults. */
 table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-spacing: 6px; font-size: 0.64em; }
 .matrix th { text-align: left; font-weight: 700; color: var(--label); }
 .matrix thead th { padding: 0 8px 2px; line-height: 1.2; vertical-align: bottom; }
-.matrix tbody th { padding-right: 8px; white-space: nowrap; color: var(--ink); }
-.matrix td { padding: 7px 10px; border-radius: 6px; line-height: 1.25; }
+.matrix tbody th { padding: 0 10px 0 12px; white-space: nowrap; color: var(--ink); border-left: 6px solid transparent; }
+.matrix tr.clean-nothing th { border-left-color: var(--risk); color: var(--risk-ink); background: var(--risk-tint); }
+.matrix td { padding: 7px 10px; border-radius: 2px; line-height: 1.25; }
 .matrix .mark, .key .mark { display: inline-block; width: 1.2em; font-weight: 800; }
-.k-bad { background: var(--bad-tint); color: var(--g-norun-ink); }
-.k-good { background: var(--good-tint); color: var(--g-report-ink); }
+.k-bad { background: var(--risk-tint); color: var(--risk-ink); box-shadow: inset 0 0 0 1.5px var(--risk-line); }
+.k-good { background: var(--fix-tint); color: var(--fix-ink); }
 .k-warn, .k-mixed { background: var(--warn-tint); color: var(--warn-ink); }
 .k-none { background: var(--band); color: var(--muted); }
 .key { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 6px 0; font-size: 0.64em; }
-.key > span { padding: 4px 10px; border-radius: 6px; }
+.key > span { padding: 4px 10px; border-radius: 2px; }
 
 /* Closing and backup. */
-.closing .asks { font-size: 0.9em; }
 .small-table { margin-top: 14px; font-size: 0.64em; }
 .small-table th { color: var(--label); }
 .sources { margin: 0; padding-left: 22px; font-size: 0.66em; }
@@ -138,7 +129,6 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .runs-fig { margin: 0; }
 
 /* Phone feed: everything stacks, and the matrix becomes one card per tool. */
-.phone .title-slide .lens-art { position: static; display: block; width: 200px; margin: 24px 0 0; }
 .phone .point, .phone .panels { grid-template-columns: 1fr; gap: 18px; }
 .phone .term { font-size: 0.66em; }
 .phone .bar-row { grid-template-columns: 36px 1fr 90px; row-gap: 4px; }
@@ -196,16 +186,16 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .phone .glabel { font-size: 0.96em; }
 
 /* Round-1 review: excerpt marks, group-labelled matrix heads, neutral misses and slide 3 accents. */
-.term .gap { color: #a8a29e; }
-.matrix thead th.g-norun, .matrix thead th.g-report { border-top: 5px solid var(--g); color: var(--ink); }
-.matrix .hg { display: block; font-size: 1em; letter-spacing: 0.04em; text-transform: uppercase; color: var(--g-ink); }
+.term .gap { color: #c3ccd5; }
+.matrix thead th.g-norun, .matrix thead th.g-report { border-top: 6px solid var(--g); color: var(--ink); }
+.matrix .hg { display: block; font-size: 1em; font-weight: 700; color: var(--g-ink); }
 .col.miss .col-fill { border-color: var(--muted) !important; }
 .col.miss .col-num, .misses li::before, .misses b { color: var(--ink) !important; }
-.axis-bar .range, .hbar.now .fill { background: var(--ink); }
-.hbar .fill { background: #a8a29e; }
+.axis-bar .range, .hbar.now .fill { background: var(--risk); }
+.hbar .fill { background: var(--neutral); box-shadow: inset 0 0 0 1.5px var(--neutral-line); }
 .ends b, .hbar.now b, .panel .big { color: var(--ink); }
 .panel.accent { border-color: var(--ink); }
-.mini-out { margin: 6px 0 0; padding: 10px 12px; border-radius: 8px; background: #1c1917; color: #f5f5f4; font: 0.66em/1.4 var(--mono); white-space: pre-wrap; }
+.mini-out { margin: 6px 0 0; padding: 10px 12px; border-radius: 3px; background: var(--ink); color: #f1f4f6; font: 0.66em/1.4 var(--mono); white-space: pre-wrap; }
 .phone .reveal h2 { font-size: 1.32em; }
 .phone .stages .arrow { display: none; }
 .phone .stages { gap: 8px; }
@@ -213,15 +203,7 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .steps li b { font-weight: 700; }
 
 /* Conclusion: the three results as tiles, then the open problems. */
-.recap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 24px; }
-.tile { padding: 22px 24px; border-radius: 12px; background: var(--card); border: 2px solid var(--line); border-top: 6px solid var(--label); }
-.tile p { margin: 0; font-size: 0.8em; line-height: 1.3; }
-.tile .num { margin-bottom: 10px; font-size: 2.2em; font-weight: 750; line-height: 1; color: var(--ink); }
-.open { margin-top: 30px; padding: 16px 22px; border-left: 6px solid var(--label); background: var(--band); border-radius: 4px; }
-.open-h { margin: 0 0 4px; font-size: 0.66em; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--label); }
-.open ul { margin: 0; padding-left: 22px; font-size: 0.8em; }
-.open li { margin: 2px 0; }
-.phone .recap { grid-template-columns: 1fr; gap: 10px; }
-.phone .tile .num { font-size: 1.5em; }
-.phone .tile p, .phone .open ul { font-size: 0.72em; }
-.phone .tile { padding: 14px 16px; }
+.phone .panel figcaption, .phone .panel p, .phone .hbar { font-size: 0.68em; }
+.phone .panel .big { font-size: 1.8em; }
+.phone .axis-bar { height: 28px; margin-top: 18px; }
+.phone .lead { font-size: 0.74em; }

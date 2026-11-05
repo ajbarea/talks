@@ -64,3 +64,64 @@ def test_a_script_over_its_cap_fails(tmp_path: pathlib.Path, monkeypatch: pytest
     assert sl.main(["long-talk"]) == 1
     monkeypatch.setattr(sl, "CAP_MINUTES", {"long-talk": 0.2})
     assert sl.main(["long-talk"]) == 0
+
+
+SCRIPT = """# A talk: the script
+
+<!-- a comment {not.counted} is not spoken -->
+
+## 1. Title
+
+Hello there, {readings.n} people.
+
+## 2. Point
+
+{if readings.ok}It held.{/if}{unless readings.ok}It failed.{/unless} Done.
+"""
+
+
+def test_script_md_counts_spoken_words_each_figure_and_every_branch() -> None:
+    # Hello there, FIGURE people. (4) + It held. It failed. Done. (5); headings and comments excluded.
+    assert sl.script_words(SCRIPT) == 9
+
+
+def test_script_md_sections_follow_the_headings() -> None:
+    assert [h for h, _ in sl.sections(SCRIPT)] == ["1. Title", "2. Point"]
+
+
+def test_talk_slides_stop_at_the_first_backup_slide() -> None:
+    html = '<section><section></section></section><section class="closing"></section>'
+    html += '<section class="backup divider"></section><section class="backup"></section>'
+    assert sl.talk_slides(html) == 2
+    assert sl.talk_slides('<section></section><section id="faq"></section><section></section>') == 1
+
+
+def test_render_fills_figures_and_keeps_the_branch_that_holds() -> None:
+    out = sl.render(SCRIPT, {"readings": {"n": 1200, "ok": False}})
+    assert "Hello there, 1,200 people." in out
+    assert "It failed." in out and "It held." not in out
+
+
+def test_check_finds_a_section_count_off_the_slides_and_missing_data(
+    tmp_path: pathlib.Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    talk = tmp_path / "a-talk"
+    (talk / "data").mkdir(parents=True)
+    (talk / "data" / "d.js").write_text("window.DECK_DATA = { readings: { n: 3 } };", encoding="utf-8")
+    (talk / "index.html").write_text(
+        '<script src="data/d.js"></script><section></section><section></section><section></section>', encoding="utf-8"
+    )
+    (talk / "script.md").write_text(SCRIPT, encoding="utf-8")
+    monkeypatch.setattr(sl, "ROOT", tmp_path)
+    if sl.shutil.which("node") is None:
+        pytest.skip("needs node")
+    found = sl.problems("a-talk")
+    assert "a-talk/script.md has 2 sections for 3 talk slides" in found
+    assert "a-talk/script.md: no data at readings.ok" in found
+
+
+@pytest.mark.parametrize("talk", ["checking-the-checker", "claude-duet", "federated-agents", "kourai-khryseai"])
+def test_each_talk_has_a_script_that_matches_its_slides(talk: str) -> None:
+    if sl.shutil.which("node") is None:
+        pytest.skip("needs node")
+    assert sl.problems(talk) == []

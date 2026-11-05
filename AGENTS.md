@@ -15,7 +15,8 @@ AJ Barea's research talks as web decks (reveal.js), one folder per talk, publish
 - Each talk's QR codes are generated into its `index.html`: `make qr` rewrites them and `make qr-check` fails on stale ones. A passing run on `main` publishes the site.
 - Shared behaviour and base styles live in `shared/`; a talk's own `deck.css` holds only what is particular to it.
 - Each talk needs a `<title>` and a `<meta name="description">`; the index page lists the talk by them.
-- A talk's spoken script has a length cap (`CAP_MINUTES` in `scripts/script_length.py`); `make script-length` reports it.
+- A talk's full spoken script is its `script.md`, one section per talk slide; the slides' speaker notes are three short prompts. The script has a length cap (`CAP_MINUTES` in `scripts/script_length.py`); `make script-length` reports it and checks the sections against the slides.
+- The look (light slides, the four colour roles, the fonts, a cast mark per talk) lives in `shared/deck.css`; a talk's own `deck.css` uses its tokens, never new colours.
 - The slide gates and renders expect DejaVu text on Linux; `make fonts` checks it.
 - A video script in `videos/` follows `videos/vids-rules.md`; `make videos-check` lints it and every upload `description.txt`, and `make test` runs the same lints. After an upload, `make videos-verify ID=...` checks the public page.
 

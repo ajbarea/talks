@@ -186,8 +186,8 @@ body,
 }
 
 /* ------------------------------------------------------- title and closing -- */
-/* The talk's mark: one of AJ's cast standing in a bronze niche, and a Greek key under the slide.
-   The title is set in the gold, the one place the talk's own colour is used as type. */
+/* The title is set in the gold, the one place the talk's own colour is used as type, with a gold
+   rule under it. A slide that shows a cast portrait (Kourai Khryseai) gets the Greek key instead. */
 
 .title-slide h1,
 .closing h2 {
@@ -271,14 +271,22 @@ body,
   transform-origin: var(--mark-x, 50%) 100%;
 }
 
-/* The Greek key: a short band under the talk's title and under "Thank you". */
+/* A short gold rule under the talk's title and under "Thank you". */
 .title-slide h1::after,
 .closing h2::after {
   content: "";
   display: block;
+  width: 120px;
+  height: 4px;
+  margin-top: 26px;
+  background: var(--ours-line);
+}
+
+/* The Greek key, only beside a cast portrait (Kourai Khryseai). */
+.title-slide:has(.mark-figure) h1::after,
+.closing:has(.mark-figure) h2::after {
   width: 200px;
   height: 20px;
-  margin-top: 26px;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M1 19V1H15V13H6V6H10M0 19H20' fill='none' stroke='%238a5a0c' stroke-width='2'/%3E%3C/svg%3E") repeat-x left center / 20px 20px;
 }
 

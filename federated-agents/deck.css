@@ -410,55 +410,6 @@ html:not(.phone) .forest svg { max-height: 430px; }
 }
 .backup li::marker { color: var(--muted); }
 
-/* The way back sits bottom left, clear of the slide number and arrows at the right. */
-.back { position: absolute; bottom: 0; left: 8px; margin: 0; font-size: 0.8em; }
-.back a { display: inline-block; padding: 4px 0; }
-.back a::before { content: "\2190  "; }
-.phone .back { position: static; margin-top: 18px; }
-.phone .back a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0 18px;
-  border: 1px solid var(--line);
-  border-radius: 3px;
-  background: var(--card);
-  text-decoration: none;
-}
-
-/* The FAQ index opens the backup like the quiet divider: a muted centred title over its rule. */
-.faq-index h2 {
-  margin: 10px 0 0;
-  text-align: center;
-  font-size: 1.6em;
-  color: var(--muted);
-}
-.faq-index h2::after {
-  content: "";
-  display: block;
-  width: 120px;
-  height: 2px;
-  margin: 16px auto 0;
-  background: var(--line);
-}
-.faq-index .faq-sub {
-  margin: 14px 0 18px;
-  text-align: center;
-  font-weight: 700;
-  font-size: 0.85em;
-  color: var(--muted);
-}
-
-.faq {
-  columns: 2;
-  column-gap: 40px;
-  margin: 8px 0 0;
-  padding-left: 1.4em;
-  font-size: 0.8em;
-}
-
-.faq li { margin-bottom: 8px; break-inside: avoid; }
-
 .figure .axis { stroke: var(--frame); stroke-width: 3; }
 .figure .cut { stroke: var(--ink); stroke-width: 3; stroke-dasharray: 8 6; }
 .figure .fair { fill: var(--fix); stroke: var(--fix-line); stroke-width: 3; }
@@ -486,7 +437,6 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .stages li + li::before { left: 50%; top: -28px; border: 12px solid transparent; border-top: 16px solid var(--frame); transform: translateX(-50%); }
 .phone .then { transform: rotate(90deg); justify-self: center; }
 .phone .road::before { display: none; }
-.phone .faq { columns: 1; }
 .phone .mini { height: 118px; }
 .phone .mini text { font-size: 20px; }
 .phone .tiles .card,

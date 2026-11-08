@@ -1,22 +1,41 @@
 /* ---------------------------------------------------- checking the checker -- */
-/* The three failure groups are all failures, so all three take the risk colour, in the order of
-   the step of a check each breaks: did not run (choosing what to check) darkest, wrong inputs
-   (reading) in the middle, misreported (reporting) lightest. They part by lightness (L* 28, 49,
-   75), so they read in greyscale and under colour-vision deficiency; the light one carries a 3:1
-   outline. Group text is one dark vermilion, 8:1 or more on the ground and every tint. */
+/* Type: letters in Atkinson Hyperlegible for reading; digits and titles in the system sans, so a
+   zero is a plain zero. A character outside this unicode-range falls through to the next family. */
+@font-face { font-family: "Talk Text"; src: url("../shared/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2"); font-weight: 200 800; font-style: normal; font-display: block; unicode-range: U+0000-002F, U+003A-10FFFF; }
+@font-face { font-family: "Talk Text"; src: url("../shared/fonts/atkinson-hyperlegible-next-latin-wght-italic.woff2") format("woff2"); font-weight: 200 800; font-style: italic; font-display: block; unicode-range: U+0000-002F, U+003A-10FFFF; }
+
+/* Bright-room palette, for this talk only: white ground, near-black text, one job per colour.
+   The three failure groups differ in hue and in lightness: plum, orange, sky. Chosen as the set
+   farthest apart in CAM02-UCS across normal, protan, deutan and tritan vision with room light
+   added at 30% of projector white. Red is a wrong verdict. Green is the check mark, as a mark only.
+   Pale fills are avoided: room light erases them, so state is carried by outlines and symbols. */
 
 :root {
-  --g-ink-all: #7a2405;
-  --g-norun: #7a2405;  --g-norun-ink: var(--g-ink-all);  --g-norun-tint: #f2dcd2;
-  --g-input: #c4512b;  --g-input-ink: var(--g-ink-all);  --g-input-tint: #f7e5dd;
-  --g-report: #edaa8e; --g-report-ink: var(--g-ink-all); --g-report-tint: #fcf1ec;
+  --display: system-ui, "Segoe UI", Calibri, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sans: "Talk Text", system-ui, "Segoe UI", Calibri, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --paper: #ffffff; --card: #ffffff; --band: #d5dce3; --line: #7d8a97;
+  --ink: #0f1720; --muted: #2e3a47; --label: #1c2733;
+  --ours: #0f1720; --ours-line: #0f1720; --ours-ink: #0f1720; --ours-tint: #ffffff;
+  --risk: #c8102e; --risk-line: #c8102e; --risk-ink: #8e0b20; --risk-tint: #fde3e6;
+  --fix: #009e73; --fix-line: #00805d; --fix-ink: #00573f; --fix-tint: #ffffff;
+  --neutral: #9aa6b2; --neutral-line: #4a5663; --neutral-ink: #2e3a47; --neutral-tint: #ffffff;
+  --g-norun: #6a1b6e; --g-norun-ink: #5a1460; --g-norun-tint: #f1dff2;
+  --g-input: #e66100; --g-input-ink: #7f2f00; --g-input-tint: #fde2cc;
+  --g-report: #33bbee; --g-report-ink: #0a4a6a; --g-report-tint: #d3f0fb;
   --bad-tint: var(--risk-tint); --good-tint: var(--fix-tint); --warn-tint: var(--neutral-tint); --warn-ink: var(--neutral-ink);
 }
 
 .g-norun { --g: var(--g-norun); --g-ink: var(--g-norun-ink); --g-tint: var(--g-norun-tint); }
 .g-input { --g: var(--g-input); --g-ink: var(--g-input-ink); --g-tint: var(--g-input-tint); }
-.g-report { --g: var(--g-report); --g-ink: var(--g-report-ink); --g-tint: var(--g-report-tint); --g-line: var(--risk-line); }
+.g-report { --g: var(--g-report); --g-ink: var(--g-report-ink); --g-tint: var(--g-report-tint); --g-line: #0a6a96; }
 .g-norun, .g-input { --g-line: var(--g); }
+
+.reveal h1, .reveal h2 { font-weight: 650; letter-spacing: -0.01em; }
+.kicker { font-size: 0.66em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
+.kicker .num { margin: 0; padding: 0; border: 0; color: inherit; }
+.kicker .num::after { content: " \00B7"; }
+.title-slide h1::after, .closing h2::after, .faq-index h2::after { display: none; }
+.backup:has(.back) .footnote { bottom: 40px; }
 
 .lead { margin: 18px 0 0; font-size: 0.86em; max-width: 72ch; color: var(--ink); }
 .context { margin: 0 0 14px; font-size: 0.7em; color: var(--muted); max-width: 70ch; }
@@ -33,18 +52,18 @@
 /* Slide 2: the real output, then what I did and why it matters. */
 .point { display: grid; grid-template-columns: 700px 1fr; gap: 36px; align-items: start; margin-top: 26px; }
 .term-fig { margin: 0; }
-.term { padding: 40px 38px; border-radius: 3px; background: var(--ink); font: 1.02em/1.75 var(--mono); color: #f1f4f6; }
+.term { padding: 36px 34px; border-radius: 3px; background: var(--card); border: 3px solid var(--ink); font: 1.02em/1.75 var(--mono); color: var(--ink); }
 .term p { margin: 0; }
-.term .cmd { color: #c3ccd5; }
-.term .nothing { color: #f2c66d; }
-.term .ok { color: #7fd8b8; font-weight: 700; }
+.term .cmd { color: var(--muted); }
+.term .nothing { width: fit-content; padding: 0 8px; background: #fde3e6; font-weight: 700; }
+.term .ok { width: fit-content; padding: 0 8px; background: #c9efdf; font-weight: 700; }
 .term-fig figcaption { display: flex; gap: 14px; margin-top: 20px; }
 .term-fig figcaption span { padding: 6px 14px; border-radius: 3px; font-size: 0.74em; font-weight: 700; }
 .tag-read { background: var(--risk-tint); color: var(--risk-ink); border: 1px solid var(--risk-line); }
 .tag-said { background: var(--card); color: var(--ink); border: 1px solid var(--line); }
-.claim p { margin: 0 0 22px; padding: 18px 22px; border-left: 5px solid var(--ours-line); background: var(--ours-tint); border-radius: 0 3px 3px 0; font-size: 0.86em; }
+.claim p { margin: 0 0 22px; padding: 14px 22px; border-left: 8px solid var(--ours-line); font-size: 0.86em; }
 .claim b { color: var(--ours-ink); }
-.claim p + p { border-left-color: var(--neutral-line); background: var(--card); }
+.claim p + p { border-left-color: var(--neutral-line); }
 .claim p + p b { color: var(--neutral-ink); }
 
 /* Slide 3: three small panels from the field. */
@@ -69,31 +88,30 @@
 /* Slide 4: one bar per case, coloured by group. */
 .cases-fig { margin: 0; }
 .bars { display: grid; gap: 10px; }
-.bar-row { display: grid; grid-template-columns: 40px 520px 1fr 150px; gap: 14px; align-items: center; }
-.case-n { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--g-tint); border: 2px solid var(--g-line); font-weight: 700; font-size: 0.7em; color: var(--g-ink); }
-.bar-label { font-size: 0.7em; line-height: 1.25; }
-.bar-track { height: 30px; border-radius: 2px; background: var(--band); overflow: hidden; }
-.bar-fill { display: block; height: 100%; min-width: 4px; box-sizing: border-box; background: var(--g); border: 1.5px solid var(--g-line); }
-.bar-value { font-size: 0.7em; font-weight: 700; color: var(--g-ink); }
-.legend { display: flex; gap: 22px; margin-top: 16px; font-size: 0.66em; }
-.legend span { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: var(--g-ink); }
-.legend span::before { content: ""; width: 18px; height: 18px; box-sizing: border-box; border-radius: 2px; background: var(--g); border: 1.5px solid var(--g-line); }
+.bar-group { margin: 8px 0 -4px; font-size: 0.72em; font-weight: 800; color: var(--g-ink); }
+.bar-group:first-child { margin-top: 0; }
+.bar-row { display: grid; grid-template-columns: 40px 560px 1fr 140px; gap: 14px; align-items: center; }
+.case-n { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: var(--card); border: 4px solid var(--g-line); box-sizing: border-box; font-weight: 800; font-size: 0.7em; color: var(--ink); }
+.bar-label { font-size: 0.74em; line-height: 1.25; }
+.bar-track { height: 32px; border-left: 2px solid var(--ink); overflow: hidden; }
+.bar-fill { display: block; height: 100%; min-width: 6px; box-sizing: border-box; background: var(--g); border: 2px solid var(--g-line); }
+.bar-value { font-size: 0.74em; font-weight: 800; color: var(--ink); }
 
 /* Slide 5: the three steps of a check, a group, its cases and its guard under each. */
 .stages { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; align-items: stretch; margin-top: 8px; }
-.stage { display: flex; flex-direction: column; padding: 14px 16px 16px; border-radius: 3px; border: 1px solid var(--g-line); border-top: 6px solid var(--g); background: var(--g-tint); }
+.stage { display: flex; flex-direction: column; padding: 14px 16px 16px; border-radius: 3px; border: 3px solid var(--g-line); border-top: 14px solid var(--g); background: var(--g-tint); }
 .stage p { margin: 0; }
-.stage .gname { font-size: 0.7em; font-weight: 700; color: var(--g-ink); }
+.stage .gname { font-size: 0.78em; font-weight: 800; color: var(--g-ink); }
 .stage .sname { margin-top: 2px; font-size: 0.92em; font-weight: 700; }
 .stage .scases { margin-top: 10px; font-size: 0.74em; line-height: 1.3; }
-.stage .guard { margin-top: auto; padding: 10px 12px; border: 2px solid var(--fix-line); border-radius: 3px; background: var(--card); font-size: 0.74em; font-weight: 600; line-height: 1.3; }
+.stage .guard { margin-top: auto; padding: 10px 12px; border: 2px solid var(--ink); border-radius: 3px; background: var(--card); font-size: 0.74em; font-weight: 600; line-height: 1.3; }
 .stage .scases + .guard { margin-top: 14px; }
-.glabel { display: block; font-size: 0.9em; font-weight: 700; color: var(--fix-ink); }
+.glabel { display: block; font-size: 0.9em; font-weight: 800; color: var(--ink); }
 .stages .arrow { display: grid; place-items: center; font-size: 1.2em; color: var(--muted); }
 .reach { display: grid; grid-template-columns: 1fr 2fr; gap: 0; margin: 18px 0 0; font-size: 0.72em; font-weight: 600; text-align: center; }
-.reach span { padding: 8px 12px; border-top: 4px solid; }
-.reach-no { border-color: var(--g-norun) !important; color: var(--g-norun-ink); margin-right: 20px; }
-.reach-yes { border-color: var(--fix-line) !important; color: var(--fix-ink); }
+.reach span { padding: 8px 12px; border-top: 6px solid; color: var(--ink); }
+.reach-no { border-color: var(--g-norun) !important; margin-right: 20px; }
+.reach-yes { border-color: var(--fix) !important; }
 
 /* Slide 6: one column per defect put back, grouped by case; an empty dashed column is a miss. */
 .rebreak-fig { margin: 0; }
@@ -110,20 +128,22 @@
 .misses { display: flex; gap: 26px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 0.66em; }
 .misses li::before { content: "\2715  "; font-weight: 700; color: var(--g-norun-ink); }
 .misses b { color: var(--g-norun-ink); }
-.after { margin: 10px 0 0; font-size: 0.7em; font-weight: 700; color: var(--fix-ink); }
+.after { margin: 10px 0 0; font-size: 0.7em; font-weight: 700; color: var(--ink); }
 
 /* Slide 7: five tools by three faults. */
 table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-spacing: 6px; font-size: 0.64em; }
 .matrix th { text-align: left; font-weight: 700; color: var(--label); }
 .matrix thead th { padding: 0 8px 2px; line-height: 1.2; vertical-align: bottom; }
 .matrix tbody th { padding: 0 10px 0 12px; white-space: nowrap; color: var(--ink); border-left: 6px solid transparent; }
-.matrix tr.clean-nothing th { border-left-color: var(--risk); color: var(--risk-ink); background: var(--risk-tint); }
+.matrix tr.clean-nothing th { border-left-color: var(--risk); color: var(--ink); }
 .matrix td { padding: 7px 10px; border-radius: 2px; line-height: 1.25; }
 .matrix .mark, .key .mark { display: inline-block; width: 1.2em; font-weight: 800; }
-.k-bad { background: var(--risk-tint); color: var(--risk-ink); box-shadow: inset 0 0 0 1.5px var(--risk-line); }
-.k-good { background: var(--fix-tint); color: var(--fix-ink); }
-.k-warn, .k-mixed { background: var(--warn-tint); color: var(--warn-ink); }
-.k-none { background: var(--band); color: var(--muted); }
+.k-bad { background: var(--risk-tint); color: var(--ink); font-weight: 700; box-shadow: inset 0 0 0 3px var(--risk-line); }
+.k-bad .mark { color: var(--risk-ink); }
+.k-good { color: var(--ink); }
+.k-good .mark { color: var(--fix-ink); }
+.k-warn, .k-mixed { color: var(--ink); }
+.k-none { color: var(--muted); }
 .key { display: flex; flex-wrap: wrap; gap: 10px; margin: 8px 6px 0; font-size: 0.64em; }
 .key > span { padding: 4px 10px; border-radius: 2px; }
 
@@ -155,10 +175,8 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .phone .col-word { display: none; }
 .phone .col-case, .phone .col-num { font-size: 0.66em; }
 .phone .misses { flex-direction: column; gap: 6px; }
-.phone .legend { flex-wrap: wrap; gap: 12px; }
 .phone table.matrix, .phone .matrix tbody, .phone .matrix tr, .phone .matrix th, .phone .matrix td { display: block; }
 .phone .matrix thead { display: none; }
-.phone .matrix tr { margin-bottom: 12px; }
 .phone .matrix td::before { content: attr(data-label) ": "; font-weight: 700; }
 .phone .small-table { font-size: 0.66em; }
 .phone .panel { padding: 10px 14px; }
@@ -172,8 +190,6 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .phone .stage .scases { margin-top: 6px; }
 .phone .stage .scases + .guard { margin-top: 8px; }
 .phone .stages .arrow { height: 22px; font-size: 0.9em; }
-.phone .matrix tr { margin-bottom: 8px; }
-.phone .matrix td { padding: 3px 8px; margin-top: 3px; }
 .phone .key { gap: 6px; }
 .phone table.small-table, .phone .small-table tbody, .phone .small-table tr, .phone .small-table td { display: block; }
 .phone .small-table thead { display: none; }
@@ -181,21 +197,15 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .phone .small-table td { padding: 2px 0; border: 0; }
 .phone .small-table td:first-child { font-weight: 700; }
 .phone .small-table td[data-label]::before { content: attr(data-label) ": "; font-weight: 700; color: var(--label); }
-.phone table.matrix, .phone .key { font-size: 0.68em; }
-.phone .matrix tr { margin-bottom: 4px; }
-.phone .matrix td { margin-top: 2px; line-height: 1.2; }
-.phone .matrix tbody th { padding-top: 2px; }
 .phone .reach { margin-top: 8px; }
 .phone .reach span { padding: 6px 8px; }
-.phone .matrix tr { margin-bottom: 2px; }
-.phone .matrix td { padding: 2px 6px; }
 .phone .stage .scases, .phone .stage .guard { font-size: 0.68em; }
 .phone .reach { font-size: 0.66em; }
 .phone .glabel { font-size: 0.96em; }
 
 /* Round-1 review: excerpt marks, group-labelled matrix heads, neutral misses and slide 3 accents. */
-.term .gap { color: #c3ccd5; }
-.matrix thead th.g-norun, .matrix thead th.g-report { border-top: 6px solid var(--g); color: var(--ink); }
+.term .gap { color: var(--muted); }
+.matrix thead th.g-norun, .matrix thead th.g-report { border-top: 10px solid var(--g); color: var(--ink); }
 .matrix .hg { display: block; font-size: 1em; font-weight: 700; color: var(--g-ink); }
 .col.miss .col-fill { border-color: var(--muted) !important; }
 .col.miss .col-num, .misses li::before, .misses b { color: var(--ink) !important; }
@@ -203,7 +213,7 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .hbar .fill { background: var(--neutral); box-shadow: inset 0 0 0 1.5px var(--neutral-line); }
 .ends b, .hbar.now b, .panel .big { color: var(--ink); }
 .panel.accent { border-color: var(--ink); }
-.mini-out { margin: 6px 0 0; padding: 10px 12px; border-radius: 3px; background: var(--ink); color: #f1f4f6; font: 0.66em/1.4 var(--mono); white-space: pre-wrap; }
+.mini-out { margin: 6px 0 0; padding: 10px 12px; border-radius: 3px; background: var(--card); border: 2px solid var(--ink); color: var(--ink); font: 0.66em/1.4 var(--mono); white-space: pre-wrap; }
 .phone .reveal h2 { font-size: 1.32em; }
 .phone .stages .arrow { display: none; }
 .phone .stages { gap: 8px; }
@@ -215,3 +225,10 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .phone .panel .big { font-size: 1.8em; }
 .phone .axis-bar { height: 28px; margin-top: 18px; }
 .phone .lead { font-size: 0.74em; }
+
+/* Phone: each tool is a block under its name, the wrong verdicts outlined. */
+.phone .matrix tr { margin-bottom: 6px; padding-top: 3px; border-top: 2px solid var(--ink); }
+.phone .matrix tbody th { padding: 0 0 1px; font-size: 1.08em; border-left: 0; }
+.phone .matrix tr.clean-nothing th { color: var(--ink); }
+.phone .matrix td { padding: 2px 6px; margin-top: 2px; line-height: 1.2; }
+.phone .bar-group { margin: 6px 0 -2px; }

@@ -21,7 +21,11 @@
   function caseBars(box) {
     const cases = get(box.dataset.bars) || [];
     const most = Math.max(...cases.map((c) => c.days));
+    let shown;
     cases.forEach((c, i) => {
+      // The group's name sits over its rows, so no one matches a colour against a legend.
+      if (c.group !== shown) el("p", { class: `bar-group g-${c.group}`, "data-value": `groups.${c.group}.name` }, box);
+      shown = c.group;
       const row = el("div", { class: `bar-row g-${c.group}` }, box);
       el("span", { class: "case-n", "aria-hidden": "true" }, row, String(c.n));
       el("span", { class: "bar-label" }, row, c.what);

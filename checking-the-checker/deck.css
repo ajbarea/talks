@@ -38,7 +38,7 @@
 .backup:has(.back) .footnote { bottom: 40px; }
 
 .lead { margin: 18px 0 0; font-size: 0.86em; max-width: 72ch; color: var(--ink); }
-.context { margin: 0 0 14px; font-size: 0.7em; color: var(--muted); max-width: 70ch; }
+.context { margin: 0 0 14px; font-size: 0.7em; color: var(--muted); max-width: 80ch; }
 
 .lens-art { position: absolute; right: 120px; top: 96px; width: 330px; height: auto; overflow: visible; }
 .lens-art .sheet { fill: var(--card); stroke: var(--line); stroke-width: 3; }

@@ -500,6 +500,8 @@ table.data td.num {
 .qr-label span { display: block; max-width: 260px; }
 html:not(.phone) .reveal .slides section.closing[style*="display: block"] { display: grid !important;
   grid-template-columns: 250px minmax(0, 1fr) 360px; column-gap: 56px; align-items: center; height: 100%; top: 0 !important; }
+html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
+  grid-template-columns: fit-content(620px) 360px; column-gap: 96px; justify-content: center; }
 .qr-close { position: static; width: 360px; }
 .qr-close .qr-label { margin-top: 18px; font-size: 26px; text-align: center; }
 .qr-close .qr-label span { max-width: none; }
@@ -687,6 +689,88 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
   font: 600 14px var(--sans);
   color: var(--muted);
   background: var(--paper);
+}
+
+/* All slides at once, opened from the slide number. */
+.slide-grid {
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 16px 28px 28px;
+  border: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: var(--sans);
+}
+.slide-grid-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.slide-grid-head h2 { margin: 0; font-size: 20px; }
+.slide-grid-head button {
+  min-height: 44px;
+  padding: 0 16px;
+  font: 600 16px var(--sans);
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.slide-grid-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.slide-grid-list a { display: block; font: 600 14px var(--sans); color: var(--muted); text-decoration: none; }
+.slide-grid-thumb {
+  display: block;
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--card);
+  outline: 1px solid var(--line);
+}
+.slide-grid-thumb .reveal {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--deck-w);
+  height: var(--deck-h);
+  overflow: hidden;
+  transform: scale(var(--grid-scale, 0.2));
+  transform-origin: 0 0;
+}
+.slide-grid-thumb .slides { display: block; }
+.slide-grid-list a:hover .slide-grid-thumb { outline: 3px solid var(--line); }
+.slide-grid-list a[aria-current] .slide-grid-thumb { outline: 3px solid var(--ours-line); }
+.slide-grid-list a:focus-visible { outline: none; }
+.slide-grid-list a:focus-visible .slide-grid-thumb { outline: 4px solid var(--neutral-line); }
+.slide-grid-num { display: block; margin-top: 4px; }
+.phone .slide-grid { padding: 8px 16px 24px; }
+.phone .slide-grid-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.phone .slide-grid-thumb { aspect-ratio: 6 / 7; }
+
+/* Scroll view hides reveal's number, so this button stands in for it. */
+.slide-grid-open {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 30;
+  min-height: 44px;
+  padding: 0 12px;
+  font: 600 14px var(--sans);
+  color: var(--muted);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 

@@ -10,8 +10,8 @@ AJ Barea's research talks as web decks, published at https://ajbarea.github.io/t
 | Checking the Checker | https://ajbarea.github.io/talks/checking-the-checker/ |
 
 Each talk opens in any browser, with no network needed once loaded. Press `S` for the speaker
-view (the script, a timer and the next slide), `O` for the overview and `F` for full screen. A
-link like `.../federated-agents/#/5` opens a given slide.
+view (the script, a timer and the next slide), `F` for full screen, and `O` or click the slide
+number to see every slide and jump to one. A link like `.../federated-agents/#/5` opens a given slide.
 
 ## Layout
 

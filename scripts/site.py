@@ -175,15 +175,13 @@ INDEX = """<!doctype html>
   <meta property="og:description"
     content="Research talks: open one in your browser, or download it as PowerPoint or PDF.">
   <style>
-    @font-face {{ font-family: "Marcellus"; src: url("shared/fonts/marcellus-latin-400-normal.woff2") format("woff2");
-      font-display: swap; }}
     @font-face {{ font-family: "Atkinson Hyperlegible Next"; font-weight: 200 800;
       src: url("shared/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
       font-display: swap; }}
     :root {{
       --paper: #f1f4f6; --card: #ffffff; --ink: #15202b; --muted: #3b4856; --label: #24384c;
       --line: #c3ccd5; --band: #e4e9ee; --ours-line: #8a5a0c; --neutral-ink: #1b567d;
-      --display: "Marcellus", Georgia, serif;
+      --display: var(--sans);
       --sans: "Atkinson Hyperlegible Next", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
     }}
     * {{ box-sizing: border-box; }}
@@ -191,7 +189,7 @@ INDEX = """<!doctype html>
     main {{ max-width: 108rem; margin: 0 auto; padding: 4rem 2rem 3rem; }}
     header {{ max-width: 44rem; margin-bottom: 3rem; }}
     .talks {{ display: block; }}
-    h1 {{ font: 400 clamp(2.5rem, 6vw, 4.2rem)/1 var(--display); margin: 0 0 1rem; color: var(--ours-line); }}
+    h1 {{ font: 700 clamp(2.5rem, 6vw, 4.2rem)/1 var(--display); margin: 0 0 1rem; color: var(--ours-line); }}
     header p {{ margin: 0; color: var(--muted); font-size: 1.2rem; }}
     header a {{ color: var(--neutral-ink); display: inline-block; padding: 0.5rem 0; margin: -0.5rem 0; }}
     .talk {{ display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 9fr); gap: 2.5rem;
@@ -214,7 +212,7 @@ INDEX = """<!doctype html>
       .talk:hover .shot img, .talk:focus-within .shot img {{ transform: scale(1.025); }}
     }}
     .shot.blank {{ display: grid; place-items: center; padding: 2rem; font-size: 1.6rem; font-weight: 700; }}
-    h2 {{ font: 400 1.9rem/1.15 var(--display); margin: 0 0 0.6rem; }}
+    h2 {{ font: 700 1.9rem/1.15 var(--display); margin: 0 0 0.6rem; }}
     h2 a {{ color: inherit; text-decoration: none; display: inline-block; padding: 0.2rem 0; }}
     h2 a:hover {{ text-decoration: underline; text-decoration-thickness: 2px; }}
     .about > p {{ margin: 0 0 1.4rem; color: var(--muted); max-width: 36rem; }}

@@ -1,10 +1,10 @@
-# IMPL: the forge look for every talk, 2026-11-04
+# IMPL: Greek theming out of the shared look, 2026-11-08
 
 ## State
-- ✅ #85 merged: shared controls (rotation keeps the slide, sideways phones fit the width, deep links land on their slide, slide number clears the arrows, #79's speaker-view fix).
-- 📋 style/forge (this branch): one look for all four decks and the index (`shared/deck.css` tokens, `shared/fonts/`, `shared/cast/`), a conclusion slide in every deck (techne#288 gate; CI pin moved to techne c40f907), three-bullet notes with the full script in each talk's `script.md`, footnote audit, the UX audit's Should-fix items per deck.
-- 📋 techne feat/slides-forge-style: the graphe starter template in the same look.
-- 📋 After merge: re-export checking-the-checker PDF/PPTX to `Desktop/CISC-810 talk/` (its script words are unchanged, 973).
+- ✅ #86 shipped the shared look; #89 kept the cast portrait on the Kourai Khryseai talk only.
+- 📋 fix/checker-undo-forge (this branch): titles and chapter labels move to Atkinson Hyperlegible, chapters and steps use plain numbers, the Marcellus fonts and three unused portraits are gone. Kept: light ground, colour roles and 7:1 contrast, conclusion slides, three-bullet notes, script.md, phone and figure fixes.
+- 📋 After merge: re-export checking-the-checker PDF/PPTX to `Desktop/CISC-810 talk/`.
+- 📋 Later: the visual uplift for the other talks, planned with the klepsydra avatar cards.
 
 ## Verify
 - `make check` with `SLIDES` and `SPHRAGIS` set to real checkouts; `make script-length`.

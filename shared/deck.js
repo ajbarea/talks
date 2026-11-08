@@ -259,19 +259,13 @@
     box.appendChild(fig);
   }
 
-  // "3 · My checker" is shown as a Roman numeral and the name, "III My checker", on the kickers,
-  // the agenda and the rail. The source keeps the plain form, which the gates and exports read.
-  const ROMAN = [[10, "X"], [9, "IX"], [5, "V"], [4, "IV"], [1, "I"]];
-  function roman(n) {
-    let out = "";
-    for (const [v, r] of ROMAN) while (n >= v) { out += r; n -= v; }
-    return out;
-  }
+  // "3 · My checker" is shown as the number and the name, "3 My checker", on the kickers, the
+  // agenda and the rail. The source keeps the plain form, which the gates and exports read.
   function chapterInto(node, text) {
     const m = /^(\d+)\s*·\s*(.+)$/.exec(text.trim());
     if (!m) return;
     node.textContent = "";
-    html("span", { class: "num" }, node, roman(Number(m[1])));
+    html("span", { class: "num" }, node, m[1]);
     node.append(` ${m[2]}`);
   }
 

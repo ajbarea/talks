@@ -1,38 +1,15 @@
-/* The forge: AJ's talks share one look. A cool marble ground, deep forge ink, a classical display
-   face for titles and a hyperlegible sans for reading. Bronze and gold mark AJ's own work and
+/* AJ's talks share one look: a cool light ground, deep ink, and Atkinson Hyperlegible for titles
+   and text. Bronze and gold mark AJ's own work and
    nothing else; vermilion is failure or risk; bluish green is the fix or a pass; sky blue is
    neutral context. Each role keeps its meaning in every deck and figure.
 
-   Contrast, measured: every text colour below clears 7:1 on marble and on card white, the gold
+   Contrast, measured: every text colour below clears 7:1 on the ground and on card white, the gold
    title colour 5.4:1 for large text. Marks: the four role colours sit at CIELAB lightness 78
    (sky), 65 (gold), 51 (green) and 39 (vermilion), so they part in greyscale too, and stay apart
    under simulated protan, deutan and tritan vision (CAM02-UCS distance 21 or more between any
    pair). A pale mark reaches 3:1 through its darker outline, the *-line colour.
    Sources: Okabe and Ito (2008) for the hues; Paul Tol's high-contrast scheme for the gold;
    Machado et al. (2009) for the simulation. */
-/* The display face is Marcellus for letters and Atkinson Hyperlegible for figures: Marcellus
-   draws 1 like a Roman I and 0 like an O, so "71" and "100" misread in a title. */
-@font-face {
-  font-family: "Forge Display";
-  src: url("fonts/marcellus-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-display: block;
-  unicode-range: U+0000-002F, U+003A-FFFF;
-}
-@font-face {
-  font-family: "Forge Display";
-  src: url("fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-display: block;
-  unicode-range: U+0030-0039;
-  size-adjust: 96%;
-}
-@font-face {
-  font-family: "Marcellus SC";
-  src: url("fonts/marcellus-sc-latin-400-normal.woff2") format("woff2");
-  font-weight: 400;
-  font-display: block;
-}
 @font-face {
   font-family: "Atkinson Hyperlegible Next";
   src: url("fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
@@ -56,11 +33,11 @@
 
 :root {
   /* ground and ink */
-  --paper: #f1f4f6;      /* marble */
+  --paper: #f1f4f6;      /* ground */
   --card: #ffffff;
   --band: #e4e9ee;
   --line: #c3ccd5;
-  --ink: #15202b;        /* forge ink, 14.9:1 on marble */
+  --ink: #15202b;        /* ink, 14.9:1 on the ground */
   --muted: #3b4856;      /* 8.5:1 */
   --label: #24384c;
   /* roles: a fill for marks, a -line outline that reaches 3:1, an -ink for text (7:1), a -tint ground */
@@ -90,8 +67,8 @@
   --night-ink: #f1f4f6;
   --night-muted: #c3ccd5;
   --night-label: #8cc7ea;
-  --display: "Forge Display", Georgia, serif;
-  --display-sc: "Marcellus SC", "Marcellus", Georgia, serif;
+  --display: "Atkinson Hyperlegible Next", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+  --display-sc: var(--display);
   --sans: "Atkinson Hyperlegible Next", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
   --mono: "Atkinson Hyperlegible Mono", ui-monospace, Consolas, Menlo, monospace;
 }
@@ -118,13 +95,12 @@ body,
   height: 100%;
 }
 
-/* Claim titles in the inscription face: one weight, carried by size and spacing rather than bold. */
+/* Claim titles: bold, in the text face. */
 .reveal h1,
 .reveal h2 {
   margin: 0 0 20px;
   font-family: var(--display);
-  font-weight: 400;
-  font-variation-settings: "wght" 340; /* the figures, from a variable face, to Marcellus's stroke */
+  font-weight: 700;
   line-height: 1.14;
   letter-spacing: 0;
   color: var(--ink);
@@ -155,14 +131,14 @@ body,
   text-underline-offset: 0.15em;
 }
 
-/* The chapter over a title, in small capitals: a Roman numeral, then its name (deck.js splits
-   "3 · My checker" into the two). */
+/* The chapter over a title: its number, then its name (deck.js splits "3 · My checker" into the
+   two). */
 .kicker {
   display: block;
   margin-bottom: 8px;
   font-family: var(--display-sc);
   font-size: 0.72em;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--muted);
 }
@@ -224,8 +200,7 @@ body,
 
 .byline b {
   display: block;
-  font-family: var(--display-sc);
-  font-weight: 400;
+  font-weight: 700;
   font-size: 1.25em;
   color: var(--ink);
 }
@@ -314,8 +289,7 @@ body,
 }
 
 .closing .contact b {
-  font-family: var(--display-sc);
-  font-weight: 400;
+  font-weight: 700;
   font-size: 1.2em;
   color: var(--ink);
 }
@@ -417,7 +391,7 @@ body,
 }
 
 .steps li::before {
-  content: counter(step, upper-roman);
+  content: counter(step);
   display: block;
   font-family: var(--display);
   font-size: 1.5em;
@@ -464,7 +438,7 @@ table.data td.num {
 }
 
 /* Every slide is light: dark slides wash out under a lit room's lights. A backup divider is a
-   quiet centred title on the marble. */
+   quiet centred title on the ground. */
 .reveal .slides section.divider {
   display: grid !important;
   place-content: center;
@@ -505,7 +479,7 @@ table.data td.num {
 .tile:first-child { padding-left: 0; border-left: 0; }
 .tile.ours .num { color: var(--ours-line); }
 .tile p { margin: 0; font-size: 0.8em; line-height: 1.3; }
-.tile .num { margin-bottom: 10px; font-family: var(--display); font-variation-settings: "wght" 340; font-size: 2.1em; line-height: 1; color: var(--ink); }
+.tile .num { margin-bottom: 10px; font-family: var(--display); font-weight: 700; font-size: 2.1em; line-height: 1; color: var(--ink); }
 .open { margin-top: 30px; padding: 14px 22px; border-left: 5px solid var(--neutral-line); background: var(--neutral-tint); border-radius: 0 3px 3px 0; }
 .open-h { margin: 0 0 4px; font-size: 0.8em; font-weight: 700; color: var(--neutral-ink); }
 .open ul { margin: 0; padding-left: 22px; font-size: 0.8em; }
@@ -661,7 +635,7 @@ html:not(.phone) .reveal .slides section.closing[style*="display: block"] { disp
 .rail button {
   flex: none;
   padding: 4px 14px;
-  font: 400 16px var(--display-sc);
+  font: 600 16px var(--sans);
   letter-spacing: 0.02em;
   white-space: nowrap;
   color: var(--muted);

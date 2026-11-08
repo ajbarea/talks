@@ -3,7 +3,7 @@
    the step of a check each breaks: did not run (choosing what to check) darkest, wrong inputs
    (reading) in the middle, misreported (reporting) lightest. They part by lightness (L* 28, 49,
    75), so they read in greyscale and under colour-vision deficiency; the light one carries a 3:1
-   outline. Group text is one dark vermilion, 8:1 or more on marble and every tint. */
+   outline. Group text is one dark vermilion, 8:1 or more on the ground and every tint. */
 
 :root {
   --g-ink-all: #7a2405;

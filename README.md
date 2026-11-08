@@ -21,8 +21,8 @@ link like `.../federated-agents/#/5` opens a given slide.
 - `videos/`: scripts for AJ's explainer videos, made in Google Vids; see [videos/README.md](videos/README.md).
 - `shared/deck.js`, `shared/deck.css`: the behaviour and base styles every talk loads (chapter rail,
   agenda, figures from data, phone feed); a talk's own `deck.css` adds what is particular to it.
-- `shared/fonts/`: Marcellus for titles and Atkinson Hyperlegible Next for text (SIL Open Font
-  License), served with the decks. `shared/cast/`: the portraits each talk wears as its mark.
+- `shared/fonts/`: Atkinson Hyperlegible Next for titles and text (SIL Open Font License), served
+  with the decks. `shared/cast/`: the Hephaestus portrait on the Kourai Khryseai talk.
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
   by its own `<title>` and description, with its preview, its PowerPoint and PDF downloads and its links.
 - `scripts/exports.py`: exports each talk as `<folder>.pptx` (one picture per slide, the script in
@@ -33,13 +33,11 @@ link like `.../federated-agents/#/5` opens a given slide.
 ## The look
 
 Every slide is light, title and closing included: dark slides wash out under a lit room's lights.
-The ground is a cool marble white and the text a deep ink. Four colours keep one meaning in every
+The ground is a cool light grey and the text a deep ink. Four colours keep one meaning in every
 talk and figure: gold for AJ's own work, vermilion for failure or risk, bluish green for the fix,
 sky blue for context. They part by lightness, so they read in greyscale and under colour-vision
-deficiency, and every text colour clears 7:1. Each talk's title and closing slides carry one of
-the kourai cast in a bronze niche: Aletheia (Checking the Checker), the bronze automaton (Five
-Claude apps), Hesychia (Federated Agents) and Hephaestus (Kourai Khryseai). The tokens and their
-measurements are at the top of `shared/deck.css`.
+deficiency, and every text colour clears 7:1. Titles and text share one hyperlegible face. The
+tokens and their measurements are at the top of `shared/deck.css`.
 
 ## Adding a talk
 

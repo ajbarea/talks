@@ -21,6 +21,13 @@
 .lead { margin: 18px 0 0; font-size: 0.86em; max-width: 72ch; color: var(--ink); }
 .context { margin: 0 0 14px; font-size: 0.7em; color: var(--muted); max-width: 70ch; }
 
+.lens-art { position: absolute; right: 120px; top: 96px; width: 330px; height: auto; overflow: visible; }
+.lens-art .sheet { fill: var(--card); stroke: var(--line); stroke-width: 3; }
+.lens-art .rule { stroke: var(--line); stroke-width: 10; stroke-linecap: round; fill: none; }
+.lens-art .tick { fill: none; stroke: var(--fix); stroke-width: 18; stroke-linecap: round; stroke-linejoin: round; }
+.lens-art .tick.hollow { stroke: var(--card); stroke-width: 9; }
+.lens-art .glass { fill: rgba(255, 255, 255, 0.55); stroke: var(--ink); stroke-width: 10; }
+.lens-art .handle { stroke: var(--ink); stroke-width: 18; stroke-linecap: round; }
 .qr-follow .qr-code, .qr-close .qr-code { outline: 2px solid var(--line); }
 
 /* Slide 2: the real output, then what I did and why it matters. */
@@ -129,6 +136,7 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 .runs-fig { margin: 0; }
 
 /* Phone feed: everything stacks, and the matrix becomes one card per tool. */
+.phone .title-slide .lens-art { position: static; display: block; width: 200px; margin: 24px 0 0; }
 .phone .point, .phone .panels { grid-template-columns: 1fr; gap: 18px; }
 .phone .term { font-size: 0.66em; }
 .phone .bar-row { grid-template-columns: 36px 1fr 90px; row-gap: 4px; }

@@ -494,8 +494,119 @@
     for (const f of document.querySelectorAll(".reveal .fragment")) f.classList.remove("fragment");
   }
 
+  const scrollView = phone || sideways;
+
+  // reveal.js 6's scroll view opens a deep link part of a page short, and scroll snap then settles
+  // past the deck's middle on the slide before. Go to the slide's page directly.
+  function scrollToSlide(slide) {
+    const page = slide && slide.closest(".scroll-page");
+    const view = document.querySelector(".reveal-viewport");
+    if (page && view) view.scrollTop = page.offsetTop;
+  }
+
+  // A slide as a still thumbnail: every step shown, motion at its finished state, nothing focusable.
+  function thumbnail(slide, deckW, deckH) {
+    const stage = html("span", { class: "reveal", style: `--deck-w:${deckW}px;--deck-h:${deckH}px` });
+    stage.inert = true;
+    const copy = slide.cloneNode(true);
+    copy.classList.remove("past", "future");
+    copy.classList.add("present");
+    copy.style.display = "block";
+    copy.removeAttribute("hidden");
+    copy.removeAttribute("aria-hidden");
+    for (const n of copy.querySelectorAll(".fragment")) n.classList.add("visible");
+    for (const n of copy.querySelectorAll(".m-go")) n.classList.remove("m-go", "m-still");
+    for (const n of [copy, ...copy.querySelectorAll("[id]")]) n.removeAttribute("id");
+    html("span", { class: "slides" }, stage).appendChild(copy);
+    return stage;
+  }
+
+  // Every slide at once. Reveal's own overview is one long row and is off in scroll view.
+  let grid = null;
+  function buildGrid() {
+    const { width, height } = Reveal.getConfig();
+    const dialog = html("dialog", { class: "slide-grid", "aria-label": "All slides" }, document.body);
+    const head = html("div", { class: "slide-grid-head" }, dialog);
+    html("h2", {}, head, "All slides");
+    html("button", { type: "button" }, head, "Close").addEventListener("click", () => dialog.close());
+    const list = html("ol", { class: "slide-grid-list" }, dialog);
+    const links = new Map();
+    Reveal.getSlides().forEach((slide, n) => {
+      const title = slide.querySelector("h1, h2")?.textContent.trim();
+      const label = title ? `Slide ${n + 1}: ${title}` : `Slide ${n + 1}`;
+      const link = html("a", { href: `#/${slide.id || n}`, "aria-label": label }, html("li", {}, list));
+      html("span", { class: "slide-grid-thumb" }, link).appendChild(thumbnail(slide, width, height));
+      html("span", { class: "slide-grid-num" }, link, String(n + 1));
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        dialog.close();
+        if (scrollView) {
+          scrollToSlide(slide);
+        } else {
+          const i = Reveal.getIndices(slide);
+          Reveal.slide(i.h, i.v);
+        }
+      });
+      links.set(slide, link);
+    });
+    // Reveal listens on the document: stop here, or the arrows would turn the slides behind.
+    dialog.addEventListener("keydown", (e) => {
+      e.stopPropagation();
+      if (e.key === "o" || e.key === "O") dialog.close();
+    });
+    const fit = () => {
+      const cell = list.querySelector(".slide-grid-thumb");
+      if (cell) dialog.style.setProperty("--grid-scale", String(cell.clientWidth / width));
+    };
+    new ResizeObserver(fit).observe(list);
+    return { dialog, links, fit };
+  }
+
+  function openGrid() {
+    grid = grid || buildGrid();
+    for (const link of grid.links.values()) link.removeAttribute("aria-current");
+    grid.dialog.showModal();
+    grid.fit();
+    const here = grid.links.get(Reveal.getCurrentSlide());
+    if (here) {
+      here.setAttribute("aria-current", "true");
+      here.focus();
+      here.scrollIntoView({ block: "center" });
+    }
+  }
+
+  const slidePosition = () => `${Reveal.getSlides().indexOf(Reveal.getCurrentSlide()) + 1} of ${Reveal.getTotalSlides()}`;
+
+  // Paged slides open the grid from reveal's number. Scroll view hides that number, so it gets a button.
+  function wireGrid() {
+    if (scrollView) {
+      const open = html("button", { type: "button", class: "slide-grid-open", "aria-haspopup": "dialog" }, document.body);
+      const sync = () => {
+        open.textContent = slidePosition().replace(" of ", " / ");
+        open.setAttribute("aria-label", `Slide ${slidePosition()}. Show all slides`);
+      };
+      open.addEventListener("click", openGrid);
+      Reveal.on("slidechanged", sync);
+      sync();
+      return;
+    }
+    const number = document.querySelector(".reveal .slide-number");
+    if (!number) return;
+    number.addEventListener("click", (e) => {
+      if (!e.target.closest("a")) return;
+      e.preventDefault();
+      openGrid();
+    });
+    // Reveal rewrites the number's link on every change.
+    const label = () => number.querySelector("a")?.setAttribute("aria-label", `Slide ${slidePosition()}. Show all slides`);
+    new MutationObserver(label).observe(number, { childList: true });
+    label();
+  }
+
   Reveal.initialize({
     hash: true,
+    overview: false,
+    ...(receiver ? {} : { keyboard: { 79: openGrid } }),
     width: phone ? 480 : 1280,
     height: phone ? 1120 : 720,
     margin: 0.04,
@@ -527,21 +638,15 @@
       document.querySelector(".reveal-viewport")?.setAttribute("tabindex", "0");
     }
     if (!phone && !sideways && !receiver) buildRail(chs);
+    if (!receiver) wireGrid();
     // Scroll view leaves the hash alone, so a rotation's reload would reopen the feed at slide 1.
     // Write the slide being read (its id when it has one, as reveal.js does) once the feed settles,
     // so a fast scroll makes few replaceState calls (Safari limits them), and without adding
     // history entries. Once the
     // screen has turned, a reload is coming and the feed's relayout scrolls: not the reader's slide.
     if (phone || sideways) {
-      // reveal.js 6's scroll view opens a deep link part of a page short, and scroll snap then
-      // settles past the deck's middle on the slide before. Go to the slide's page directly.
       const want = decodeURIComponent(location.hash.replace(/^#\/?/, "").split("/")[0]);
-      if (want) {
-        const target = /^\d+$/.test(want) ? Reveal.getSlides()[Number(want)] : document.getElementById(want);
-        const page = target && target.closest(".scroll-page");
-        const view = document.querySelector(".reveal-viewport");
-        if (page && view) view.scrollTop = page.offsetTop;
-      }
+      if (want) scrollToSlide(/^\d+$/.test(want) ? Reveal.getSlides()[Number(want)] : document.getElementById(want));
       const turned = () => narrow.matches !== phone || short.matches !== sideways;
       let timer = 0;
       Reveal.on("slidechanged", (e) => {

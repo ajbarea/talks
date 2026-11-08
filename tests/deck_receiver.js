@@ -35,12 +35,18 @@ function load(search) {
   const revealEvents = [];
   const section = element();
   section.dataset.chapter = "Intro";
+  let config = null;
   const reveal = {
-    initialize: () => ({ then: (fn) => fn() }),
+    initialize: (options) => {
+      config = options;
+      return { then: (fn) => fn() };
+    },
     on: (name) => revealEvents.push(name),
     getIndices: () => ({ h: 0, v: 0 }),
     getCurrentSlide: () => null,
     getScale: () => 1,
+    getSlides: () => [],
+    getTotalSlides: () => 0,
   };
   const context = {
     window: { DECK_DATA: {} },
@@ -48,6 +54,9 @@ function load(search) {
     console,
     Reveal: reveal,
     RevealNotes: {},
+    MutationObserver: class {
+      observe() {}
+    },
     matchMedia: () => ({
       matches: false,
       addEventListener: (type, fn) => mediaListeners.push(type),
@@ -61,7 +70,7 @@ function load(search) {
     },
   };
   vm.runInNewContext(SOURCE, context);
-  return { mediaListeners, revealEvents };
+  return { mediaListeners, revealEvents, config };
 }
 
 const preview = load("?receiver");
@@ -77,6 +86,8 @@ check(!preview.revealEvents.includes("resize"), "speaker-view preview built the 
 // The audience deck reloads when the screen crosses either line: narrow portrait, or a phone on its side.
 check(audience.mediaListeners.length === 2, `audience deck registered ${audience.mediaListeners.length} viewport listener(s), expected 2`);
 check(audience.revealEvents.includes("resize"), "audience deck did not build the chapter rail, expected it");
+check(typeof audience.config.keyboard?.[79] === "function", "audience deck's O key does not open the slide grid");
+check(preview.config.keyboard === undefined, "speaker-view preview bound the slide grid's O key, expected none");
 
 if (failures.length) {
   for (const message of failures) console.error(`FAIL: ${message}`);

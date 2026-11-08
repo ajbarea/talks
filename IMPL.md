@@ -1,10 +1,10 @@
-# IMPL: Greek theming out of the shared look, 2026-11-08
+# IMPL: bright-room colours for the talks, 2026-11-08
 
 ## State
-- ✅ #86 shipped the shared look; #89 kept the cast portrait on the Kourai Khryseai talk only.
-- 📋 fix/checker-undo-forge (this branch): titles and chapter labels move to Atkinson Hyperlegible, chapters and steps use plain numbers, the Marcellus fonts and three unused portraits are gone. Kept: light ground, colour roles and 7:1 contrast, conclusion slides, three-bullet notes, script.md, phone and figure fixes.
+- ✅ #90 removed the Greek theming from the shared look.
+- 📋 fix/checker-title-art (this branch): the Checking the Checker title slide gets its paper-and-magnifying-glass drawing back.
 - 📋 After merge: re-export checking-the-checker PDF/PPTX to `Desktop/CISC-810 talk/`.
-- 📋 Later: the visual uplift for the other talks, planned with the klepsydra avatar cards.
+- 📋 Next: colour choices for a large bright classroom, measured against room light.
 
 ## Verify
 - `make check` with `SLIDES` and `SPHRAGIS` set to real checkouts; `make script-length`.

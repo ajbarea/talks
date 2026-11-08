@@ -99,7 +99,6 @@
   <p class="context">My checker, dokimasia, checks one bibliography of <span data-value="checker.entries"></span> entries that <span data-value="checker.papers"></span> of my papers share.</p>
   <figure class="cases-fig">
     <div class="bars" data-bars="cases"></div>
-    <figcaption class="legend"><span class="g-norun">Did not run</span><span class="g-input">Wrong inputs</span><span class="g-report">Misreported</span></figcaption>
   </figure>
   <p class="footnote">Bar: days from the commit that let a run go wrong to its fix (case 3: how long the flawed score existed), from the repository history.</p>
   <aside class="notes"><ul><li>dokimasia: <span data-value="checker.entries"></span> entries shared by <span data-value="checker.papers"></span> papers</li><li>Case 1: build said success with an empty bibliography for <span data-value="case1.days"></span> days</li><li>One tool, studied by its builder: shows these happen, not how often</li></ul></aside>
@@ -192,11 +191,26 @@
   <aside class="notes"><ul><li>Thank you; the slides are at the link</li><li>"I'm glad to take questions."</li><li>Backup: how each case was found, the tool runs, the sources</li></ul></aside>
 </section>
 
-<section class="backup divider">
+<section id="faq" class="backup faq-index">
   <h2>Backup slides</h2>
+  <p class="faq-sub">Frequently asked questions</p>
+  <ol class="faq">
+    <li><a href="#/faq-found">How was each failure found?</a></li>
+    <li><a href="#/faq-after">What does the checker print after the fixes?</a></li>
+    <li><a href="#/faq-new">Aren't these just ordinary bugs? What is new?</a></li>
+    <li><a href="#/faq-author">What can one tool, studied by its author, show?</a></li>
+    <li><a href="#/faq-public">Do the same failures turn up in other tools?</a></li>
+    <li><a href="#/faq-test">Why can't a test catch a check that never ran?</a></li>
+    <li><a href="#/faq-flags">How often is a flag false?</a></li>
+    <li><a href="#/faq-case6">Why did case 6's count change between runs?</a></li>
+    <li><a href="#/faq-method">How were the five other checkers tested?</a></li>
+    <li><a href="#/faq-cases">What happened in cases 3 to 5?</a></li>
+    <li><a href="#/faq-verified">What does "verified" mean here?</a></li>
+    <li><a href="#/faq-references">Where are the references?</a></li>
+  </ol>
 </section>
 
-<section class="backup">
+<section id="faq-found" class="backup">
   <h2>How each failure was found: none by breaking checks on purpose</h2>
   <table class="data small-table found">
     <thead><tr><th>Case</th><th>What failed</th><th>How it was found</th></tr></thead>
@@ -210,10 +224,11 @@
     </tbody>
   </table>
   <p class="lead">Each fix was then confirmed by putting its defect back; that practice found none of the six. The test suite had <span data-value="checker.testsThen"></span> tests then. Case 1's paper was broken for <span data-value="case1.days"></span> days, but checks existed for only the last <span data-value="case1.checkedDays"></span>.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Each one showed up as a result that didn't make sense, not through a test.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-after" class="backup">
   <h2>What my checker printed after the fixes, where it used to stay silent</h2>
   <div class="cards" style="--n:1">
     <div class="card"><b>A lookup that got no answer</b><pre class="mini-out">bibcheck: unresolved -- identifier present, lookup did not answer (HTTP 406 x61):
@@ -221,29 +236,32 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
   </div>
   <p class="lead">It was not given the two guard inputs from the other checkers: it checks a bibliography several papers share, inside their build, not one paper's PDF.</p>
   <p class="footnote">Output from the fixed code's run on the day of case 6 (September 21, 2026), when the checker was still named bibcheck.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Failed lookups are never cached now, and each carries its reason.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-new" class="backup">
   <h2>Aren't these just ordinary bugs? What is new</h2>
   <div class="cards" style="--n:3">
     <div class="card"><b>The defects are familiar</b><p>An ignored error code, a list kept by hand, a catch-all exception handler, a cache with no format version. Yuan et al.: 92% of catastrophic failures in five distributed systems came from mishandled non-fatal errors.</p></div>
     <div class="card"><b>The cost is not</b><p>Each one makes a false claim about someone else's document: "unresolved" tells a program chair an author may have cited something that does not exist. Registries keep two dates for one article, and a refusal looks like a missing entry.</p></div>
     <div class="card"><b>Closest work</b><p>Hill (2026) mutation-tests a verifier that passed a bundle without examining anything, a "vacuous pass". This paper adds the two groups that are not vacuous passes, and tests two guards on five other checkers.</p></div>
   </div>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">The defects are familiar to any software engineer; what's specific is that each one makes a false claim about someone else's document. Closest work is Hill 2026, on vacuous passes; I add the other two groups and test guards on five other tools.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-author" class="backup">
   <h2>One tool, studied by its author: what that can and cannot show</h2>
   <div class="cards" style="--n:2">
     <div class="card"><b>It shows the groups occur</b><p>A missing guard needs one counterexample: a tool that prints "All Clear!" for an unreadable PDF does so whatever the paper. In their public code, issues or commits, each group appears in at least two of the five other tools.</p></div>
     <div class="card limit"><b>It cannot show how often</b><p>Six is how many were noticed, and the three groups are a reading of them, not a tested taxonomy. The other tools ran once per input, and the network cut was total, so one server refusing requests was not tested on them.</p></div>
   </div>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Agreed, one system can't show how often. It can show the groups occur, and a missing guard needs only one counterexample.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-public" class="backup">
   <h2>Each group turns up in the public record of at least two of the five tools</h2>
   <table class="data small-table">
     <thead><tr><th>Tool</th><th>Did not run</th><th>Wrong inputs</th><th>Misreported</th></tr></thead>
@@ -256,39 +274,43 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
     </tbody>
   </table>
   <p class="footnote">"None found" is weak evidence: four of the five issue trackers hold eight issues or fewer. Code was read, not run; design means how a tool handles the case, not an observed failure.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Read October 2026. Hallucinator has all three groups in its record; RefChecker has two, and its design already keeps checker failures apart from no match.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-test" class="backup">
   <h2>Why a test cannot catch a check that never ran</h2>
   <div class="cards" style="--n:2">
     <div class="card"><b>The test runs the check</b><p>So it always sees the check run. Cases 1 and 2 left out a file or a check; no mutation exposes them, because there is no refusal to delete.</p></div>
     <div class="card"><b>The guard: work it out, name the gaps</b><p>The checker now finds every file with a <code>\documentclass</code> instead of reading a hand-kept list, and names each document it could not check. That code can be broken and tested, and the re-break caught all three changes to it.</p></div>
   </div>
   <p class="lead">A seventh failure, found after the study, is still open: no workflow ran the rendered check at all, so a stale local build missed <span data-value="case7.missing"></span> of <span data-value="case7.cited"></span> citations. Its guard belongs in the workflow, where no test of the tool reaches.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Case 7 is still open: 55 days on October 19th.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-flags" class="backup">
   <h2>At a 2% fabrication rate, most flags are false even for a precise verifier</h2>
   <div class="cards" style="--n:2">
     <div class="card"><b>Most flags are already false</b><p>Fabricated entries are rare: if 2% were fabricated, the most precise independent verifier Kim et al. tested would be right on about one flag in six.</p></div>
     <div class="card limit"><b>A checker's own failures add more</b><p>Badalova and Mayr advise checking by hand every reference marked "not found". Case 6 shows that label is not always a finding: the server refused, and the checker called it missing.</p></div>
   </div>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">At a 2 percent base rate, about five in six flags are false even for the most precise verifier; a checker's own failures add to them.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-case6" class="backup">
   <h2>Case 6: the count moved with the run, not with the bibliography</h2>
   <figure class="runs-fig">
     <p class="ylabel">Entries reported unresolved, five runs on one day</p>
     <div class="bars runs" data-runs="case6.runs" data-of="case6.entries"></div>
   </figure>
   <p class="lead">arXiv was refusing requests sent close together (HTTP 406), and the fetch caught every exception and returned nothing, so a refusal, a timeout and a missing identifier looked the same. The last run, on the fixed code, waited out each refusal, resolved <span data-value="case6.resolvedMore"></span> more and gave a reason for each of the <span data-value="case6.refusedLast"></span> left: all refused. Two weeks later, with no identifier changed, a scheduled run left none unresolved.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Each failure now carries its reason, the summary says when a host was throttling, and failed lookups are never cached.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-method" class="backup">
   <h2>How the five other checkers were tested</h2>
   <ul class="steps" style="--n:4">
     <li><b>Which tools</b>the five that Badalova and Mayr compared, at the cited versions</li>
@@ -297,20 +319,22 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
     <li><b>Conditions</b>each in its own container, no API keys, once per input, October 2026</li>
   </ul>
   <p class="footnote">HalRef and Hallucinator also got the references as BibTeX for the network cut, because they misread this PDF's list. CheckIfExist, a browser app, ran through its own functions from a script.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">The middle guard, break it on purpose, needs each tool's own tests, so it ran on my checker only.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-cases" class="backup">
   <h2>Cut for time: cases 3 to 5 up close</h2>
   <div class="cards" style="--n:3">
     <div class="card"><b>3 · A score that rewarded citing everything</b><p>Coverage counted all <span data-value="case3.entries"></span> entries in the shared file. A skeleton citing everything scored 100%; a real paper citing 20 scored <span data-value="case3.realScore"></span>% and failed. Now it compares against the keys the paper cites.</p></div>
     <div class="card"><b>4 · Two dates for one article</b><p>Crossref records an online date and a print year. One article was issued online on November 2, 2021 and printed in 2022; the bibliography cites 2022. Comparing only the first, the check warned on every run. Now either year passes.</p></div>
     <div class="card"><b>5 · A fix the cache undid</b><p>Records were cached for 14 days with no format marker, so on the first run after the fix, <span data-value="case5.fromCache"></span> came from the old cache. Records now carry a schema version, and an older one is fetched again.</p></div>
   </div>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">All three are wrong inputs: the check ran, but read the wrong thing.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-verified" class="backup">
   <h2>What "verified" means here, and what it does not</h2>
   <ul class="steps" style="--n:3">
     <li><b>Lint, offline</b>every entry has an identifier; no duplicate keys, dangling citations or orphaned entries; can block a commit</li>
@@ -319,10 +343,11 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
   </ul>
   <p class="lead">None of these checks that the citing sentence describes the work correctly: <span data-value="field.quoteErrors"></span>% of quotations in medical journals do not (Jergas and Baethge, 2015).</p>
   <p class="footnote">During the study the checker was a script named bibcheck; it became dokimasia, a plugin in techne, on October 7, 2026.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Verification here means the identifier resolves to the cited title, author and year.</aside>
 </section>
 
-<section class="backup">
+<section id="faq-references" class="backup">
   <h2>References</h2>
   <ul class="sources">
     <li>Z. Xu et al., GhostCite: A large-scale analysis of citation validity in the age of large language models, arXiv:2602.06718v2, 2026</li>
@@ -334,6 +359,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
     <li>H. Jergas, C. Baethge, Quotation accuracy in medical journal articles, PeerJ, 2015</li>
     <li>Tools: CheckIfExist e460565, HalluCiteChecker v0.1.2, Hallucinator v0.2.4, HalRef v0.1.0, RefChecker v3.1.6; <a href="https://github.com/ajbarea/techne">techne</a> 13e74ff</li>
   </ul>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 </div>

@@ -1,10 +1,10 @@
-# IMPL: bright-room colours for the talks, 2026-11-08
+# IMPL: Checking the Checker, clear in a bright room, 2026-11-08
 
 ## State
-- ✅ #90 removed the Greek theming from the shared look.
-- 📋 fix/checker-title-art (this branch): the Checking the Checker title slide gets its paper-and-magnifying-glass drawing back.
+- ✅ #91 brought the title slide's drawing back.
+- 📋 fix/checker-clear-colours (this branch): a palette for this talk only (plum, orange, sky groups; red for a wrong verdict), group names on the bars, system-sans titles and digits, a clickable backup index.
 - 📋 After merge: re-export checking-the-checker PDF/PPTX to `Desktop/CISC-810 talk/`.
-- 📋 Next: colour choices for a large bright classroom, measured against room light.
+- 📋 Later: decide whether the other talks take the same treatment.
 
 ## Verify
 - `make check` with `SLIDES` and `SPHRAGIS` set to real checkouts; `make script-length`.

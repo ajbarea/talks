@@ -46,5 +46,5 @@ Nothing here quotes it beyond what the manuscript prints.
 
 `figs.js` draws this talk's charts from the data before `../shared/deck.js` runs: the case bars
 (`data-bars`), the re-break columns (`data-columns`), the checker matrix (`data-matrix`), the
-Case 6 runs (`data-runs`), and bars sized to a value (`data-bar`, `data-range`). The group
-colours are the paper's Okabe-Ito hues; marks in the matrix repeat the colour as a symbol.
+Case 6 runs (`data-runs`), and bars sized to a value (`data-bar`, `data-range`). The groups
+are plum, orange and sky, named in the figures; marks in the matrix repeat the colour as a symbol.

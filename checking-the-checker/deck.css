@@ -134,8 +134,8 @@
 table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-spacing: 4px; font-size: 0.64em; }
 .matrix th { text-align: left; font-weight: 700; color: var(--label); }
 .matrix thead th { padding: 0 8px 2px; line-height: 1.2; vertical-align: bottom; }
-.matrix tbody th { padding: 0 8px; white-space: nowrap; color: var(--ink); }
-.matrix td { padding: 6px; border-radius: 2px; line-height: 1.25; white-space: nowrap; }
+.matrix tbody th { padding: 0 8px; white-space: nowrap; color: var(--ink); vertical-align: middle; }
+.matrix td { padding: 6px; border-radius: 2px; line-height: 1.25; white-space: nowrap; vertical-align: middle; }
 .matrix td:last-child { white-space: normal; }
 .matrix tr.band th, .matrix tr.band td { padding: 6px 8px 1px; border-bottom: 2px solid var(--ink); border-radius: 0; }
 .key .k-bad { background: none; box-shadow: none; font-weight: inherit; }

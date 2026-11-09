@@ -76,29 +76,36 @@
     });
   }
 
-  // <table data-matrix="checkers.tools" data-clean=... data-all=... data-count=...>: one row per tool, one cell per fault. The marks repeat the
+  // <table data-matrix="checkers.tools" data-clean=... data-all=... data-count=... data-clean-label=... data-other-label=...>: one row per tool,
+  // one cell per fault, the tools that printed a clean result grouped first so the title's count reads off the table. The marks repeat the
   // colour as a symbol, so the table reads the same without colour.
   const MARK = { bad: "✕", good: "✓", warn: "!", mixed: "~", none: "–" };
   function matrix(table) {
     const tools = get(table.dataset.matrix) || [];
-    const clean = tools.filter((t) => t.cells.slice(0, 2).some((c) => c.clean)).length;
+    const printedClean = (t) => t.cells.slice(0, 2).some((c) => c.clean);
+    const clean = tools.filter(printedClean).length;
     const all = tools.filter((t) => t.cells[2].all).length;
     if (clean !== get(table.dataset.clean)) fail(`checkers: ${clean} clean after nothing, not the title's count`);
     if (all !== get(table.dataset.all)) fail(`checkers: ${all} reported all as not found, not the stated count`);
     if (tools.length !== get(table.dataset.count)) fail(`checkers: ${tools.length} tools, not the stated count`);
-    const heads = [...table.querySelectorAll("thead th")].slice(1).map((th) => th.dataset.short || th.textContent);
-    const body = el("tbody", {}, table);
-    tools.forEach((t, i) => {
-      // A tool that printed a clean result after checking nothing is the slide's point: its row is marked.
-      const tr = el("tr", t.cells.slice(0, 2).some((c) => c.clean) ? { class: "clean-nothing" } : {}, body);
-      el("th", { scope: "row", "data-value": `${table.dataset.matrix}.${i}.name` }, tr);
-      t.cells.forEach((c, j) => {
-        const td = el("td", { class: `k-${c.kind}${j === 2 ? " fragment" : ""}`, "data-label": heads[j] }, tr);
-        if (j === 2) td.setAttribute("data-fragment-index", "1");
-        el("span", { class: "mark", "aria-hidden": "true" }, td, MARK[c.kind]);
-        el("span", { "data-value": `${table.dataset.matrix}.${i}.cells.${j}.text` }, td);
+    const heads = [...table.querySelectorAll("thead tr:last-child th")].map((th) => th.dataset.short || th.textContent);
+    for (const [wanted, label] of [[true, table.dataset.cleanLabel], [false, table.dataset.otherLabel]]) {
+      const body = el("tbody", {}, table);
+      const band = el("tr", { class: "band" }, body);
+      el("th", { scope: "rowgroup", colspan: "3" }, band, label);
+      el("td", { class: "fragment", "data-fragment-index": "1" }, band);
+      tools.forEach((t, i) => {
+        if (printedClean(t) !== wanted) return;
+        const tr = el("tr", {}, body);
+        el("th", { scope: "row", "data-value": `${table.dataset.matrix}.${i}.name` }, tr);
+        t.cells.forEach((c, j) => {
+          const td = el("td", { class: `k-${c.kind}${j === 2 ? " fragment" : ""}`, "data-label": heads[j] }, tr);
+          if (j === 2) td.setAttribute("data-fragment-index", "1");
+          el("span", { class: "mark", "aria-hidden": "true" }, td, MARK[c.kind]);
+          el("span", { "data-value": `${table.dataset.matrix}.${i}.cells.${j}.text` }, td);
+        });
       });
-    });
+    }
   }
 
   // <span data-bar="field.papersAfter" data-scale="2">: a bar as long as its value on that scale.

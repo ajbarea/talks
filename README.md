@@ -22,7 +22,9 @@ number to see every slide and jump to one. A link like `.../federated-agents/#/5
 - `shared/deck.js`, `shared/deck.css`: the behaviour and base styles every talk loads (chapter rail,
   agenda, figures from data, phone feed); a talk's own `deck.css` adds what is particular to it.
 - `shared/fonts/`: Atkinson Hyperlegible Next (SIL Open Font License), the shared default for
-  titles and text, served with the decks; a talk with its own look may set the system stack instead.
+  titles and text, served with the decks; a talk with its own look may set the system stack or its
+  own face instead (Kourai Khryseai keeps Marcellus in `kourai-khryseai/fonts/`, with digits drawn
+  in Atkinson Hyperlegible because Marcellus's numerals read as letters).
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
   by its own `<title>` and description, with its preview, its PowerPoint and PDF downloads and its links.
 - `scripts/exports.py`: exports each talk as `<folder>.pptx` (one picture per slide, the script in
@@ -37,8 +39,11 @@ default tokens: a cool light ground, deep ink, gold for AJ's own work, vermilion
 green for the fix and sky blue for context, with their measurements at the top of the file. A talk
 overrides those tokens (`--ours`, `--risk`, `--fix`, `--neutral` and their `-line`, `-ink` and
 `-tint` variants) for the colours it wants, and adds its own title and closing rules. Checking the
-Checker has a bright-room palette; Five Claude apps, Federated Agents and Kourai Khryseai each keep
-the paper ground, system fonts, title art and colours they had before November 2026.
+Checker has a bright-room palette. Each of the other three is a stronger version of itself, always
+on a light ground for lit rooms: Five Claude apps is warm and orange (orange title bands, keeping
+the dancing robot); Federated Agents builds on its title motif's blue and orange, with blue always
+what is shared and orange what stays private; Kourai Khryseai is a light marble-and-gold world with
+Greek key ornament, a classical display face and the Golden Maidens on a light ground.
 
 ## Adding a talk
 

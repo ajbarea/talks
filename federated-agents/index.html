@@ -15,10 +15,11 @@
   <link rel="stylesheet" href="deck.css">
 </head>
 <body>
+<svg class="split-defs" width="0" height="0" aria-hidden="true" focusable="false"><defs><linearGradient id="mine-split"><stop class="stop-shared" offset="50%"/><stop class="stop-private" offset="50%"/></linearGradient></defs></svg>
 <div class="reveal">
 <div class="slides">
 
-<section class="title-slide dark" data-background-color="#14181f">
+<section class="title-slide">
   <span class="kicker">AJ Barea · PhD student, Rochester Institute of Technology</span>
   <h1>Federated Agents</h1>
   <p class="subtitle">Coding agents that learn each company's house rules without its code leaving</p>
@@ -309,15 +310,15 @@
   </div>
   <p class="lead">The company marks which of its repositories may feed the shared add-on, and only those do.</p>
   <p class="footnote">Field terms: the add-ons are LoRA adapters; training them together this way is federated learning.</p>
-  <aside class="notes"><ul><li>Same frozen open-weight model, two small add-ons per company</li><li>Gold shared: only its changes go to a server that averages them. Green private: never leaves</li><li>The company lists which repositories may feed the shared one; anyone can audit it</li></ul></aside>
+  <aside class="notes"><ul><li>Same frozen open-weight model, two small add-ons per company</li><li>Blue shared: only its changes go to a server that averages them. Orange private: never leaves</li><li>The company lists which repositories may feed the shared one; anyone can audit it</li></ul></aside>
 </section>
 
 <section data-chapter="3 · The idea">
   <span class="kicker">3 · The idea</span>
   <h2>Other designs let the method pick what is shared; none tests whose it is</h2>
   <div class="relmap wide" data-source="related" data-differs="off"></div>
-  <p class="footnote">Each blue dot is a published design<span class="web-only"> (hover or tap for a summary)</span>. Each was tested on public datasets, not real organizations' data.</p>
-  <aside class="notes"><ul><li>Blue dots: published designs. Across: who decides what is shared</li><li>Up: whether anyone tested the shared part; none asked whose it is</li><li>Mine, in gold: the company decides before training, and I test where the shared part came from</li></ul></aside>
+  <p class="footnote">Each grey dot is a published design<span class="web-only"> (hover or tap for a summary)</span>. Each was tested on public datasets, not real organizations' data.</p>
+  <aside class="notes"><ul><li>Grey dots: published designs. Across: who decides what is shared</li><li>Up: whether anyone tested the shared part; none asked whose it is</li><li>Mine, in blue and orange: the company decides before training, and I test where the shared part came from</li></ul></aside>
 </section>
 
 <section data-chapter="4 · What first runs show">
@@ -473,7 +474,7 @@
   <aside class="notes"><ul><li>First test there are team habits to learn, then share them without the code</li><li><span data-value="readings.corpus_examples_openstack"></span> + <span data-value="readings.corpus_examples_wikimedia"></span> lessons; +<span data-value="readings.tuned_exact_gain"></span> in 100 tuned; OpenStack's own assistant <span data-value="readings.team_openstack"></span></li><li>Open: does it hold on the sealed test; does the shared add-on leak. "That's my talk."</li></ul></aside>
 </section>
 
-<section class="dark closing" data-background-color="#14181f">
+<section class="closing">
   <div class="close-text">
   <h2>Thank you</h2>
   <p class="asks">I'm glad to take questions.</p>

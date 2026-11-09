@@ -1,26 +1,25 @@
-# IMPL: three talks get their own look back, 2026-11-09
+# IMPL: three talks, each a stronger version of itself, light by default, 2026-11-09
 
-Branch fix/deck-looks-rollback, from main 75c9805.
+Branch fix/deck-looks-rollback, PR #96. Builds on the rollback commit a1494ff (the shared forge look undone).
 
 ## Slice
-Five Claude apps (claude-tooling), Federated Agents and Kourai Khryseai return to their pre-November look (0717602) and keep the clarity work since. Checking the Checker and `shared/deck.css` and `shared/deck.js` stay as they are.
+Each talk gets its own strong identity on a light ground for lit rooms, and every slide is audited against the bar: text 4.5:1 and up (aim 7:1), marks 3:1 or a darker outline, pale fills tested under room light, one meaning per colour, no leftover forge token. `checking-the-checker/`, `shared/deck.css` and `shared/deck.js` stay unchanged.
 
 ## Done
-- ✅ Each talk's `deck.css` sets its pre-forge tokens, undoes the forge's shared rules (titles, kickers, cards, steps, rail, closing grid) and maps the role tokens to its own colours. Theme properties came back rule by rule; sizes and layouts from the UX audit stayed.
-- ✅ Title art back: robot, `.motif`, golden-maidens hero and halo. Federated Agents and Kourai title and closing are dark again; the Hephaestus portrait and niche are gone, and `shared/cast/` with them.
-- ✅ Colours the script names stay true: Federated Agents keeps a gold shared add-on, a green private one, blue rival dots and gold for AJ's own design (slides 6 and 7); claude-tooling keeps the gold dots its key names (slide 9).
-- ✅ System fonts draw wider than Atkinson, so a few spots stepped down to pass the slide gates: claude-tooling slide 2, conclusion numbers and phone Duet table; Federated Agents attrition figure, phone backup text and phone forest plot; Kourai slide 3 agent box.
-- ✅ Contrast: claude-tooling's conclusion number is rust, not orange; Federated Agents pass text is a darker blue, 7.6:1 or better.
-- ✅ AGENTS.md and README describe a per-talk look.
+- ✅ claude-tooling: orange identity (solid orange title bands, orange title panel, robot recoloured with darker outlines, deep-orange labels, orange chips). Slide 9 key says Orange, its dots are orange; the Desktop slide's chosen folders stay blue because its key says Blue.
+- ✅ federated-agents: blue is shared and travels, orange is what stays private, rivals are grey, AJ's own work navy, wrong or attack raspberry, right ink with its tick. `script.md` and notes: gold/green/blue words moved to blue/orange/grey; "Mine, in blue and orange" (the split dot on slide 7).
+- ✅ kourai-khryseai: marble ground with veins, Greek key under titles and along the title and closing feet, Marcellus for titles with digits in Atkinson via unicode-range, gold and bronze, Aegean blue for context, terracotta for risk. Golden Maidens cut out of their dark ground (`img/golden-maidens-light.webp`), halo kept, no Hephaestus portrait.
+- ✅ Light by default on all three: `dark` classes and dark background attributes removed from title and closing slides. Reveal copies a section's classes to its background element, so the deck.css title pseudo-elements are scoped to `section.`.
+- ✅ Audit tool in the session scratchpad (per-slide contrast and mark sampling); room-light closest-pair test reproduces PR #92's 7.6 and 20.7.
+- ✅ README look section updated.
 
 ## Next
-- 📋 AJ looks at the PR; merge only after that.
-- 📋 If a talk drifts from its script's colour words, change the slide colours or the script together.
+- 📋 AJ looks at the PR and the before/after images; merge only after that.
 
 ## Verify
 - `SLIDES=<techne>/plugins/graphe/skills/slides/scripts/slides.py SPHRAGIS=<sphragis> make check`, then `make lint`.
-- Render every slide at 1920x1080 and on a phone; read the sheets. Check `document.getAnimations()` on each title for robot, motif, halo.
-- Slide text per deck against main: only the title byline differs (byline became the kicker and date, same words).
+- Render every slide at 1920x1080 and on a phone; read the sheets. `document.getAnimations()` on each title: robot, motif `m-flow`, halo `k-ring`; none under reduced motion.
+- Per-slide text against main: only the title byline moved (earlier pass) and the colour words above changed.
 
 ## Next (not started)
 - Custom thumbnails for Tier 1 uploads that still show an auto frame (upload-package.md recipe).

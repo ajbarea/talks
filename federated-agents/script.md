@@ -26,11 +26,11 @@ This work sits where four research fields meet. Learning together, apart: many o
 
 ## 6. My idea: a shared add-on, a private add-on, and the company decides
 
-My idea: every company runs the same frozen, open-weight base model with two small add-ons. The gold one is shared: only each company's changes to it go to a server that averages them, so code never travels. The green one is private and never leaves. Before training, the company lists which repositories may feed the shared add-on; the rest teach only the private one, and anyone can audit the list.
+My idea: every company runs the same frozen, open-weight base model with two small add-ons. The blue one is shared: only each company's changes to it go to a server that averages them, so code never travels. The orange one is private and never leaves. Before training, the company lists which repositories may feed the shared add-on; the rest teach only the private one, and anyone can audit the list.
 
 ## 7. Other designs let the method pick what is shared; none tests whose it is
 
-The blue dots are published designs. Across the bottom: who decides what is shared, from training itself to a fixed rule or a filter. Up the side: whether anyone tested the shared part. Most never did, and none asked whose it is. Mine, in gold, lets the company decide before training, and tests which company the shared part came from.
+The grey dots are published designs. Across the bottom: who decides what is shared, from training itself to a fixed rule or a filter. Up the side: whether anyone tested the shared part. Most never did, and none asked whose it is. Mine, in blue and orange, lets the company decide before training, and tests which company the shared part came from.
 
 ## 8. Tuning helps, {readings.team_title}
 

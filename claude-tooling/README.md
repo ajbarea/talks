@@ -29,10 +29,13 @@ Each product's real icon, beside its name on the five-places slide, its own slid
 |---|---|---|
 | `icon-claude-chat.png` | Claude chat | Apple App Store listing, [Claude by Anthropic](https://apps.apple.com/us/app/claude-by-anthropic/id6473753684), artworkUrl512 from the App Store lookup API |
 | `icon-claude-desktop.png` | Claude Desktop | Microsoft Store listing, [Claude](https://apps.microsoft.com/detail/9P6K58THS811) (publisher Anthropic, PBC), 620px tile, the store listing linked from claude.com/download |
-| `icon-claude-code.png` | Claude Code | [code.claude.com docs](https://code.claude.com/docs/en/overview) favicon, android-chrome-192x192.png in the docs' `claude-code` favicon set. A terminal tool, so this is the product docs' icon, not an installed app's |
+| `icon-claude-code.png` | Claude Code | Supplied by AJ, November 9, 2026 |
 | `icon-claude-duet.svg` | Claude Duet | [claude.com/product/claude-duet](https://claude.com/product/claude-duet), `/static/claude-duet/app-icon.svg`, unchanged |
+| `icon-claude-science.png` | Claude Science | Supplied by AJ, November 9, 2026; cropped to the icon |
+| `icon-claude-cowork.png` | Cowork | Supplied by AJ, November 9, 2026 |
+| `icon-claude-design.png` | Claude Design | Supplied by AJ, November 9, 2026; cropped from a social preview image |
 
-No published icon was found for Claude Science, Cowork or Claude Design, so those names stand without one. Anthropic's [trademark guidelines](https://www.anthropic.com/legal/trademark-guidelines) (effective August 1, 2024) cover logos and names: use needs Anthropic's permission, and no use may imply sponsorship, affiliation or alteration. They do not mention educational or identifying use. The closing slide says "Product names and icons belong to Anthropic."
+Anthropic's [trademark guidelines](https://www.anthropic.com/legal/trademark-guidelines) (effective August 1, 2024) cover logos and names: use needs Anthropic's permission, and no use may imply sponsorship, affiliation or alteration. They do not mention educational or identifying use. The closing slide says "Product names and icons belong to Anthropic."
 
 ## Facts and sources
 

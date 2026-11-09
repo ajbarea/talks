@@ -297,3 +297,7 @@ html:not(.phone) .windows, html:not(.phone) .counts { font-size: 1.12em; }
 .phone .halves { grid-template-columns: 1fr; }
 .phone .axis { height: 280px; }
 .phone .tl-group li { grid-template-columns: 110px 1fr; }
+.phone .dotplot .tick { font-size: 26px; }
+.phone .dotplot .row-sub { font-size: 26px; }
+.phone .dotplot .value { font-size: 26px; }
+.phone .dotplot .row-label { font-size: 30px; }

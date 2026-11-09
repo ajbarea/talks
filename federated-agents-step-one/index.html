@@ -94,7 +94,7 @@
     <div class="link"><span>An attacker cannot recover it</span><i>assumed next</i></div>
   </div>
   <div class="claim-pair">
-    <p><b>What I did:</b> built Sphragis, which turned public code review into <b><span data-value="readings.examples_total"></span> frozen examples from <span data-value="readings.orgs_count"></span> organizations</b>, and wrote the pass rule before any test data exists.</p>
+    <p><b>What I did:</b> built Sphragis, which turned public code review into <b><span data-value="readings.examples_total"></span> frozen examples from <span data-value="readings.orgs_count"></span> organizations</b>, and wrote the pass rule before the test window is fetched.</p>
     <p><b>Why you should care:</b> who a federated client is, what personalization keeps local and what an attacker can infer all depend on the answer.</p>
   </div>
   <aside class="notes"><ul><li>What I did: <span data-value="readings.examples_total"></span> examples, <span data-value="readings.orgs_count"></span> organizations, a pass rule written first</li><li>Why you care: the client, personalization and attack questions all rest on this link</li><li>The premise is untested</li></ul></aside>
@@ -118,7 +118,7 @@
     <div class="boundary-note">
       <p>A client can be a project group or a whole organization.</p>
       <p><b>If style attaches to project groups, an organization-level client promises more than it can keep.</b></p>
-      <p class="muted">So step one tests both boundaries before any federation is built.</p>
+      <p class="muted">So step one tests both boundaries before any federated result is claimed.</p>
     </div>
   </div>
   <aside class="notes"><ul><li>Client = project group or organization: step one measures which</li><li>Style attached to project groups makes an organization-level client overpromise</li><li>Two boundaries: inside a group, and at the organization line</li></ul></aside>
@@ -168,7 +168,7 @@
   <div class="stages">
     <div class="stage">
       <span class="stage-no">Stage 1 · the plan</span>
-      <p class="stage-what">A <span data-value="venue.pages"></span>-page report, no results</p>
+      <p class="stage-what">A <span data-value="venue.pages"></span>-page report, no confirmatory results</p>
       <p><span data-value="venue.stageOneReviewers"></span> reviewers judge the question and the method</p>
       <p class="stage-out"><b>Outcomes:</b> in-principle acceptance, continuity acceptance, or rejection</p>
     </div>
@@ -182,21 +182,21 @@
   </div>
   <p class="quote">"If the protocol is adhered to (or deviations are thoroughly justified), the study is likely to be published."</p>
   <p class="footnote">This report: "Do Organizations Leave a Learnable House Style in Code Review?" Registered Reports are presented at MSR; the published paper is the journal paper.</p>
-  <aside class="notes"><ul><li>Stage 1: a <span data-value="venue.pages"></span>-page plan, no results, reviewed by <span data-value="venue.stageOneReviewers"></span> people</li><li>In-principle acceptance: followed protocol, likely published</li><li>Stage 2: the full paper to the journal</li></ul></aside>
+  <aside class="notes"><ul><li>Stage 1: a <span data-value="venue.pages"></span>-page plan, no confirmatory results, reviewed by <span data-value="venue.stageOneReviewers"></span> people</li><li>In-principle acceptance: followed protocol, likely published</li><li>Stage 2: the full paper to the journal</li></ul></aside>
 </section>
 
 <section data-chapter="4 · The method">
   <span class="kicker">4 · The method</span>
-  <h2>Why plan first: one split of my data passed, five splits averaged near zero</h2>
+  <h2>Why plan first: a reading can depend on how the data was split</h2>
   <div class="split-why">
     <figure id="split-fig" class="dotplot"></figure>
     <div class="split-note">
-      <p>The first reading on OpenStack's development data cleared zero. Other valid splits of the same projects did not.</p>
-      <p><b>A plan written first fixes the analysis before the test data exists, so no one can keep only the split that worked.</b></p>
+      <p>The first reading on OpenStack's development data cleared zero. Five valid splits of the same projects spread from <span data-value="readings.split_low"></span> to <span data-value="readings.split_high"></span>, averaging <span data-value="readings.split_mean"></span>.</p>
+      <p><b>A plan written first fixes which splits are read, before the test data is read, so no one can keep only the one that worked.</b></p>
     </div>
   </div>
-  <p class="footnote">Exact-match points: extra reviewer fixes matched exactly per 100 review comments, on development data (<span data-value="readings.window_dev"></span>). Not a confirmatory result.</p>
-  <aside class="notes"><ul><li>One split, first reading: <span data-value="readings.split_first"></span> points, interval above zero</li><li>Five splits: <span data-value="readings.split_low"></span> to <span data-value="readings.split_high"></span>, averaging <span data-value="readings.split_mean"></span></li><li>A plan written first means no one can keep only the split that worked</li></ul></aside>
+  <p class="footnote">Exact-match points: extra reviewer fixes matched exactly per 100 comments, the score used then (since replaced), on development data (<span data-value="readings.window_dev"></span>). First reading: five seeds; each split below: two seeds. Not a confirmatory result.</p>
+  <aside class="notes"><ul><li>One split, first reading: <span data-value="readings.split_first"></span> points, interval above zero</li><li>Five splits: <span data-value="readings.split_low"></span> to <span data-value="readings.split_high"></span>, averaging <span data-value="readings.split_mean"></span></li><li>A plan fixes which splits are read, before the test is read</li></ul></aside>
 </section>
 
 <section data-chapter="4 · The method">
@@ -222,7 +222,7 @@
 
 <section data-chapter="4 · The method">
   <span class="kicker">4 · The method</span>
-  <h2>The pass rule is fixed: every test's confidence interval must sit entirely above zero</h2>
+  <h2>The pass rule is written down: every test's interval must sit entirely above zero</h2>
   <div class="rule-fig">
     <div class="axis" role="img" aria-label="Three illustrative intervals on a line with zero and delta marked: one entirely above zero reads supported, one entirely below delta reads bounded, one crossing zero and reaching past delta reads inconclusive.">
       <div class="axis-track"></div>
@@ -234,11 +234,11 @@
     </div>
     <div class="rule-text">
       <p><b>The score:</b> how much probability an adapter gives the developer's real fix, per token.</p>
-      <p><b>δ = <span data-value="readings.delta"></span>:</b> each token about <span data-value="readings.delta_pct"></span>% more likely, set as one more exact fix per hundred comments.</p>
-      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests pass:</b> <span data-value="readings.orgs_count"></span> organizations, two scores, each averaged over at least <span data-value="readings.k_min"></span> runs.</p>
+      <p><b>δ = <span data-value="readings.delta"></span>:</b> each token about <span data-value="readings.delta_pct"></span>% more likely on average, set as one more exact fix per hundred comments.</p>
+      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests pass:</b> <span data-value="readings.orgs_count"></span> organizations if all are admitted, two scores, each averaged over at least <span data-value="readings.k_min"></span> runs.</p>
     </div>
   </div>
-  <p class="footnote">Intervals are illustrative; δ is the study's own value, in nats per token, the log-probability scale of the score. A confidence interval is the range the data leave plausible.</p>
+  <p class="footnote">Intervals are illustrative; δ is the study's own value, in nats per token, the log-probability scale of the score. A confidence interval is the range the data leave plausible. Where a test's critical value is calibrated (Wikimedia's non-name score, H2), its p-value must also clear it.</p>
   <aside class="notes"><ul><li>Score: probability given to the developer's real fix, per token</li><li>δ = <span data-value="readings.delta"></span>, about <span data-value="readings.delta_pct"></span>% more likely per token</li><li>All <span data-value="readings.h1_cells"></span> H1 tests must clear zero, or H1 does not pass</li></ul></aside>
 </section>
 
@@ -256,8 +256,8 @@
     <div><b data-value="readings.examples_wikimedia"></b><span>Wikimedia</span></div>
     <div><b data-value="readings.examples_qt"></b><span>Qt</span></div>
   </div>
-  <p class="counts-note">Frozen examples per organization, pilot + train + development. Also collected and frozen: the GitHub replication family and Chromium's C++ pool.</p>
-  <p class="footnote">The test window's definition is hashed and fetched only after in-principle acceptance, so nothing can be tuned against it.</p>
+  <p class="counts-note">Frozen examples per organization, pilot + train + development. Also collected and frozen: the GitHub replication family and Chromium's foreign pool.</p>
+  <p class="footnote">The test window is defined in the report and fetched only after in-principle acceptance, so nothing can be tuned against it.</p>
   <aside class="notes"><ul><li>Pilot, train, development: collected, frozen, <span data-value="readings.examples_total"></span> examples</li><li>Test window (<span data-value="readings.window_test"></span>): sealed, not fetched until after acceptance</li><li>So data collection is finished for the design work, not for the test</li></ul></aside>
 </section>
 
@@ -270,15 +270,15 @@
       <ul class="checks">
         <li>Open-source pipeline from review history to frozen examples</li>
         <li>Three frozen datasets, plus the GitHub replication family</li>
-        <li>Simulations that fix each test's number of runs</li>
-        <li>Label audit of the examples, with a human check</li>
+        <li>Simulations that fix each Gerrit test's number of runs</li>
+        <li>Label audit on OpenStack examples, with a human check</li>
       </ul>
     </div>
     <div class="open-col">
       <h3>Still open</h3>
       <ul class="opens">
-        <li>Submitting the report and registering it on the Open Science Framework</li>
-        <li>The final list of admitted organizations</li>
+        <li>Submitting the report, sealing the test window and registering it on the Open Science Framework</li>
+        <li>The final list of organizations; the GitHub family's own simulations</li>
         <li>Fetching the sealed test months</li>
         <li>Every confirmatory training run and the pass-rule reading</li>
       </ul>
@@ -300,7 +300,7 @@
     </figure>
     <div class="dev-note">
       <p>A planted marker is a fake convention I control.</p>
-      <p><b>Finding it shows the instrument can see a convention when one is there.</b></p>
+      <p><b>Finding it shows the score responds to a planted convention. Whether it detects the smallest effect rests on the sizing simulations.</b></p>
       <p class="muted">Pilot and development readings size the design. Only the sealed test decides the hypotheses.</p>
     </div>
   </div>
@@ -352,8 +352,8 @@
     <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>The deployed shared and private split, attacked end to end.</div>
     <div class="gl-cell" role="cell"><b class="gl-col">Data quality and metadata</b>What each company declares shareable, as checkable metadata; agents' shared memory across a boundary.</div>
   </div>
-  <div class="before-fl"><b>Before federation:</b> a second human rater for the label audit, and dataset metadata for the public release.</div>
-  <p class="footnote">Before acceptance nobody reads the sealed test window. The Qt and Chromium grants cover this study's collector, so collaborators work from released ids and manifests.</p>
+  <div class="before-fl"><b>Before federation:</b> a second human rater for the label audit on OpenStack examples, and dataset metadata for the public release.</div>
+  <p class="footnote">The sealed test window stays unread before acceptance. The Qt and Chromium grants cover this study's collector, so shared work starts from OpenStack examples and released ids and manifests.</p>
   <aside class="notes"><ul><li>Step two: aggregation, attacks, data-quality signals</li><li>Step three: the deployed split and agent memory across a boundary</li><li>A small start before federation: a second rater and dataset metadata</li></ul></aside>
 </section>
 
@@ -361,7 +361,7 @@
   <h2>Before federating agents, test that there is a house style to federate</h2>
   <div class="recap" data-motion="stagger" data-child="rise" data-step="150">
     <div class="tile"><p class="num">Step 1</p><p>tests whether a model can learn a house style, and at what boundary</p></div>
-    <div class="tile"><p class="num">Plan first</p><p>so the analysis is fixed before the test data exists, and a null can publish</p></div>
+    <div class="tile"><p class="num">Plan first</p><p>so the analysis is fixed before the test data is read, and a null can publish</p></div>
     <div class="tile"><p class="num"><span data-value="readings.examples_total"></span></p><p>examples frozen; the test window is still sealed</p></div>
   </div>
   <div class="open">
@@ -407,7 +407,7 @@
 
 <section id="faq-results" class="backup">
   <h2>Why are there no results yet?</h2>
-  <p>A Stage 1 report is the plan, so it must carry no results. Results come in Stage 2, after the sealed test months are fetched.</p>
+  <p>A Stage 1 report is the plan, so it carries no confirmatory results. Pilot and development readings size the design. Results come in Stage 2, after the sealed test months are fetched.</p>
   <p>The field's reason: in psychology, one study found 96% positive results in standard papers and 44% in Registered Reports, on the first hypothesis of each paper.</p>
   <p class="note-small">Scheel, Schijen, Lakens (2021), <i>An Excess of Positive Results</i>, doi:10.1177/25152459211007467. The authors note this does not prove Registered Reports reduce bias.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -436,7 +436,7 @@
 
 <section id="faq-intefl" class="backup">
   <h2>How does this relate to InteFL?</h2>
-  <p>Sphragis has no federated learning in it. It is centralized measurement, in its own repository: one adapter per project half, and no aggregation.</p>
+  <p>The Registered Report has no federated learning in it: centralized measurement, one adapter per project half, and no aggregation. The repository also holds early federated code for later steps, and no result from it is claimed here.</p>
   <p>InteFL is the lab's federated framework. Its aggregation and attack work becomes relevant at step two, once there is an adapter to federate.</p>
   <p class="note-small">Which FL stack step two runs on is decided when it starts.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -459,7 +459,7 @@
     <tr><td>Chromium</td><td>written grant</td><td>H2's foreign source</td></tr>
     <tr><td>GitHub: Apache, .NET</td><td>research terms</td><td>replication family</td></tr>
   </table>
-  <p class="note-small">Grants name this study's collector. Review text is never published; released artifacts carry ids and measurements, and accounts are pseudonymized as data arrives.</p>
+  <p class="note-small">Grants name this study's collector. Artifacts released since October 19, 2026 carry no review text, and accounts are pseudonymized as data arrives.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 

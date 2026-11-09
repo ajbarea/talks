@@ -21,8 +21,8 @@ number to see every slide and jump to one. A link like `.../federated-agents/#/5
 - `videos/`: scripts for AJ's explainer videos, made in Google Vids; see [videos/README.md](videos/README.md).
 - `shared/deck.js`, `shared/deck.css`: the behaviour and base styles every talk loads (chapter rail,
   agenda, figures from data, phone feed); a talk's own `deck.css` adds what is particular to it.
-- `shared/fonts/`: Atkinson Hyperlegible Next for titles and text (SIL Open Font License), served
-  with the decks. `shared/cast/`: the Hephaestus portrait on the Kourai Khryseai talk.
+- `shared/fonts/`: Atkinson Hyperlegible Next (SIL Open Font License), the shared default for
+  titles and text, served with the decks; a talk with its own look may set the system stack instead.
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
   by its own `<title>` and description, with its preview, its PowerPoint and PDF downloads and its links.
 - `scripts/exports.py`: exports each talk as `<folder>.pptx` (one picture per slide, the script in
@@ -32,12 +32,13 @@ number to see every slide and jump to one. A link like `.../federated-agents/#/5
 
 ## The look
 
-Every slide is light, title and closing included: dark slides wash out under a lit room's lights.
-The ground is a cool light grey and the text a deep ink. Four colours keep one meaning in every
-talk and figure: gold for AJ's own work, vermilion for failure or risk, bluish green for the fix,
-sky blue for context. They part by lightness, so they read in greyscale and under colour-vision
-deficiency, and every text colour clears 7:1. Titles and text share one hyperlegible face. The
-tokens and their measurements are at the top of `shared/deck.css`.
+Each talk has its own look, set in its own `deck.css`. `shared/deck.css` holds the base styles and
+default tokens: a cool light ground, deep ink, gold for AJ's own work, vermilion for risk, bluish
+green for the fix and sky blue for context, with their measurements at the top of the file. A talk
+overrides those tokens (`--ours`, `--risk`, `--fix`, `--neutral` and their `-line`, `-ink` and
+`-tint` variants) for the colours it wants, and adds its own title and closing rules. Checking the
+Checker has a bright-room palette; Five Claude apps, Federated Agents and Kourai Khryseai each keep
+the paper ground, system fonts, title art and colours they had before November 2026.
 
 ## Adding a talk
 
@@ -73,9 +74,9 @@ A run on `main` that passes publishes the site; one that fails publishes nothing
 keeps its last good version. GitHub turns off a public repository's scheduled runs after 60
 days without activity; re-enable the daily run from the Actions tab if it stops.
 
-The decks load their own fonts from `shared/fonts/`, so a slide measures the same everywhere. On
-Linux, the gates and renders draw any other text only in DejaVu (`scripts/fonts.conf`), the font
-CI's runner draws a system font stack in. Each machine resolves that stack to its own font,
+A talk that sets a web font loads it from `shared/fonts/`; the others use the system font stack. On
+Linux, the gates and renders draw the system stack only in DejaVu (`scripts/fonts.conf`), the font
+CI's runner draws it in. Each machine resolves that stack to its own font,
 and a slide that fits in a narrower one clips in CI. `make fonts` fails when the stack does not
 resolve to DejaVu (`apt-get install fonts-dejavu-core`). Chromium reads fontconfig on Linux only,
 so on macOS or Windows the gates measure the system font. The exports keep the machine's own

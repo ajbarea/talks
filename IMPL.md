@@ -1,14 +1,26 @@
-# IMPL: Checking the Checker, clear in a bright room, 2026-11-08
+# IMPL: three talks get their own look back, 2026-11-09
 
-## State
-- ✅ #91 brought the title slide's drawing back.
-- 📋 fix/checker-clear-colours (this branch): a palette for this talk only (plum, orange, sky groups; red for a wrong verdict), group names on the bars, system-sans titles and digits, a clickable backup index.
-- 📋 After merge: re-export checking-the-checker PDF/PPTX to `Desktop/CISC-810 talk/`.
-- 📋 Later: decide whether the other talks take the same treatment.
+Branch fix/deck-looks-rollback, from main 75c9805.
+
+## Slice
+Five Claude apps (claude-tooling), Federated Agents and Kourai Khryseai return to their pre-November look (0717602) and keep the clarity work since. Checking the Checker and `shared/deck.css` and `shared/deck.js` stay as they are.
+
+## Done
+- ✅ Each talk's `deck.css` sets its pre-forge tokens, undoes the forge's shared rules (titles, kickers, cards, steps, rail, closing grid) and maps the role tokens to its own colours. Theme properties came back rule by rule; sizes and layouts from the UX audit stayed.
+- ✅ Title art back: robot, `.motif`, golden-maidens hero and halo. Federated Agents and Kourai title and closing are dark again; the Hephaestus portrait and niche are gone, and `shared/cast/` with them.
+- ✅ Colours the script names stay true: Federated Agents keeps a gold shared add-on, a green private one, blue rival dots and gold for AJ's own design (slides 6 and 7); claude-tooling keeps the gold dots its key names (slide 9).
+- ✅ System fonts draw wider than Atkinson, so a few spots stepped down to pass the slide gates: claude-tooling slide 2, conclusion numbers and phone Duet table; Federated Agents attrition figure, phone backup text and phone forest plot; Kourai slide 3 agent box.
+- ✅ Contrast: claude-tooling's conclusion number is rust, not orange; Federated Agents pass text is a darker blue, 7.6:1 or better.
+- ✅ AGENTS.md and README describe a per-talk look.
+
+## Next
+- 📋 AJ looks at the PR; merge only after that.
+- 📋 If a talk drifts from its script's colour words, change the slide colours or the script together.
 
 ## Verify
-- `make check` with `SLIDES` and `SPHRAGIS` set to real checkouts; `make script-length`.
-- Look at `make render` sheets for every deck, desktop and phone.
+- `SLIDES=<techne>/plugins/graphe/skills/slides/scripts/slides.py SPHRAGIS=<sphragis> make check`, then `make lint`.
+- Render every slide at 1920x1080 and on a phone; read the sheets. Check `document.getAnimations()` on each title for robot, motif, halo.
+- Slide text per deck against main: only the title byline differs (byline became the kicker and date, same words).
 
 ## Next (not started)
 - Custom thumbnails for Tier 1 uploads that still show an auto frame (upload-package.md recipe).

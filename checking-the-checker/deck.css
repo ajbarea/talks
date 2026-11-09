@@ -131,12 +131,14 @@
 .after { margin: 10px 0 0; font-size: 0.7em; font-weight: 700; color: var(--ink); }
 
 /* Slide 7: five tools by three faults. */
-table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-spacing: 6px; font-size: 0.64em; }
+table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-spacing: 4px; font-size: 0.64em; }
 .matrix th { text-align: left; font-weight: 700; color: var(--label); }
 .matrix thead th { padding: 0 8px 2px; line-height: 1.2; vertical-align: bottom; }
-.matrix tbody th { padding: 0 10px 0 12px; white-space: nowrap; color: var(--ink); border-left: 6px solid transparent; }
-.matrix tr.clean-nothing th { border-left-color: var(--risk); color: var(--ink); }
-.matrix td { padding: 7px 10px; border-radius: 2px; line-height: 1.25; }
+.matrix tbody th { padding: 0 8px; white-space: nowrap; color: var(--ink); }
+.matrix td { padding: 6px; border-radius: 2px; line-height: 1.25; white-space: nowrap; }
+.matrix td:last-child { white-space: normal; }
+.matrix tr.band th, .matrix tr.band td { padding: 6px 8px 1px; border-bottom: 2px solid var(--ink); border-radius: 0; }
+.key .k-bad { background: none; box-shadow: none; font-weight: inherit; }
 .matrix .mark, .key .mark { display: inline-block; width: 1.2em; font-weight: 800; }
 .k-bad { background: var(--risk-tint); color: var(--ink); font-weight: 700; box-shadow: inset 0 0 0 3px var(--risk-line); }
 .k-bad .mark { color: var(--risk-ink); }
@@ -228,7 +230,21 @@ table.matrix { width: 100%; margin-top: 6px; border-collapse: separate; border-s
 
 /* Phone: each tool is a block under its name, the wrong verdicts outlined. */
 .phone .matrix tr { margin-bottom: 6px; padding-top: 3px; border-top: 2px solid var(--ink); }
-.phone .matrix tbody th { padding: 0 0 1px; font-size: 1.08em; border-left: 0; }
-.phone .matrix tr.clean-nothing th { color: var(--ink); }
-.phone .matrix td { padding: 2px 6px; margin-top: 2px; line-height: 1.2; }
+.phone .matrix tbody th { padding: 0 0 1px; font-size: 1.08em; }
+.phone .matrix td { padding: 2px 6px; margin-top: 2px; line-height: 1.2; white-space: normal; }
+.phone .matrix tr.band { margin-bottom: 0; padding-top: 6px; border-top: 0; }
+.phone .matrix tr.band th { padding: 0 0 1px; }
+.phone .matrix tr.band td { display: none; }
+.phone .matrix tr.band + tr { border-top: 0; }
+.phone .key { gap: 0 8px; margin-top: 2px; }
+.phone .key > span { padding: 1px 4px; }
 .phone .bar-group { margin: 6px 0 -2px; }
+
+/* Conclusion: the guards, named in the same group colours as slide 5. */
+.guards-h { margin: 20px 0 6px; font-size: 0.8em; font-weight: 700; color: var(--ink); }
+.guards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.g-item { padding: 8px 14px 10px; border-top: 8px solid var(--g); background: var(--g-tint); }
+.g-item p { margin: 0; font-size: 0.72em; line-height: 1.25; }
+.g-item .gname { font-weight: 800; color: var(--g-ink); }
+[data-conclusion] .open { margin-top: 16px; padding: 8px 18px; }
+.phone .guards { grid-template-columns: 1fr; gap: 6px; }

@@ -83,15 +83,15 @@ window.DECK_DATA = {
       { name: "Hallucinator", cells: [
         { kind: "good", text: "“No references to check”" },
         { kind: "good", text: "“No references to check”" },
-        { kind: "mixed", text: "10 of 10 “inconclusive”, but progress lines say “not found”" } ] },
+        { kind: "mixed", text: "10 of 10 “Inconclusive”, but progress lines say “NOT FOUND”" } ] },
       { name: "HalRef", cells: [
         { kind: "bad", text: "“All references verified OK”", clean: true },
         { kind: "warn", text: "Warns, then flags prose as references" },
         { kind: "bad", text: "10 of 10 “Not found in any database”", all: true } ] },
       { name: "RefChecker", cells: [
-        { kind: "good", text: "Cannot read the paper, exit 1" },
+        { kind: "good", text: "Cannot read the paper" },
         { kind: "bad", text: "“All references verified successfully!”", clean: true },
-        { kind: "mixed", text: "10 of 10 “could not verify”; 4 also “Non-existent web page”" } ] },
+        { kind: "mixed", text: "10 of 10 “Could not verify”; 4 also “Non-existent web page”" } ] },
     ],
   },
 };

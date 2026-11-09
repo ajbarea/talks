@@ -18,7 +18,8 @@ Slide 2 states it; every main slide serves it.
 | 5 | Three groups by step, each with its guard; a test reaches only two | 3 · My checker |
 | 6 | Re-break: tests that failed per defect put back, 9 of 11 caught | 3 · My checker |
 | 7 | Five public checkers by three faults: three printed a clean result after checking nothing | 4 · Other checkers |
-| 8 | Thank you, questions (closing QR) | |
+| 8 | Conclusion: the main point, three results, the three guards, two open problems (`data-conclusion`) | |
+| 9 | Thank you, questions (closing QR) | |
 
 No agenda slide: slide 2 does that job, and the chapter rail follows `data-chapter`. Nothing
 announces a pause; the title's notes invite interruptions, and questions come at the end. The

@@ -149,30 +149,38 @@
 <section data-chapter="4 · Other checkers">
   <span class="kicker">4 · Other checkers</span>
   <h2>Three of five public checkers printed a clean result after checking nothing</h2>
-  <table class="matrix" data-matrix="checkers.tools" data-clean="checkers.cleanAfterNothing" data-all="checkers.allNotFound" data-count="checkers.toolCount">
-    <thead><tr><th scope="col">Tool</th><th scope="col" class="g-norun" data-short="Unreadable PDF"><span class="hg">Did not run</span>Unreadable PDF</th><th scope="col" class="g-norun" data-short="No references"><span class="hg">Did not run</span>No reference section</th><th scope="col" class="g-report fragment" data-fragment-index="1" data-short="Network cut"><span class="hg">Misreported</span>Network cut, 10 real references</th></tr></thead>
+  <table class="matrix" data-matrix="checkers.tools" data-clean="checkers.cleanAfterNothing" data-all="checkers.allNotFound" data-count="checkers.toolCount" data-clean-label="Printed a clean verdict" data-other-label="Printed no clean verdict">
+    <thead>
+      <tr><th scope="col" rowspan="2">Tool</th><th scope="colgroup" colspan="2" class="g-norun"><span class="hg">Did not run: nothing to check</span></th><th scope="col" class="g-report fragment" data-fragment-index="1"><span class="hg">Misreported</span></th></tr>
+      <tr><th scope="col" data-short="Unreadable PDF">Unreadable PDF</th><th scope="col" data-short="No references">No reference section</th><th scope="col" class="fragment" data-fragment-index="1" data-short="Network cut">Network cut, 10 real references</th></tr>
+    </thead>
   </table>
-  <p class="key"><span class="k-bad"><span class="mark" aria-hidden="true">✕</span>clean verdict, or "not found" for a lookup that failed</span><span class="k-good"><span class="mark" aria-hidden="true">✓</span>said so</span><span class="k-warn"><span class="mark" aria-hidden="true">!</span>warned, then went on</span><span class="k-mixed"><span class="mark" aria-hidden="true">~</span>mixed</span><span class="k-none"><span class="mark" aria-hidden="true">–</span>does not apply</span></p>
+  <p class="key"><span class="k-bad"><span class="mark" aria-hidden="true">✕</span>clean verdict</span><span class="k-good"><span class="mark" aria-hidden="true">✓</span>said it checked nothing</span><span class="k-warn"><span class="mark" aria-hidden="true">!</span>warned, then went on</span><span class="k-bad fragment" data-fragment-index="1"><span class="mark" aria-hidden="true">✕</span>“not found” for a failed lookup</span><span class="k-mixed fragment" data-fragment-index="1"><span class="mark" aria-hidden="true">~</span>mixed</span><span class="k-none fragment" data-fragment-index="1"><span class="mark" aria-hidden="true">–</span>does not apply</span></p>
   <p class="footnote">The five tools a 2026 comparison study tested, run once per input with no API keys, October 2026.</p>
-  <aside class="notes"><ul><li>The 5 tools a 2026 study compared; two kinds of nothing to check</li><li><span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span> printed a clean verdict anyway</li><li>Network cut, 10 real references: <span data-value="checkers.allNotFound"></span> reported all as not found</li></ul></aside>
+  <aside class="notes"><ul><li>The 5 tools a 2026 study compared; two kinds of nothing to check</li><li><span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span> printed a clean verdict anyway</li><li>Network cut, 10 real references, 4 tools (HalluCiteChecker is local): <span data-value="checkers.allNotFound"></span> reported all as not found</li></ul></aside>
 </section>
 
-<section data-conclusion data-chapter="5 · Conclusion">
-  <span class="kicker">5 · Conclusion</span>
+<section data-conclusion>
   <h2>A checker's all-clear counts only if it can fail and names what it skipped</h2>
   <div class="recap" data-motion="stagger" data-child="rise" data-step="150">
-    <div class="tile"><p class="num">6 in 3</p><p>silent failures in my checker, in three groups, each with its own guard</p></div>
-    <div class="tile"><p class="num"><span data-value="rebreak.caught"></span> of <span data-value="rebreak.total"></span></p><p>re-breaks of my six fixes caught by today's tests</p></div>
+    <div class="tile"><p class="num" data-value="cases.length"></p><p>silent failures found in my own checks, in three groups</p></div>
+    <div class="tile"><p class="num"><span data-value="rebreak.caught"></span> of <span data-value="rebreak.total"></span></p><p>changes that broke my fixes again, caught by today's tests</p></div>
     <div class="tile"><p class="num"><span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span></p><p>public checkers printed a clean result after checking nothing</p></div>
+  </div>
+  <p class="guards-h">One guard for each group</p>
+  <div class="guards">
+    <div class="g-item g-norun"><p class="gname" data-value="groups.norun.name"></p><p data-value="groups.norun.guard"></p></div>
+    <div class="g-item g-input"><p class="gname" data-value="groups.input.name"></p><p data-value="groups.input.guard"></p></div>
+    <div class="g-item g-report"><p class="gname" data-value="groups.report.name"></p><p data-value="groups.report.guard"></p></div>
   </div>
   <div class="open">
     <p class="open-h">Open problems</p>
     <ul>
-      <li>How often these failures occur: these cases show only that they do</li>
+      <li>How often these failures occur</li>
       <li>Whether the guards find new defects, or find them earlier than other practices</li>
     </ul>
   </div>
-  <aside class="notes"><ul><li>An all-clear counts only if the checker can fail and names what it skipped</li><li>6 failures in 3 groups; <span data-value="rebreak.caught"></span> of <span data-value="rebreak.total"></span> re-breaks caught; <span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span> clean after nothing</li><li>Open: how often these happen; whether the guards find new defects. "That's my talk."</li></ul></aside>
+  <aside class="notes"><ul><li><span data-value="cases.length"></span> failures found, 3 groups, one guard each; <span data-value="rebreak.caught"></span> of <span data-value="rebreak.total"></span> caught; <span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span> clean after nothing</li><li>Open: how often these happen; whether the guards find new defects</li><li>Next green check: could it have failed, and what did it skip? "That's my talk."</li></ul></aside>
 </section>
 
 <section class="closing">

@@ -46,3 +46,6 @@
 - ✅ Slide 5 matches sphragis main b9e8ccd; live. `foreign_sized` flips to "sized" when sphragis#246 merges; no deck edit needed then.
 - 📋 Refresh routine guardrails (in #61) wait on AJ's personal login (needs-you.md).
 
+## Federated Agents: Step One (federated-agents-step-one/), LDQIS Fri Nov 13
+- 📋 Branch talk/federated-agents-step-one: lab explainer deck, its own palette and type (IBM Plex; white ground, cobalt, vermilion for sealed), figures from sphragis through figures.py, venue facts in data/venue.js. Present Nov 13, 2 pm.
+- 📋 After Nov 20: recheck the "still open" list and `ADMITTED_ORGANIZATIONS`, `figures-check` flags any drift.

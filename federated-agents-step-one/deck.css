@@ -1,0 +1,299 @@
+/* ---------------------------------------------------------- federated agents: step one -- */
+/* Type: IBM Plex (SIL OFL, fonts/OFL-IBM-Plex.txt), set for a technical audience: condensed titles,
+   plain text, mono for labels and hashes. Served with the deck, so a slide measures the same
+   everywhere. Colour: deep ink on white, one job per colour, cleared for a lit room. Cobalt is
+   the plan and AJ's work; vermilion marks what is untested or sealed; green marks a pass; slate
+   is everything else. */
+@font-face { font-family: "Plex Sans"; src: url("fonts/ibm-plex-sans-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: block; }
+@font-face { font-family: "Plex Sans"; src: url("fonts/ibm-plex-sans-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Plex Sans"; src: url("fonts/ibm-plex-sans-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Plex Sans"; src: url("fonts/ibm-plex-sans-700.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: block; }
+@font-face { font-family: "Plex Condensed"; src: url("fonts/ibm-plex-sans-condensed-600.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Plex Mono"; src: url("fonts/ibm-plex-mono-500.woff2") format("woff2"); font-weight: 500; font-style: normal; font-display: block; }
+
+:root {
+  --display: "Plex Condensed", "Plex Sans", system-ui, sans-serif;
+  --display-sc: "Plex Mono", monospace;
+  --sans: "Plex Sans", system-ui, sans-serif;
+  --mono: "Plex Mono", ui-monospace, Consolas, Menlo, monospace;
+  --paper: #ffffff; --card: #ffffff; --band: #e6ecf4; --line: #6f84a0;
+  --ink: #0f1c33; --muted: #2c3d58; --label: #16294a;
+  --ours: #1c49b0; --ours-line: #15397f; --ours-ink: #123283; --ours-tint: #e6edfb;
+  --risk: #c2401b; --risk-line: #a02f12; --risk-ink: #8a2708; --risk-tint: #fdebe5;
+  --fix: #078c74; --fix-line: #06705d; --fix-ink: #055b4c; --fix-tint: #e4f4f0;
+  --neutral: #8ea3bd; --neutral-line: #455a78; --neutral-ink: #2c3d58; --neutral-tint: #eef2f8;
+}
+
+.reveal { font-weight: 400; }
+.reveal h2 { font-family: var(--display); font-weight: 600; font-size: 1.42em; letter-spacing: 0.002em; line-height: 1.16; }
+.reveal h1 { font-family: var(--display); font-weight: 600; font-size: 2.3em; line-height: 1.08; }
+.reveal h3 { font-family: var(--mono); font-weight: 500; font-size: 0.72em; letter-spacing: 0.02em; color: var(--label); }
+.kicker { font-family: var(--mono); font-size: 0.64em; font-weight: 500; letter-spacing: 0.04em; color: var(--ours-ink); }
+.footnote { line-height: 1.26; }
+.muted { color: var(--muted); }
+.fig-note { margin: 10px 0 0; font-size: 0.68em; color: var(--muted); }
+.quote { margin: 18px 0 0; padding-left: 16px; border-left: 4px solid var(--ours-line); font-size: 0.74em; color: var(--muted); }
+.quote.small { margin-top: 0; font-size: 0.66em; }
+figure { margin: 0; }
+.title-slide h1::after, .closing h2::after, .faq-index h2::after { display: none; }
+
+/* Title: the plan sheet and its stamp. */
+.title-slide .title-text { max-width: 690px; }
+.stamp-line { margin: 0 0 16px; font-family: var(--mono); font-size: 0.66em; letter-spacing: 0.04em; color: var(--risk-ink); }
+.title-slide .subtitle { font-size: 0.84em; line-height: 1.3; color: var(--muted); }
+.title-slide .byline { font-size: 0.7em; color: var(--muted); }
+.seal-art { position: absolute; right: 56px; top: 60px; width: 480px; height: auto; overflow: visible; }
+.seal-art .sheet { fill: var(--card); stroke: var(--ink); stroke-width: 3; }
+.seal-art .sheet-title { font-family: var(--display); font-size: 26px; fill: var(--ink); }
+.seal-art .rule { stroke: var(--line); stroke-width: 9; stroke-linecap: round; fill: none; }
+.seal-art .rule.thin { stroke-width: 7; }
+.seal-art .hash { font-family: var(--mono); font-size: 23px; fill: var(--ours-ink); }
+.seal-art .exp-box { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 3; stroke-dasharray: 9 7; }
+.seal-art .flask { fill: var(--card); stroke: var(--neutral-line); stroke-width: 4; stroke-linejoin: round; stroke-linecap: round; }
+.seal-art .bubble { fill: var(--neutral-line); }
+.seal-art .exp-label { font-family: var(--mono); font-size: 20px; fill: var(--muted); }
+.seal-art .stamp { transform-box: fill-box; transform-origin: center; }
+.seal-art .stamp-ring { fill: rgba(255, 255, 255, 0.86); stroke: var(--risk); stroke-width: 6; }
+.seal-art .stamp-ring.inner { fill: none; stroke-width: 2.5; }
+.seal-art .stamp-tick { fill: none; stroke: var(--risk); stroke-width: 11; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Slide 3: one review, then the silos. */
+.problem { display: grid; grid-template-columns: 470px 1fr; gap: 28px; margin-top: 12px; }
+.problem figcaption { margin-bottom: 12px; font-size: 0.72em; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.problem figcaption b { color: var(--label); font-size: 1.1em; }
+.review-card, .silos { padding: 20px 22px; border: 2px solid var(--line); border-radius: 8px; }
+.diff p { margin: 0; padding: 9px 14px; font-size: 0.78em; }
+.diff code { font-family: var(--mono); font-size: 0.96em; }
+.diff .old { background: var(--risk-tint); color: var(--risk-ink); }
+.diff .said { padding-left: 14px; font-weight: 600; color: var(--label); border-left: 4px solid var(--neutral-line); background: var(--card); margin: 10px 0; }
+.diff .new { background: var(--fix-tint); color: var(--fix-ink); }
+.silo-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.silo { padding: 12px; border: 2px solid var(--ours-line); border-radius: 6px; font-size: 0.68em; }
+.silo b { display: block; color: var(--ours-ink); font-size: 1.1em; }
+.silo .stays { display: block; margin-top: 8px; font-family: var(--mono); font-size: 0.86em; color: var(--muted); }
+.arrow-up { margin: 16px 0; text-align: center; font-family: var(--mono); font-size: 0.66em; color: var(--ours-ink); }
+.arrow-up::before { content: "\2191 "; }
+.server { padding: 14px; text-align: center; border: 2px solid var(--ink); border-radius: 6px; font-weight: 600; font-size: 0.8em; }
+
+/* Slide 4: the chain of assumptions. */
+.chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 18px 0 22px; }
+.chain .link { position: relative; padding: 16px 16px 14px; border: 2px solid var(--line); border-radius: 8px; font-size: 0.74em; font-weight: 500; }
+.chain .link span { display: block; min-height: 3.6em; }
+.chain .link i { font-family: var(--mono); font-style: normal; font-size: 0.86em; color: var(--muted); }
+.chain .link.first { border: 3px dashed var(--risk); background: var(--risk-tint); }
+.chain .link.first i { color: var(--risk-ink); font-weight: 500; }
+.claim-pair p { margin: 0 0 12px; padding: 8px 18px; border-left: 6px solid var(--ours-line); font-size: 0.78em; }
+.claim-pair p + p { border-left-color: var(--fix-line); }
+.claim-pair b { color: var(--ours-ink); }
+.claim-pair p + p b { color: var(--fix-ink); }
+
+/* Slide 5: boundary. */
+.boundary { display: grid; grid-template-columns: 1fr 390px; gap: 30px; margin-top: 14px; align-items: start; }
+.nest .org { padding: 18px 20px; border: 3px solid var(--ours-line); border-radius: 8px; }
+.nest .org > b { color: var(--ours-ink); font-size: 0.86em; }
+.halves { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+.half { padding: 12px; border: 2px dashed var(--line); border-radius: 6px; }
+.half i { display: block; margin-bottom: 8px; font-family: var(--mono); font-style: normal; font-size: 0.62em; color: var(--muted); }
+.chip { display: inline-block; margin: 0 5px 5px 0; padding: 2px 9px; background: var(--band); border-radius: 4px; font-family: var(--mono); font-size: 0.58em; color: var(--label); }
+.edge-a, .edge-b { margin: 12px 0 0; font-size: 0.72em; font-weight: 600; color: var(--ours-ink); text-align: center; }
+.edge-b { margin: 14px 0; color: var(--risk-ink); }
+.edge-b::before, .edge-b::after { content: "\2195"; margin: 0 8px; }
+.nest .org.foreign { padding: 12px 20px; border-color: var(--line); border-style: dashed; }
+.nest .org.foreign b { color: var(--muted); }
+.boundary-note p { margin: 0 0 14px; font-size: 0.8em; }
+
+/* Slide 6: the three steps. */
+.road { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0 12px; padding: 0; list-style: none; }
+.road li { position: relative; padding: 18px 18px 46px; border: 2px solid var(--line); border-radius: 8px; font-size: 0.78em; }
+.road li.here { border: 3px solid var(--ours-line); background: var(--ours-tint); }
+.road .step-no { display: block; font-family: var(--mono); font-size: 0.78em; color: var(--ours-ink); }
+.road li b { display: block; margin: 8px 0; font-family: var(--display); font-weight: 600; font-size: 1.2em; color: var(--ink); line-height: 1.15; }
+.road p { margin: 0; color: var(--muted); }
+.road .tag { position: absolute; left: 18px; bottom: 12px; font-family: var(--mono); font-size: 0.72em; color: var(--ours-ink); }
+.road .tag.lab { color: var(--fix-ink); }
+.under-road { margin: 6px 0 0; font-size: 0.78em; }
+
+/* Slide 7: venue. */
+.venue { display: grid; grid-template-columns: 560px 1fr; gap: 26px; margin-top: 14px; }
+.ticket { padding: 18px 24px; border: 2px solid var(--ink); border-radius: 8px; }
+.ticket-head { margin: 0; font-family: var(--mono); font-size: 0.7em; color: var(--ours-ink); }
+.ticket-name { margin: 4px 0 10px; font-family: var(--display); font-size: 1.3em; line-height: 1.1; font-weight: 600; }
+.ticket dl { display: grid; grid-template-columns: 124px 1fr; gap: 6px 14px; margin: 0; font-size: 0.74em; }
+.ticket dt { font-family: var(--mono); color: var(--muted); font-size: 0.9em; padding-top: 2px; }
+.ticket dd { margin: 0; }
+.why-msr { padding: 18px 22px; border-left: 6px solid var(--ours-line); }
+.why-msr figcaption { font-size: 0.82em; margin-bottom: 10px; color: var(--ours-ink); }
+.why-msr p { margin: 0 0 10px; font-size: 0.76em; }
+
+/* Slide 8: the two stages. */
+.stages { display: grid; grid-template-columns: 1fr 96px 1fr; gap: 10px; align-items: center; margin-top: 12px; }
+.stage { padding: 16px 20px; border: 2px solid var(--ours-line); border-radius: 8px; background: var(--ours-tint); font-size: 0.74em; }
+.stage.two { background: var(--card); }
+.stage-no { font-family: var(--mono); font-size: 0.84em; color: var(--ours-ink); }
+.stage-what { margin: 6px 0 8px; font-family: var(--display); font-size: 1.2em; font-weight: 600; line-height: 1.2; color: var(--ink); }
+.stage p { margin-bottom: 8px; }
+.stage-out { margin-bottom: 0; }
+.stage-arrow { text-align: center; font-family: var(--mono); font-size: 0.6em; color: var(--muted); }
+.stage-arrow::after { display: block; content: "\2192"; font-size: 1.7em; color: var(--ours-line); line-height: 1; }
+
+/* Slide 9: dot plot. */
+.split-why { display: grid; grid-template-columns: 700px 1fr; gap: 24px; margin-top: 8px; align-items: center; }
+.dotplot svg { width: 100%; height: auto; display: block; font-family: var(--mono); }
+.dotplot .zero { stroke: var(--ink); stroke-width: 2; }
+.dotplot .grid { stroke: var(--band); stroke-width: 2; }
+.dotplot .tick { font-size: 20px; fill: var(--muted); }
+.dotplot .row-label { font-size: 21px; fill: var(--label); }
+.dotplot .row-label.strong { fill: var(--ours-ink); }
+.dotplot .row-sub { font-size: 20px; fill: var(--muted); }
+.dotplot .interval { stroke: var(--ours-line); stroke-width: 7; stroke-linecap: round; }
+.dotplot .point { fill: var(--neutral); stroke: var(--neutral-line); stroke-width: 2.5; }
+.dotplot .point.ours { fill: var(--ours); stroke: var(--ours-line); }
+.dotplot .value { font-size: 20px; fill: var(--label); }
+.dotplot .value.strong { fill: var(--ours-ink); font-size: 23px; }
+.split-note p { margin: 0 0 14px; font-size: 0.78em; }
+
+/* Slide 10: wiring. */
+.wiring { display: grid; grid-template-columns: 530px 1fr; gap: 28px; margin-top: 12px; align-items: start; }
+.wire-fig { padding: 16px; border: 2px solid var(--line); border-radius: 8px; }
+.arm { padding: 10px 14px; border-radius: 6px; font-size: 0.72em; }
+.arm b { display: block; }
+.arm span { color: var(--muted); }
+.arm.own { background: var(--ours-tint); border: 2px solid var(--ours-line); }
+.arm.own b { color: var(--ours-ink); }
+.arm.sib { background: var(--neutral-tint); border: 2px solid var(--neutral-line); }
+.arm.far { background: var(--risk-tint); border: 2px solid var(--risk-line); }
+.arm.far b { color: var(--risk-ink); }
+.vs { margin: 8px 0; text-align: center; font-family: var(--mono); font-size: 0.6em; color: var(--label); }
+.vs::before { content: "\2195 "; }
+.heldout { margin: 12px 0 0; font-size: 0.66em; color: var(--muted); }
+.conf-note p { margin: 0 0 12px; font-size: 0.76em; }
+.conf-note b { color: var(--ours-ink); }
+.conf-note p + p + p b { color: var(--fix-ink); }
+
+/* Slide 11: the rule. */
+.rule-fig { display: grid; grid-template-columns: 540px 1fr; gap: 26px; margin-top: 12px; align-items: start; }
+.axis { position: relative; height: 300px; border: 2px solid var(--line); border-radius: 8px; }
+.axis-track { position: absolute; left: 8%; right: 8%; top: 40px; height: 3px; background: var(--ink); }
+.zero-mark, .delta-mark { position: absolute; top: 20px; width: 3px; height: 270px; background: var(--ink); }
+.delta-mark { background: var(--risk-line); }
+.zero-mark i, .delta-mark i { position: absolute; top: -6px; left: 8px; font-family: var(--mono); font-style: normal; font-size: 0.66em; white-space: nowrap; color: var(--ink); }
+.delta-mark i { color: var(--risk-ink); }
+.iv { position: absolute; height: 10px; border-radius: 5px; }
+.iv b { position: absolute; bottom: 14px; left: 0; padding: 0 5px; background: var(--card); font-size: 0.64em; font-weight: 600; white-space: nowrap; }
+.iv.supported { top: 112px; background: var(--fix); }
+.iv.supported b { color: var(--fix-ink); }
+.iv.bounded { top: 182px; background: var(--neutral); }
+.iv.bounded b { color: var(--neutral-ink); }
+.iv.unsure { top: 252px; background: var(--risk); }
+.iv.unsure b { color: var(--risk-ink); }
+.rule-text p { margin: 0 0 12px; font-size: 0.76em; }
+.rule-text b { color: var(--ours-ink); }
+
+/* Slide 12: the windows. */
+.windows { display: grid; grid-template-columns: 1fr 2.4fr 1fr 2.8fr; gap: 6px; margin-top: 14px; }
+.win { padding: 16px 14px; border-radius: 6px; font-size: 0.72em; }
+.win b { display: block; font-family: var(--display); font-weight: 600; font-size: 1.14em; }
+.win span { font-family: var(--mono); font-size: 0.84em; }
+.win.done { background: var(--ours-tint); border: 2px solid var(--ours-line); color: var(--ours-ink); }
+.win.done span { color: var(--label); }
+.win.sealed { border: 3px dashed var(--risk); background: repeating-linear-gradient(45deg, var(--risk-tint), var(--risk-tint) 8px, #fff 8px, #fff 16px); color: var(--risk-ink); }
+.win.sealed span { color: var(--risk-ink); background: #fff; padding: 0 6px; }
+.counts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 22px 0 8px; }
+.counts div { padding: 14px 16px; border-top: 4px solid var(--ours-line); }
+.counts b { display: block; font-family: var(--display); font-size: 1.7em; font-weight: 600; color: var(--ours-ink); line-height: 1; }
+.counts span { font-size: 0.72em; color: var(--muted); }
+.counts-note { margin: 0; font-size: 0.72em; color: var(--muted); }
+
+/* Slide 13: status. */
+.status { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 14px; }
+.status h3 { margin-bottom: 10px; font-size: 0.72em; }
+.status .done-col h3 { color: var(--fix-ink); }
+.status .open-col h3 { color: var(--risk-ink); }
+.checks, .opens { margin: 0; padding: 0; list-style: none; }
+.checks li, .opens li { position: relative; margin: 0 0 13px; padding-left: 34px; font-size: 0.78em; line-height: 1.3; }
+.checks li::before { content: "\2713"; position: absolute; left: 0; top: -2px; color: var(--fix-ink); font-weight: 700; font-size: 1.2em; }
+.opens li::before { content: ""; position: absolute; left: 2px; top: 5px; width: 16px; height: 16px; border: 3px solid var(--risk); border-radius: 50%; box-sizing: border-box; }
+
+/* Slide 14: planted check. */
+.planted { display: grid; grid-template-columns: 1fr 400px; gap: 26px; margin-top: 12px; align-items: center; }
+.planted-fig figcaption { margin-bottom: 14px; font-size: 0.78em; color: var(--label); }
+.planted-fig figcaption b { color: var(--fix-ink); font-family: var(--display); font-size: 1.4em; }
+.planted-row { display: grid; grid-template-columns: 130px 1fr; gap: 12px; align-items: center; margin-bottom: 8px; font-size: 0.76em; }
+.dots .dot { fill: var(--band); stroke: var(--line); }
+.dots .dot.hit { fill: var(--fix); stroke: var(--fix-line); }
+.dev-note p { margin: 0 0 14px; font-size: 0.8em; }
+
+/* Slide 15: next. */
+.timeline { display: grid; grid-template-columns: 1fr 96px 1fr; gap: 10px; align-items: start; margin-top: 14px; }
+.tl-group { padding: 14px 18px 12px; border: 2px solid var(--ours-line); border-radius: 8px; }
+.tl-group.two { border-color: var(--fix-line); }
+.tl-head { font-family: var(--mono); font-size: 0.72em; color: var(--ours-ink); }
+.tl-group.two .tl-head { color: var(--fix-ink); }
+.tl-group ul { margin: 8px 0 0; padding: 0; list-style: none; }
+.tl-group li { display: grid; grid-template-columns: 120px 1fr; gap: 8px; padding: 5px 0; border-top: 1px solid var(--band); font-size: 0.74em; line-height: 1.2; }
+.tl-group li b { font-family: var(--mono); font-weight: 500; font-size: 0.92em; color: var(--ink); }
+.tl-arrow { padding-top: 60px; text-align: center; font-family: var(--mono); font-size: 0.6em; color: var(--muted); }
+.tl-arrow::after { display: block; content: "\2192"; font-size: 1.7em; color: var(--ours-line); line-height: 1; }
+.tl-after { grid-column: 1 / -1; margin-top: 8px; padding: 10px 14px; background: var(--ours-tint); border-radius: 6px; font-size: 0.78em; font-weight: 600; color: var(--ours-ink); }
+
+/* Slide 16: the lab grid. */
+.grid-lab { display: grid; grid-template-columns: 110px 1fr 1fr 1fr; gap: 6px; margin-top: 12px; }
+.gl-head { padding: 8px 12px; font-family: var(--mono); font-size: 0.62em; color: var(--ours-ink); border-bottom: 3px solid var(--ours-line); }
+.gl-head.corner { border-bottom-color: transparent; color: var(--muted); }
+.gl-row { padding: 12px 8px; font-family: var(--mono); font-size: 0.64em; color: var(--fix-ink); font-weight: 500; }
+.gl-cell { padding: 10px 12px; background: var(--neutral-tint); border-radius: 6px; font-size: 0.68em; line-height: 1.26; }
+.before-fl { margin-top: 12px; padding: 10px 14px; border: 2px solid var(--line); border-radius: 6px; font-size: 0.72em; }
+.before-fl b { color: var(--ours-ink); }
+
+/* Conclusion and closing. */
+.recap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 18px 0; }
+.recap .tile { padding: 16px 18px; border-top: 5px solid var(--ours-line); }
+.recap .num { margin: 0 0 6px; font-family: var(--display); font-weight: 600; font-size: 1.5em; color: var(--ours-ink); line-height: 1.05; }
+.recap .tile p:last-child { margin: 0; font-size: 0.76em; }
+.open-h { margin: 8px 0 6px; font-family: var(--mono); font-size: 0.66em; color: var(--risk-ink); }
+.open ul { margin: 0 0 0 22px; font-size: 0.78em; }
+
+/* Backup. */
+.backup p { font-size: 0.78em; }
+.note-small { margin-top: 14px; font-size: 0.68em !important; color: var(--muted); }
+.plain { width: 100%; border-collapse: collapse; font-size: 0.68em; }
+.plain th { padding: 7px 10px; text-align: left; font-family: var(--mono); font-weight: 500; color: var(--ours-ink); border-bottom: 3px solid var(--ours-line); }
+.plain td { padding: 7px 10px; border-bottom: 1px solid var(--band); line-height: 1.22; }
+.back { margin-top: 10px; font-size: 0.66em !important; }
+.sources { font-size: 0.7em; }
+.sources li { margin-bottom: 8px; }
+
+/* More room on the wide slides. */
+html:not(.phone) .problem { font-size: 1.12em; }
+html:not(.phone) .boundary { font-size: 1.14em; }
+html:not(.phone) .road { font-size: 1.14em; }
+html:not(.phone) .under-road { font-size: 0.9em; }
+html:not(.phone) .venue { font-size: 1.12em; }
+html:not(.phone) .stages { font-size: 1.06em; }
+html:not(.phone) .status { font-size: 1.2em; }
+html:not(.phone) .planted { font-size: 1.08em; }
+html:not(.phone) .wiring { font-size: 1.06em; }
+html:not(.phone) .timeline { font-size: 1.08em; }
+html:not(.phone) .grid-lab { font-size: 1.1em; }
+html:not(.phone) .windows, html:not(.phone) .counts { font-size: 1.12em; }
+
+/* Phone. */
+.phone .problem, .phone .boundary, .phone .venue, .phone .wiring, .phone .rule-fig, .phone .split-why,
+.phone .stages, .phone .status, .phone .planted, .phone .timeline, .phone .recap { grid-template-columns: 1fr; }
+.phone .chain, .phone .road { grid-template-columns: 1fr; }
+.phone .counts { grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0 6px; }
+.phone .counts b { font-size: 1.15em; }
+.phone .counts div { padding: 8px 6px; }
+.phone .windows { grid-template-columns: 1fr; }
+.phone .grid-lab { grid-template-columns: 1fr; }
+.phone .gl-head { display: none; }
+.gl-col { display: none; }
+.phone .gl-col { display: block; margin-bottom: 4px; font-family: var(--mono); font-weight: 500; font-size: 0.88em; color: var(--ours-ink); }
+.phone .stage-arrow, .phone .tl-arrow { padding-top: 0; }
+.phone .stage-arrow::after, .phone .tl-arrow::after { content: "\2193"; }
+.phone .seal-art { position: static; display: block; width: 330px; margin: 24px auto 0; }
+.phone .seal-art .exp-label { display: none; }
+.phone .title-slide .title-text { max-width: 100%; }
+.phone .halves { grid-template-columns: 1fr; }
+.phone .axis { height: 280px; }
+.phone .tl-group li { grid-template-columns: 110px 1fr; }

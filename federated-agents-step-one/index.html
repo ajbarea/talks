@@ -24,22 +24,28 @@
     <p class="subtitle">What Sphragis tests, why the plan goes to reviewers first, and where the lab comes in</p>
     <p class="byline"><b>AJ Barea</b><span>LDQIS lab meeting, Rochester Institute of Technology</span><span>November 13, 2026</span></p>
   </div>
-  <svg class="seal-art" viewBox="0 0 440 430" role="img" aria-label="Drawing: a plan sheet with a hash line, a round stamp pressed onto it, and a sealed experiment waiting behind a dashed outline">
+  <svg class="seal-art" viewBox="0 0 560 640" role="img" aria-label="Drawing: a plan sheet with a hash line, a round stamp pressed onto it, and a sealed experiment waiting behind a dashed outline">
+    <defs><pattern id="seal-hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="18" height="18" fill="#fff"/><rect width="8" height="18" fill="#bb1f7e"/></pattern></defs>
     <g class="exp">
-      <rect class="exp-box" x="268" y="52" width="162" height="172" rx="10"/>
-      <path class="flask" d="M333 86h32M340 86v38l-24 44a10 10 0 0 0 9 15h48a10 10 0 0 0 9-15l-24-44V86"/>
-      <circle class="bubble" cx="347" cy="158" r="5"/>
-      <text class="exp-label" x="349" y="212" text-anchor="middle">experiment</text>
+      <rect class="exp-box" x="300" y="26" width="256" height="282" rx="4"/>
+      <path class="flask" d="M422 70h60M432 70v62l-44 84a16 16 0 0 0 14 24h100a16 16 0 0 0 14-24l-44-84V70"/>
+      <circle class="bubble" cx="440" cy="198" r="9"/>
+      <circle class="bubble" cx="470" cy="214" r="6"/>
+      <rect class="exp-chip" x="380" y="254" width="166" height="40" rx="2"/>
+      <text class="exp-label" x="463" y="284" text-anchor="middle">experiment</text>
     </g>
-    <rect class="sheet" x="14" y="34" width="238" height="368" rx="8"/>
-    <text class="sheet-title" x="40" y="82">The plan</text>
-    <path class="rule" d="M40 110h186M40 138h168M40 166h186"/>
-    <text class="hash" x="40" y="216">test: sealed</text>
-    <path class="rule thin" d="M40 240h120"/>
-    <g class="stamp" data-motion="pop" data-delay="600" data-dur="500">
-      <circle class="stamp-ring" cx="152" cy="324" r="62"/>
-      <circle class="stamp-ring inner" cx="152" cy="324" r="50"/>
-      <path class="stamp-tick" d="M124 324l21 21 36-42"/>
+    <rect class="back-sheet" x="42" y="62" width="330" height="566" rx="3"/>
+    <rect class="sheet" x="18" y="40" width="340" height="572" rx="3"/>
+    <rect class="sheet-head" x="18" y="40" width="340" height="104"/>
+    <text class="sheet-title" x="50" y="113">The plan</text>
+    <path class="rule" d="M50 192h270M50 234h226M50 276h270"/>
+    <text class="hash" x="50" y="352">test: sealed</text>
+    <path class="hash-under" d="M50 368h282"/>
+    <path class="rule thin" d="M50 412h176"/>
+    <g class="stamp" data-motion="pop" data-delay="600" data-dur="500" transform="rotate(-10 244 510)">
+      <circle class="stamp-ring" cx="244" cy="510" r="98"/>
+      <circle class="stamp-ring inner" cx="244" cy="510" r="80"/>
+      <path class="stamp-tick" d="M204 510l34 34 56-66"/>
     </g>
   </svg>
   <!-- qr:follow -->
@@ -77,7 +83,7 @@
         <div class="silo"><b>Company B</b><span class="stays">review history stays home</span></div>
         <div class="silo"><b>Company C</b><span class="stays">review history stays home</span></div>
       </div>
-      <p class="arrow-up">shared updates only</p>
+      <div class="arrow-band"><svg viewBox="0 0 40 66" aria-hidden="true"><path d="M20 62V8M6 22 20 8l14 14"/></svg><svg viewBox="0 0 40 66" aria-hidden="true"><path d="M20 62V8M6 22 20 8l14 14"/></svg><svg viewBox="0 0 40 66" aria-hidden="true"><path d="M20 62V8M6 22 20 8l14 14"/></svg><p class="arrow-up">shared updates only</p></div>
       <div class="server">A server averages what is shared</div>
     </figure>
   </div>
@@ -352,9 +358,9 @@
     <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>The deployed shared and private split, attacked end to end.</div>
     <div class="gl-cell" role="cell"><b class="gl-col">Data quality and metadata</b>What each company declares shareable, as checkable metadata; agents' shared memory across a boundary.</div>
   </div>
-  <div class="before-fl"><b>Before federation:</b> a second human rater for the label audit on OpenStack examples, and dataset metadata for the public release.</div>
+  <div class="before-fl"><b>Help with this paper, before federation:</b> label the same 77 OpenStack examples on your own, so the study can report how often two people agree. Dataset metadata for the public release is the other small start.</div>
   <p class="footnote">The sealed test window stays unread before acceptance. The Qt and Chromium grants cover this study's collector, so shared work starts from OpenStack examples and released ids and manifests.</p>
-  <aside class="notes"><ul><li>Step two: aggregation, attacks, data-quality signals</li><li>Step three: the deployed split and agent memory across a boundary</li><li>A small start before federation: a second rater and dataset metadata</li></ul></aside>
+  <aside class="notes"><ul><li>Step two: aggregation, attacks, data-quality signals</li><li>Step three: the deployed split and agent memory across a boundary</li><li>Help now: a second person labels the same 77 OpenStack examples; dataset metadata too</li></ul></aside>
 </section>
 
 <section data-conclusion>

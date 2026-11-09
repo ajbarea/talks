@@ -47,5 +47,5 @@
 - 📋 Refresh routine guardrails (in #61) wait on AJ's personal login (needs-you.md).
 
 ## Federated Agents: Step One (federated-agents-step-one/), LDQIS Fri Nov 13
-- 📋 Branch talk/federated-agents-step-one: lab explainer deck, its own palette and type (IBM Plex; white ground, cobalt, vermilion for sealed), figures from sphragis through figures.py, venue facts in data/venue.js. Present Nov 13, 2 pm.
+- 📋 Branch talk/federated-agents-step-one (#97, open): lab explainer deck, IBM Plex on white, spot inks with one job each: ultramarine the plan, magenta and a diagonal hatch for sealed or untested, green for found or passed, highlighter yellow for the lab, grey for context. Rail is a stamped checklist in its own deck.css. Figures from sphragis through figures.py, venue facts in data/venue.js. Present Nov 13, 2 pm.
 - 📋 After Nov 20: recheck the "still open" list and `ADMITTED_ORGANIZATIONS`, `figures-check` flags any drift.

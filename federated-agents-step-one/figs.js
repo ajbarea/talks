@@ -14,14 +14,14 @@
   const first = Number(data.split_first);
   const low = Number(drawn.split_first_low);
   const high = Number(drawn.split_first_high);
-  const W = 700;
-  const LEFT = 130;
-  const RIGHT = 672;
+  const W = 720;
+  const LEFT = 168;
+  const RIGHT = 700;
   const AXIS_MIN = -3;
   const AXIS_MAX = 6;
   const x = (v) => LEFT + ((v - AXIS_MIN) / (AXIS_MAX - AXIS_MIN)) * (RIGHT - LEFT);
-  const ROW = 46;
-  const ROWS_TOP = 138;
+  const ROW = 56;
+  const ROWS_TOP = 158;
   const H = ROWS_TOP + ROW * names.length + 66;
   const svg = document.createElementNS(SVG, "svg");
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
@@ -43,20 +43,46 @@
     el("text", { x: x(t), y: H - 18, class: "tick", "text-anchor": "middle" }, t > 0 ? `+${t}` : `${t}`);
   }
 
-  el("text", { x: 4, y: 60, class: "row-label strong" }, "First reading");
-  el("text", { x: 4, y: 82, class: "row-sub" }, "one split, five seeds");
-  el("line", { x1: x(low), x2: x(high), y1: 66, y2: 66, class: "interval" });
-  el("circle", { cx: x(first), cy: 66, r: 11, class: "point ours" });
-  el("text", { x: x(first), y: 44, class: "value strong", "text-anchor": "middle" }, data.split_first);
+  el("text", { x: 4, y: 62, class: "row-label strong" }, "First reading");
+  el("text", { x: 4, y: 92, class: "row-sub" }, "one split, five seeds");
+  el("line", { x1: x(low), x2: x(high), y1: 76, y2: 76, class: "interval" });
+  for (const end of [low, high]) el("line", { x1: x(end), x2: x(end), y1: 62, y2: 90, class: "cap" });
+  el("circle", { cx: x(first), cy: 76, r: 15, class: "point ours" });
+  el("text", { x: x(first), y: 50, class: "value strong", "text-anchor": "middle" }, data.split_first);
 
-  el("text", { x: 4, y: ROWS_TOP - 8, class: "row-label" }, "Five splits");
+  el("text", { x: 4, y: ROWS_TOP - 6, class: "row-label" }, "Five splits");
   names.forEach((name, i) => {
-    const y = ROWS_TOP + ROW * i + 20;
+    const y = ROWS_TOP + ROW * i + 26;
     const v = means[name];
-    el("text", { x: 22, y: y + 7, class: "row-sub" }, `split ${i + 1}`);
-    el("circle", { cx: x(v), cy: y, r: 10, class: name === "registered" ? "point ours" : "point" });
-    el("text", { x: x(v) + 18, y: y + 7, class: "value" }, v > 0 ? `+${v.toFixed(2)}` : v.toFixed(2));
+    el("text", { x: 30, y: y + 8, class: "row-sub" }, `split ${i + 1}`);
+    el("circle", { cx: x(v), cy: y, r: 14, class: name === "registered" ? "point ours" : "point" });
+    el("text", { x: x(v) + 24, y: y + 9, class: "value" }, v > 0 ? `+${v.toFixed(2)}` : v.toFixed(2));
   });
 
   box.appendChild(svg);
+})();
+
+// The data-window band is drawn to the calendar: each window's share of the months comes from its
+// own label in data/readings.js, so a changed window redraws the band.
+(function () {
+  "use strict";
+  const band = document.querySelector(".windows");
+  if (!band) return;
+  const data = window.DECK_DATA.readings;
+  const months = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
+  const parse = (m) => months[m[0]] + 12 * Number(m[1]);
+  const span = (label) => {
+    const found = [...label.matchAll(/([A-Z][a-z]{2}) (\d{4})/g)].map((m) => parse([m[1], m[2]]));
+    if (found.length < 1 || found.length > 2) throw new Error(`data window: cannot read "${label}"`);
+    return [found[0], found[found.length - 1]];
+  };
+  const wins = [...band.querySelectorAll(".win")];
+  const spans = wins.map((win) => span(data[win.querySelector("[data-value]").dataset.value.split(".")[1]]));
+  const start = spans[0][0];
+  const end = spans[spans.length - 1][1] + 1;
+  wins.forEach((win, i) => {
+    const [from, to] = spans[i];
+    win.style.setProperty("--l", ((from - start) / (end - start)) * 100);
+    win.style.setProperty("--w", ((to + 1 - from) / (end - start)) * 100);
+  });
 })();

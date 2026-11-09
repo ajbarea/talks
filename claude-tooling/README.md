@@ -21,6 +21,19 @@ Backup: the discussion prompt (one question with example answers, for a quiet Q&
 
 There is no agenda slide; the map does that job, and the chapter rail follows `data-chapter`. Nothing in the deck announces a pause: the title's notes invite interruptions, and questions come at the end.
 
+## Product icons
+
+Each product's real icon, beside its name on the five-places slide, its own slide and the which-app table. All are official sources, fetched November 9, 2026, and shown in their true colours; the only edits are a resize and, for Desktop, trimming the store tile's empty margin. `.brand` in `deck.css` sizes them with clear space around each.
+
+| File (`img/`) | Product | Source |
+|---|---|---|
+| `icon-claude-chat.png` | Claude chat | Apple App Store listing, [Claude by Anthropic](https://apps.apple.com/us/app/claude-by-anthropic/id6473753684), artworkUrl512 from the App Store lookup API |
+| `icon-claude-desktop.png` | Claude Desktop | Microsoft Store listing, [Claude](https://apps.microsoft.com/detail/9P6K58THS811) (publisher Anthropic, PBC), 620px tile, the store listing linked from claude.com/download |
+| `icon-claude-code.png` | Claude Code | [code.claude.com docs](https://code.claude.com/docs/en/overview) favicon, android-chrome-192x192.png in the docs' `claude-code` favicon set. A terminal tool, so this is the product docs' icon, not an installed app's |
+| `icon-claude-duet.svg` | Claude Duet | [claude.com/product/claude-duet](https://claude.com/product/claude-duet), `/static/claude-duet/app-icon.svg`, unchanged |
+
+No published icon was found for Claude Science, Cowork or Claude Design, so those names stand without one. Anthropic's [trademark guidelines](https://www.anthropic.com/legal/trademark-guidelines) (effective August 1, 2024) cover logos and names: use needs Anthropic's permission, and no use may imply sponsorship, affiliation or alteration. They do not mention educational or identifying use. The closing slide says "Product names and icons belong to Anthropic."
+
 ## Facts and sources
 
 Every date and product claim was rechecked on November 4, 2026, against Anthropic's own pages; each slide's notes end with a short `Sources:` line, and the Sources backup slides link each one.

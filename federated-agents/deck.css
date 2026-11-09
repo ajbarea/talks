@@ -35,10 +35,25 @@ table.data th { color: inherit; border-bottom: 1px solid var(--line); }
 .figure .accent { fill: var(--mark-ours); }
 .agenda .num { display: inline; min-width: 0; color: inherit; }
 .agenda .num::after { content: " \00B7"; }
-.rail button { padding: 5px 14px; font: 600 15px var(--sans); letter-spacing: 0; border-radius: 999px; }
+/* The rail: a connected track of small nodes. Chapters passed are filled blue; the current one is the talk's blue-and-orange node with its label in bold. */
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(max-content, 1fr); gap: 0; width: min(1320px, calc(100vw - 16px)); }
+.rail button { position: relative; padding: 18px 12px 3px; font: 500 17px var(--sans); letter-spacing: 0; text-align: center; color: var(--muted); background: none; border: 0; border-radius: 0; }
 .rail button .num { margin-right: 0; color: inherit; }
 .rail button .num::after { content: " \00B7"; }
-.rail button[aria-current="step"] { color: #fff; background: var(--label); border-color: var(--label); }
+.rail button::before { content: ""; position: absolute; top: 7px; left: 0; right: 0; height: 2px; background: var(--line); }
+.rail button:first-child::before { left: 50%; }
+.rail button:last-child::before { right: 50%; }
+.rail button:has(~ [aria-current="step"])::before { background: var(--shared); }
+.rail button[aria-current="step"]::before { background: linear-gradient(90deg, var(--shared) 50%, var(--line) 50%); }
+.rail button[aria-current="step"]:first-child::before { background: var(--line); }
+.rail button[aria-current="step"]:last-child::before { background: var(--shared); }
+.rail button::after { content: ""; position: absolute; top: 3px; left: 50%; width: 10px; height: 10px; margin-left: -5px; box-sizing: border-box; background: var(--paper); border: 2px solid var(--line); border-radius: 50%; }
+.rail button:has(~ [aria-current="step"])::after { background: var(--shared); border-color: var(--shared-ink); }
+.rail button[aria-current="step"] { font-weight: 700; color: var(--ink); background: none; }
+.rail button[aria-current="step"] .num { color: inherit; }
+.rail button[aria-current="step"]::after { top: 0; width: 16px; height: 16px; margin-left: -8px; background: linear-gradient(90deg, var(--shared) 0 50%, var(--private) 50% 100%); border-color: var(--ink); }
+.rail button:hover { color: var(--ink); }
+.rail button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
 html:not(.phone) .reveal .slides section.closing[style*="display: block"],
 html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
   grid-template-columns: minmax(0, 1fr) 424px; column-gap: 60px; justify-content: normal; }

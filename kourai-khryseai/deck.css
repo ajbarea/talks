@@ -71,10 +71,17 @@ table.data th { color: inherit; border-bottom: 1px solid var(--line); }
 .figure .accent { fill: var(--mark-ours); }
 .agenda .num { display: inline; min-width: 0; color: inherit; }
 .agenda .num::after { content: " \00B7"; }
-.rail button { padding: 5px 14px; font: 600 15px var(--sans); letter-spacing: 0; border-radius: 0; }
+/* The rail: small-caps chapter names set apart by small lozenges, with a band of Greek key under the current one. */
+.rail { gap: 0; }
+.rail button { position: relative; padding: 6px 20px 14px; font: 400 19px var(--display-sc); letter-spacing: 0.04em; color: var(--muted); background: none; border: 0; border-radius: 0; }
 .rail button .num { margin-right: 0; color: inherit; }
 .rail button .num::after { content: " \00B7"; }
-.rail button[aria-current="step"] { color: var(--ink); background: var(--gold); border-color: var(--ours-line); }
+.rail button + button::before { content: ""; position: absolute; left: -3px; top: 12px; width: 6px; height: 6px; background: var(--ours-line); transform: rotate(45deg); }
+.rail button[aria-current="step"] { color: var(--ink); background: none; }
+.rail button[aria-current="step"] .num { color: inherit; }
+.rail button[aria-current="step"]::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 0; height: 12px; background: var(--meander) repeat-x left center / 16px 12px; }
+.rail button:hover { color: var(--ink); }
+.rail button:focus-visible { outline: 2px solid var(--ours-line); outline-offset: 2px; }
 html:not(.phone) .reveal .slides section.closing[style*="display: block"],
 html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
   grid-template-columns: minmax(0, 1fr) 424px; column-gap: 60px; justify-content: normal; }

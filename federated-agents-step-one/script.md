@@ -47,7 +47,7 @@ That is what a confirmatory study means: the hypotheses are fixed, and the data 
 
 ## 11. The pass rule is written down: every test's interval must sit entirely above zero
 
-And the pass rule is written down in advance. The score is the log-probability an adapter gives the developer's real fix, per token, and each bar is one test's confidence interval for the gain: own adapter over the other group's for hypothesis one, the other group's over Chromium's for hypothesis two. The smallest gain I care about is delta, {readings.delta} nats per token, tokens about {readings.delta_pct} percent more likely on average. It starts as one more exact fix per hundred comments, carried to this score at a rate measured on a planted convention. ▶ A test is supported when its interval sits entirely above zero. ▶ It's bounded when the interval sits entirely below delta: any effect is smaller than matters. ▶ Anything else is inconclusive, reported as not detected above its upper end. Hypothesis one passes only if all {readings.h1_cells} of its tests are supported: {readings.orgs_count} organizations, two scores each, the whole fix and its non-name part.
+And the pass rule is written down in advance. The score is the log-probability an adapter gives the developer's real fix, per token, and each bar is one test's confidence interval for the gain: own adapter over the other group's for hypothesis one, the other group's over Chromium's for hypothesis two. The smallest gain I care about is delta, {readings.delta} nats per token, tokens about {readings.delta_pct} percent more likely on average. It starts as one more exact fix per hundred comments, carried to this score at a rate measured on a planted convention. ▶ A test is supported when its interval sits entirely above zero. ▶ It's bounded when the interval sits entirely below delta: any effect is smaller than matters. ▶ Anything else is inconclusive, reported as not detected above its upper end. Hypothesis one passes only if all {readings.h1_cells} of its tests are supported: {readings.orgs_count} organizations, two scores each, the whole fix and the fix without names.
 
 ## 12. Three of four data windows are collected and frozen; the test window stays sealed
 
@@ -55,11 +55,11 @@ Where it stands. The data is divided by time into four windows. Pilot, train and
 
 ## 13. The pipeline and the main study's sizing are done; the confirmatory test has not run
 
-What's done? The pipeline, the frozen datasets, the Gerrit simulations that set each test's number of runs, and the label audit with its human check. Still open: submitting and registering the plan with the test window sealed, the GitHub replication's members and sizing, fetching and checking the sealed months, and every confirmatory run. The part this study is graded on hasn't happened, on purpose.
+What's done? The pipeline, the frozen datasets, the sizing simulations that set each test's number of runs, and the label audit with its human check. Still open: submitting and registering the plan with the test window sealed, the GitHub replication's sizing, its members fixed at submission, fetching and checking the sealed months, and every confirmatory run. The part this study is graded on hasn't happened, on purpose.
 
 ## 14. Development checks show the score finds a planted convention; real house style is untested
 
-Can this test see a convention at all? I planted a marker in half the training examples, a fake convention I control, and the test found it in {readings.planted_found} of {readings.planted_total} development runs across three organizations. So the score responds to a planted convention. Whether it detects one as small as delta rests on the sizing simulations. It says nothing yet about real house style.
+I planted a marker in half the training examples, a fake convention I control, and the test found it in {readings.planted_found} of {readings.planted_total} development runs across three organizations. So the score responds to a planted convention. Whether it detects one as small as delta rests on the sizing simulations. It says nothing yet about real house style.
 
 ## 15. Next: reviewers see the plan, then the sealed months are fetched and run
 
@@ -67,7 +67,7 @@ Next. The abstract is due today, and the report is due November 20. Reviews come
 
 ## 16. The lab's strengths apply most at the federated-learning stages
 
-Here's where your work connects. Aggregation and robustness: which robust or control-theoretic rule still holds when each update is a low-rank adapter? Attacks: can a server tell which organization an update came from, even under secure aggregation? Data quality and metadata: can a client's data-quality profile inform how its update is weighted, and what should a company declare as shareable? There's also a way to help with this paper now. A second person labeling the 77 OpenStack examples I already labeled would show how often two people agree.
+Here's where your work connects. Aggregation and robustness: which robust or control-theoretic rule still holds when each update is a low-rank adapter? Attacks: can a server tell which organization an update came from, even under secure aggregation? Data quality and metadata: can a client's data-quality profile inform how its update is weighted, and what should a company declare as shareable? There's also a way to help with this paper now. For 77 OpenStack review comments I already judged, a second judge of whether each code change answers its comment would show how often two people agree.
 
 ## 17. Before federating agents, test that there is a house style to federate
 

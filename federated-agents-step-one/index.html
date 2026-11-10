@@ -126,7 +126,7 @@
       <p><b>If style stays only with project groups, adaptation may belong there, and privacy drawn at the organization line may promise too much.</b></p>
     </div>
   </div>
-  <aside class="notes"><ul><li>Client = project group or organization: step one measures which</li><li>H1: two groups inside each organization</li><li>H2: the organization line, Qt against Chromium only</li></ul></aside>
+  <aside class="notes"><ul><li>Client = project group or organization: step one measures which, the organization line in Qt</li><li>H1: two groups inside each organization</li><li>H2: the organization line, Qt against Chromium only</li></ul></aside>
 </section>
 
 <section data-chapter="2 · The arc">
@@ -225,17 +225,17 @@
       <span class="zero-mark" style="left:30%"><i>0</i></span>
       <span class="delta-mark" style="left:50%"><i>δ, smallest effect</i></span>
       <div class="iv supported fragment" data-fragment-index="1" style="left:36%; right:18%"><b>supported: above 0</b></div>
-      <div class="iv bounded fragment" data-fragment-index="2" style="left:8%; right:60%"><b>bounded: below δ</b></div>
+      <div class="iv bounded fragment" data-fragment-index="2" style="left:2%; right:64%"><b>bounded: below δ</b></div>
       <div class="iv unsure fragment" data-fragment-index="3" style="left:18%; right:22%"><b>inconclusive: neither</b></div>
     </div>
     <div class="rule-text">
-      <p><b>Each bar:</b> one test's confidence interval for the gain: own adapter over the other group's (H1), or the other group's over Chromium's (H2).</p>
       <p><b>Score:</b> log-probability of the developer's real fix, per token.</p>
+      <p><b>Each bar:</b> one test's confidence interval for the gain: own adapter over the other group's (H1), or the other group's over Chromium's (H2).</p>
       <p><b>δ = <span data-value="readings.delta"></span>:</b> the smallest gain that matters, tokens about <span data-value="readings.delta_pct"></span>% more likely on average.</p>
-      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests are supported:</b> <span data-value="readings.orgs_count"></span> organizations × 2 scores, the whole fix and its non-name part.</p>
+      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests are supported:</b> <span data-value="readings.orgs_count"></span> organizations × 2 scores, the whole fix and the fix without names.</p>
     </div>
   </div>
-  <p class="footnote">Intervals are illustrative; δ is in nats per token. Above 0 and below δ counts as supported. Wikimedia's non-name test and H2 must also clear a calibrated p-value.</p>
+  <p class="footnote">Intervals are illustrative; δ is in nats per token. Above 0 and below δ counts as supported. A test with a calibrated critical value (now Wikimedia's no-names test and H2) must also clear it.</p>
   <aside class="notes"><ul><li>δ = <span data-value="readings.delta"></span>: one more exact fix per hundred comments, carried to the score by a planted-convention rate</li><li>▶ supported ▶ bounded ▶ inconclusive</li><li>All <span data-value="readings.h1_cells"></span> H1 tests must pass, or H1 does not</li></ul></aside>
 </section>
 
@@ -492,6 +492,7 @@
     <li>MSR 2027 conference details: 2027.msrconf.org; CORE rank statement: msrconf.org</li>
     <li>Study code and artifacts: github.com/ajbarea/sphragis</li>
     <li>A. Scheel, M. Schijen, D. Lakens, An Excess of Positive Results, AMPPS 4(2), 2021</li>
+    <li>M. Allamanis, E. T. Barr, C. Bird, C. Sutton, Learning Natural Coding Conventions, FSE 2014, doi:10.1145/2635868.2635883 (38% of 169 Microsoft code reviews gave feedback on coding conventions)</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>

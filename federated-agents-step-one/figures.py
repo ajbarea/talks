@@ -83,13 +83,11 @@ def smallest_effect(values: dict) -> None:
 
 
 def registered_design(values: dict, fa) -> None:
-    """Training size, K per cell, and the number of confirmatory cells."""
+    """Training size and the number of confirmatory cells."""
     floors = {load(f"admissible-partitions-{org}.json")["size_floor"] for org in ORGS}
     if len(floors) != 1:
         raise SystemExit(f"the organizations' training sizes differ: {floors}")
     values["n"] = comma(floors.pop())
-    # The lowest K across the H1 cells; the slide says "at least" this many runs.
-    values["k_min"] = min(load(f"k-coverage-{org}-likelihood-chains.json")["runs"] for org in ORGS)
     values["h1_cells"] = len(ORGS) * H1_SCORES
     values["orgs_count"] = len(ORGS)
     for name, (start, end) in fa.windows().items():
@@ -101,29 +99,43 @@ def registered_design(values: dict, fa) -> None:
     values["rank"] = rank
 
 
-def development(values: dict) -> None:
-    """The development readings on the registered score at the first Holm level: H1 per
-    organization and H2 for Qt. Intervals and estimates only; the backup slide says what each
-    interval does, in words computed here."""
+#: The sizing simulations the paper's Table I reads: each H1 cell on the whole fix and on its
+#: non-name part, and H2's one cell, every one at its registered number of runs.
+SIZING = {
+    "openstack": ("cells6-logprob_per_token-chains-k10", "logprob_per_token-other-chains-k10"),
+    "wikimedia": ("cells6-logprob_per_token-chains-k20", "logprob_per_token-other-chains-k20-calibrated"),
+    "qt": ("cells6-logprob_per_token-chains-k10", "logprob_per_token-other-chains-k10"),
+}
+SIZING_H2 = "partition-sensitivity-qt-rp1.0-foreignchromium-logprob_per_token-chains-k40-calibrated.json"
+
+
+def sizing(values: dict) -> None:
+    """The smallest effect each confirmatory cell detects at the first Holm level, at the sizing
+    bound of its run-to-run spread, and its number of runs; every one must lie below delta."""
     sesoi = load("likelihood-sesoi.json")["sesoi"]
-    cells = [(org, f"partition-pilot-{org}-likelihood-chains.json", "H1") for org in ORGS]
-    cells.append(("qt_h2", "partition-pilot-qt-foreignchromium-likelihood-chains.json", "H2"))
-    for key, name, hypothesis in cells:
-        pilot = load(name)
-        if pilot.get("hypothesis") != hypothesis or pilot.get("window") != "development":
-            raise SystemExit(f"{name} is not {hypothesis} on the development window")
-        interval = pilot["intervals"][LEVEL]
-        low, high = interval["low"], interval["high"]
-        values[f"dev_{key}"] = f"{pilot['estimate']:+.4f}"
-        values[f"dev_{key}_low"] = f"{low:+.4f}"
-        values[f"dev_{key}_high"] = f"{high:+.4f}"
-        values[f"dev_{key}_reads"] = (
-            "entirely above zero"
-            if low > 0
-            else "inside the band of plus or minus delta"
-            if high < sesoi and low > -sesoi
-            else "crosses zero, upper end above delta"
-        )
+
+    def detect(name: str, cells: str) -> tuple[float, int]:
+        sim = load(name)
+        bound = sim["by_target"]["sizing_bound_90"]
+        return bound["by_level"][LEVEL]["by_cells"][cells]["minimum_detectable_effect"], sim["runs"]
+
+    cells = str(len(ORGS) * H1_SCORES)
+    found = []
+    for org, (whole, other) in SIZING.items():
+        mde, runs = detect(f"partition-sensitivity-{org}-rp1.0-{whole}.json", cells)
+        mde_other, runs_other = detect(f"partition-sensitivity-{org}-rp1.0-{other}.json", cells)
+        if runs != runs_other:
+            raise SystemExit(f"{org}: the two scores' runs differ ({runs}, {runs_other})")
+        values[f"k_{org}"] = runs
+        values[f"mde_{org}"] = f"{mde:+.4f}"
+        values[f"mde_{org}_other"] = f"{mde_other:+.4f}"
+        found += [mde, mde_other]
+    mde, runs = detect(SIZING_H2, "1")
+    values["k_h2"] = runs
+    values["mde_h2"] = f"{mde:+.4f}"
+    found.append(mde)
+    if max(found) >= sesoi:
+        raise SystemExit("a cell cannot detect delta; the backup slide says every one can")
 
 
 def split_example(values: dict, figure: dict) -> None:
@@ -165,7 +177,7 @@ def readings() -> tuple[dict, dict]:
     corpus(values)
     smallest_effect(values)
     registered_design(values, fa)
-    development(values)
+    sizing(values)
     split_example(values, figure)
     planted(values, fa)
     return values, figure

@@ -54,9 +54,8 @@ table.data th { color: inherit; border-bottom: 1px solid var(--line); }
 .rail button[aria-current="step"]::after { top: 0; width: 16px; height: 16px; margin-left: -8px; background: linear-gradient(90deg, var(--shared) 0 50%, var(--private) 50% 100%); border-color: var(--ink); }
 .rail button:hover { color: var(--ink); }
 .rail button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
-html:not(.phone) .reveal .slides section.closing[style*="display: block"],
 html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
-  grid-template-columns: minmax(0, 1fr) 424px; column-gap: 60px; justify-content: normal; }
+  grid-template-columns: fit-content(620px) 424px; }
 .qr-close { width: 424px; }
 
 .title-slide .subtitle { margin: 0; max-width: 34ch; font-size: 1.05em; color: var(--ink); font-weight: 500; }
@@ -524,6 +523,7 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .backup table.data th, .phone .backup table.data td { padding: 6px 6px; }
 /* The system face runs wider than the shared one, so long answers and the tall forest plot step down on a phone. */
 .phone .reveal .slides section.backup { font-size: 0.72em; }
+.phone .faq, .phone .back, .phone .backup .small, .phone .faq-index .faq-sub { font-size: 0.92em; }
 .phone .forest svg { display: block; width: 88%; margin: 0 auto; }
 .phone .figure text.s { font-size: 23px; }
 .phone .panels { gap: 10px; }

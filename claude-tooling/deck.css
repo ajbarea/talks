@@ -12,6 +12,8 @@
   --card: #ffffff; --line: #807f78; --band: #e8e6dc;
   --clay: #c6613f; --clay-soft: #d97757; --clay-ink: #7a3319;
   --mark: #3d3d3a; --mark-ours: var(--clay); --mark-rival: #807f78; --frame: #5e5d59;
+  --sans: system-ui, "Segoe UI", Calibri, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, Consolas, "SF Mono", Menlo, monospace;
   --display: "Source Serif 4", Georgia, "Times New Roman", serif; --display-sc: var(--sans);
   /* The role names the shared styles read: clay for AJ's pick, plum for a limit, blue for a yes or a folder chosen, grey for the rest. */
   --ours: var(--clay); --ours-line: var(--clay-ink); --ours-ink: var(--clay-ink); --ours-tint: #f5e4d9;
@@ -25,7 +27,7 @@
 .reveal h1 { font-size: 2.1em; }
 .reveal h2 { font-size: 1.36em; margin: 0 0 16px; }
 .reveal a { color: var(--ink); text-decoration: underline; }
-.kicker { margin: 0 0 6px; font-size: 0.62em; font-weight: 600; letter-spacing: 0.01em; color: var(--muted); }
+.kicker { margin: 0 0 6px; font-size: 0.64em; font-weight: 600; letter-spacing: 0.01em; color: var(--muted); }
 .kicker .num { margin: 0; padding: 0; border: 0; color: inherit; }
 .kicker .num::after { content: " \00B7"; }
 .closing h2 { font-size: 1.6em; }
@@ -49,9 +51,8 @@ table.data th { color: inherit; border-bottom: 1px solid var(--line); }
 .rail button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 .rail button[aria-current="step"] { color: var(--ink); background: none; border-bottom-color: var(--clay); }
 .rail button[aria-current="step"] .num { color: inherit; }
-html:not(.phone) .reveal .slides section.closing[style*="display: block"],
 html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
-  grid-template-columns: minmax(0, 1fr) 424px; column-gap: 60px; justify-content: normal; }
+  grid-template-columns: fit-content(620px) 424px; }
 .qr-close { width: 424px; }
 
 /* The title: ink on the paper, a thin clay rule, the robot dancing on the right. */
@@ -65,6 +66,7 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 .closing .contact { margin: 6px 0 0; font-size: 0.84em; color: var(--muted); }
 .closing .contact b { font-weight: 700; color: var(--ink); }
 .phone .title-slide h1 { margin-top: 40px; }
+.phone .kicker, .phone .closing .owner { font-size: 0.68em; }
 .phone .title-slide .kicker { line-height: 1.45; }
 .phone .reveal h2 { font-size: 1.25em; }
 
@@ -119,7 +121,7 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 /* Each app's own icon beside its name, in its true colours and proportions, with clear space around it. */
 .brand { display: inline-block; width: 1em; height: 1em; margin: 0 0.4em 0 0; vertical-align: -0.16em; }
 .places .app .brand, .which .brand { width: 1.3em; height: 1.3em; vertical-align: -0.32em; }
-.closing .owner { margin-top: 18px; font-size: 0.62em; }
+.closing .owner { margin-top: 18px; font-size: 0.64em; }
 
 /* Icons for the five places, drawn once in a sprite and reused with <use>. */
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
@@ -220,7 +222,7 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 
 /* My favorite: the three lab changes, by name. */
 .prs { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
-.prs li { padding: 3px 9px; border-radius: 4px; background: var(--paper); border: 1px solid var(--line); font: 500 0.62em/1.3 var(--mono); color: var(--muted); }
+.prs li { padding: 3px 9px; border-radius: 4px; background: var(--paper); border: 1px solid var(--line); font: 500 0.64em/1.3 var(--mono); color: var(--muted); }
 
 /* Try one: a first step per app, then Claude Code's four. */
 .firsts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
@@ -416,5 +418,5 @@ table.data.details th, table.data.details td { padding: 5px 14px; line-height: 1
 .phone table.data.details, .phone table.data.details tbody, .phone table.data.details tr, .phone table.data.details th, .phone table.data.details td { display: block; }
 .phone table.data.details th { padding: 5px 0 0; border: 0; }
 .phone table.data.details td { padding: 0 0 4px; }
-.phone table.data.details { font-size: 0.6em; }
+.phone table.data.details { font-size: 0.66em; }
 .phone table.data.details td { line-height: 1.2; }

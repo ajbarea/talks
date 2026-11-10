@@ -40,8 +40,8 @@ green for the fix and sky blue for context, with their measurements at the top o
 overrides those tokens (`--ours`, `--risk`, `--fix`, `--neutral` and their `-line`, `-ink` and
 `-tint` variants) for the colours it wants, and adds its own title and closing rules. Checking the
 Checker has a bright-room palette. Each of the other three is a stronger version of itself, always
-on a light ground for lit rooms: Five Claude apps is warm and orange (orange title bands, keeping
-the dancing robot); Federated Agents builds on its title motif's blue and orange, with blue always
+on a light ground for lit rooms: Five Claude apps is calm and editorial on warm paper (ink titles
+in Source Serif 4 over a thin clay rule, system fonts for text and code, the dancing robot in clay); Federated Agents builds on its title motif's blue and orange, with blue always
 what is shared and orange what stays private; Kourai Khryseai is a light marble-and-gold world with
 Greek key ornament, a classical display face and the Golden Maidens on a light ground.
 
@@ -79,7 +79,10 @@ A run on `main` that passes publishes the site; one that fails publishes nothing
 keeps its last good version. GitHub turns off a public repository's scheduled runs after 60
 days without activity; re-enable the daily run from the Actions tab if it stops.
 
-A talk that sets a web font loads it from `shared/fonts/`; the others use the system font stack. On
+The shared look loads Atkinson Hyperlegible Next and Mono from `shared/fonts/`. A talk with its own
+display face keeps it in its own `fonts/` folder (Source Serif 4 in `claude-tooling/fonts/`,
+Marcellus in `kourai-khryseai/fonts/`), and Five Claude apps and Federated Agents set text and
+code in the system font stack. On
 Linux, the gates and renders draw the system stack only in DejaVu (`scripts/fonts.conf`), the font
 CI's runner draws it in. Each machine resolves that stack to its own font,
 and a slide that fits in a narrower one clips in CI. `make fonts` fails when the stack does not

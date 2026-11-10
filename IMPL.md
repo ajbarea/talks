@@ -7,7 +7,7 @@ Each talk gets its own strong identity on a light ground for lit rooms, and ever
 
 ## Done
 - ✅ claude-tooling (second pass, AJ's verdict on the orange bands): warm paper, near-black ink, Source Serif 4 titles (self-hosted, OFL), neutral cards with thin borders, clay only as accent; quiet text-tab rail with a clay underline; the dancing robot in clay on the paper. Slide 9 key still says Orange; the Desktop folders stay blue because its key says Blue.
-- ✅ claude-tooling product icons beside the app names, from official listings and product pages; sources in `claude-tooling/README.md`. No icon found for Claude Science, Cowork or Claude Design, so those names stand alone. Closing slide: "Product names and icons belong to Anthropic."
+- ✅ claude-tooling product icons beside the app names, from official listings and product pages; sources in `claude-tooling/README.md`. Claude Science, Cowork and Claude Design icons added in f046caf. Closing slide: "Product names and icons belong to Anthropic."
 - ✅ Each deck's chapter rail is its own (rules in that deck's `deck.css` only): claude-tooling text tabs, federated-agents a connected progress track with nodes, kourai-khryseai small caps with lozenges and a Greek key under the current chapter.
 - ✅ federated-agents: blue is shared and travels, orange is what stays private, rivals are grey, AJ's own work navy, wrong or attack raspberry, right ink with its tick. `script.md` and notes: gold/green/blue words moved to blue/orange/grey; "Mine, in blue and orange" (the split dot on slide 7).
 - ✅ kourai-khryseai: marble ground with veins, Greek key under titles and along the title and closing feet, Marcellus for titles with digits in Atkinson via unicode-range, gold and bronze, Aegean blue for context, terracotta for risk. Golden Maidens cut out of their dark ground (`img/golden-maidens-light.webp`), halo kept, no Hephaestus portrait.
@@ -15,8 +15,10 @@ Each talk gets its own strong identity on a light ground for lit rooms, and ever
 - ✅ Audit tool in the session scratchpad (per-slide contrast and mark sampling); room-light closest-pair test reproduces PR #92's 7.6 and 20.7.
 - ✅ README look section updated.
 
+- ✅ Review fixes (11-10): closing slides centered again (`fit-content(620px) 424px`, shared `justify-content: center`); claude-tooling back on system `--sans`/`--mono`; every slides-check WARN cleared (kicker, owner line and PR chips 0.64em; phone kicker, owner, details table, FAQ, back link and backup `.small` raised to 12px+); README and this file match the code.
+
 ## Next
-- 📋 AJ looks at the PR and the before/after images; merge only after that.
+- 📋 Independent Opus verify of the review fixes; then Heph and AJ merge. Icon nits for AJ: faint edge on `icon-claude-science.png`, square corners on `icon-claude-design.png`.
 
 ## Verify
 - `SLIDES=<techne>/plugins/graphe/skills/slides/scripts/slides.py SPHRAGIS=<sphragis> make check`, then `make lint`.

@@ -82,9 +82,8 @@ table.data th { color: inherit; border-bottom: 1px solid var(--line); }
 .rail button[aria-current="step"]::after { content: ""; position: absolute; left: 20px; right: 20px; bottom: 0; height: 12px; background: var(--meander) repeat-x left center / 16px 12px; }
 .rail button:hover { color: var(--ink); }
 .rail button:focus-visible { outline: 2px solid var(--ours-line); outline-offset: 2px; }
-html:not(.phone) .reveal .slides section.closing[style*="display: block"],
 html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
-  grid-template-columns: minmax(0, 1fr) 424px; column-gap: 60px; justify-content: normal; }
+  grid-template-columns: fit-content(620px) 424px; }
 .qr-close { width: 424px; }
 
 /* The title: the Golden Maidens stand on the marble inside a gold ring, with a Greek key along the slide's foot. */

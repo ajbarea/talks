@@ -8,6 +8,7 @@ AJ Barea's research talks as web decks, published at https://ajbarea.github.io/t
 | Kourai Khryseai | https://ajbarea.github.io/talks/kourai-khryseai/ |
 | Five Claude apps, one favorite | https://ajbarea.github.io/talks/claude-tooling/ |
 | Checking the Checker | https://ajbarea.github.io/talks/checking-the-checker/ |
+| Federated Agents: Step One | https://ajbarea.github.io/talks/federated-agents-step-one/ |
 
 Each talk opens in any browser, with no network needed once loaded. Press `S` for the speaker
 view (the script, a timer and the next slide), `F` for full screen, and `O` or click the slide

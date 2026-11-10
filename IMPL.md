@@ -61,3 +61,8 @@ Each talk gets its own strong identity on a light ground for lit rooms, and ever
 - ✅ Slide 5 matches sphragis main b9e8ccd; live. `foreign_sized` flips to "sized" when sphragis#246 merges; no deck edit needed then.
 - 📋 Refresh routine guardrails (in #61) wait on AJ's personal login (needs-you.md).
 
+## Federated Agents: Step One (federated-agents-step-one/), LDQIS Fri Nov 13
+- 📋 Branch talk/federated-agents-step-one (#97, open, Heph merges): lab explainer deck, IBM Plex on white, spot inks with one job each (ultramarine the plan, magenta hatch sealed or open, green found, yellow the lab, grey and ink context). Present Nov 13, 2 pm.
+- ✅ 11-10 orchestrator review, all four fixed: aligned with papers 1b6e349 (H2 = Qt vs Chromium everywhere; null table = the paper's Table II; dev-verdict backup replaced by "How small an effect can each test detect?" from the same sizing artifacts harvest.py reads); slides cut to claim + evidence (max ~90 words incl. figure labels); builds on slides 6, 9, 10, 11, 15 (▶ in script.md marks each click; reduced motion keeps the steps, drops the fade); PDF footnote overlap fixed in this talk's deck.css (reveal print sets padding 0 !important).
+- Verify: `make check` with SLIDES (newest graphe cache, `ls -td`) and SPHRAGIS=~/ajsoftworks/sphragis; `python3 scripts/script_length.py federated-agents-step-one --check` (cap 1,400 words; at ~1,390, so any added sentence needs a cut); render and read every slide at 1920 and phone; PDF text-overlap check = pdftotext -bbox-layout, lines overlapping by more than half a line.
+- 📋 After Nov 20: recheck the "still open" list (slide 13), the GitHub replication's members, and `figures-check` for drift.

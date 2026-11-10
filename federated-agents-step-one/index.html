@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Federated Agents: Step One</title>
+  <meta name="description" content="For the LDQIS lab: the bigger problem behind Sphragis and the MSR 2027 Registered Report, why the plan goes in before the experiment runs, and where federated learning comes in.">
+  <meta property="og:title" content="Federated Agents: Step One">
+  <meta property="og:description" content="For the LDQIS lab: the bigger problem behind Sphragis and the MSR 2027 Registered Report, why the plan goes in before the experiment runs, and where federated learning comes in.">
+  <link rel="stylesheet" href="../vendor/reveal/reset.css">
+  <link rel="stylesheet" href="../vendor/reveal/reveal.css">
+  <link rel="stylesheet" href="../shared/deck.css">
+  <link rel="stylesheet" href="../shared/motion.css">
+  <link rel="stylesheet" href="../shared/tip.css">
+  <link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<section class="title-slide">
+  <div class="title-text">
+    <h1>Federated Agents: Step One</h1>
+    <p class="subtitle">What Sphragis tests, why the plan goes to reviewers first, and where the lab comes in</p>
+    <p class="byline"><b>AJ Barea</b><span>LDQIS lab meeting, Rochester Institute of Technology</span><span>November 13, 2026</span></p>
+  </div>
+  <svg class="seal-art" viewBox="0 0 560 640" role="img" aria-label="Drawing: a plan sheet with a hash line, a round stamp pressed onto it, and a sealed experiment waiting behind a dashed outline">
+    <defs><pattern id="seal-hatch" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="18" height="18" fill="#fff"/><rect width="8" height="18" fill="#bb1f7e"/></pattern></defs>
+    <g class="exp">
+      <rect class="exp-box" x="300" y="26" width="256" height="282" rx="4"/>
+      <path class="flask" d="M422 70h60M432 70v62l-44 84a16 16 0 0 0 14 24h100a16 16 0 0 0 14-24l-44-84V70"/>
+      <circle class="bubble" cx="440" cy="198" r="9"/>
+      <circle class="bubble" cx="470" cy="214" r="6"/>
+      <rect class="exp-chip" x="380" y="254" width="166" height="40" rx="2"/>
+      <text class="exp-label" x="463" y="284" text-anchor="middle">experiment</text>
+    </g>
+    <rect class="back-sheet" x="42" y="62" width="330" height="566" rx="3"/>
+    <rect class="sheet" x="18" y="40" width="340" height="572" rx="3"/>
+    <rect class="sheet-head" x="18" y="40" width="340" height="104"/>
+    <text class="sheet-title" x="50" y="113">The plan</text>
+    <path class="rule" d="M50 192h270M50 234h226M50 276h270"/>
+    <text class="hash" x="50" y="352">test: sealed</text>
+    <path class="hash-under" d="M50 368h282"/>
+    <path class="rule thin" d="M50 412h176"/>
+    <g class="stamp" data-motion="pop" data-delay="600" data-dur="500" transform="rotate(-10 244 510)">
+      <circle class="stamp-ring" cx="244" cy="510" r="98"/>
+      <circle class="stamp-ring inner" cx="244" cy="510" r="80"/>
+      <path class="stamp-tick" d="M204 510l34 34 56-66"/>
+    </g>
+  </svg>
+  <!-- qr:follow -->
+  <div class="qr qr-follow">
+    <p class="qr-label"><b>Follow along</b><span>ajbarea.github.io/talks/<wbr>federated-agents-step-one</span></p>
+    <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/federated-agents-step-one" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM14 4h4v1h-4zM20 4h1v1h-1zM22 4h4v1h-4zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM17 5h3v1h-3zM22 5h1v1h-1zM24 5h3v1h-3zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM17 6h1v1h-1zM19 6h2v1h-2zM22 6h1v1h-1zM24 6h5v1h-5zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h3v1h-3zM16 7h1v1h-1zM18 7h1v1h-1zM20 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h2v1h-2zM19 8h1v1h-1zM22 8h4v1h-4zM27 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h3v1h-3zM17 9h1v1h-1zM19 9h4v1h-4zM24 9h3v1h-3zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h2v1h-2zM16 11h1v1h-1zM18 11h2v1h-2zM22 11h1v1h-1zM24 11h4v1h-4zM4 12h1v1h-1zM6 12h5v1h-5zM14 12h6v1h-6zM21 12h2v1h-2zM24 12h1v1h-1zM26 12h1v1h-1zM30 12h5v1h-5zM5 13h2v1h-2zM8 13h2v1h-2zM12 13h3v1h-3zM18 13h1v1h-1zM20 13h5v1h-5zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM10 14h1v1h-1zM14 14h3v1h-3zM19 14h2v1h-2zM26 14h1v1h-1zM29 14h1v1h-1zM32 14h1v1h-1zM34 14h2v1h-2zM5 15h3v1h-3zM11 15h1v1h-1zM16 15h1v1h-1zM18 15h2v1h-2zM25 15h1v1h-1zM28 15h1v1h-1zM32 15h3v1h-3zM36 15h1v1h-1zM5 16h3v1h-3zM9 16h2v1h-2zM12 16h1v1h-1zM19 16h1v1h-1zM21 16h1v1h-1zM23 16h1v1h-1zM26 16h1v1h-1zM28 16h2v1h-2zM32 16h2v1h-2zM35 16h1v1h-1zM4 17h1v1h-1zM8 17h2v1h-2zM12 17h1v1h-1zM14 17h2v1h-2zM17 17h11v1h-11zM30 17h1v1h-1zM33 17h4v1h-4zM5 18h1v1h-1zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM21 18h1v1h-1zM25 18h1v1h-1zM29 18h2v1h-2zM33 18h3v1h-3zM5 19h2v1h-2zM9 19h1v1h-1zM11 19h1v1h-1zM13 19h3v1h-3zM17 19h1v1h-1zM20 19h1v1h-1zM22 19h1v1h-1zM24 19h3v1h-3zM28 19h4v1h-4zM33 19h2v1h-2zM4 20h4v1h-4zM9 20h2v1h-2zM12 20h1v1h-1zM15 20h1v1h-1zM21 20h1v1h-1zM28 20h2v1h-2zM31 20h2v1h-2zM36 20h1v1h-1zM5 21h1v1h-1zM9 21h1v1h-1zM20 21h6v1h-6zM27 21h1v1h-1zM30 21h2v1h-2zM33 21h2v1h-2zM36 21h1v1h-1zM6 22h2v1h-2zM10 22h3v1h-3zM16 22h4v1h-4zM21 22h1v1h-1zM25 22h2v1h-2zM28 22h2v1h-2zM31 22h2v1h-2zM34 22h2v1h-2zM4 23h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h2v1h-2zM17 23h4v1h-4zM24 23h2v1h-2zM27 23h3v1h-3zM31 23h6v1h-6zM4 24h1v1h-1zM7 24h2v1h-2zM10 24h2v1h-2zM14 24h2v1h-2zM17 24h1v1h-1zM19 24h1v1h-1zM21 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM28 24h2v1h-2zM31 24h3v1h-3zM35 24h2v1h-2zM4 25h6v1h-6zM11 25h1v1h-1zM13 25h1v1h-1zM17 25h1v1h-1zM19 25h1v1h-1zM21 25h4v1h-4zM26 25h2v1h-2zM30 25h1v1h-1zM33 25h2v1h-2zM36 25h1v1h-1zM4 26h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h1v1h-1zM13 26h1v1h-1zM15 26h1v1h-1zM17 26h1v1h-1zM19 26h1v1h-1zM22 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM31 26h2v1h-2zM34 26h2v1h-2zM4 27h1v1h-1zM6 27h3v1h-3zM11 27h3v1h-3zM15 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM23 27h1v1h-1zM25 27h1v1h-1zM29 27h1v1h-1zM31 27h1v1h-1zM33 27h3v1h-3zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h6v1h-6zM24 28h1v1h-1zM26 28h7v1h-7zM36 28h1v1h-1zM12 29h2v1h-2zM17 29h1v1h-1zM20 29h6v1h-6zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM13 30h2v1h-2zM19 30h3v1h-3zM24 30h1v1h-1zM27 30h2v1h-2zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM15 31h1v1h-1zM20 31h1v1h-1zM22 31h1v1h-1zM25 31h4v1h-4zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM21 32h1v1h-1zM23 32h2v1h-2zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h4v1h-4zM18 33h2v1h-2zM21 33h5v1h-5zM29 33h1v1h-1zM32 33h5v1h-5zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h1v1h-1zM14 34h1v1h-1zM19 34h3v1h-3zM24 34h1v1h-1zM26 34h1v1h-1zM30 34h2v1h-2zM33 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h2v1h-2zM16 35h1v1h-1zM19 35h2v1h-2zM24 35h3v1h-3zM29 35h1v1h-1zM32 35h3v1h-3zM4 36h7v1h-7zM12 36h5v1h-5zM19 36h1v1h-1zM21 36h3v1h-3zM26 36h1v1h-1zM28 36h1v1h-1zM31 36h1v1h-1zM33 36h1v1h-1zM35 36h1v1h-1z"/></svg>
+  </div>
+  <!-- /qr -->
+  <aside class="notes"><ul><li>Hi, I'm AJ; catching the lab up on Sphragis and the MSR 2027 Registered Report</li><li>Sphragis is the study; the report is the plan going to reviewers</li><li>Stop me any time a term isn't clear</li></ul></aside>
+</section>
+
+<section>
+  <h2>Six parts, from the bigger problem to where your work connects</h2>
+  <ol class="agenda" data-auto></ol>
+  <aside class="notes"><ul><li>The bigger problem first, venue mechanics after</li><li>Then the method and where it stands</li><li>Last: where the lab's strengths connect</li></ul></aside>
+</section>
+
+<section data-chapter="1 · The bigger problem">
+  <span class="kicker">1 · The bigger problem</span>
+  <h2>Coding agents need a company's house style, which sits in private review history</h2>
+  <div class="problem">
+    <figure class="review-card">
+      <figcaption><b>One review teaches one convention</b><span>Illustrative example</span></figcaption>
+      <div class="diff">
+        <p class="old"><code>time.sleep(5)</code></p>
+        <p class="said">Reviewer: use our retry helper here.</p>
+        <p class="new"><code>retry(fetch, tries=3)</code></p>
+      </div>
+      <p class="fig-note">House style: the conventions a team enforces but rarely writes down.</p>
+    </figure>
+    <figure class="silos" role="img" aria-label="Three organizations each keep their review history at home; a server averages only the updates they share.">
+      <figcaption><b>Federated learning could pool it</b></figcaption>
+      <div class="silo-row">
+        <div class="silo"><b>Company A</b><span class="stays">reviews stay home</span></div>
+        <div class="silo"><b>Company B</b><span class="stays">reviews stay home</span></div>
+        <div class="silo"><b>Company C</b><span class="stays">reviews stay home</span></div>
+      </div>
+      <div class="arrow-band"><svg viewBox="0 0 40 66" aria-hidden="true"><path d="M20 62V8M6 22 20 8l14 14"/></svg><svg viewBox="0 0 40 66" aria-hidden="true"><path d="M20 62V8M6 22 20 8l14 14"/></svg><svg viewBox="0 0 40 66" aria-hidden="true"><path d="M20 62V8M6 22 20 8l14 14"/></svg><p class="arrow-up">shared updates only</p></div>
+      <div class="server">A server averages what is shared</div>
+    </figure>
+  </div>
+  <aside class="notes"><ul><li>House style: what reviewers enforce and rarely write down</li><li>It lives in review history, which a company won't hand over</li><li>Federated learning: train at home, share only updates</li></ul></aside>
+</section>
+
+<section data-contribution data-chapter="1 · The bigger problem">
+  <span class="kicker">1 · The bigger problem</span>
+  <h2>Federated coding agents assume a house style exists, so I test that first</h2>
+  <div class="chain" role="img" aria-label="A chain of four assumptions. The first, that an organization has a style a model can learn beyond any one project group, is untested; this study tests it in Qt, against Chromium. The other three are assumed next and rest on it.">
+    <div class="link first"><span>An organization has a learnable style beyond any one project group</span><i>untested: this study, in Qt</i></div>
+    <div class="link"><span>Federated training can share part of it</span><i>assumed next</i></div>
+    <div class="link"><span>The private part stays private</span><i>assumed next</i></div>
+    <div class="link"><span>An attacker cannot recover it</span><i>assumed next</i></div>
+  </div>
+  <div class="claim-pair">
+    <p><b>What I did:</b> Sphragis, <b><span data-value="readings.examples_total"></span> public review examples from <span data-value="readings.orgs_count"></span> open-source organizations</b>, frozen, and a pass rule written before the test data is fetched.</p>
+    <p><b>Why you should care:</b> client design, privacy and attacks all rest on the first link.</p>
+  </div>
+  <aside class="notes"><ul><li>What I did: <span data-value="readings.examples_total"></span> examples, <span data-value="readings.orgs_count"></span> organizations, a pass rule written first</li><li>Why you care: client, personalization and attack questions rest on link one</li><li>Not tested before, to my knowledge: other projects against a foreign organization</li></ul></aside>
+</section>
+
+<section data-chapter="2 · The arc">
+  <span class="kicker">2 · The arc</span>
+  <h2>In federated terms, the first question is who the client should be</h2>
+  <div class="boundary">
+    <div class="nest" role="img" aria-label="An organization's projects split into two groups. H1, between the groups, asks whether style stays with its own group. H2, tested on Qt only, asks whether Qt carries style past its projects, against Chromium as a foreign organization.">
+      <div class="org"><b>One organization: OpenStack, Wikimedia or Qt</b>
+        <div class="halves">
+          <div class="half"><i>project group A</i><span class="chip">repo</span><span class="chip">repo</span><span class="chip">repo</span></div>
+          <div class="half"><i>project group B</i><span class="chip">repo</span><span class="chip">repo</span><span class="chip">repo</span></div>
+        </div>
+        <p class="edge-a">H1: does style stay with its own group?</p>
+      </div>
+      <p class="edge-b">H2, Qt only: on Qt's C++, does Qt's other group teach more than Chromium?</p>
+      <div class="org foreign"><b>Chromium, foreign to Qt</b></div>
+    </div>
+    <div class="boundary-note">
+      <p>A client can be a project group or a whole organization.</p>
+      <p><b>If style stays only with project groups, adaptation may belong there, and privacy drawn at the organization line may promise too much.</b></p>
+    </div>
+  </div>
+  <aside class="notes"><ul><li>Client = project group or organization: step one measures which; the organization line is tested only in Qt</li><li>H1: two groups inside each organization</li><li>H2: the organization line, Qt against Chromium only</li></ul></aside>
+</section>
+
+<section data-chapter="2 · The arc">
+  <span class="kicker">2 · The arc</span>
+  <h2>This report is step one of three; federated learning starts at step two</h2>
+  <ol class="road">
+    <li class="here"><span class="step-no">Step one</span><b>Is there a house style to learn?</b><p>One adapter per project group. No federated learning.</p><span class="tag">this report</span></li>
+    <li class="fragment" data-fragment-index="1"><span class="step-no">Step two</span><b>Federate the adapters</b><p>What does the shared part reveal?</p><span class="tag lab">the lab's work applies</span></li>
+    <li class="fragment" data-fragment-index="2"><span class="step-no">Step three</span><b>Federated coding agents</b><p>Each company declares what may be shared.</p><span class="tag lab">the lab's work applies</span></li>
+  </ol>
+  <p class="under-road fragment" data-fragment-index="1">If step one rules out detectable style at both the group and organization lines, step two does not assume one.</p>
+  <p class="footnote">Adapter: a small add-on trained beside a frozen base model.</p>
+  <aside class="notes"><ul><li>Step one: no federated learning at all</li><li>▶ Step two federates the adapters; it waits on step one</li><li>▶ Step three: the agents themselves</li></ul></aside>
+</section>
+
+<section data-chapter="3 · The venue">
+  <span class="kicker">3 · The venue</span>
+  <h2>MSR is a CORE rank A conference where software is studied through its data</h2>
+  <div class="venue">
+    <div class="ticket">
+      <p class="ticket-head">MSR 2027</p>
+      <p class="ticket-name" data-value="venue.name"></p>
+      <dl>
+        <dt>Edition</dt><dd><span data-value="venue.edition"></span> international conference</dd>
+        <dt>Where</dt><dd data-value="venue.place"></dd>
+        <dt>When</dt><dd data-value="venue.when"></dd>
+        <dt>Alongside</dt><dd data-value="venue.beside"></dd>
+        <dt>Rank</dt><dd><b>CORE <span data-value="venue.rank"></span></b></dd>
+      </dl>
+    </div>
+    <figure class="why-msr">
+      <figcaption><b>Why this study fits here</b></figcaption>
+      <p>The field "analyzes the rich data available in software repositories."</p>
+      <p>Code review is repository data: a comment, the code before, the code after.</p>
+    </figure>
+  </div>
+  <p class="footnote">Rank: CORE A, as stated on msrconf.org (read November 9, 2026).</p>
+  <aside class="notes"><ul><li>MSR: <span data-value="venue.place"></span>, <span data-value="venue.when"></span>, beside <span data-value="venue.beside"></span></li><li>Rank A in CORE, by MSR's own site</li><li>Code review is repository data, so this is its home</li></ul></aside>
+</section>
+
+<section data-chapter="3 · The venue">
+  <span class="kicker">3 · The venue</span>
+  <h2>A Registered Report is reviewed twice: first as a plan, then as a study</h2>
+  <div class="stages">
+    <div class="stage">
+      <span class="stage-no">Stage 1 · the plan</span>
+      <p class="stage-what"><span data-value="venue.pages"></span> pages: the plan, before the main results</p>
+      <p><span data-value="venue.stageOneReviewers"></span> reviewers judge the question and method</p>
+      <p class="stage-out"><b>Best outcome:</b> in-principle acceptance</p>
+    </div>
+    <div class="stage-arrow" aria-hidden="true">run the study</div>
+    <div class="stage two">
+      <span class="stage-no">Stage 2 · the study</span>
+      <p class="stage-what">Full paper to the journal <i>Empirical Software Engineering</i></p>
+      <p><span data-value="venue.stageTwoReviewers"></span> reviewers check the plan was followed</p>
+      <p class="stage-out">Negative results welcome</p>
+    </div>
+  </div>
+  <p class="quote">"If the protocol is adhered to (or deviations are thoroughly justified), the study is likely to be published."</p>
+  <aside class="notes"><ul><li>Stage 1: a <span data-value="venue.pages"></span>-page plan, <span data-value="venue.stageOneReviewers"></span> reviewers; IPA, continuity acceptance or rejection</li><li>Follow the accepted plan and the study is likely to publish</li><li>Stage 2: full paper to the journal, <span data-value="venue.stageTwoReviewers"></span> reviewers</li></ul></aside>
+</section>
+
+<section data-chapter="4 · The method">
+  <span class="kicker">4 · The method</span>
+  <h2>Why plan first: a reading can depend on how the data was split</h2>
+  <div class="split-why">
+    <figure id="split-fig" class="dotplot"></figure>
+    <div class="split-note fragment" data-fragment-index="2"><p><b>A plan written first fixes which splits are read, so no one keeps only the one that worked.</b></p></div>
+  </div>
+  <p class="footnote">Split: one way to divide an organization's projects in two; that split is the first reading's, on two of its seeds. Points: extra exact reviewer fixes per 100 comments, OpenStack development data, on an earlier score since replaced. Not confirmatory.</p>
+  <aside class="notes"><ul><li>One split, first reading: <span data-value="readings.split_first"></span>, interval above zero</li><li>▶ Five splits: <span data-value="readings.split_low"></span> to <span data-value="readings.split_high"></span></li><li>▶ Average <span data-value="readings.split_mean"></span>; a plan fixes which splits are read</li></ul></aside>
+</section>
+
+<section data-chapter="4 · The method">
+  <span class="kicker">4 · The method</span>
+  <h2>Two hypotheses, fixed before the test data, compare adapters on the same code</h2>
+  <div class="wiring">
+    <div class="wire-fig" role="img" aria-label="Three adapters score the same held-out code. One is trained on the code's own project group, one on the organization's other group, one on as much C++ from Chromium's pool. H1 compares own against other group; H2, on Qt only, compares other group against Chromium.">
+      <div class="arm own"><b>Own-group adapter</b><span>trained on the group the test code comes from</span></div>
+      <div class="vs" aria-hidden="true">H1: own beats other group</div>
+      <div class="arm sib"><b>Other-group adapter</b><span>trained on the same organization's other group</span></div>
+      <div class="vs fragment" data-fragment-index="1" aria-hidden="true">H2, Qt only: other group beats foreign</div>
+      <div class="arm far fragment" data-fragment-index="1"><b>Foreign adapter</b><span>trained on as much C++ from Chromium</span></div>
+      <p class="heldout">Each adapter trains on <span data-value="readings.n"></span> examples; all score the same held-out code.</p>
+    </div>
+  </div>
+  <aside class="notes"><ul><li>Confirmatory: hypotheses fixed, the data can only support them or not</li><li>H1: own group beats the other group, all three organizations</li><li>▶ H2: other group beats Chromium, Qt's C++ only</li></ul></aside>
+</section>
+
+<section data-chapter="4 · The method">
+  <span class="kicker">4 · The method</span>
+  <h2>The pass rule is written down: every test's interval must sit entirely above zero</h2>
+  <div class="rule-fig">
+    <div class="axis" role="img" aria-label="Three illustrative intervals on a line with zero and delta marked: supported sits entirely above zero; bounded sits entirely below delta; inconclusive crosses zero and reaches past delta.">
+      <div class="axis-track"></div>
+      <span class="zero-mark" style="left:30%"><i>0</i></span>
+      <span class="delta-mark" style="left:50%"><i>δ, smallest effect</i></span>
+      <div class="iv supported fragment" data-fragment-index="1" style="left:36%; right:18%"><b>supported: above 0</b></div>
+      <div class="iv bounded fragment" data-fragment-index="2" style="left:4%; right:63%"><b>bounded: below δ</b></div>
+      <div class="iv unsure fragment" data-fragment-index="3" style="left:18%; right:22%"><b>inconclusive: neither</b></div>
+    </div>
+    <div class="rule-text">
+      <p><b>Score:</b> log-probability of the developer's real fix, per token.</p>
+      <p><b>Each bar:</b> one test's confidence interval for the gain: own adapter over the other group's (H1), or the other group's over Chromium's (H2).</p>
+      <p><b>δ = <span data-value="readings.delta"></span>:</b> the smallest gain that matters, tokens about <span data-value="readings.delta_pct"></span>% more likely on average.</p>
+      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests are supported:</b> <span data-value="readings.orgs_count"></span> organizations × 2 scores, the whole fix and the fix without names.</p>
+    </div>
+  </div>
+  <p class="footnote">Intervals are illustrative; δ is in nats per token. Above 0 and below δ counts as supported. Some tests (now Wikimedia's without-names test and H2) must also have a p-value below a calibrated cutoff.</p>
+  <aside class="notes"><ul><li>δ = <span data-value="readings.delta"></span>: one more exact fix per hundred comments, carried to the score by a planted-convention rate</li><li>▶ supported ▶ bounded ▶ inconclusive</li><li>All <span data-value="readings.h1_cells"></span> H1 tests must pass, or H1 does not</li></ul></aside>
+</section>
+
+<section data-chapter="5 · Where it stands">
+  <span class="kicker">5 · Where it stands</span>
+  <h2>Three of four data windows are collected and frozen; the test window stays sealed</h2>
+  <div class="windows" role="img" aria-label="A timeline of four windows from October 2024 to October 2026: pilot, train and development are collected and frozen; the test window is sealed and not fetched.">
+    <div class="win done"><b>Pilot</b><span data-value="readings.window_pilot"></span></div>
+    <div class="win done wide"><b>Train</b><span data-value="readings.window_train"></span></div>
+    <div class="win done"><b>Development</b><span data-value="readings.window_dev"></span></div>
+    <div class="win sealed wider"><b>Test: sealed, not fetched</b><span data-value="readings.window_test"></span></div>
+  </div>
+  <div class="counts">
+    <div><b data-value="readings.examples_openstack"></b><span>OpenStack</span></div>
+    <div><b data-value="readings.examples_wikimedia"></b><span>Wikimedia</span></div>
+    <div><b data-value="readings.examples_qt"></b><span>Qt</span></div>
+  </div>
+  <p class="counts-note">Frozen examples, pilot to development. Also frozen: GitHub organizations for a replication, and Chromium's pool for H2.</p>
+  <aside class="notes"><ul><li>Pilot, train, development: frozen, <span data-value="readings.examples_total"></span> examples</li><li>Test window (<span data-value="readings.window_test"></span>): fetched only after acceptance</li><li>Nothing can be tuned against it</li></ul></aside>
+</section>
+
+<section data-chapter="5 · Where it stands">
+  <span class="kicker">5 · Where it stands</span>
+  <h2>The pipeline and the main study's sizing are done; the confirmatory test has not run</h2>
+  <div class="status">
+    <div class="done-col">
+      <h3>Done</h3>
+      <ul class="checks">
+        <li>Open pipeline: review history to frozen examples</li>
+        <li>Three frozen datasets; GitHub candidates frozen</li>
+        <li>Simulations that set each test's runs</li>
+        <li>Label audit, with a human check</li>
+      </ul>
+    </div>
+    <div class="open-col">
+      <h3>Still open</h3>
+      <ul class="opens">
+        <li>Submit, seal and register the plan</li>
+        <li>The GitHub replication's sizing, members fixed at submission</li>
+        <li>Fetch and check the sealed test months</li>
+        <li>Every confirmatory run, and the verdicts</li>
+      </ul>
+    </div>
+  </div>
+  <aside class="notes"><ul><li>Done: pipeline, frozen data, simulations, label audit</li><li>Open: registration, GitHub members, test fetch and checks, all confirmatory runs</li><li>The graded part has not happened, on purpose</li></ul></aside>
+</section>
+
+<section data-chapter="5 · Where it stands">
+  <span class="kicker">5 · Where it stands</span>
+  <h2>Development checks show the score finds a planted convention; real house style is untested</h2>
+  <div class="planted">
+    <figure class="planted-fig">
+      <figcaption><b><span data-value="readings.planted_found"></span> of <span data-value="readings.planted_total"></span></b> runs found a fake convention I planted in half the training examples</figcaption>
+      <div class="planted-row"><span>OpenStack</span><div class="dots" data-dots="readings.planted_found_openstack" data-of="readings.planted_runs_openstack" data-cols="10"></div></div>
+      <div class="planted-row"><span>Wikimedia</span><div class="dots" data-dots="readings.planted_found_wikimedia" data-of="readings.planted_runs_wikimedia" data-cols="10"></div></div>
+      <div class="planted-row"><span>Qt</span><div class="dots" data-dots="readings.planted_found_qt" data-of="readings.planted_runs_qt" data-cols="10"></div></div>
+      <p class="fig-note">Filled: found in that run.</p>
+    </figure>
+    <div class="dev-note">
+      <p><b>So the score responds to a planted convention.</b></p>
+      <p class="muted">Whether it sees one as small as δ rests on the sizing simulations.</p>
+    </div>
+  </div>
+  <aside class="notes"><ul><li>Planted marker: a fake convention in half the training examples</li><li>Found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_total"></span> development runs</li><li>Tests the instrument, not the hypothesis</li></ul></aside>
+</section>
+
+<section data-chapter="5 · Where it stands">
+  <span class="kicker">5 · Where it stands</span>
+  <h2>Next: reviewers see the plan, then the sealed months are fetched and run</h2>
+  <div class="timeline">
+    <div class="tl-group"><span class="tl-head">Stage 1 · 2026 to 2027</span>
+      <ul>
+        <li><b data-value="venue.dates.abstract"></b>abstract</li>
+        <li><b data-value="venue.dates.report"></b>report</li>
+        <li><b data-value="venue.dates.reviews"></b>reviews back</li>
+        <li><b data-value="venue.dates.revision"></b>revised report</li>
+        <li><b data-value="venue.dates.notify"></b>decision</li>
+      </ul>
+    </div>
+    <div class="tl-arrow fragment" data-fragment-index="1" aria-hidden="true">if accepted</div>
+    <div class="tl-group two fragment" data-fragment-index="1"><span class="tl-head">Stage 2 · 2027</span>
+      <ul>
+        <li><b>by <span data-value="venue.dates.posted"></span></b>accepted report posted</li>
+        <li><b>Then</b>fetch the sealed months, run, apply the pass rule</li>
+        <li><b data-value="venue.dates.present"></b>present in Dublin</li>
+        <li><b data-value="venue.dates.emse"></b>full paper to the journal</li>
+      </ul>
+    </div>
+    <div class="tl-after fragment" data-fragment-index="2">Step two follows: federate the adapters.</div>
+  </div>
+  <p class="footnote">MSR 2027 Registered Reports dates, anywhere on Earth.</p>
+  <aside class="notes"><ul><li>Report Nov 20, decision Feb 4</li><li>▶ If accepted: fetch, run, read the rule; Dublin; journal by Sep 30</li><li>▶ Then step two</li></ul></aside>
+</section>
+
+<section data-chapter="6 · Where you come in">
+  <span class="kicker">6 · Where you come in</span>
+  <h2>The lab's strengths apply most at the federated-learning stages</h2>
+  <div class="grid-lab" role="table" aria-label="Where the lab's strengths connect, by area and by step">
+    <div class="gl-head corner" role="columnheader">Step × area</div>
+    <div class="gl-head" role="columnheader">Aggregation and robustness</div>
+    <div class="gl-head" role="columnheader">Attacks on shared adapters</div>
+    <div class="gl-head" role="columnheader">Data quality and metadata</div>
+    <div class="gl-row" role="rowheader">Step two<small>federate adapters</small></div>
+    <div class="gl-cell" role="cell"><b class="gl-col">Aggregation and robustness</b>Robust rules for low-rank adapter updates</div>
+    <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>Which organization sent this update?</div>
+    <div class="gl-cell" role="cell"><b class="gl-col">Data quality and metadata</b>Weight updates by data quality</div>
+    <div class="gl-row" role="rowheader">Step three<small>federated agents</small></div>
+    <div class="gl-cell" role="cell"><b class="gl-col">Aggregation and robustness</b>Companies joining and leaving</div>
+    <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>The shared and private parts, attacked</div>
+    <div class="gl-cell" role="cell"><b class="gl-col">Data quality and metadata</b>What is shareable, as checkable metadata</div>
+  </div>
+  <div class="before-fl"><b>Help now:</b> for 77 OpenStack review comments I already judged, judge whether the code change that followed answers each one, so we can measure agreement.</div>
+  <p class="footnote">Lab work can start from OpenStack or Wikimedia data; the Qt and Chromium data are granted to this study's collector only.</p>
+  <aside class="notes"><ul><li>Step two: aggregation, attribution attacks, data-quality weights</li><li>Step three: churn, the deployed split, shareable metadata</li><li>Help now: a second labeler for the same 77 OpenStack examples</li></ul></aside>
+</section>
+
+<section data-conclusion>
+  <h2>Before federating agents, test that there is a house style to federate</h2>
+  <div class="recap">
+    <div class="tile"><p class="num">Step one</p><p>tests whether style stays with project groups, and whether Qt carries it past its projects</p></div>
+    <div class="tile"><p class="num">Plan first</p><p>the analysis is fixed before the test data is read, and a null can publish</p></div>
+    <div class="tile"><p class="num"><span data-value="readings.examples_total"></span></p><p>examples frozen; the test window is still sealed</p></div>
+  </div>
+  <div class="open">
+    <p class="open-h">Still open</p>
+    <ul>
+      <li>Whether house style transfers at the project-group or organization level</li>
+      <li>What the shared part of a federated adapter reveals</li>
+    </ul>
+  </div>
+  <aside class="notes"><ul><li>Step one tests whether there is a house style to federate</li><li>Plan first; a null can publish; test window still sealed</li><li>That's my talk.</li></ul></aside>
+</section>
+
+<section class="closing">
+  <div class="close-text">
+    <h2>Thank you</h2>
+    <p class="asks">I'm glad to take questions.</p>
+    <p class="contact"><b>AJ Barea</b><br>PhD student, Rochester Institute of Technology</p>
+    <p class="contact"><a href="https://github.com/ajbarea/sphragis">github.com/ajbarea/sphragis</a></p>
+  </div>
+  <!-- qr:close -->
+  <div class="qr qr-close" data-motion="pop" data-delay="300" data-dur="600">
+    <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/federated-agents-step-one" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM14 4h4v1h-4zM20 4h1v1h-1zM22 4h4v1h-4zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h2v1h-2zM17 5h3v1h-3zM22 5h1v1h-1zM24 5h3v1h-3zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM17 6h1v1h-1zM19 6h2v1h-2zM22 6h1v1h-1zM24 6h5v1h-5zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h3v1h-3zM16 7h1v1h-1zM18 7h1v1h-1zM20 7h3v1h-3zM24 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h2v1h-2zM19 8h1v1h-1zM22 8h4v1h-4zM27 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h3v1h-3zM17 9h1v1h-1zM19 9h4v1h-4zM24 9h3v1h-3zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h2v1h-2zM16 11h1v1h-1zM18 11h2v1h-2zM22 11h1v1h-1zM24 11h4v1h-4zM4 12h1v1h-1zM6 12h5v1h-5zM14 12h6v1h-6zM21 12h2v1h-2zM24 12h1v1h-1zM26 12h1v1h-1zM30 12h5v1h-5zM5 13h2v1h-2zM8 13h2v1h-2zM12 13h3v1h-3zM18 13h1v1h-1zM20 13h5v1h-5zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM10 14h1v1h-1zM14 14h3v1h-3zM19 14h2v1h-2zM26 14h1v1h-1zM29 14h1v1h-1zM32 14h1v1h-1zM34 14h2v1h-2zM5 15h3v1h-3zM11 15h1v1h-1zM16 15h1v1h-1zM18 15h2v1h-2zM25 15h1v1h-1zM28 15h1v1h-1zM32 15h3v1h-3zM36 15h1v1h-1zM5 16h3v1h-3zM9 16h2v1h-2zM12 16h1v1h-1zM19 16h1v1h-1zM21 16h1v1h-1zM23 16h1v1h-1zM26 16h1v1h-1zM28 16h2v1h-2zM32 16h2v1h-2zM35 16h1v1h-1zM4 17h1v1h-1zM8 17h2v1h-2zM12 17h1v1h-1zM14 17h2v1h-2zM17 17h11v1h-11zM30 17h1v1h-1zM33 17h4v1h-4zM5 18h1v1h-1zM7 18h2v1h-2zM10 18h1v1h-1zM13 18h1v1h-1zM21 18h1v1h-1zM25 18h1v1h-1zM29 18h2v1h-2zM33 18h3v1h-3zM5 19h2v1h-2zM9 19h1v1h-1zM11 19h1v1h-1zM13 19h3v1h-3zM17 19h1v1h-1zM20 19h1v1h-1zM22 19h1v1h-1zM24 19h3v1h-3zM28 19h4v1h-4zM33 19h2v1h-2zM4 20h4v1h-4zM9 20h2v1h-2zM12 20h1v1h-1zM15 20h1v1h-1zM21 20h1v1h-1zM28 20h2v1h-2zM31 20h2v1h-2zM36 20h1v1h-1zM5 21h1v1h-1zM9 21h1v1h-1zM20 21h6v1h-6zM27 21h1v1h-1zM30 21h2v1h-2zM33 21h2v1h-2zM36 21h1v1h-1zM6 22h2v1h-2zM10 22h3v1h-3zM16 22h4v1h-4zM21 22h1v1h-1zM25 22h2v1h-2zM28 22h2v1h-2zM31 22h2v1h-2zM34 22h2v1h-2zM4 23h1v1h-1zM6 23h4v1h-4zM12 23h1v1h-1zM14 23h2v1h-2zM17 23h4v1h-4zM24 23h2v1h-2zM27 23h3v1h-3zM31 23h6v1h-6zM4 24h1v1h-1zM7 24h2v1h-2zM10 24h2v1h-2zM14 24h2v1h-2zM17 24h1v1h-1zM19 24h1v1h-1zM21 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM28 24h2v1h-2zM31 24h3v1h-3zM35 24h2v1h-2zM4 25h6v1h-6zM11 25h1v1h-1zM13 25h1v1h-1zM17 25h1v1h-1zM19 25h1v1h-1zM21 25h4v1h-4zM26 25h2v1h-2zM30 25h1v1h-1zM33 25h2v1h-2zM36 25h1v1h-1zM4 26h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM10 26h1v1h-1zM13 26h1v1h-1zM15 26h1v1h-1zM17 26h1v1h-1zM19 26h1v1h-1zM22 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM31 26h2v1h-2zM34 26h2v1h-2zM4 27h1v1h-1zM6 27h3v1h-3zM11 27h3v1h-3zM15 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM23 27h1v1h-1zM25 27h1v1h-1zM29 27h1v1h-1zM31 27h1v1h-1zM33 27h3v1h-3zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM12 28h2v1h-2zM16 28h6v1h-6zM24 28h1v1h-1zM26 28h7v1h-7zM36 28h1v1h-1zM12 29h2v1h-2zM17 29h1v1h-1zM20 29h6v1h-6zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM13 30h2v1h-2zM19 30h3v1h-3zM24 30h1v1h-1zM27 30h2v1h-2zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM15 31h1v1h-1zM20 31h1v1h-1zM22 31h1v1h-1zM25 31h4v1h-4zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM14 32h1v1h-1zM21 32h1v1h-1zM23 32h2v1h-2zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h4v1h-4zM18 33h2v1h-2zM21 33h5v1h-5zM29 33h1v1h-1zM32 33h5v1h-5zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h1v1h-1zM14 34h1v1h-1zM19 34h3v1h-3zM24 34h1v1h-1zM26 34h1v1h-1zM30 34h2v1h-2zM33 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h2v1h-2zM16 35h1v1h-1zM19 35h2v1h-2zM24 35h3v1h-3zM29 35h1v1h-1zM32 35h3v1h-3zM4 36h7v1h-7zM12 36h5v1h-5zM19 36h1v1h-1zM21 36h3v1h-3zM26 36h1v1h-1zM28 36h1v1h-1zM31 36h1v1h-1zM33 36h1v1h-1zM35 36h1v1h-1z"/></svg>
+    <p class="qr-label"><b>These slides</b><span>ajbarea.github.io/talks/<br>federated-agents-step-one</span></p>
+  </div>
+  <!-- /qr -->
+  <aside class="notes"><ul><li>Thank you; the slides are at the link</li><li>"I'm glad to take questions."</li><li>Backup: why no results, null results, code review, InteFL</li></ul></aside>
+</section>
+
+<section id="faq" class="backup faq-index">
+  <h2>Backup slides</h2>
+  <p class="faq-sub">Frequently asked questions</p>
+  <ol class="faq">
+    <li><a href="#/faq-results">Why are there no results yet?</a></li>
+    <li><a href="#/faq-null">What happens if the result is null?</a></li>
+    <li><a href="#/faq-sizing">How small an effect can each test detect?</a></li>
+    <li><a href="#/faq-confirm">What makes the study confirmatory?</a></li>
+    <li><a href="#/faq-review">Why code review data?</a></li>
+    <li><a href="#/faq-intefl">How does this relate to InteFL?</a></li>
+    <li><a href="#/faq-lora">What is a LoRA adapter?</a></li>
+    <li><a href="#/faq-access">Which data can this use, and under what terms?</a></li>
+    <li><a href="#/faq-sources">Sources</a></li>
+  </ol>
+</section>
+
+<section id="faq-results" class="backup">
+  <h2>Why are there no results yet?</h2>
+  <p>A Stage 1 report is the plan, so it carries no confirmatory results. Pilot and development data sized the design. Results come in Stage 2, after the sealed test months are fetched.</p>
+  <p>The field's reason: in psychology, one study found 96% positive results in standard papers and 44% in Registered Reports, on the first hypothesis of each paper.</p>
+  <p class="note-small">Scheel, Schijen, Lakens (2021), <i>An Excess of Positive Results</i>, doi:10.1177/25152459211007467. The authors note this does not prove Registered Reports reduce bias.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-null" class="backup">
+  <h2>What happens if the result is null?</h2>
+  <table class="plain tight">
+    <tr><th>H1</th><th>H2</th><th>Registered reading</th></tr>
+    <tr><td>pass</td><td>bounded</td><td>Style transfers within a project group; Qt adds nothing over Chromium this design detects</td></tr>
+    <tr><td>pass</td><td>inconclusive</td><td>Style transfers within a project group; Qt over Chromium not resolved</td></tr>
+    <tr><td>not pass</td><td>pass</td><td>Qt carries style beyond its projects, against Chromium</td></tr>
+    <tr><td>pass</td><td>pass</td><td>Both boundaries carry style in Qt</td></tr>
+    <tr><td>bounded</td><td>bounded</td><td>No transferable style as large as this design detects at either boundary here; the federated direction does not proceed assuming one</td></tr>
+    <tr><td>mixed</td><td>not pass</td><td>Style transfers within a project group in some tests, not all; read test by test</td></tr>
+    <tr><td>pass</td><td>not tested</td><td>Style transfers within a project group (H1 alone: Qt or Chromium lost, or Chromium's pool fails a check)</td></tr>
+    <tr><td>bounded</td><td>not tested</td><td>No within-group transfer this design detects</td></tr>
+  </table>
+  <p class="note-small">Otherwise: not resolved at this design's sensitivity, upper bounds reported. Mixed: some H1 tests supported, the rest bounded.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-sizing" class="backup">
+  <h2>How small an effect can each test detect?</h2>
+  <table class="plain">
+    <tr><th>Test</th><th>Runs</th><th>Detects, whole fix</th><th>Without names</th></tr>
+    <tr><td>OpenStack, H1</td><td data-value="readings.k_openstack"></td><td data-value="readings.mde_openstack"></td><td data-value="readings.mde_openstack_other"></td></tr>
+    <tr><td>Wikimedia, H1</td><td data-value="readings.k_wikimedia"></td><td data-value="readings.mde_wikimedia"></td><td data-value="readings.mde_wikimedia_other"></td></tr>
+    <tr><td>Qt, H1</td><td data-value="readings.k_qt"></td><td data-value="readings.mde_qt"></td><td data-value="readings.mde_qt_other"></td></tr>
+    <tr><td>Qt vs Chromium, H2</td><td data-value="readings.k_h2"></td><td data-value="readings.mde_h2"></td><td>not sized; qualifies H2's reading</td></tr>
+  </table>
+  <p>Every value lies below δ = <span data-value="readings.delta"></span>, the smallest effect that matters, so the planned sample suffices.</p>
+  <p class="note-small">Nats per token, simulated as the pass rule reads each test, at a pessimistic run-to-run spread and the 97.5% interval; power 99.1% per H1 test (95% jointly), 95% for H2. Sizing, not a result.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-confirm" class="backup">
+  <h2>What makes the study confirmatory?</h2>
+  <p class="quote">"The researcher has a fixed hypothesis (or several fixed hypotheses) and the objective of the study is to find out whether the hypothesis is supported by the facts/data."</p>
+  <p>The hypotheses, the score, the smallest effect, the pass rule and the number of runs are all fixed in the report, before the sealed test months are fetched.</p>
+  <p class="note-small">MSR 2027 Registered Reports call.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-review" class="backup">
+  <h2>Why code review data?</h2>
+  <p>House style is what reviewers enforce and rarely write down, and a review pairs a comment with the code that answered it. That pairing is the training example.</p>
+  <p>The revision that followed the comment is a label a person produced, and the data is public for these hosts, so what leaks can be checked against known origins.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-intefl" class="backup">
+  <h2>How does this relate to InteFL?</h2>
+  <p>The Registered Report has no federated learning in it: centralized measurement, one adapter per project group, and no aggregation. The repository also holds early federated code for later steps, and no result from it is claimed here.</p>
+  <p>InteFL is the lab's federated framework. Its aggregation and attack work becomes relevant at step two, once there is an adapter to federate.</p>
+  <p class="note-small">Which FL stack step two runs on is decided when it starts.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-lora" class="backup">
+  <h2>What is a LoRA adapter?</h2>
+  <p>A small add-on, trained beside a frozen base model, in low-rank adaptation. The study trains one per project group at rank <span data-value="readings.rank"></span> on <span data-value="readings.model"></span>.</p>
+  <p>It is the unit a federated step would average: small, trainable at each company, and the part that would be shared instead of raw data.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-access" class="backup">
+  <h2>Which data can this use, and under what terms?</h2>
+  <table class="plain">
+    <tr><th>Source</th><th>Access</th><th>Role</th></tr>
+    <tr><td>OpenStack</td><td>host robots.txt</td><td>H1</td></tr>
+    <tr><td>Wikimedia</td><td>host robot policy</td><td>H1</td></tr>
+    <tr><td>Qt</td><td>written grant</td><td>H1, H2</td></tr>
+    <tr><td>Chromium</td><td>written grant</td><td>H2's foreign source</td></tr>
+    <tr><td>GitHub: Apache, .NET</td><td>research terms</td><td>replication family</td></tr>
+  </table>
+  <p class="note-small">Grants name this study's collector. Artifacts released since October 19, 2026 carry no review text, and accounts are pseudonymized as data arrives.</p>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+<section id="faq-sources" class="backup">
+  <h2>Sources</h2>
+  <ul class="sources">
+    <li>The report: "Do Organizations Leave a Learnable House Style in Code Review?", Stage 1 Registered Report for MSR 2027 (November 10, 2026 revision)</li>
+    <li>MSR 2027 Registered Reports call and key dates: 2027.msrconf.org/track/msr-2027-registered-reports (read November 9, 2026)</li>
+    <li>MSR 2027 conference details: 2027.msrconf.org; CORE rank statement: msrconf.org</li>
+    <li>Study code and artifacts: github.com/ajbarea/sphragis</li>
+    <li>A. Scheel, M. Schijen, D. Lakens, An Excess of Positive Results, AMPPS 4(2), 2021</li>
+    <li>M. Allamanis, E. T. Barr, C. Bird, C. Sutton, Learning Natural Coding Conventions, FSE 2014, doi:10.1145/2635868.2635883 (38% of 169 Microsoft code reviews gave feedback on coding conventions)</li>
+  </ul>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+</section>
+
+</div>
+</div>
+<script src="data/readings.js"></script>
+<script src="data/venue.js"></script>
+<script src="figs.js"></script>
+<script src="../vendor/reveal/reveal.js"></script>
+<script src="../vendor/reveal/notes.js"></script>
+<script src="../shared/deck.js"></script>
+<script src="../shared/motion.js"></script>
+<script src="../shared/tip.js"></script>
+</body>
+</html>

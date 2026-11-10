@@ -21,10 +21,11 @@ number to see every slide and jump to one. A link like `.../federated-agents/#/5
 - `videos/`: scripts for AJ's explainer videos, made in Google Vids; see [videos/README.md](videos/README.md).
 - `shared/deck.js`, `shared/deck.css`: the behaviour and base styles every talk loads (chapter rail,
   agenda, figures from data, phone feed); a talk's own `deck.css` adds what is particular to it.
-- `shared/fonts/`: Atkinson Hyperlegible Next (SIL Open Font License), the shared default for
-  titles and text, served with the decks; a talk with its own look may set the system stack or its
-  own face instead (Kourai Khryseai keeps Marcellus in `kourai-khryseai/fonts/`, with digits drawn
-  in Atkinson Hyperlegible because Marcellus's numerals read as letters).
+- `shared/fonts/`: Atkinson Hyperlegible Next and Mono (SIL Open Font License), the shared default
+  for titles, text and code, served with the decks; a talk with its own look may set the system
+  stack or its own face instead (Five Claude apps keeps Source Serif 4 in `claude-tooling/fonts/`;
+  Kourai Khryseai keeps Marcellus in `kourai-khryseai/fonts/`, with digits drawn in Atkinson
+  Hyperlegible because Marcellus's numerals read as letters).
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
   by its own `<title>` and description, with its preview, its PowerPoint and PDF downloads and its links.
 - `scripts/exports.py`: exports each talk as `<folder>.pptx` (one picture per slide, the script in
@@ -82,13 +83,13 @@ days without activity; re-enable the daily run from the Actions tab if it stops.
 
 The shared look loads Atkinson Hyperlegible Next and Mono from `shared/fonts/`. A talk with its own
 display face keeps it in its own `fonts/` folder (Source Serif 4 in `claude-tooling/fonts/`,
-Marcellus in `kourai-khryseai/fonts/`). Five Claude apps, Federated Agents and Kourai Khryseai
-set text and code in the system font stack. On Linux, the gates and renders draw the system stack only in DejaVu (`scripts/fonts.conf`), the font
-CI's runner draws it in. Each machine resolves that stack to its own font,
-and a slide that fits in a narrower one clips in CI. `make fonts` fails when the stack does not
-resolve to DejaVu (`apt-get install fonts-dejavu-core`). Chromium reads fontconfig on Linux only,
-so on macOS or Windows the gates measure the system font. The exports keep the machine's own
-fonts, so a glyph DejaVu lacks still draws in the published files. `make render TALK=<folder>
+Marcellus in `kourai-khryseai/fonts/`). Five Claude apps, Federated Agents and Kourai Khryseai set
+text and code in the system font stack. On Linux, the gates and renders draw the system stack only
+in DejaVu (`scripts/fonts.conf`), the font CI's runner draws it in. Each machine resolves that stack
+to its own font, and a slide that fits in a narrower one clips in CI. `make fonts` fails when the
+stack does not resolve to DejaVu (`apt-get install fonts-dejavu-core`). Chromium reads fontconfig on
+Linux only, so on macOS or Windows the gates measure the system font. The exports keep the machine's
+own fonts, so a glyph DejaVu lacks still draws in the published files. `make render TALK=<folder>
 OUT=<dir>` writes a built talk's slides and phone views as PNGs.
 
 `make script-length` prints each talk's spoken script in words and minutes at 140 a minute, from

@@ -23,7 +23,7 @@ There is no agenda slide; the map does that job, and the chapter rail follows `d
 
 ## Product icons
 
-Each product's real icon, beside its name on the five-places slide, its own slide and the which-app table. Chat, Desktop, Code and Duet come from official listings and product pages, fetched November 9, 2026; AJ supplied Science, Cowork and Design the same day (Science and Design cropped to the icon). All are shown in their true colours; the other edits are a resize and, for Desktop, trimming the store tile's empty margin. `.brand` in `deck.css` sizes them with clear space around each.
+Each product's real icon, beside its name on the five-places slide, its own slide and the which-app table. Chat, Desktop and Duet come from official listings and product pages, fetched November 9, 2026; AJ supplied Code, Science, Cowork and Design the same day (Science and Design cropped to the icon). All are shown in their true colours; the other edits are a resize and, for Desktop, trimming the store tile's empty margin. `.brand` in `deck.css` sizes them with clear space around each.
 
 | File (`img/`) | Product | Source |
 |---|---|---|

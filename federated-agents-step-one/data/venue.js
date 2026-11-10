@@ -15,5 +15,5 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { venue: {
   pages: 6,
   stageOneReviewers: 4,
   stageTwoReviewers: 3,
-  dates: { abstract: "Nov 13", report: "Nov 20", reviews: "Dec 23", revision: "Jan 15", notify: "Feb 4", posted: "Feb 28", present: "Apr 26, 27", emse: "Sep 30" },
+  dates: { abstract: "Nov 13", report: "Nov 20", reviews: "Dec 23", revision: "Jan 15", notify: "Feb 4", posted: "Feb 28", present: "Apr 26–27", emse: "Sep 30" },
 } });

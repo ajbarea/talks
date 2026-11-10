@@ -15,7 +15,7 @@ Six parts. The bigger problem, the arc this sits in, the venue, the method, wher
 
 ## 3. Coding agents need a company's house style, which sits in private review history
 
-Here is the bigger problem. A coding agent is useful once it follows how a company writes software. That is its house style, and it is mostly unwritten. In this made-up review, a reviewer says use our retry helper. Reviewers enforce this a lot: in one study of Microsoft code reviews, 38 percent gave feedback on coding conventions. Those lessons live in review history, which a company won't hand over. Federated learning could fit, if style belongs to the organization: each company trains at home, and a server averages only what is shared.
+A coding agent is useful once it follows how a company writes software. That is its house style, and it is mostly unwritten. In this made-up review, a reviewer says use our retry helper. Reviewers enforce this a lot: in one study of Microsoft code reviews, 38 percent gave feedback on coding conventions. Those lessons live in review history, which a company won't hand over. Federated learning could fit, if style belongs to the organization: each company trains at home, and a server averages only what is shared.
 
 ## 4. Federated coding agents assume a house style exists, so I test that first
 
@@ -23,11 +23,11 @@ Here's what I did. I built Sphragis, which turned public code review from {readi
 
 ## 5. In federated terms, the first question is who the client should be
 
-A client could be a project group or a whole organization. If house style stays only with project groups, then a client drawn at the organization line may promise more than it can keep. So step one tests two boundaries. Hypothesis one splits each organization's projects into two groups and asks whether style stays with its own group. Hypothesis two asks whether the organization carries style past its projects: on Qt's code, does Qt's other group beat Chromium?
+A client could be a project group or a whole organization. If house style stays only with project groups, adaptation may belong there, and privacy drawn at the organization line may promise too much. So step one tests two boundaries. Hypothesis one splits each organization's projects into two groups and asks whether style stays with its own group. Hypothesis two asks whether the organization carries style past its projects: on Qt's code, does Qt's other group beat Chromium?
 
 ## 6. This report is step one of three; federated learning starts at step two
 
-Here's the whole arc. This report is step one, and it has no federated learning in it. It asks whether there is a house style to learn at all, with one adapter per project group. An adapter is a small add-on trained beside a frozen model. ▶ Step two federates those adapters and asks what the shared part reveals about each organization. It waits on step one: if step one finds no transferable style, step two doesn't assume one. ▶ Step three is the coding agents themselves, where each company declares what may be shared. Steps two and three are where this meets your work.
+Here's the whole arc. This report is step one, and it has no federated learning in it. It asks whether there is a house style to learn at all, with one adapter per project group. An adapter is a small add-on trained beside a frozen model. ▶ Step two federates those adapters and asks what the shared part reveals about each organization. It waits on step one: if step one rules out detectable style at both boundaries, step two doesn't assume one. ▶ Step three is the coding agents themselves, where each company declares what may be shared. Steps two and three are where this meets your work.
 
 ## 7. MSR is a CORE rank A conference where software is studied through its data
 
@@ -47,15 +47,15 @@ That is what a confirmatory study means: the hypotheses are fixed, and the data 
 
 ## 11. The pass rule is written down: every test's interval must sit entirely above zero
 
-And the pass rule is written down in advance. The score is the log-probability an adapter gives the developer's real fix, per token, and each bar is one test's confidence interval for the gain: own adapter minus the other group's. The smallest gain I care about is delta, {readings.delta} nats per token, about {readings.delta_pct} percent more likely per token. It starts as one more exact fix per hundred comments, carried to this score at a rate measured on a planted convention. ▶ A test is supported when its interval sits entirely above zero. ▶ It's bounded when the interval sits entirely below delta: any effect is smaller than matters. ▶ Anything else is inconclusive, reported as not detected above its upper end. Hypothesis one passes only if all {readings.h1_cells} of its tests are supported: {readings.orgs_count} organizations, two scores each, the whole fix and its non-name part.
+And the pass rule is written down in advance. The score is the log-probability an adapter gives the developer's real fix, per token, and each bar is one test's confidence interval for the gain: own adapter over the other group's for hypothesis one, the other group's over Chromium's for hypothesis two. The smallest gain I care about is delta, {readings.delta} nats per token, about {readings.delta_pct} percent more likely per token. It starts as one more exact fix per hundred comments, carried to this score at a rate measured on a planted convention. ▶ A test is supported when its interval sits entirely above zero. ▶ It's bounded when the interval sits entirely below delta: any effect is smaller than matters. ▶ Anything else is inconclusive, reported as not detected above its upper end. Hypothesis one passes only if all {readings.h1_cells} of its tests are supported: {readings.orgs_count} organizations, two scores each, the whole fix and its non-name part.
 
 ## 12. Three of four data windows are collected and frozen; the test window stays sealed
 
-Where it stands. The data is divided by time into four windows. Pilot, train and development are collected and frozen, {readings.examples_total} examples across OpenStack, Wikimedia and Qt, plus GitHub organizations for a replication and Chromium's C++ for hypothesis two. The fourth window, the test window, runs {readings.window_test}. It stays sealed. It is defined in the report, and it is fetched only after in-principle acceptance, so nothing can be tuned against it.
+Where it stands. The data is divided by time into four windows. Pilot, train and development are collected and frozen, {readings.examples_total} examples across OpenStack, Wikimedia and Qt, plus GitHub organizations for a replication and Chromium's pool for hypothesis two. The fourth window, the test window, runs {readings.window_test}. It is defined in the report and fetched only after in-principle acceptance, so nothing can be tuned against it.
 
-## 13. The pipeline and sizing are done; the confirmatory test has not run
+## 13. The pipeline and Gerrit sizing are done; the confirmatory test has not run
 
-What's done? The pipeline, the frozen datasets, the simulations that set each test's number of runs, and the label audit with its human check. Still open: submitting and registering the plan with the test window sealed, the GitHub replication's members and sizing, fetching and checking the sealed months, and every confirmatory run. The part this study is graded on hasn't happened, on purpose.
+What's done? The pipeline, the frozen datasets, the Gerrit simulations that set each test's number of runs, and the label audit with its human check. Still open: submitting and registering the plan with the test window sealed, the GitHub replication's members and sizing, fetching and checking the sealed months, and every confirmatory run. The part this study is graded on hasn't happened, on purpose.
 
 ## 14. Development checks show the score finds a planted convention; real house style is untested
 
@@ -67,7 +67,7 @@ Next. The abstract is due today, and the report is due November 20. Reviews come
 
 ## 16. The lab's strengths apply most at the federated-learning stages
 
-Here's where your work connects, by area. Aggregation and robustness: which robust or control-theoretic rule still holds when each update is a low-rank adapter? Attacks: can a server tell which organization an update came from, even under secure aggregation? Data quality and metadata: can a client's data-quality profile inform how its update is weighted, and what should a company declare as shareable? There's also a way to help with this paper now. A second person labeling the same 77 OpenStack examples on their own would show how often two people agree.
+Here's where your work connects. Aggregation and robustness: which robust or control-theoretic rule still holds when each update is a low-rank adapter? Attacks: can a server tell which organization an update came from, even under secure aggregation? Data quality and metadata: can a client's data-quality profile inform how its update is weighted, and what should a company declare as shareable? There's also a way to help with this paper now. A second person labeling the 77 OpenStack examples I already labeled would show how often two people agree.
 
 ## 17. Before federating agents, test that there is a house style to federate
 

@@ -26,8 +26,8 @@
   // Below the rows: the axis ticks, then the average's label under them.
   const GRID_END = ROWS_TOP + ROW * names.length + 24;
   const TICK_Y = GRID_END + 24;
-  const MEAN_Y = TICK_Y + 38;
-  const H = MEAN_Y + 8;
+  const MEAN_Y = TICK_Y + 34;
+  const H = MEAN_Y + 6;
   const svg = document.createElementNS(SVG, "svg");
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
   svg.setAttribute("role", "img");
@@ -67,8 +67,7 @@
   el("text", { x: x(first), y: 50, class: "value first", "text-anchor": "middle" }, data.split_first);
 
   into = step(1);
-  el("text", { x: 4, y: ROWS_TOP - 6, class: "row-label" }, "Five splits");
-  el("text", { x: 30, y: ROWS_TOP + ROW * names.length + 14, class: "row-sub" }, "two seeds each");
+  el("text", { x: 4, y: ROWS_TOP - 6, class: "row-label" }, "Five splits, two seeds each");
   names.forEach((name, i) => {
     const y = ROWS_TOP + ROW * i + 26;
     const v = means[name];

@@ -93,8 +93,8 @@
 <section data-contribution data-chapter="1 · The bigger problem">
   <span class="kicker">1 · The bigger problem</span>
   <h2>Federated coding agents assume a house style exists, so I test that first</h2>
-  <div class="chain" role="img" aria-label="A chain of four assumptions. The first, that an organization has a style a model can learn beyond any one project group, is untested; this study tests it within organizations and on Qt against Chromium. The other three are assumed next and rest on it.">
-    <div class="link first"><span>An organization has a learnable style beyond any one project group</span><i>untested: this study</i></div>
+  <div class="chain" role="img" aria-label="A chain of four assumptions. The first, that an organization has a style a model can learn beyond any one project group, is untested; this study tests it in Qt, against Chromium. The other three are assumed next and rest on it.">
+    <div class="link first"><span>An organization has a learnable style beyond any one project group</span><i>untested: this study, in Qt</i></div>
     <div class="link"><span>Federated training can share part of it</span><i>assumed next</i></div>
     <div class="link"><span>The private part stays private</span><i>assumed next</i></div>
     <div class="link"><span>An attacker cannot recover it</span><i>assumed next</i></div>
@@ -123,7 +123,7 @@
     </div>
     <div class="boundary-note">
       <p>A client can be a project group or a whole organization.</p>
-      <p><b>If style stays only with project groups, an organization-level client may promise more than it can keep.</b></p>
+      <p><b>If style stays only with project groups, adaptation may belong there, and privacy drawn at the organization line may promise too much.</b></p>
     </div>
   </div>
   <aside class="notes"><ul><li>Client = project group or organization: step one measures which</li><li>H1: two groups inside each organization</li><li>H2: the organization line, Qt against Chromium only</li></ul></aside>
@@ -137,7 +137,7 @@
     <li class="fragment" data-fragment-index="1"><span class="step-no">Step two</span><b>Federate the adapters</b><p>What does the shared part reveal?</p><span class="tag lab">the lab's work applies</span></li>
     <li class="fragment" data-fragment-index="2"><span class="step-no">Step three</span><b>Federated coding agents</b><p>Each company declares what may be shared.</p><span class="tag lab">the lab's work applies</span></li>
   </ol>
-  <p class="under-road fragment" data-fragment-index="1">If step one finds no transferable style, step two does not assume one.</p>
+  <p class="under-road fragment" data-fragment-index="1">If step one rules out detectable style at both boundaries, step two does not assume one.</p>
   <p class="footnote">Adapter: a small add-on trained beside a frozen base model.</p>
   <aside class="notes"><ul><li>Step one: no federated learning at all</li><li>▶ Step two federates the adapters; it waits on step one</li><li>▶ Step three: the agents themselves</li></ul></aside>
 </section>
@@ -196,7 +196,7 @@
     <figure id="split-fig" class="dotplot"></figure>
     <div class="split-note fragment" data-fragment-index="2"><p><b>A plan written first fixes which splits are read, so no one keeps only the one that worked.</b></p></div>
   </div>
-  <p class="footnote">Split: one way to divide an organization's projects into two groups. Exact-match points: extra reviewer fixes matched exactly per 100 comments, OpenStack development data; the study's earlier score, since replaced. Not a confirmatory result.</p>
+  <p class="footnote">Split: one way to divide an organization's projects in two; that split is the first reading's, on two of its seeds. Points: extra exact reviewer fixes per 100 comments, OpenStack development data, on an earlier score since replaced. Not confirmatory.</p>
   <aside class="notes"><ul><li>One split, first reading: <span data-value="readings.split_first"></span>, interval above zero</li><li>▶ Five splits: <span data-value="readings.split_low"></span> to <span data-value="readings.split_high"></span></li><li>▶ Average <span data-value="readings.split_mean"></span>; a plan fixes which splits are read</li></ul></aside>
 </section>
 
@@ -229,13 +229,13 @@
       <div class="iv unsure fragment" data-fragment-index="3" style="left:18%; right:22%"><b>inconclusive: neither</b></div>
     </div>
     <div class="rule-text">
-      <p><b>Each bar:</b> one test's confidence interval for the gain, own adapter minus the other group's.</p>
+      <p><b>Each bar:</b> one test's confidence interval for the gain: own adapter over the other group's (H1), or the other group's over Chromium's (H2).</p>
       <p><b>Score:</b> log-probability of the developer's real fix, per token.</p>
       <p><b>δ = <span data-value="readings.delta"></span>:</b> the smallest gain that matters, each token about <span data-value="readings.delta_pct"></span>% more likely.</p>
-      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests pass:</b> <span data-value="readings.orgs_count"></span> organizations × 2 scores.</p>
+      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests are supported:</b> <span data-value="readings.orgs_count"></span> organizations × 2 scores, the whole fix and its non-name part.</p>
     </div>
   </div>
-  <p class="footnote">Intervals are illustrative; δ is in nats per token. Above 0 and below δ counts as supported. Some tests must also clear a calibrated p-value.</p>
+  <p class="footnote">Intervals are illustrative; δ is in nats per token. Above 0 and below δ counts as supported. Wikimedia's non-name test and H2 must also clear a calibrated p-value.</p>
   <aside class="notes"><ul><li>δ = <span data-value="readings.delta"></span>: one more exact fix per hundred comments, carried to the score by a planted-convention rate</li><li>▶ supported ▶ bounded ▶ inconclusive</li><li>All <span data-value="readings.h1_cells"></span> H1 tests must pass, or H1 does not</li></ul></aside>
 </section>
 
@@ -253,19 +253,19 @@
     <div><b data-value="readings.examples_wikimedia"></b><span>Wikimedia</span></div>
     <div><b data-value="readings.examples_qt"></b><span>Qt</span></div>
   </div>
-  <p class="counts-note">Frozen examples, pilot to development. Also frozen: GitHub organizations for a replication, and Chromium's C++ for H2.</p>
+  <p class="counts-note">Frozen examples, pilot to development. Also frozen: GitHub organizations for a replication, and Chromium's pool for H2.</p>
   <aside class="notes"><ul><li>Pilot, train, development: frozen, <span data-value="readings.examples_total"></span> examples</li><li>Test window (<span data-value="readings.window_test"></span>): fetched only after acceptance</li><li>Nothing can be tuned against it</li></ul></aside>
 </section>
 
 <section data-chapter="5 · Where it stands">
   <span class="kicker">5 · Where it stands</span>
-  <h2>The pipeline and sizing are done; the confirmatory test has not run</h2>
+  <h2>The pipeline and Gerrit sizing are done; the confirmatory test has not run</h2>
   <div class="status">
     <div class="done-col">
       <h3>Done</h3>
       <ul class="checks">
         <li>Open pipeline: review history to frozen examples</li>
-        <li>Three frozen datasets and a GitHub replication set</li>
+        <li>Three frozen datasets; GitHub candidates frozen</li>
         <li>Simulations that set each test's runs</li>
         <li>Label audit, with a human check</li>
       </ul>
@@ -347,15 +347,15 @@
     <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>The shared and private parts, attacked</div>
     <div class="gl-cell" role="cell"><b class="gl-col">Data quality and metadata</b>What is shareable, as checkable metadata</div>
   </div>
-  <div class="before-fl"><b>Help now:</b> label whether each of the same 77 OpenStack revisions answers its comment, to measure how often two people agree.</div>
-  <p class="footnote">Lab work can start from OpenStack data; the Qt and Chromium data are granted to this study's collector only.</p>
+  <div class="before-fl"><b>Help now:</b> label whether each of the 77 OpenStack revisions I already labeled answers its comment, to measure how often two people agree.</div>
+  <p class="footnote">Lab work can start from OpenStack or Wikimedia data; the Qt and Chromium data are granted to this study's collector only.</p>
   <aside class="notes"><ul><li>Step two: aggregation, attribution attacks, data-quality weights</li><li>Step three: churn, the deployed split, shareable metadata</li><li>Help now: a second labeler for the same 77 OpenStack examples</li></ul></aside>
 </section>
 
 <section data-conclusion>
   <h2>Before federating agents, test that there is a house style to federate</h2>
   <div class="recap">
-    <div class="tile"><p class="num">Step one</p><p>tests whether style stays with project groups, and whether Qt carries it further</p></div>
+    <div class="tile"><p class="num">Step one</p><p>tests whether style stays with project groups, and whether Qt carries it past its projects</p></div>
     <div class="tile"><p class="num">Plan first</p><p>the analysis is fixed before the test data is read, and a null can publish</p></div>
     <div class="tile"><p class="num"><span data-value="readings.examples_total"></span></p><p>examples frozen; the test window is still sealed</p></div>
   </div>
@@ -413,14 +413,14 @@
   <h2>What happens if the result is null?</h2>
   <table class="plain tight">
     <tr><th>H1</th><th>H2</th><th>Registered reading</th></tr>
-    <tr><td>pass</td><td>bounded</td><td>Style transfers within a half; Qt adds nothing over Chromium this design detects</td></tr>
-    <tr><td>pass</td><td>inconclusive</td><td>Style transfers within a half; Qt over Chromium not resolved</td></tr>
+    <tr><td>pass</td><td>bounded</td><td>Style transfers within a project group; Qt adds nothing over Chromium this design detects</td></tr>
+    <tr><td>pass</td><td>inconclusive</td><td>Style transfers within a project group; Qt over Chromium not resolved</td></tr>
     <tr><td>not pass</td><td>pass</td><td>Qt carries style beyond its projects, against Chromium</td></tr>
     <tr><td>pass</td><td>pass</td><td>Both boundaries carry style in Qt</td></tr>
-    <tr><td>bounded</td><td>bounded</td><td>No transferable style this design detects at either boundary; the federated direction does not proceed assuming one</td></tr>
-    <tr><td>mixed</td><td>not pass</td><td>Style transfers within a half in some cells, not all; read cell by cell</td></tr>
-    <tr><td>pass</td><td>not tested</td><td>Style transfers within a half (H1 alone, if Qt or Chromium is lost)</td></tr>
-    <tr><td>bounded</td><td>not tested</td><td>No within-half transfer this design detects</td></tr>
+    <tr><td>bounded</td><td>bounded</td><td>No transferable style as large as this design detects at either boundary here; the federated direction does not proceed assuming one</td></tr>
+    <tr><td>mixed</td><td>not pass</td><td>Style transfers within a project group in some tests, not all; read test by test</td></tr>
+    <tr><td>pass</td><td>not tested</td><td>Style transfers within a project group (H1 alone: Qt or Chromium lost, or Chromium's pool fails a check)</td></tr>
+    <tr><td>bounded</td><td>not tested</td><td>No within-group transfer this design detects</td></tr>
   </table>
   <p class="note-small">Otherwise: not resolved at this design's sensitivity, upper bounds reported. Mixed: some H1 tests supported, the rest bounded.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -457,7 +457,7 @@
 
 <section id="faq-intefl" class="backup">
   <h2>How does this relate to InteFL?</h2>
-  <p>The Registered Report has no federated learning in it: centralized measurement, one adapter per project half, and no aggregation. The repository also holds early federated code for later steps, and no result from it is claimed here.</p>
+  <p>The Registered Report has no federated learning in it: centralized measurement, one adapter per project group, and no aggregation. The repository also holds early federated code for later steps, and no result from it is claimed here.</p>
   <p>InteFL is the lab's federated framework. Its aggregation and attack work becomes relevant at step two, once there is an adapter to federate.</p>
   <p class="note-small">Which FL stack step two runs on is decided when it starts.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -465,7 +465,7 @@
 
 <section id="faq-lora" class="backup">
   <h2>What is a LoRA adapter?</h2>
-  <p>A small add-on, trained beside a frozen base model, in low-rank adaptation. The study trains one per project half at rank <span data-value="readings.rank"></span> on <span data-value="readings.model"></span>.</p>
+  <p>A small add-on, trained beside a frozen base model, in low-rank adaptation. The study trains one per project group at rank <span data-value="readings.rank"></span> on <span data-value="readings.model"></span>.</p>
   <p>It is the unit a federated step would average: small, trainable at each company, and the part that would be shared instead of raw data.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>

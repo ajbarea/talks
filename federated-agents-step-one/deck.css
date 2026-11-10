@@ -241,6 +241,8 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .dotplot .value.first { font-size: 30px; }
 .dotplot .value { font-size: 24px; fill: var(--label); }
 .dotplot .value.strong { fill: var(--ours-ink); font-size: 30px; }
+/* A white halo keeps labels legible where a gridline crosses them. */
+.dotplot text { paint-order: stroke; stroke: var(--paper); stroke-width: 7px; stroke-linejoin: round; }
 .dotplot .mean { stroke: var(--ours-ink); stroke-width: 4; stroke-dasharray: 10 6; }
 .split-note { display: flex; flex-direction: column; gap: 18px; }
 .split-note p { margin: 0; font-size: 26px; line-height: 1.3; }

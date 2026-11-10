@@ -275,7 +275,7 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .iv.supported { top: 118px; background: var(--fix); box-shadow: inset 0 0 0 3px var(--fix-line); }
 .iv.supported b { color: var(--fix-ink); }
 .iv.bounded { top: 214px; background: var(--neutral); box-shadow: inset 0 0 0 3px var(--neutral-line); }
-.iv.bounded b { color: var(--neutral-ink); }
+.iv.bounded b { color: var(--neutral-ink); padding-right: 0; }
 .iv.unsure { top: 310px; background: var(--hatch); box-shadow: inset 0 0 0 3px var(--risk-line); }
 .iv.unsure b { color: var(--risk-ink); }
 .rule-text { display: flex; flex-direction: column; justify-content: center; gap: 16px; }

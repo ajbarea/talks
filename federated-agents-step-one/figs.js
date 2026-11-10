@@ -60,14 +60,14 @@
   }
 
   el("text", { x: 4, y: 62, class: "row-label first" }, "First reading");
-  el("text", { x: 4, y: 92, class: "row-sub" }, "one split, five seeds");
+  el("text", { x: 4, y: 92, class: "row-sub" }, "1 split, 5 seeds");
   el("line", { x1: x(low), x2: x(high), y1: 76, y2: 76, class: "interval" });
   for (const end of [low, high]) el("line", { x1: x(end), x2: x(end), y1: 62, y2: 90, class: "cap" });
   el("circle", { cx: x(first), cy: 76, r: 15, class: "point first" });
   el("text", { x: x(first), y: 50, class: "value first", "text-anchor": "middle" }, data.split_first);
 
   into = step(1);
-  el("text", { x: 4, y: ROWS_TOP - 6, class: "row-label" }, "Five splits, two seeds each");
+  el("text", { x: 4, y: ROWS_TOP - 6, class: "row-label" }, "5 splits, 2 seeds each");
   names.forEach((name, i) => {
     const y = ROWS_TOP + ROW * i + 26;
     const v = means[name];

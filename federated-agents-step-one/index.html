@@ -118,7 +118,7 @@
         </div>
         <p class="edge-a">H1: does style stay with its own group?</p>
       </div>
-      <p class="edge-b">H2, Qt only: on Qt's code, does Qt's other group beat Chromium?</p>
+      <p class="edge-b">H2, Qt only: on Qt's C++, does Qt's other group teach more than Chromium?</p>
       <div class="org foreign"><b>Chromium, foreign to Qt</b></div>
     </div>
     <div class="boundary-note">
@@ -137,7 +137,7 @@
     <li class="fragment" data-fragment-index="1"><span class="step-no">Step two</span><b>Federate the adapters</b><p>What does the shared part reveal?</p><span class="tag lab">the lab's work applies</span></li>
     <li class="fragment" data-fragment-index="2"><span class="step-no">Step three</span><b>Federated coding agents</b><p>Each company declares what may be shared.</p><span class="tag lab">the lab's work applies</span></li>
   </ol>
-  <p class="under-road fragment" data-fragment-index="1">If step one rules out detectable style at both boundaries, step two does not assume one.</p>
+  <p class="under-road fragment" data-fragment-index="1">If step one rules out detectable style at both the group and organization lines, step two does not assume one.</p>
   <p class="footnote">Adapter: a small add-on trained beside a frozen base model.</p>
   <aside class="notes"><ul><li>Step one: no federated learning at all</li><li>▶ Step two federates the adapters; it waits on step one</li><li>▶ Step three: the agents themselves</li></ul></aside>
 </section>
@@ -204,7 +204,7 @@
   <span class="kicker">4 · The method</span>
   <h2>Two hypotheses, fixed before the test data, compare adapters on the same code</h2>
   <div class="wiring">
-    <div class="wire-fig" role="img" aria-label="Three adapters score the same held-out code. One is trained on the code's own project group, one on the organization's other group, one on Chromium's C++. H1 compares own against other group; H2, on Qt only, compares other group against Chromium.">
+    <div class="wire-fig" role="img" aria-label="Three adapters score the same held-out code. One is trained on the code's own project group, one on the organization's other group, one on as much C++ from Chromium's pool. H1 compares own against other group; H2, on Qt only, compares other group against Chromium.">
       <div class="arm own"><b>Own-group adapter</b><span>trained on the group the test code comes from</span></div>
       <div class="vs" aria-hidden="true">H1: own beats other group</div>
       <div class="arm sib"><b>Other-group adapter</b><span>trained on the same organization's other group</span></div>
@@ -225,13 +225,13 @@
       <span class="zero-mark" style="left:30%"><i>0</i></span>
       <span class="delta-mark" style="left:50%"><i>δ, smallest effect</i></span>
       <div class="iv supported fragment" data-fragment-index="1" style="left:36%; right:18%"><b>supported: above 0</b></div>
-      <div class="iv bounded fragment" data-fragment-index="2" style="left:14%; right:58%"><b>bounded: below δ</b></div>
+      <div class="iv bounded fragment" data-fragment-index="2" style="left:8%; right:60%"><b>bounded: below δ</b></div>
       <div class="iv unsure fragment" data-fragment-index="3" style="left:18%; right:22%"><b>inconclusive: neither</b></div>
     </div>
     <div class="rule-text">
       <p><b>Each bar:</b> one test's confidence interval for the gain: own adapter over the other group's (H1), or the other group's over Chromium's (H2).</p>
       <p><b>Score:</b> log-probability of the developer's real fix, per token.</p>
-      <p><b>δ = <span data-value="readings.delta"></span>:</b> the smallest gain that matters, each token about <span data-value="readings.delta_pct"></span>% more likely.</p>
+      <p><b>δ = <span data-value="readings.delta"></span>:</b> the smallest gain that matters, tokens about <span data-value="readings.delta_pct"></span>% more likely on average.</p>
       <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests are supported:</b> <span data-value="readings.orgs_count"></span> organizations × 2 scores, the whole fix and its non-name part.</p>
     </div>
   </div>
@@ -259,7 +259,7 @@
 
 <section data-chapter="5 · Where it stands">
   <span class="kicker">5 · Where it stands</span>
-  <h2>The pipeline and Gerrit sizing are done; the confirmatory test has not run</h2>
+  <h2>The pipeline and the main study's sizing are done; the confirmatory test has not run</h2>
   <div class="status">
     <div class="done-col">
       <h3>Done</h3>
@@ -274,7 +274,7 @@
       <h3>Still open</h3>
       <ul class="opens">
         <li>Submit, seal and register the plan</li>
-        <li>The GitHub replication's members and sizing</li>
+        <li>The GitHub replication's sizing, members fixed at submission</li>
         <li>Fetch and check the sealed test months</li>
         <li>Every confirmatory run, and the verdicts</li>
       </ul>
@@ -347,7 +347,7 @@
     <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>The shared and private parts, attacked</div>
     <div class="gl-cell" role="cell"><b class="gl-col">Data quality and metadata</b>What is shareable, as checkable metadata</div>
   </div>
-  <div class="before-fl"><b>Help now:</b> label whether each of the 77 OpenStack revisions I already labeled answers its comment, to measure how often two people agree.</div>
+  <div class="before-fl"><b>Help now:</b> for 77 OpenStack review comments I already judged, judge whether the code change that followed answers each one, so we can measure agreement.</div>
   <p class="footnote">Lab work can start from OpenStack or Wikimedia data; the Qt and Chromium data are granted to this study's collector only.</p>
   <aside class="notes"><ul><li>Step two: aggregation, attribution attacks, data-quality weights</li><li>Step three: churn, the deployed split, shareable metadata</li><li>Help now: a second labeler for the same 77 OpenStack examples</li></ul></aside>
 </section>

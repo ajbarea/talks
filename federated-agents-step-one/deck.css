@@ -365,7 +365,8 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .plain td { padding: 14px; border-bottom: 2px solid var(--line); line-height: 1.22; }
 .plain.tight { font-size: 24px; }
 .plain.tight th { font-size: 28px; padding: 6px 12px; }
-.plain.tight td { padding: 7px 12px; }
+.plain.tight td { padding: 5px 12px; line-height: 1.16; }
+.reveal .plain + p { margin-top: 16px; }
 .gl-row small { display: block; margin-top: 4px; font-family: var(--mono); font-weight: 500; font-size: 19px; line-height: 1.2; color: var(--muted); }
 .sources { font-size: 28px; }
 .sources li { margin-bottom: 16px; }

@@ -56,6 +56,7 @@ table.data th { color: inherit; border-bottom: 1px solid var(--line); }
 .rail button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
 html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
   grid-template-columns: fit-content(620px) 424px; }
+html.sideways .reveal .slides section.closing[style*="display: block"] { grid-template-columns: minmax(0, 1fr); }
 .qr-close { width: 424px; }
 
 .title-slide .subtitle { margin: 0; max-width: 34ch; font-size: 1.05em; color: var(--ink); font-weight: 500; }

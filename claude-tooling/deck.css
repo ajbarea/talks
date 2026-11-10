@@ -53,6 +53,7 @@ table.data th { color: inherit; border-bottom: 1px solid var(--line); }
 .rail button[aria-current="step"] .num { color: inherit; }
 html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
   grid-template-columns: fit-content(620px) 424px; }
+html.sideways .reveal .slides section.closing[style*="display: block"] { grid-template-columns: minmax(0, 1fr); }
 .qr-close { width: 424px; }
 
 /* The title: ink on the paper, a thin clay rule, the robot dancing on the right. */
@@ -67,7 +68,7 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 .closing .contact b { font-weight: 700; color: var(--ink); }
 .phone .title-slide h1 { margin-top: 40px; }
 .phone .kicker, .phone .closing .owner { font-size: 0.68em; }
-.phone .title-slide .kicker { line-height: 1.45; }
+.phone .title-slide .kicker { font-size: 0.66em; line-height: 1.45; }
 .phone .reveal h2 { font-size: 1.25em; }
 
 /* The title's robot: an original drawing (not an Anthropic mark) that dances; it stands still under

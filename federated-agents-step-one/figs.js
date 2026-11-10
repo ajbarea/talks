@@ -59,12 +59,12 @@
     el("text", { x: x(t), y: TICK_Y, class: "tick", "text-anchor": "middle" }, t > 0 ? `+${t}` : `${t}`);
   }
 
-  el("text", { x: 4, y: 62, class: "row-label strong" }, "First reading");
+  el("text", { x: 4, y: 62, class: "row-label first" }, "First reading");
   el("text", { x: 4, y: 92, class: "row-sub" }, "one split, five seeds");
   el("line", { x1: x(low), x2: x(high), y1: 76, y2: 76, class: "interval" });
   for (const end of [low, high]) el("line", { x1: x(end), x2: x(end), y1: 62, y2: 90, class: "cap" });
-  el("circle", { cx: x(first), cy: 76, r: 15, class: "point ours" });
-  el("text", { x: x(first), y: 50, class: "value strong", "text-anchor": "middle" }, data.split_first);
+  el("circle", { cx: x(first), cy: 76, r: 15, class: "point first" });
+  el("text", { x: x(first), y: 50, class: "value first", "text-anchor": "middle" }, data.split_first);
 
   into = step(1);
   el("text", { x: 4, y: ROWS_TOP - 6, class: "row-label" }, "Five splits");
@@ -72,8 +72,9 @@
   names.forEach((name, i) => {
     const y = ROWS_TOP + ROW * i + 26;
     const v = means[name];
-    el("text", { x: 30, y: y + 8, class: "row-sub" }, `split ${i + 1}`);
-    el("circle", { cx: x(v), cy: y, r: 14, class: name === "registered" ? "point ours" : "point" });
+    // The first reading's split, re-read on two of its seeds, is named as that split.
+    el("text", { x: 30, y: y + 8, class: "row-sub" }, name === "registered" ? "that split" : `split ${i + 1}`);
+    el("circle", { cx: x(v), cy: y, r: 14, class: "point" });
     el("text", { x: x(v) + 24, y: y + 9, class: "value" }, v > 0 ? `+${v.toFixed(2)}` : v.toFixed(2));
   });
 

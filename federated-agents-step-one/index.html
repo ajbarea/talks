@@ -92,15 +92,15 @@
 
 <section data-contribution data-chapter="1 · The bigger problem">
   <span class="kicker">1 · The bigger problem</span>
-  <h2>Federated coding agents assume a house style exists, so I built the test first</h2>
-  <div class="chain" role="img" aria-label="A chain of four assumptions. The first, that an organization has a house style a model can learn, is untested and is this study; the other three are assumed next and rest on it.">
-    <div class="link first"><span>An organization has a house style a model can learn</span><i>untested: this study</i></div>
+  <h2>Federated coding agents assume a house style exists, so I test that first</h2>
+  <div class="chain" role="img" aria-label="A chain of four assumptions. The first, that an organization has a style a model can learn beyond any one project group, is untested; this study tests it within organizations and on Qt against Chromium. The other three are assumed next and rest on it.">
+    <div class="link first"><span>An organization has a learnable style beyond any one project group</span><i>untested: this study</i></div>
     <div class="link"><span>Federated training can share part of it</span><i>assumed next</i></div>
     <div class="link"><span>The private part stays private</span><i>assumed next</i></div>
     <div class="link"><span>An attacker cannot recover it</span><i>assumed next</i></div>
   </div>
   <div class="claim-pair">
-    <p><b>What I did:</b> Sphragis, <b><span data-value="readings.examples_total"></span> frozen review examples from <span data-value="readings.orgs_count"></span> organizations</b>, and a pass rule written before the test data is fetched.</p>
+    <p><b>What I did:</b> Sphragis, <b><span data-value="readings.examples_total"></span> public review examples from <span data-value="readings.orgs_count"></span> open-source organizations</b>, frozen, and a pass rule written before the test data is fetched.</p>
     <p><b>Why you should care:</b> client design, privacy and attacks all rest on the first link.</p>
   </div>
   <aside class="notes"><ul><li>What I did: <span data-value="readings.examples_total"></span> examples, <span data-value="readings.orgs_count"></span> organizations, a pass rule written first</li><li>Why you care: client, personalization and attack questions rest on link one</li><li>Not tested before, to my knowledge: other projects against a foreign organization</li></ul></aside>
@@ -118,15 +118,15 @@
         </div>
         <p class="edge-a">H1: does style stay with its own group?</p>
       </div>
-      <p class="edge-b">H2, Qt only: does Qt carry style past its projects?</p>
+      <p class="edge-b">H2, Qt only: on Qt's code, does Qt's other group beat Chromium?</p>
       <div class="org foreign"><b>Chromium, foreign to Qt</b></div>
     </div>
     <div class="boundary-note">
       <p>A client can be a project group or a whole organization.</p>
-      <p><b>If style stays with project groups, an organization-level client promises more than it can keep.</b></p>
+      <p><b>If style stays only with project groups, an organization-level client may promise more than it can keep.</b></p>
     </div>
   </div>
-  <aside class="notes"><ul><li>Client = project group or organization: step one measures which</li><li>H1: two groups inside each organization</li><li>H2: the organization line, tested on Qt against Chromium</li></ul></aside>
+  <aside class="notes"><ul><li>Client = project group or organization: step one measures which</li><li>H1: two groups inside each organization</li><li>H2: the organization line, Qt against Chromium only</li></ul></aside>
 </section>
 
 <section data-chapter="2 · The arc">
@@ -137,7 +137,7 @@
     <li class="fragment" data-fragment-index="1"><span class="step-no">Step two</span><b>Federate the adapters</b><p>What does the shared part reveal?</p><span class="tag lab">the lab's work applies</span></li>
     <li class="fragment" data-fragment-index="2"><span class="step-no">Step three</span><b>Federated coding agents</b><p>Each company declares what may be shared.</p><span class="tag lab">the lab's work applies</span></li>
   </ol>
-  <p class="under-road fragment" data-fragment-index="1">No house style to federate until a model can learn one.</p>
+  <p class="under-road fragment" data-fragment-index="1">If step one finds no transferable style, step two does not assume one.</p>
   <p class="footnote">Adapter: a small add-on trained beside a frozen base model.</p>
   <aside class="notes"><ul><li>Step one: no federated learning at all</li><li>▶ Step two federates the adapters; it waits on step one</li><li>▶ Step three: the agents themselves</li></ul></aside>
 </section>
@@ -163,7 +163,7 @@
       <p>Code review is repository data: a comment, the code before, the code after.</p>
     </figure>
   </div>
-  <p class="footnote">Rank: "MSR in ranked A in the CORE ranking" (msrconf.org, read November 9, 2026).</p>
+  <p class="footnote">Rank: CORE A, as stated on msrconf.org (read November 9, 2026).</p>
   <aside class="notes"><ul><li>MSR: <span data-value="venue.place"></span>, <span data-value="venue.when"></span>, beside <span data-value="venue.beside"></span></li><li>Rank A in CORE, by MSR's own site</li><li>Code review is repository data, so this is its home</li></ul></aside>
 </section>
 
@@ -173,7 +173,7 @@
   <div class="stages">
     <div class="stage">
       <span class="stage-no">Stage 1 · the plan</span>
-      <p class="stage-what"><span data-value="venue.pages"></span> pages, no confirmatory results</p>
+      <p class="stage-what"><span data-value="venue.pages"></span> pages: the plan, before the main results</p>
       <p><span data-value="venue.stageOneReviewers"></span> reviewers judge the question and method</p>
       <p class="stage-out"><b>Best outcome:</b> in-principle acceptance</p>
     </div>
@@ -196,13 +196,13 @@
     <figure id="split-fig" class="dotplot"></figure>
     <div class="split-note fragment" data-fragment-index="2"><p><b>A plan written first fixes which splits are read, so no one keeps only the one that worked.</b></p></div>
   </div>
-  <p class="footnote">Exact-match points: extra reviewer fixes matched exactly per 100 comments, on OpenStack's development data. The study's earlier score, since replaced; not a confirmatory result.</p>
+  <p class="footnote">Split: one way to divide an organization's projects into two groups. Exact-match points: extra reviewer fixes matched exactly per 100 comments, OpenStack development data; the study's earlier score, since replaced. Not a confirmatory result.</p>
   <aside class="notes"><ul><li>One split, first reading: <span data-value="readings.split_first"></span>, interval above zero</li><li>▶ Five splits: <span data-value="readings.split_low"></span> to <span data-value="readings.split_high"></span></li><li>▶ Average <span data-value="readings.split_mean"></span>; a plan fixes which splits are read</li></ul></aside>
 </section>
 
 <section data-chapter="4 · The method">
   <span class="kicker">4 · The method</span>
-  <h2>Two hypotheses, fixed before the data, compare adapters on the same test code</h2>
+  <h2>Two hypotheses, fixed before the test data, compare adapters on the same code</h2>
   <div class="wiring">
     <div class="wire-fig" role="img" aria-label="Three adapters score the same held-out code. One is trained on the code's own project group, one on the organization's other group, one on Chromium's C++. H1 compares own against other group; H2, on Qt only, compares other group against Chromium.">
       <div class="arm own"><b>Own-group adapter</b><span>trained on the group the test code comes from</span></div>
@@ -229,13 +229,14 @@
       <div class="iv unsure fragment" data-fragment-index="3" style="left:18%; right:22%"><b>inconclusive: neither</b></div>
     </div>
     <div class="rule-text">
-      <p><b>Score:</b> the probability an adapter gives the developer's real fix, per token.</p>
-      <p><b>δ = <span data-value="readings.delta"></span>:</b> each token about <span data-value="readings.delta_pct"></span>% more likely.</p>
-      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests pass.</b></p>
+      <p><b>Each bar:</b> one test's confidence interval for the gain, own adapter minus the other group's.</p>
+      <p><b>Score:</b> log-probability of the developer's real fix, per token.</p>
+      <p><b>δ = <span data-value="readings.delta"></span>:</b> the smallest gain that matters, each token about <span data-value="readings.delta_pct"></span>% more likely.</p>
+      <p><b>H1 passes only if all <span data-value="readings.h1_cells"></span> tests pass:</b> <span data-value="readings.orgs_count"></span> organizations × 2 scores.</p>
     </div>
   </div>
-  <p class="footnote">Intervals are illustrative. δ is in nats per token; some tests must also clear a calibrated p-value.</p>
-  <aside class="notes"><ul><li>Score per token; δ = <span data-value="readings.delta"></span>, one more exact fix per hundred comments</li><li>▶ supported ▶ bounded ▶ inconclusive</li><li>All <span data-value="readings.h1_cells"></span> H1 tests must pass, or H1 does not</li></ul></aside>
+  <p class="footnote">Intervals are illustrative; δ is in nats per token. Above 0 and below δ counts as supported. Some tests must also clear a calibrated p-value.</p>
+  <aside class="notes"><ul><li>δ = <span data-value="readings.delta"></span>: one more exact fix per hundred comments, carried to the score by a planted-convention rate</li><li>▶ supported ▶ bounded ▶ inconclusive</li><li>All <span data-value="readings.h1_cells"></span> H1 tests must pass, or H1 does not</li></ul></aside>
 </section>
 
 <section data-chapter="5 · Where it stands">
@@ -252,7 +253,7 @@
     <div><b data-value="readings.examples_wikimedia"></b><span>Wikimedia</span></div>
     <div><b data-value="readings.examples_qt"></b><span>Qt</span></div>
   </div>
-  <p class="counts-note">Frozen examples, pilot to development. Also frozen: a GitHub replication family and Chromium's pool.</p>
+  <p class="counts-note">Frozen examples, pilot to development. Also frozen: GitHub organizations for a replication, and Chromium's C++ for H2.</p>
   <aside class="notes"><ul><li>Pilot, train, development: frozen, <span data-value="readings.examples_total"></span> examples</li><li>Test window (<span data-value="readings.window_test"></span>): fetched only after acceptance</li><li>Nothing can be tuned against it</li></ul></aside>
 </section>
 
@@ -264,7 +265,7 @@
       <h3>Done</h3>
       <ul class="checks">
         <li>Open pipeline: review history to frozen examples</li>
-        <li>Three frozen datasets and a GitHub family</li>
+        <li>Three frozen datasets and a GitHub replication set</li>
         <li>Simulations that set each test's runs</li>
         <li>Label audit, with a human check</li>
       </ul>
@@ -273,18 +274,18 @@
       <h3>Still open</h3>
       <ul class="opens">
         <li>Submit, seal and register the plan</li>
-        <li>Final organizations; the GitHub family's sizing</li>
-        <li>Fetch the sealed test months</li>
+        <li>The GitHub replication's members and sizing</li>
+        <li>Fetch and check the sealed test months</li>
         <li>Every confirmatory run, and the verdicts</li>
       </ul>
     </div>
   </div>
-  <aside class="notes"><ul><li>Done: pipeline, frozen data, simulations, label audit</li><li>Open: registration, organizations, test fetch, all confirmatory runs</li><li>The graded part has not happened, on purpose</li></ul></aside>
+  <aside class="notes"><ul><li>Done: pipeline, frozen data, simulations, label audit</li><li>Open: registration, GitHub members, test fetch and checks, all confirmatory runs</li><li>The graded part has not happened, on purpose</li></ul></aside>
 </section>
 
 <section data-chapter="5 · Where it stands">
   <span class="kicker">5 · Where it stands</span>
-  <h2>Development checks show the test finds a planted convention; the real one is untested</h2>
+  <h2>Development checks show the score finds a planted convention; real house style is untested</h2>
   <div class="planted">
     <figure class="planted-fig">
       <figcaption><b><span data-value="readings.planted_found"></span> of <span data-value="readings.planted_total"></span></b> runs found a fake convention I planted in half the training examples</figcaption>
@@ -305,7 +306,7 @@
   <span class="kicker">5 · Where it stands</span>
   <h2>Next: reviewers see the plan, then the sealed months are fetched and run</h2>
   <div class="timeline">
-    <div class="tl-group"><span class="tl-head">Stage 1</span>
+    <div class="tl-group"><span class="tl-head">Stage 1 · 2026 to 2027</span>
       <ul>
         <li><b data-value="venue.dates.abstract"></b>abstract</li>
         <li><b data-value="venue.dates.report"></b>report</li>
@@ -315,10 +316,10 @@
       </ul>
     </div>
     <div class="tl-arrow fragment" data-fragment-index="1" aria-hidden="true">if accepted</div>
-    <div class="tl-group two fragment" data-fragment-index="1"><span class="tl-head">Stage 2</span>
+    <div class="tl-group two fragment" data-fragment-index="1"><span class="tl-head">Stage 2 · 2027</span>
       <ul>
-        <li><b data-value="venue.dates.posted"></b>accepted report posted</li>
-        <li><b>Then</b>fetch the sealed months, run, read the rule</li>
+        <li><b>by <span data-value="venue.dates.posted"></span></b>accepted report posted</li>
+        <li><b>Then</b>fetch the sealed months, run, apply the pass rule</li>
         <li><b data-value="venue.dates.present"></b>present in Dublin</li>
         <li><b data-value="venue.dates.emse"></b>full paper to the journal</li>
       </ul>
@@ -333,22 +334,22 @@
   <span class="kicker">6 · Where you come in</span>
   <h2>The lab's strengths apply most at the federated-learning stages</h2>
   <div class="grid-lab" role="table" aria-label="Where the lab's strengths connect, by area and by step">
-    <div class="gl-head corner" role="columnheader">By area</div>
+    <div class="gl-head corner" role="columnheader">Step × area</div>
     <div class="gl-head" role="columnheader">Aggregation and robustness</div>
     <div class="gl-head" role="columnheader">Attacks on shared adapters</div>
     <div class="gl-head" role="columnheader">Data quality and metadata</div>
-    <div class="gl-row" role="rowheader">Step two</div>
+    <div class="gl-row" role="rowheader">Step two<small>federate adapters</small></div>
     <div class="gl-cell" role="cell"><b class="gl-col">Aggregation and robustness</b>Robust rules for low-rank adapter updates</div>
     <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>Which organization sent this update?</div>
     <div class="gl-cell" role="cell"><b class="gl-col">Data quality and metadata</b>Weight updates by data quality</div>
-    <div class="gl-row" role="rowheader">Step three</div>
+    <div class="gl-row" role="rowheader">Step three<small>federated agents</small></div>
     <div class="gl-cell" role="cell"><b class="gl-col">Aggregation and robustness</b>Companies joining and leaving</div>
-    <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>The shared and private split, attacked</div>
+    <div class="gl-cell" role="cell"><b class="gl-col">Attacks on shared adapters</b>The shared and private parts, attacked</div>
     <div class="gl-cell" role="cell"><b class="gl-col">Data quality and metadata</b>What is shareable, as checkable metadata</div>
   </div>
-  <div class="before-fl"><b>Help now:</b> label the same 77 OpenStack examples on your own, to measure how often two people agree.</div>
-  <p class="footnote">Shared work uses OpenStack examples and released ids; the Qt and Chromium grants name this study's collector.</p>
-  <aside class="notes"><ul><li>Step two: aggregation, attribution attacks, data-quality weights</li><li>Step three: churn, the deployed split, shareable metadata</li><li>Help now: a second labeler for 77 OpenStack examples; dataset metadata</li></ul></aside>
+  <div class="before-fl"><b>Help now:</b> label whether each of the same 77 OpenStack revisions answers its comment, to measure how often two people agree.</div>
+  <p class="footnote">Lab work can start from OpenStack data; the Qt and Chromium data are granted to this study's collector only.</p>
+  <aside class="notes"><ul><li>Step two: aggregation, attribution attacks, data-quality weights</li><li>Step three: churn, the deployed split, shareable metadata</li><li>Help now: a second labeler for the same 77 OpenStack examples</li></ul></aside>
 </section>
 
 <section data-conclusion>
@@ -361,7 +362,7 @@
   <div class="open">
     <p class="open-h">Still open</p>
     <ul>
-      <li>Whether house style exists at either boundary</li>
+      <li>Whether house style transfers at the project-group or organization level</li>
       <li>What the shared part of a federated adapter reveals</li>
     </ul>
   </div>
@@ -410,29 +411,32 @@
 
 <section id="faq-null" class="backup">
   <h2>What happens if the result is null?</h2>
-  <table class="plain">
+  <table class="plain tight">
     <tr><th>H1</th><th>H2</th><th>Registered reading</th></tr>
     <tr><td>pass</td><td>bounded</td><td>Style transfers within a half; Qt adds nothing over Chromium this design detects</td></tr>
-    <tr><td>pass</td><td>inconclusive</td><td>Style transfers within a half; whether Qt adds anything over Chromium is not resolved</td></tr>
+    <tr><td>pass</td><td>inconclusive</td><td>Style transfers within a half; Qt over Chromium not resolved</td></tr>
     <tr><td>not pass</td><td>pass</td><td>Qt carries style beyond its projects, against Chromium</td></tr>
     <tr><td>pass</td><td>pass</td><td>Both boundaries carry style in Qt</td></tr>
-    <tr><td>bounded</td><td>bounded</td><td>No transferable style as large as this design detects at either boundary; the federated direction does not proceed assuming one exists</td></tr>
+    <tr><td>bounded</td><td>bounded</td><td>No transferable style this design detects at either boundary; the federated direction does not proceed assuming one</td></tr>
+    <tr><td>mixed</td><td>not pass</td><td>Style transfers within a half in some cells, not all; read cell by cell</td></tr>
+    <tr><td>pass</td><td>not tested</td><td>Style transfers within a half (H1 alone, if Qt or Chromium is lost)</td></tr>
+    <tr><td>bounded</td><td>not tested</td><td>No within-half transfer this design detects</td></tr>
   </table>
-  <p class="note-small">Any other combination reads as not resolved at this design's sensitivity, with upper bounds reported. Negative results are welcome at Stage 2.</p>
+  <p class="note-small">Otherwise: not resolved at this design's sensitivity, upper bounds reported. Mixed: some H1 tests supported, the rest bounded.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 <section id="faq-sizing" class="backup">
   <h2>How small an effect can each test detect?</h2>
   <table class="plain">
-    <tr><th>Test</th><th>Runs</th><th>Smallest detectable, whole fix</th><th>Without names</th></tr>
+    <tr><th>Test</th><th>Runs</th><th>Detects, whole fix</th><th>Without names</th></tr>
     <tr><td>OpenStack, H1</td><td data-value="readings.k_openstack"></td><td data-value="readings.mde_openstack"></td><td data-value="readings.mde_openstack_other"></td></tr>
     <tr><td>Wikimedia, H1</td><td data-value="readings.k_wikimedia"></td><td data-value="readings.mde_wikimedia"></td><td data-value="readings.mde_wikimedia_other"></td></tr>
     <tr><td>Qt, H1</td><td data-value="readings.k_qt"></td><td data-value="readings.mde_qt"></td><td data-value="readings.mde_qt_other"></td></tr>
-    <tr><td>Qt against Chromium, H2</td><td data-value="readings.k_h2"></td><td data-value="readings.mde_h2"></td><td>secondary only</td></tr>
+    <tr><td>Qt vs Chromium, H2</td><td data-value="readings.k_h2"></td><td data-value="readings.mde_h2"></td><td>not sized; qualifies H2's reading</td></tr>
   </table>
   <p>Every value lies below δ = <span data-value="readings.delta"></span>, the smallest effect that matters, so the planned sample suffices.</p>
-  <p class="note-small">Nats per token, from simulations of each test as the pass rule reads it, at its planned test size and a pessimistic run-to-run spread, on the 97.5% interval. A sensitivity analysis, not a result.</p>
+  <p class="note-small">Nats per token, simulated as the pass rule reads each test, at a pessimistic run-to-run spread and the 97.5% interval; power 99.1% per H1 test (95% jointly), 95% for H2. Sizing, not a result.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
@@ -462,7 +466,7 @@
 <section id="faq-lora" class="backup">
   <h2>What is a LoRA adapter?</h2>
   <p>A small add-on, trained beside a frozen base model, in low-rank adaptation. The study trains one per project half at rank <span data-value="readings.rank"></span> on <span data-value="readings.model"></span>.</p>
-  <p>It is the unit a federated step would average: small, trainable at each company, and the only thing that could travel.</p>
+  <p>It is the unit a federated step would average: small, trainable at each company, and the part that would be shared instead of raw data.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 

@@ -1,86 +1,208 @@
-/* ------------------------------------------------------------ claude duet -- */
-/* Presented in a lit room, so every slide stays on the light paper, title and close included. */
-
-.lead { margin: 12px 0 0; font-size: 0.66em; max-width: 80ch; color: var(--muted); }
-.qr-follow .qr-code, .qr-close .qr-code { outline: 1px solid var(--line); }
-.tag {
-  display: inline-block; padding: 4px 12px; border: 1px solid var(--muted); border-radius: 2px;
-  font-size: 0.7em; font-weight: 700; color: var(--muted);
+/* ------------------------------------------------------------ claude tooling -- */
+/* Calm and editorial, in the spirit of Claude's own products: warm off-white paper, near-black warm ink, soft neutral surfaces with thin borders, a serif for titles, and clay used sparingly. */
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("fonts/source-serif-4-latin-wght-normal.woff2") format("woff2");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: block;
+}
+:root {
+  --paper: #faf9f5; --ink: #141413; --muted: #3d3d3a; --label: #3d3d3a; --limit: var(--risk-ink);
+  --card: #ffffff; --line: #807f78; --band: #e8e6dc;
+  --clay: #c6613f; --clay-soft: #d97757; --clay-ink: #7a3319;
+  --mark: #3d3d3a; --mark-ours: var(--clay); --mark-rival: #807f78; --frame: #5e5d59;
+  --sans: system-ui, "Segoe UI", Calibri, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, Consolas, "SF Mono", Menlo, monospace;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif; --display-sc: var(--sans);
+  /* The role names the shared styles read: clay for AJ's pick, plum for a limit, blue for a yes or a folder chosen, grey for the rest. */
+  --ours: var(--clay); --ours-line: var(--clay-ink); --ours-ink: var(--clay-ink); --ours-tint: #f5e4d9;
+  --risk: #6e3f69; --risk-line: #6e3f69; --risk-ink: #5c3457; --risk-tint: #f0e5ee;
+  --fix: #6a9bcc; --fix-line: #3d6a96; --fix-ink: #244668; --fix-tint: #e3edf6;
+  --neutral: #c8c6bc; --neutral-line: #5e5d59; --neutral-ink: #3d3d3a; --neutral-tint: var(--band);
 }
 
-/* The mark: Hermes, the messenger who travels between places, as the apps carry work between
-   the places it lives. */
+/* The shared base rules, as this talk set them before the common look. */
+.reveal h1, .reveal h2, .reveal h3 { margin: 0 0 18px; font-weight: 500; line-height: 1.16; letter-spacing: -0.01em; color: var(--ink); }
+.reveal h1 { font-size: 2.1em; }
+.reveal h2 { font-size: 1.36em; margin: 0 0 16px; }
+.reveal a { color: var(--ink); text-decoration: underline; }
+.kicker { margin: 0 0 6px; font-size: 0.64em; font-weight: 600; letter-spacing: 0.01em; color: var(--muted); }
+.kicker .num { margin: 0; padding: 0; border: 0; color: inherit; }
+.kicker .num::after { content: " \00B7"; }
+.closing h2 { font-size: 1.6em; }
+.title-slide h1::after, .closing h2::after { content: ""; display: block; width: 96px; height: 2px; margin-top: 22px; background: var(--clay); }
+.divider h2, .discussion h2, .faq-index h2 { margin: 0; color: var(--muted); }
+.discussion h2 { margin-top: 150px; }
+.divider h2::after { background: var(--clay); height: 2px; }
+.card { border-radius: 10px; }
+.steps li { border: 1px solid var(--line); border-radius: 8px; }
+.steps li::before { font-size: 1.4em; font-weight: 600; color: var(--muted); }
+table.data th { color: inherit; border-bottom: 1px solid var(--line); }
+.figure .accent { fill: var(--clay); }
+.agenda .num { display: inline; min-width: 0; color: inherit; }
+.agenda .num::after { content: " \00B7"; }
+/* The rail: quiet text tabs, with a thin clay line under the current chapter. */
+.rail { gap: 26px; }
+.rail button { padding: 6px 2px 5px; font: 500 18px var(--sans); letter-spacing: 0; color: var(--muted); background: none; border: 0; border-bottom: 2px solid transparent; border-radius: 0; }
+.rail button .num { margin-right: 0; color: inherit; }
+.rail button .num::after { content: " \00B7"; }
+.rail button:hover { color: var(--ink); }
+.rail button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.rail button[aria-current="step"] { color: var(--ink); background: none; border-bottom-color: var(--clay); }
+.rail button[aria-current="step"] .num { color: inherit; }
+html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
+  grid-template-columns: fit-content(620px) 424px; }
+html.sideways .reveal .slides section.closing[style*="display: block"] { grid-template-columns: minmax(0, 1fr); }
+.qr-close { width: 424px; }
+
+/* The title: ink on the paper, a thin clay rule, the robot dancing on the right. */
+.title-slide .kicker { display: block; margin: 0; font-size: 0.66em; font-weight: 500; color: var(--muted); }
+.title-slide h1 { margin: 110px 0 18px; font-size: 2.5em; line-height: 1.12; max-width: 14ch; }
+.title-slide .subtitle { margin: 24px 0 0; max-width: 27ch; font-size: 0.92em; color: var(--muted); }
+.title-slide .when { margin-top: 16px; font-size: 0.76em; color: var(--muted); }
+.closing .asks { margin: 6px 0 18px; font-size: 0.9em; }
+[data-conclusion] .tile .num { font-size: 1.75em; white-space: nowrap; }
+.tile.ours .num { color: var(--ours-ink); }
+.closing .contact { margin: 6px 0 0; font-size: 0.84em; color: var(--muted); }
+.closing .contact b { font-weight: 700; color: var(--ink); }
+.phone .title-slide h1 { margin-top: 40px; }
+.phone .kicker, .phone .closing .owner { font-size: 0.68em; }
+.phone .title-slide .kicker { font-size: 0.66em; line-height: 1.45; }
+.phone .reveal h2 { font-size: 1.25em; }
+
+/* The title's robot: an original drawing (not an Anthropic mark) that dances; it stands still under
+   reduced motion, where deck.css stops every animation. Origins are in the drawing's own units. */
+.robot { position: absolute; right: 90px; top: 70px; width: 300px; height: auto; overflow: visible; }
+.robot * { transform-box: view-box; }
+.robot .glow { fill: var(--band); stroke: var(--line); stroke-width: 1.5; }
+.robot .shadow { fill: var(--line); transform-origin: 130px 324px; }
+.robot .note { fill: var(--clay-ink); opacity: 0.85; }
+.robot .body, .robot .skull { fill: var(--clay-soft); stroke: var(--clay-ink); stroke-width: 2.5; }
+.robot .leg rect, .robot .arm rect { fill: var(--clay); stroke: var(--clay-ink); stroke-width: 2.5; }
+.robot .arm circle { fill: var(--clay-soft); stroke: var(--clay-ink); stroke-width: 2.5; }
+.robot .panel { fill: var(--paper); stroke: var(--clay-ink); stroke-width: 2.5; }
+.robot .light { fill: var(--card); stroke: var(--clay-ink); stroke-width: 2; }
+.robot .light.b { fill: var(--clay-soft); }
+.robot .face { fill: var(--ink); }
+.robot .eye { fill: var(--paper); transform-box: fill-box; transform-origin: center; }
+.robot .smile { fill: none; stroke: var(--paper); stroke-width: 5; stroke-linecap: round; }
+.robot .stalk { stroke: var(--clay-ink); stroke-width: 5; stroke-linecap: round; }
+.robot .bulb { fill: var(--clay-soft); stroke: var(--clay-ink); stroke-width: 2.5; transform-box: fill-box; transform-origin: center; }
+.robot .bot { transform-origin: 130px 310px; animation: r-groove 1.1s ease-in-out infinite alternate; }
+.robot .head { transform-origin: 130px 144px; animation: r-nod 0.55s ease-in-out infinite alternate; }
+.robot .arm.l { transform-origin: 86px 169px; animation: r-arm-l 0.55s ease-in-out infinite alternate; }
+.robot .arm.r { transform-origin: 174px 169px; animation: r-arm-r 0.55s ease-in-out infinite alternate-reverse; }
+.robot .leg.l { animation: r-step 0.55s ease-in-out infinite alternate; }
+.robot .leg.r { animation: r-step 0.55s ease-in-out infinite alternate-reverse; }
+.robot .shadow { animation: r-shadow 1.1s ease-in-out infinite alternate; }
+.robot .bulb { animation: r-pulse 0.55s ease-in-out infinite alternate; }
+.robot .eye { animation: r-blink 3.2s infinite; }
+.robot .note { animation: r-float 2.2s ease-out infinite; }
+.robot .note.n2 { animation-delay: 0.7s; }
+.robot .note.n3 { animation-delay: 1.4s; }
+@keyframes r-groove {
+  0% { transform: translateX(-10px) rotate(-5deg); }
+  50% { transform: translateY(-14px); }
+  100% { transform: translateX(10px) rotate(5deg); }
+}
+@keyframes r-nod { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+@keyframes r-arm-l { from { transform: rotate(-10deg); } to { transform: rotate(45deg); } }
+@keyframes r-arm-r { from { transform: rotate(10deg); } to { transform: rotate(-45deg); } }
+@keyframes r-step { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+@keyframes r-shadow { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.8); } }
+@keyframes r-pulse { from { transform: scale(0.85); } to { transform: scale(1.15); } }
+@keyframes r-blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
+@keyframes r-float { 0% { transform: translateY(10px); opacity: 0; } 30% { opacity: 0.85; } 100% { transform: translateY(-34px); opacity: 0; } }
+
+.lead { margin: 12px 0 0; font-size: 0.66em; max-width: 80ch; color: var(--muted); }
+.qr-follow .qr-code, .qr-close .qr-code { outline: 2px solid var(--line); }
+.tag { display: inline-block; font-size: 0.7em; font-weight: 600; color: var(--muted); }
+
+/* Each app's own icon beside its name, in its true colours and proportions, with clear space around it. */
+.brand { display: inline-block; width: 1em; height: 1em; margin: 0 0.4em 0 0; vertical-align: -0.16em; }
+.places .app .brand, .which .brand { width: 1.3em; height: 1.3em; vertical-align: -0.32em; }
+.closing .owner { margin-top: 18px; font-size: 0.64em; }
 
 /* Icons for the five places, drawn once in a sprite and reused with <use>. */
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .ico { fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 
 /* The map: five places, one app each, in launch order. */
-.places { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin: 30px 0 0; padding: 0; list-style: none; }
-.places li { display: flex; flex-direction: column; align-items: center; padding: 30px 10px 26px; border-radius: 3px; background: var(--card);
-  border: 1px solid var(--line); text-align: center; color: var(--label); }
-.places .ico { width: 84px; height: 84px; }
-.places b { margin-top: 14px; font-size: 0.86em; font-weight: 700; color: var(--ink); }
+.places { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin: 14px 0 0; padding: 0; list-style: none; }
+.places li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px 18px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  text-align: center;
+  color: var(--muted);
+}
+.places .ico { width: 72px; height: 72px; }
+.places b { margin-top: 14px; font-size: 0.86em; font-weight: 600; color: var(--ink); }
 .places .to { margin: 10px 0; font-size: 0.86em; color: var(--muted); }
-.places .app { padding: 6px 14px; border-radius: 2px; background: var(--band); font-size: 0.76em; font-weight: 700; color: var(--label); }
-.places li.fav { border: 3px solid var(--ink); color: var(--ink); }
-.places li.fav .app { background: var(--ink); color: var(--paper); }
-.mine { margin: 30px 0 0; padding: 16px 22px; border-left: 5px solid var(--ours-line); background: var(--card); border-radius: 0 3px 3px 0; font-size: 0.8em; max-width: 66ch; }
-.mine b { color: var(--ours-ink); }
-.mine.care { margin-top: 14px; border-left-color: var(--neutral-line); }
-.mine b.care { color: var(--neutral-ink); }
+.places .app { font-size: 0.76em; font-weight: 500; color: var(--muted); }
+/* The pick reads by its thicker clay border and bold name, not by colour alone. */
+.places li.fav { border: 2px solid var(--clay); color: var(--clay-ink); }
+.places li.fav b { font-weight: 700; }
+.places li.fav .app { font-weight: 700; color: var(--clay-ink); }
+.mine { margin: 14px 0 0; padding: 4px 18px; border-left: 2px solid var(--clay); font-size: 0.8em; max-width: 66ch; }
+.mine b { color: var(--ink); }
+.mine.care { margin-top: 10px; border-left-color: var(--line); }
+.mine b.care { color: var(--ink); }
 .relmap.wide .axis-label { font-size: 18px; }
 
 /* One slide per app, all one shape: where it sits on the map, a picture, then what it does, one use, one limit. */
-.strip { display: flex; gap: 8px; margin: 0 0 18px; padding: 0; list-style: none; }
-.strip li { flex: 1; padding: 5px 8px; border-radius: 2px; background: var(--band); font-size: 0.64em; font-weight: 600; text-align: center; color: var(--muted); }
-.strip li.on { background: var(--ink); color: var(--paper); }
+.strip { display: flex; gap: 8px; margin: 0 0 12px; padding: 0; list-style: none; }
+.strip li { flex: 1; padding: 5px 8px 6px; font-size: 0.64em; font-weight: 500; text-align: center; color: var(--muted); border-bottom: 1px solid var(--line); }
+.strip li.on { font-weight: 700; color: var(--ink); border-bottom: 2px solid var(--clay); }
 .app-body { display: grid; grid-template-columns: 500px 1fr; gap: 30px; align-items: start; }
-.scene { margin: 0; padding: 18px; border-radius: 3px; background: var(--band); }
+.scene { margin: 0; padding: 18px; border-radius: 12px; background: var(--band); border: 1px solid var(--line); }
 .scene > small, .scene small { display: block; margin-top: 8px; font-size: 0.64em; color: var(--muted); }
 .facts { margin: 0; display: grid; gap: 12px; }
-.facts > div { padding: 10px 16px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); }
-.facts dt { font-size: 0.74em; font-weight: 700; color: var(--label); }
+.facts > div { padding: 10px 16px; border-radius: 8px; background: var(--card); border: 1px solid var(--line); }
+.facts dt { font-size: 0.72em; font-weight: 700; color: var(--muted); letter-spacing: 0.02em; }
 .facts dd { margin: 2px 0 0; font-size: 0.74em; line-height: 1.32; }
-.facts .use { border-left: 5px solid var(--neutral-line); }
-.facts .use.ours { border-left-color: var(--ours-line); background: var(--ours-tint); }
+.facts .use.ours { border-left: 3px solid var(--clay); }
 .facts .use.ours dt { color: var(--ours-ink); }
-.facts .lim { border-left: 5px solid var(--risk-line); }
-.facts .lim dt { color: var(--risk-ink); }
+.facts .lim dt { color: var(--limit); }
 
 /* Claude chat: one exchange. */
 .chat-scene p { margin: 0 0 12px; padding: 12px 16px; border-radius: 14px; font-size: 0.7em; line-height: 1.32; max-width: 88%; }
-.chat-scene .me { margin-left: auto; background: var(--ink); color: var(--paper); border-bottom-right-radius: 3px; }
-.chat-scene .bot { background: var(--card); border: 1px solid var(--line); border-bottom-left-radius: 3px; }
+.chat-scene .me { margin-left: auto; background: var(--card); border: 1px solid var(--line); border-bottom-right-radius: 3px; }
+.chat-scene .bot { background: var(--paper); border: 1px solid var(--line); border-bottom-left-radius: 3px; }
 
 /* Claude Desktop: one window, three tabs, and only the folders you chose. */
-.desk-scene .win { border-radius: 3px; background: var(--card); border: 1px solid var(--line); overflow: hidden; }
-.desk-scene .bar { display: flex; align-items: center; gap: 6px; margin: 0; padding: 8px 12px; background: var(--ink); color: var(--paper); font-size: 0.64em; font-weight: 700; }
-.desk-scene .bar span { width: 12px; height: 12px; border-radius: 50%; background: var(--line); }
+.desk-scene .win { border-radius: 10px; background: var(--card); border: 1px solid var(--line); overflow: hidden; }
+.desk-scene .bar { display: flex; align-items: center; gap: 6px; margin: 0; padding: 8px 12px; background: var(--paper); border-bottom: 1px solid var(--line); color: var(--ink); font-size: 0.64em; font-weight: 600; }
+.desk-scene .bar span { width: 11px; height: 11px; border-radius: 50%; background: var(--line); }
 .desk-scene .bar span:last-of-type { margin-right: 8px; }
 .desk-scene .tabs { display: flex; gap: 8px; margin: 0; padding: 12px; }
-.desk-scene .tabs span { flex: 1; padding: 8px 0; border-radius: 2px; background: var(--band); text-align: center; font-size: 0.68em; font-weight: 700; color: var(--label); }
-.desk-scene .link { width: 4px; height: 22px; margin: 0 auto; background: var(--mark); transform-origin: 50% 0; }
+.desk-scene .tabs span { flex: 1; padding: 7px 0; border-radius: 6px; background: var(--paper); border: 1px solid var(--line); text-align: center; font-size: 0.68em; font-weight: 600; color: var(--muted); }
+.desk-scene .link { width: 4px; height: 22px; margin: 0 auto; background: var(--fix-line); transform-origin: 50% 0; }
 .desk-scene .folders { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; padding: 0; list-style: none; }
-.desk-scene .folders li { padding: 10px 8px; border-radius: 2px; font: 600 0.66em/1.2 var(--mono); text-align: center; }
-.desk-scene .folders .ok { background: var(--neutral-tint); color: var(--neutral-ink); border: 2px solid var(--neutral-line); }
-.desk-scene .folders .no { background: var(--card); color: var(--muted); border: 2px dashed var(--line); font-family: var(--sans); }
+.desk-scene .folders li { padding: 10px 8px; border-radius: 6px; font: 600 0.66em/1.2 var(--mono); text-align: center; }
+.desk-scene .folders .ok { background: var(--fix-tint); color: var(--fix-ink); border: 2px solid var(--fix-line); }
+.desk-scene .folders .no { background: var(--paper); color: var(--muted); border: 1.5px dashed var(--line); font-family: var(--sans); }
 
 /* Claude Code: the two commands, and the memory one change saved. */
-.mini-term { margin: 0; padding: 14px 18px; border-radius: 3px; background: var(--ink); color: var(--paper); font: 0.72em/1.5 var(--mono); }
-.memfig { margin-top: 14px; padding: 12px 16px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); }
-.memfig .cap { margin: 0; font-size: 0.64em; font-weight: 700; color: var(--label); }
+.mini-term { margin: 0; padding: 14px 18px; border-radius: 10px; background: var(--card); color: var(--ink); border: 1px solid var(--line); font: 600 0.72em/1.5 var(--mono); }
+.memfig { margin-top: 14px; padding: 12px 16px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); }
+.memfig .cap { margin: 0; font-size: 0.64em; font-weight: 600; color: var(--muted); }
 .memfig .check { margin: 4px 0 0; font-size: 0.66em; color: var(--muted); }
 
 /* Claude Science: data to code to figure, with the reviewer alongside. */
-.sci-scene .step { margin: 0; padding: 10px 14px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); font-size: 0.66em; color: var(--muted); }
+.sci-scene .step { margin: 0; padding: 10px 14px; border-radius: 8px; background: var(--card); border: 1px solid var(--line); font-size: 0.66em; color: var(--muted); }
 .sci-scene .step b { display: block; font-size: 1.08em; color: var(--ink); }
-.sci-scene .step.out { border: 2px solid var(--fix-line); }
-.sci-scene .down { margin: 2px 0; text-align: center; font-size: 0.7em; line-height: 1; color: var(--mark); }
-.sci-scene .rev { margin: 12px 0 0; padding: 8px 14px; border-radius: 2px; background: var(--neutral-tint); border: 1px solid var(--neutral-line); font-size: 0.66em; font-weight: 700; color: var(--neutral-ink); text-align: center; }
+.sci-scene .step.out { border: 2px solid var(--ink); }
+.sci-scene .down { margin: 2px 0; text-align: center; font-size: 0.7em; line-height: 1; color: var(--muted); }
+.sci-scene .rev { margin: 12px 0 0; padding: 8px 14px; border-radius: 8px; background: var(--paper); font-size: 0.66em; font-weight: 600; color: var(--ink); text-align: center; border: 1px dashed var(--line); }
 
 /* Claude Duet: the real card. */
-.duet-scene img { display: block; width: 100%; height: auto; border-radius: 3px; }
+.duet-scene img { display: block; width: 100%; height: auto; border-radius: 8px; }
 .duet-scene .card-text { display: none; }
 .phone .duet-scene img { display: none; }
 .phone .duet-scene .card-text { display: block; margin: 0; padding: 12px 14px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); font-size: 0.76em; line-height: 1.35; }
@@ -88,24 +210,26 @@
 
 /* Which app for which job. */
 .which { width: 100%; margin-top: 22px; border-collapse: collapse; font-size: 0.84em; }
-.which th { padding: 10px 16px; text-align: left; font-size: 0.86em; color: var(--label); border-bottom: 2px solid var(--ink); }
+.which th { padding: 10px 16px; text-align: left; font-size: 0.8em; font-weight: 600; color: var(--muted); border-bottom: 1px solid var(--line); }
 .which td { padding: 16px 16px; border-bottom: 1px solid var(--line); }
 .which td:nth-child(2) { color: var(--muted); }
-.which td:nth-child(2) .ico { width: 36px; height: 36px; margin-right: 12px; vertical-align: middle; color: var(--label); }
-.which td:last-child { font-weight: 700; }
-.which tr.fav td { background: var(--card); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
-.which tr.fav td:first-child { border-left: 6px solid var(--ink); }
-.which tr.fav td:last-child, .which tr.fav .ico { color: var(--ink); }
+.which td:nth-child(2) .ico { width: 36px; height: 36px; margin-right: 12px; vertical-align: middle; color: var(--muted); }
+.which td:last-child { font-weight: 600; }
+.which tr.fav td { background: var(--band); font-weight: 700; }
+.which tr.fav td:first-child { border-left: 3px solid var(--clay); }
+.which tr.fav td:nth-child(2) { color: var(--ink); }
+.which tr.fav td:last-child { color: var(--clay-ink); }
+.which tr.fav .ico { color: var(--clay-ink); }
 
 /* My favorite: the three lab changes, by name. */
 .prs { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 0; padding: 0; list-style: none; }
-.prs li { padding: 6px 14px; border-radius: 2px; background: var(--ours-tint); border: 1px solid var(--ours-line); font: 600 0.64em/1.3 var(--mono); color: var(--ours-ink); }
+.prs li { padding: 3px 9px; border-radius: 4px; background: var(--paper); border: 1px solid var(--line); font: 500 0.64em/1.3 var(--mono); color: var(--muted); }
 
 /* Try one: a first step per app, then Claude Code's four. */
 .firsts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; }
-.firsts li { padding: 12px 16px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); font-size: 0.74em; line-height: 1.3; }
-.firsts b { display: block; margin-bottom: 2px; font-size: 1.08em; color: var(--label); }
-.code-start { margin-top: 22px; }
+.firsts li { padding: 12px 16px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); font-size: 0.74em; line-height: 1.3; }
+.firsts b { display: block; margin-bottom: 2px; font-size: 1.08em; color: var(--ink); }
+.code-start { margin-top: 22px; padding: 16px 20px 20px; border-radius: 12px; border: 1px solid var(--line); background: var(--band); }
 .code-start .steps4 { margin-top: 0; gap: 18px; }
 .code-start .steps4 li { padding: 64px 18px 20px; font-size: 0.76em; }
 .code-start .install { margin-top: 28px; }
@@ -118,27 +242,34 @@
 .need th, .need td { padding: 9px 14px; border-bottom: 1px solid var(--line); text-align: left; }
 .need th { color: var(--label); }
 .need td.y, .need td.n, .need td.p { text-align: center; font-weight: 700; width: 180px; }
-.need th:nth-child(4), .need td:nth-child(4) { background: var(--card); }
+.need th:nth-child(4), .need td:nth-child(4) { background: var(--band); }
 .need td.y { color: var(--fix-ink); }
-.need td.n { color: var(--risk-ink); }
+.need td.n { color: var(--limit); }
 .need td.p { color: var(--muted); }
-.need .mark { display: inline-block; width: 26px; height: 26px; border-radius: 50%; line-height: 26px; text-align: center; margin-right: 6px; }
-.need td.y .mark { background: var(--fix-tint); }
-.need td.n .mark { background: var(--risk-tint); }
+.need .mark { display: inline-block; box-sizing: border-box; width: 26px; height: 26px; border: 2px solid var(--line); border-radius: 50%; line-height: 22px; text-align: center; margin-right: 6px; }
+.need td.y .mark { background: var(--fix-tint); border-color: var(--fix-line); }
+.need td.n .mark { background: var(--risk-tint); border-color: var(--limit); }
 .need td.p .mark { background: var(--band); }
 
 /* Claude Code: the session in the middle, what extends it around the edge. */
 .hubfig { display: grid; grid-template-columns: 1fr 360px 1fr; grid-auto-rows: auto; grid-auto-flow: row dense; gap: 12px 22px; margin-top: 16px; align-items: center; }
 .hubfig .core {
-  grid-column: 2; grid-row: 1 / span 4; padding: 22px; border-radius: 3px; background: var(--card); color: var(--ink); border: 3px solid var(--ink);
-  font-size: 0.78em; text-align: center;
+  grid-column: 2;
+  grid-row: 1 / span 4;
+  padding: 22px;
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--ink);
+  border: 2px solid var(--clay);
+  font-size: 0.78em;
+  text-align: center;
 }
-.hubfig .core b { display: block; color: var(--ink); font-size: 1.2em; margin-bottom: 8px; }
-.hubfig .core code { display: block; white-space: pre; margin-top: 12px; padding: 8px; border-radius: 3px; background: var(--ink); color: var(--paper); font-size: 0.9em; text-align: left; }
-.hubfig .ext { padding: 10px 14px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); font-size: 0.72em; }
-.hubfig .ext b { display: block; color: var(--label); font-size: 1.1em; }
-.hubfig .ext.l { grid-column: 1; border-right: 5px solid var(--mark); }
-.hubfig .ext.r { grid-column: 3; border-left: 5px solid var(--mark); }
+.hubfig .core b { display: block; font-size: 1.2em; margin-bottom: 8px; }
+.hubfig .core code { display: block; white-space: pre; margin-top: 12px; padding: 8px; border-radius: 6px; background: var(--paper); color: var(--ink); border: 1px solid var(--line); font-size: 0.9em; text-align: left; }
+.hubfig .ext { padding: 10px 14px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); font-size: 0.72em; }
+.hubfig .ext b { display: block; color: var(--ink); font-size: 1.1em; }
+.hubfig .ext.l { grid-column: 1; }
+.hubfig .ext.r { grid-column: 3; }
 
 /* This week's evidence: four panels, each with its own check. */
 .week { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px 22px; margin-top: 14px; }
@@ -148,43 +279,42 @@
 .week b { font-size: 0.96em; }
 .week .card .check { margin-top: 10px; font-size: 0.7em; color: var(--muted); }
 .membar { display: grid; grid-template-columns: 90px 1fr; gap: 6px 10px; align-items: center; margin: 8px 0 4px; font-size: 0.64em; }
-.membar .bar { height: 18px; border-radius: 2px; background: var(--risk); transform-origin: 0 50%; }
-.membar .bar.after { background: var(--fix); min-width: 4px; }
+.membar .bar { height: 18px; border-radius: 3px; background: var(--mark-rival); transform-origin: 0 50%; }
+.membar .bar.after { background: var(--mark-ours); min-width: 4px; }
 .membar .bar span { display: block; }
 
 /* The demo: one exchange, in three steps. */
-.term { margin-top: 16px; padding: 16px 20px; border-radius: 3px; background: var(--ink); color: var(--paper); font: 0.64em/1.4 var(--mono); }
+.term { margin-top: 16px; padding: 16px 20px; border-radius: 10px; background: var(--card); color: var(--ink); border: 1px solid var(--line); font: 500 0.64em/1.4 var(--mono); }
 .term p { margin: 0 0 10px; }
-.term .you { color: #f2c66d; }
-.term .tool { color: #9fd3f2; }
-.term .no { color: #f6b8a2; }
-.term .ok { color: #7fd8b8; }
+.term .you { color: var(--ink); font-weight: 700; }
+.term .tool { color: var(--muted); }
+.term .no { color: var(--limit); font-weight: 700; }
+.term .ok { color: var(--ink); font-weight: 700; }
 .term b { font-weight: 700; }
 .demo { display: grid; grid-template-columns: 0.7fr 1.6fr; gap: 26px; align-items: start; }
-.hookfile { min-width: 0; margin: 16px 0 0; padding: 14px 16px; border-radius: 3px; background: var(--card); border: 2px solid var(--neutral-line); }
-.hookfile figcaption { font-size: 0.64em; font-weight: 700; color: var(--label); }
+.hookfile { min-width: 0; margin: 16px 0 0; padding: 14px 16px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); }
+.hookfile figcaption { font-size: 0.64em; font-weight: 600; color: var(--muted); }
 .hookfile pre { margin: 8px 0 0; font-size: 0.64em; line-height: 1.4; white-space: pre-wrap; overflow-wrap: anywhere; }
 .hookfile.copy pre { white-space: pre-wrap; overflow-wrap: normal; word-break: normal; }
 
 /* Getting started: four steps. */
 .steps4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin: 22px 0 0; padding: 0; list-style: none; counter-reset: s; }
-.steps4 li { position: relative; padding: 52px 16px 16px; border-radius: 3px; background: var(--card); border: 1px solid var(--line); border-top: 5px solid var(--ink); font-size: 0.68em; counter-increment: s; }
+.steps4 li { position: relative; padding: 52px 16px 16px; border-radius: 10px; background: var(--card); border: 1px solid var(--line); font-size: 0.68em; counter-increment: s; }
 .steps4 li::before {
-  content: counter(s, upper-roman); position: absolute; top: 12px; left: 16px;
-  font-family: var(--display); font-size: 1.5em; line-height: 1; color: var(--ink);
+  content: counter(s); position: absolute; top: 12px; left: 16px; width: 30px; height: 30px; border-radius: 50%;
+  background: none; color: var(--clay-ink); font-weight: 700; text-align: center; line-height: 28px; border: 1.5px solid var(--clay); box-sizing: border-box;
 }
 .steps4 b { display: block; margin-bottom: 4px; font-size: 1.1em; }
-.steps4 code { font-size: 1em; background: var(--band); padding: 1px 5px; border-radius: 2px; overflow-wrap: anywhere; }
+.steps4 code { font-size: 1em; background: var(--band); border: 1px solid var(--line); padding: 0 4px; border-radius: 4px; overflow-wrap: anywhere; }
 
 /* The install commands, each labelled with its system. */
 .install { display: flex; flex-wrap: wrap; gap: 10px 18px; margin: 16px 0 0; }
 .install .os { display: block; margin-bottom: 4px; font-size: 0.68em; color: var(--muted); }
-.install code { padding: 8px 14px; border-radius: 3px; background: var(--ink); color: var(--paper); font-size: 0.78em; white-space: pre; }
+.install code { padding: 8px 14px; border-radius: 6px; background: var(--card); color: var(--ink); border: 1px solid var(--line); font-size: 0.78em; white-space: pre; }
 
 /* Backup: sources. */
 .sources { margin: 4px 0 0; padding-left: 1.1em; font-size: 0.64em; columns: 2; column-gap: 36px; line-height: 1.25; }
 .sources li { margin: 0 0 6px; break-inside: avoid; overflow-wrap: anywhere; }
-.sources a { color: var(--neutral-ink); }
 .phone .sources li { margin-bottom: 12px; line-height: 1.4; }
 
 /* Phones: everything stacks. */
@@ -195,6 +325,7 @@
 .phone .app-body,
 .phone .places,
 .phone .firsts { grid-template-columns: 1fr; }
+.phone .robot { position: static; display: block; width: 170px; margin: 18px 0 0; }
 .phone .hubfig { grid-template-rows: none; }
 .phone .hubfig .core { grid-column: auto; grid-row: auto; }
 .phone .hubfig .ext.l, .phone .hubfig .ext.r { grid-column: auto; }
@@ -215,10 +346,10 @@
 .phone .need tr { margin: 0 0 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
 .phone .need td, .phone .need td.y, .phone .need td.n, .phone .need td.p { padding: 1px 0; border: 0; text-align: left; background: none; }
 /* Claude Code is the fourth column. */
-.phone .need td:nth-child(4) { padding-left: 8px; border-left: 4px solid var(--ink); }
+.phone .need td:nth-child(4) { padding-left: 8px; border-left: 2px solid var(--clay); }
 .phone .need td:first-child { font-weight: 700; color: var(--ink); }
 .phone .need td[data-label]::before { content: attr(data-label) ": "; font-weight: 400; color: var(--muted); }
-.phone .need .mark { width: 20px; height: 20px; line-height: 20px; margin-right: 4px; }
+.phone .need .mark { width: 20px; height: 20px; line-height: 16px; margin-right: 4px; }
 
 /* Phones: the app slides and the map stack. */
 .phone .places { gap: 8px; }
@@ -238,7 +369,8 @@
 .phone .which tr { margin: 0 0 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
 .phone .which td { padding: 1px 0; border: 0; }
 .phone .which tr.fav td:first-child { border-left: 0; }
-.phone .which tr.fav { border: 3px solid var(--ink); }
+.phone .which tr.fav { border: 2px solid var(--clay); }
+.phone .which tr.fav td { background: none; }
 /* Phones: the try-one steps pair up, and the install commands wrap. */
 .phone .firsts { grid-template-columns: 1fr 1fr; gap: 6px; }
 .phone .install span { display: block; max-width: 100%; overflow-x: auto; }
@@ -265,8 +397,8 @@
 .phone .facts > div { padding: 6px 10px; }
 .phone .chat-scene p { margin-bottom: 6px; padding: 8px 12px; }
 
-/* Slide 9: hook moments, one row of dots per tool, to scale. Claude Code's row in ink; gold marks
-   the ones my own rules plugin uses. Rivals in the neutral sky. */
+/* Slide 9: hook moments, one row of dots per tool, to scale. Claude Code's row in ink; clay marks
+   the ones my own rules plugin uses. Rivals in the neutral grey. */
 .hookrows { display: grid; grid-template-columns: max-content max-content auto; gap: 10px 16px; align-items: center; margin-top: 16px; }
 .hookrows .tool { font-size: 0.76em; font-weight: 700; }
 .hookrows .n { font-size: 0.76em; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
@@ -285,7 +417,7 @@
 table.data.details { font-size: 0.64em; }
 table.data.details th, table.data.details td { padding: 5px 14px; line-height: 1.25; }
 .phone table.data.details, .phone table.data.details tbody, .phone table.data.details tr, .phone table.data.details th, .phone table.data.details td { display: block; }
-.phone table.data.details th { padding: 8px 0 0; border: 0; }
-.phone table.data.details td { padding: 0 0 6px; }
-.phone table.data.details { font-size: 0.67em; }
+.phone table.data.details th { padding: 5px 0 0; border: 0; }
+.phone table.data.details td { padding: 0 0 4px; }
+.phone table.data.details { font-size: 0.66em; }
 .phone table.data.details td { line-height: 1.2; }

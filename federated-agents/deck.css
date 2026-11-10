@@ -1,11 +1,82 @@
 /* ------------------------------------------------------ federated agents -- */
-/* Roles, as in every deck: gold is AJ's own design and findings (the shared add-on he
-   proposes, his datasets, his test); bluish green is what stays safe or passes (the private
-   add-on, a fix, a run that found its mark); vermilion is exposure and wrong code; sky blue is
-   context (other companies, rival designs, the frozen model). */
+:root {
+  --paper: #f6fafe; --ink: #0d1f30; --muted: #33475b; --label: #0b3a66; --limit: #7d0e45;
+  --card: #ffffff; --line: #6f8294; --band: #dbe7f1;
+  --mark: #0b3a66; --mark-ours: #0b3a66; --mark-rival: #6c7a89; --frame: #4b5563;
+  --sans: system-ui, "Segoe UI", Calibri, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: var(--sans); --display-sc: var(--sans);
+  --mono: ui-monospace, Consolas, "SF Mono", Menlo, monospace;
+  /* The talk's own two colours: blue is what is shared and travels, orange is what stays private. */
+  --shared: #0a6cb5; --shared-ink: #084a80; --shared-tint: #cfe5f7; --private: #d9580a; --private-ink: #8a3a00; --private-tint: #fddcc2;
+  /* AJ's own work is navy; rival designs and context are grey; a wrong or risky thing is raspberry; right is ink, set apart by its tick. */
+  --ours: #0b3a66; --ours-line: #0b3a66; --ours-ink: #0b3a66; --ours-tint: var(--band);
+  --neutral: #c6cdd5; --neutral-line: #4b5563; --neutral-ink: #33475b; --neutral-tint: #dde4ec;
+  --risk: #c41660; --risk-line: #9d1457; --risk-ink: #7d0e45; --risk-tint: #fadde9;
+  --fix: #0d1f30; --fix-line: #0d1f30; --fix-ink: #0d1f30; --fix-tint: #ffffff;
+}
 
-.title-slide .mark-figure { --mark-x: 30%; }
-.title-slide h1 { font-size: 2.35em; }
+/* The shared base rules, as this talk set them before the common look. */
+.reveal h1, .reveal h2, .reveal h3 { margin: 0 0 18px; font-weight: 650; line-height: 1.15; letter-spacing: -0.01em; }
+.reveal h1 { font-size: 2.1em; color: var(--label); }
+.reveal h2 { font-size: 1.45em; color: var(--label); }
+.reveal a { color: var(--shared-ink); }
+/* The chapter label carries the talk's motif: a blue tile beside an orange one, the shared and private add-ons. */
+.kicker { font-size: 0.66em; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--label); }
+.kicker::before { content: ""; display: inline-block; width: 24px; height: 14px; margin-right: 10px; border-radius: 2px; background: linear-gradient(90deg, var(--shared) 0 50%, var(--private) 50% 100%); vertical-align: -1px; }
+.kicker .num { margin: 0; padding: 0; border: 0; color: inherit; }
+.kicker .num::after { content: " \00B7"; }
+.title-slide h1, .closing h2 { color: inherit; }
+.title-slide h1::after, .closing h2::after { content: ""; display: block; width: 220px; height: 12px; margin-top: 22px; border-radius: 2px; background: linear-gradient(90deg, var(--shared) 0 50%, var(--private) 50% 100%); }
+.closing h2 { font-size: 1.45em; }
+.card { border-radius: 10px; }
+.steps li { border: 0; border-top: 6px solid var(--mark); border-radius: 6px; }
+.steps li::before { font-size: 1.6em; font-weight: 700; color: var(--label); }
+table.data th { color: inherit; border-bottom: 1px solid var(--line); }
+.figure .accent { fill: var(--mark-ours); }
+.agenda .num { display: inline; min-width: 0; color: inherit; }
+.agenda .num::after { content: " \00B7"; }
+/* The rail: a connected track of small nodes. Chapters passed are filled blue; the current one is the talk's blue-and-orange node with its label in bold. */
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(max-content, 1fr); gap: 0; width: min(1320px, calc(100vw - 16px)); }
+.rail button { position: relative; padding: 18px 12px 3px; font: 500 17px var(--sans); letter-spacing: 0; text-align: center; color: var(--muted); background: none; border: 0; border-radius: 0; }
+.rail button .num { margin-right: 0; color: inherit; }
+.rail button .num::after { content: " \00B7"; }
+.rail button::before { content: ""; position: absolute; top: 7px; left: 0; right: 0; height: 2px; background: var(--line); }
+.rail button:first-child::before { left: 50%; }
+.rail button:last-child::before { right: 50%; }
+.rail button:has(~ [aria-current="step"])::before { background: var(--shared); }
+.rail button[aria-current="step"]::before { background: linear-gradient(90deg, var(--shared) 50%, var(--line) 50%); }
+.rail button[aria-current="step"]:first-child::before { background: var(--line); }
+.rail button[aria-current="step"]:last-child::before { background: var(--shared); }
+.rail button::after { content: ""; position: absolute; top: 3px; left: 50%; width: 10px; height: 10px; margin-left: -5px; box-sizing: border-box; background: var(--paper); border: 2px solid var(--line); border-radius: 50%; }
+.rail button:has(~ [aria-current="step"])::after { background: var(--shared); border-color: var(--shared-ink); }
+.rail button[aria-current="step"] { font-weight: 700; color: var(--ink); background: none; }
+.rail button[aria-current="step"] .num { color: inherit; }
+.rail button[aria-current="step"]::after { top: 0; width: 16px; height: 16px; margin-left: -8px; background: linear-gradient(90deg, var(--shared) 0 50%, var(--private) 50% 100%); border-color: var(--ink); }
+.rail button:hover { color: var(--ink); }
+.rail button:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-figure))[style*="display: block"] {
+  grid-template-columns: fit-content(620px) 424px; }
+html.sideways .reveal .slides section.closing[style*="display: block"] { grid-template-columns: minmax(0, 1fr); }
+.qr-close { width: 424px; }
+
+.title-slide .subtitle { margin: 0; max-width: 34ch; font-size: 1.05em; color: var(--ink); font-weight: 500; }
+.title-slide .kicker { margin-top: 120px; }
+.closing h2::after { width: 160px; height: 10px; }
+.title-slide h1 { margin: 0 0 18px; font-size: 2.6em; line-height: 1.15; }
+.closing .asks { margin: 6px 0 18px; font-size: 0.9em; }
+.closing .contact { margin: 6px 0 0; font-size: 0.84em; }
+.closing .contact b { font-weight: 700; }
+
+.title-slide .motif { position: absolute; right: 40px; top: 190px; width: 440px; height: auto; }
+.motif .m-co { fill: none; stroke: var(--line); stroke-width: 3; stroke-dasharray: 6 5; }
+.motif .m-shared, .motif .m-server { fill: var(--shared); }
+.motif .m-priv { fill: var(--private); }
+.motif .m-base { fill: var(--muted); }
+.motif .m-flow { stroke: var(--shared); stroke-width: 5; }
+.motif .m-dot { fill: var(--label); }
+.phone .title-slide .motif { display: none; }
+.phone .title-slide .kicker { margin-top: 40px; line-height: 1.45; }
+.phone .title-slide h1 { margin-top: 0; }
 
 .lead {
   margin: 14px 0 0;
@@ -26,10 +97,9 @@
 .lesson-fig { margin: 0; }
 .lesson-fig svg { display: block; width: 100%; height: auto; }
 .lesson-fig text { font-family: var(--sans); font-size: 24px; fill: var(--ink); }
-.lesson-fig text.b { font-weight: 700; font-size: 26px; fill: var(--neutral-ink); }
-.lesson-fig .bubble { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 2; }
-.lesson-fig .before { fill: var(--card); stroke: var(--line); stroke-width: 2; }
-.lesson-fig .after { fill: var(--card); stroke: var(--line); stroke-width: 2; }
+.lesson-fig text.b { font-weight: 700; font-size: 26px; fill: var(--ours-ink); }
+.lesson-fig .bubble { fill: var(--band); stroke: var(--ours-line); stroke-width: 3; }
+.lesson-fig .before, .lesson-fig .after { fill: var(--card); stroke: var(--line); stroke-width: 2; }
 .lesson-fig .code-line { stroke: var(--muted); stroke-width: 6; stroke-linecap: round; }
 .lesson-fig .code-line.bad { stroke: var(--risk); stroke-width: 10; }
 .lesson-fig .code-line.good { stroke: var(--fix); stroke-width: 10; }
@@ -59,9 +129,9 @@
 blockquote.rule {
   margin: 8px 0 16px;
   padding: 14px 20px;
-  background: var(--neutral-tint);
-  border-left: 5px solid var(--neutral-line);
-  border-radius: 0 3px 3px 0;
+  background: var(--band);
+  border-left: 6px solid var(--label);
+  border-radius: 6px;
   font-size: 0.85em;
 }
 
@@ -69,7 +139,7 @@ blockquote.rule b {
   display: block;
   font-weight: 700;
   font-size: 0.8em;
-  color: var(--neutral-ink);
+  color: var(--label);
 }
 
 .versus {
@@ -82,9 +152,8 @@ blockquote.rule b {
 figure.code {
   margin: 0;
   padding: 14px 18px;
-  border-radius: 3px;
-  border: 2px solid var(--risk-line);
-  border-top-width: 5px;
+  border-radius: 10px;
+  border: 3px solid var(--risk-line);
   background: var(--risk-tint);
 }
 
@@ -99,7 +168,6 @@ figure.code figcaption {
   gap: 10px;
   font-size: 0.7em;
   font-weight: 700;
-  color: var(--risk-ink);
 }
 
 figure.code.right figcaption { color: var(--fix-ink); }
@@ -113,7 +181,6 @@ figure.code pre {
   margin: 10px 0 0;
   font-size: 0.74em;
   white-space: pre-wrap;
-  color: var(--ink);
 }
 
 .then {
@@ -128,28 +195,28 @@ figure.code pre {
 .figure .co rect,
 .figure .company {
   fill: none;
-  stroke: var(--neutral-line);
+  stroke: var(--frame);
   stroke-width: 2;
   stroke-dasharray: 8 6;
 }
-.figure .link { stroke: var(--frame); stroke-width: 3; fill: none; }
+.figure .link { stroke: #57534e; stroke-width: 3; fill: none; }
 .figure marker .head { fill: var(--frame); }
-.figure marker .head-shared { fill: var(--ours-line); }
+.figure marker .head-shared { fill: var(--shared); }
 .figure .pool,
-.figure .base,
-.figure .server { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 2; }
-.figure .good { fill: var(--fix-tint); stroke: var(--fix-line); stroke-width: 2; }
-.figure .bad { fill: var(--risk-tint); stroke: var(--risk-line); stroke-width: 2; }
+.figure .base { fill: var(--neutral-tint); stroke: var(--frame); stroke-width: 2; }
+.figure .server { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 3; }
+.figure .good { fill: var(--fix-tint); stroke: var(--fix-line); stroke-width: 3; }
+.figure .bad { fill: var(--risk-tint); stroke: var(--risk-line); stroke-width: 3; }
 .figure text.good-ink { fill: var(--fix-ink); }
 .figure text.bad-ink { fill: var(--risk-ink); }
 .figure .shared,
-.mini .shared { fill: var(--ours-tint); stroke: var(--ours-line); stroke-width: 3; }
-.figure .private { fill: var(--fix-tint); stroke: var(--fix); stroke-width: 3; stroke-dasharray: 10 5; }
+.mini .shared { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 3; }
+.figure .private { fill: var(--private-tint); stroke: var(--private); stroke-width: 3; stroke-dasharray: 10 5; }
 .mini .private { fill: var(--risk-tint); stroke: var(--risk-line); stroke-width: 2; }
-.figure .flow { stroke: var(--ours-line); stroke-width: 4; fill: none; }
-.figure .list { fill: var(--card); stroke: var(--line); stroke-width: 2; }
-.figure tspan.yes { fill: var(--fix-ink); }
-.figure tspan.no { fill: var(--risk-ink); }
+.figure .flow { stroke: var(--shared); stroke-width: 4; fill: none; }
+.figure .list { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
+.figure tspan.yes { fill: var(--shared-ink); }
+.figure tspan.no { fill: var(--private-ink); }
 
 /* Panels, each a small figure over one sentence. */
 .panels .card {
@@ -169,9 +236,9 @@ figure.code pre {
   fill: var(--ink);
 }
 
-.mini .ask { stroke: var(--risk); stroke-width: 4; }
-.mini .ask-head { fill: var(--risk); }
-.mini .ask-dot { fill: var(--risk); }
+.mini .ask { stroke: var(--risk-line); stroke-width: 4; }
+.mini .ask-head { fill: var(--risk-line); }
+.mini .ask-dot { fill: var(--risk-line); }
 .mini .avg { stroke: var(--ink); stroke-width: 4; }
 .mini .dot-split { fill: var(--neutral); stroke: var(--neutral-line); stroke-width: 2; }
 .mini text.avg-ink { fill: var(--ink); }
@@ -208,24 +275,24 @@ figure.code pre {
 /* The four research fields: one drawing and one sentence each, all context. */
 .areas .card p { font-size: 0.72em; }
 .areas .card > b { font-size: 0.8em; }
-.mini .head { fill: var(--frame); }
-.mini .own { fill: none; stroke: var(--neutral-line); stroke-width: 2; stroke-dasharray: 5 4; }
-.mini .hub,
+.mini .head { fill: #57534e; }
+.mini .own { fill: none; stroke: var(--frame); stroke-width: 2; }
+.mini .hub { fill: var(--shared-tint); stroke: var(--shared); stroke-width: 2; }
 .mini .add,
 .mini .frozen { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 2; }
-.mini .note { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 2; }
-.mini .code { fill: var(--risk-tint); stroke: var(--risk-line); stroke-width: 2; }
+.mini .note { fill: var(--band); stroke: var(--label); stroke-width: 2; }
+.mini .code { fill: var(--risk-tint); stroke: var(--risk-line); stroke-width: 3; }
 .mini .fixed { fill: var(--fix-tint); stroke: var(--fix-line); stroke-width: 2; }
 .mini .line { stroke: var(--ink); stroke-width: 3; }
-.mini .arrow { stroke: var(--frame); stroke-width: 3; fill: none; }
-.mini .upd { fill: var(--neutral-line); stroke: #fff; stroke-width: 2; }
+.mini .arrow { stroke: #57534e; stroke-width: 3; fill: none; }
+.mini .upd { fill: var(--shared); stroke: #fff; stroke-width: 2; }
 
 /* The forest plot's key, under the figure. */
 .key { margin: 6px 0 0; font-size: 0.66em; color: var(--muted); }
 .key b { color: var(--ink); }
 html:not(.phone) .forest svg { max-height: 430px; }
 
-/* Three stages: built in gold, planned dashed. */
+/* Three stages: built in navy, planned dashed. */
 .stages {
   position: relative;
   display: grid;
@@ -243,7 +310,7 @@ html:not(.phone) .forest svg { max-height: 430px; }
   border: 1px solid var(--line);
   border-radius: 3px;
 }
-.stages li.built { border-color: var(--ours-line); border-top-width: 6px; }
+.stages li.built { border-color: var(--ours-line); border-width: 2px; border-top-width: 8px; }
 .stages li.next { border: 2px dashed var(--neutral-line); background: transparent; }
 .stages li + li::before {
   content: "";
@@ -263,17 +330,17 @@ html:not(.phone) .forest svg { max-height: 430px; }
 .pipeline { margin-top: 4px; }
 .figure .lane { font-size: 20px; font-weight: 700; fill: var(--label); }
 .figure .lane-state { font-weight: 400; fill: var(--muted); }
-.figure .stage { fill: var(--card); stroke: var(--ours-line); stroke-width: 2; }
-.figure .stage.run { fill: var(--ours-tint); stroke: var(--ours-line); stroke-width: 2; }
-.figure .next { fill: none; stroke: var(--neutral-line); stroke-width: 2; stroke-dasharray: 8 6; }
+.figure .stage { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
+.figure .stage.run { fill: var(--band); stroke: var(--ours-line); stroke-width: 3; }
+.figure .next { fill: none; stroke: var(--frame); stroke-width: 2; stroke-dasharray: 8 6; }
 .figure .win-train,
-.figure .win-dev { fill: var(--neutral-tint); stroke: var(--neutral-line); stroke-width: 1.5; }
-.figure .win-test { fill: var(--card); stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 4; }
+.figure .win-dev { fill: var(--neutral-tint); stroke: var(--frame); stroke-width: 2; }
+.figure .win-test { fill: var(--private-tint); stroke: var(--private); stroke-width: 2; }
 
 /* A share drawn as dots: a run that found its mark is a pass. */
 .dots.count svg { max-width: 100%; }
-.dots.count .dot { stroke: var(--neutral-line); }
-.dots.count .dot.hit { fill: var(--fix); stroke: var(--fix-line); }
+.dots.count .dot { stroke: var(--ours-line); }
+.dots.count .dot.hit { fill: var(--ours); stroke: var(--ours-line); }
 
 /* The road from stage one to the goal: status by fill and by word, never colour alone. */
 .road {
@@ -292,7 +359,7 @@ html:not(.phone) .forest svg { max-height: 430px; }
   top: 13px;
   left: 4%;
   right: 4%;
-  border-top: 3px solid var(--line);
+  border-top: 3px solid var(--frame);
 }
 
 .road li {
@@ -309,19 +376,21 @@ html:not(.phone) .forest svg { max-height: 430px; }
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  border: 3px solid var(--ours-line);
+  border: 3px solid var(--ink);
   background: var(--paper);
 }
 
-.road .done i { background: var(--ours); }
+.road .done i { background: var(--ink); }
 .road .next i,
-.road .goal i { border: 3px dashed var(--neutral-line); }
+.road .goal i { border-style: dashed; }
 
 .road .when {
   margin: 8px 0;
   font-weight: 700;
   font-size: 1.1em;
   color: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .road b {
@@ -332,8 +401,8 @@ html:not(.phone) .forest svg { max-height: 430px; }
 
 .road .goal {
   padding: 0 8px 12px;
-  border: 2px solid var(--ink);
-  border-radius: 3px;
+  border: 3px solid var(--ink);
+  border-radius: 10px;
 }
 
 /* Who is in the test. */
@@ -345,9 +414,8 @@ html:not(.phone) .forest svg { max-height: 430px; }
 
 .group {
   padding: 18px 22px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 3px;
+  border: 2px solid var(--ink);
+  border-radius: 10px;
 }
 
 .group > b { display: block; font-size: 1em; }
@@ -366,7 +434,7 @@ html:not(.phone) .forest svg { max-height: 430px; }
   gap: 12px;
   margin-bottom: 8px;
   padding: 8px 14px;
-  border-radius: 3px;
+  border-radius: 6px;
   font-weight: 650;
   font-size: 0.8em;
 }
@@ -375,12 +443,14 @@ html:not(.phone) .forest svg { max-height: 430px; }
   text-align: right;
   font-weight: 500;
   font-size: 0.88em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.group li.in { background: var(--fix-tint); border: 1px solid var(--fix-line); }
+.group li.in { background: var(--band); border: 2px solid var(--ours-line); }
 .group li.in span { color: var(--fix-ink); }
-.group li.out { border: 1.5px dashed var(--line); color: var(--muted); }
-.group li.vs { border: 1px solid var(--line); background: var(--paper); }
+.group li.out { border: 2px dashed var(--line); }
+.group li.vs { border: 2px solid var(--line); }
 .group li span i { font-style: normal; }
 
 /* The exploratory comparison sits apart from the three that decide. */
@@ -412,15 +482,15 @@ html:not(.phone) .forest svg { max-height: 430px; }
 
 .figure .axis { stroke: var(--frame); stroke-width: 3; }
 .figure .cut { stroke: var(--ink); stroke-width: 3; stroke-dasharray: 8 6; }
-.figure .fair { fill: var(--fix); stroke: var(--fix-line); stroke-width: 3; }
-.figure .unfair { fill: var(--card); stroke: var(--risk-line); stroke-width: 3; }
+.figure .fair { fill: var(--ours); stroke: var(--ours-line); stroke-width: 3; }
+.figure .unfair { fill: var(--card); stroke: var(--frame); stroke-width: 3; }
 
 table.data th[scope="row"] { font-weight: 650; }
 .backup table.data { font-size: 0.8em; }
 
 /* Moving dots: lessons leaving a company (exposure), updates between shared add-ons. */
 .figure .lessons circle { fill: var(--risk); stroke: #fff; stroke-width: 2; }
-.figure .updates circle { fill: var(--ours); stroke: var(--ours-line); stroke-width: 2; r: 9px; }
+.figure .updates circle { fill: var(--shared); stroke: var(--shared-ink); stroke-width: 2; r: 9px; }
 
 html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms backwards; transform-origin: 0 50%; }
 
@@ -451,6 +521,11 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .group li { padding: 5px 10px; margin-bottom: 5px; flex-wrap: wrap; gap: 0 12px; }
 .phone .group li span { margin-left: auto; }
 .phone table.data { font-size: 0.9em; }
+.phone .backup table.data th, .phone .backup table.data td { padding: 6px 6px; }
+/* The system face runs wider than the shared one, so long answers and the tall forest plot step down on a phone. */
+.phone .reveal .slides section.backup { font-size: 0.72em; }
+.phone .faq, .phone .back, .phone .backup .small, .phone .faq-index .faq-sub { font-size: 0.92em; }
+.phone .forest svg { display: block; width: 88%; margin: 0 auto; }
 .phone .figure text.s { font-size: 23px; }
 .phone .panels { gap: 10px; }
 .phone .panels .card { gap: 4px; }
@@ -482,3 +557,25 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 [data-conclusion] .tile .num { font-size: 1.75em; white-space: nowrap; }
 .phone [data-conclusion] .tile .num { font-size: 1.4em; }
 .phone .aside-test li { font-size: 0.8em; }
+
+
+/* The forest plot, in the talk's own marks. */
+.forest .forest-ci.whole, .forest .forest-pt.whole { stroke: var(--frame); fill: var(--frame); }
+.forest .forest-ci.part { stroke: var(--mark-rival); }
+.forest .forest-pt.part { fill: var(--mark-rival); stroke: var(--mark-rival); }
+.forest .forest-ci.ours, .forest .forest-pt.ours { stroke: var(--mark-ours); fill: var(--mark-ours); }
+.flow .flow-end.kept { fill: var(--card); stroke: var(--mark-ours); }
+.flow .flow-big.kept { fill: var(--ours-ink); }
+/* The system face runs wider than the shared one, so the figure's labels step down to stay in their columns. */
+.flow .flow-big { font-size: 38px; }
+.flow .flow-unit { font-size: 21px; }
+.flow .flow-reason { font-size: 20px; }
+
+/* The rival designs are grey on the map; this work is half blue, half orange: its shared and its private add-on. */
+.work.ours circle { fill: url(#mine-split); stroke: var(--ours-line); stroke-width: 3; }
+.map-list li.ours::before { background: linear-gradient(90deg, var(--shared) 0 50%, var(--private) 50% 100%); box-shadow: 0 0 0 2px var(--ours-line); }
+.open { background: var(--band); border-left-color: var(--label); }
+.open-h { color: var(--label); }
+.split-defs { position: absolute; }
+.stop-shared { stop-color: var(--shared); }
+.stop-private { stop-color: var(--private); }

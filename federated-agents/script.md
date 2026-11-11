@@ -34,7 +34,7 @@ The grey dots are published designs. Across the bottom: who decides what is shar
 
 ## 8. Tuning helps; the sealed test asks if the gain is the team's
 
-These are first runs on development data, not the sealed test. First, tuning helps: tuned on its community's own reviews, an assistant gets about {readings.tuned_exact_gain} more of every 100 reviewer fixes exactly right than the untuned model. Second, the team-specific part: I split a community's projects into two groups, each with its own assistant. Whether a group's own assistant beats its sibling's is the registered test, and it is read only on the sealed months; the development runs size that test rather than preview its answer. Next is privacy: can someone tell which company the shared add-on came from? The attacks are built.
+These are first runs on development data, not the sealed test. First, tuning helps: tuned on its community's own reviews, an assistant gets about {readings.tuned_exact_gain} more of every 100 reviewer fixes exactly right than the untuned model. Second, the team-specific part: I split a community's projects into two groups, each with its own assistant. Whether a group's own assistant beats its sibling's is one registered test, read only on the sealed months; the development runs sized that test, and its answer waits for the sealed months. Next is privacy: can someone tell which company the shared add-on came from? The attacks are built.
 
 ## 9. Every step up to the sealed test is built
 
@@ -60,7 +60,7 @@ OpenStack, Wikimedia and Qt decide the answer, and each must pass; Qt said yes i
 
 ## 14. Before agents share a team's habits, test that there are habits to learn
 
-Before agents share a team's habits, I first test that there are habits to learn. I built two datasets of real review lessons, {readings.corpus_examples_openstack} from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia. On the development months, an assistant tuned on them gets about {readings.tuned_exact_gain} more fixes in 100 exactly right, and the score found a planted house rule in {readings.planted_found} of {readings.planted_runs} splits, across all three communities. Two problems stay open. Whether style transfers on the sealed months: a community's own assistant against its sibling's in all three, and Qt against Chromium. And whether the shared add-on gives away which company it came from. That's my talk.
+Before agents share a team's habits, I first test that there are habits to learn. I built two datasets of real review lessons, {readings.corpus_examples_openstack} from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia. On the development months, an assistant tuned on them gets about {readings.tuned_exact_gain} more fixes in 100 exactly right, and the score found a planted house rule in {readings.planted_found} of {readings.planted_runs} splits, across all three communities. Two problems stay open. Whether style transfers on the sealed months: a half's own assistant against its sibling half's, in all three, and Qt against Chromium. And whether the shared add-on gives away which company it came from. That's my talk.
 
 <!-- Open problems: sphragis README "Where it stands" (the confirmatory contrast has not been run; dev readings size the design) and the FAQ on leakage (a measurement, not yet run on the shared add-on). -->
 

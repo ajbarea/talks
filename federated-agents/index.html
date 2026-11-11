@@ -575,11 +575,11 @@
 
 <section id="faq-data" class="backup">
   <h2>Is the data sound?</h2>
-  <p>An example is a code hunk, the reviewer comments anchored to it, and the author's next revision, taken directly from the review server.</p>
+  <p>Labels are not inferred. An example is a code hunk, the reviewer comments anchored to it, and the author's next revision, taken directly from the review server.</p>
   <ul>
-    <li>Author comments are excluded: the signal is a reviewer's.</li>
+    <li>Author comments are excluded, so the signal is a reviewer's, not a self-edit.</li>
     <li>Near-duplicates are removed before the split; leftover overlap must stay under a registered cap.</li>
-    <li>Label quality is audited blind, by two model raters and a human. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, the rater the human checked finds about <span data-value="readings.audit_valid_openstack"></span> with a rewrite that answers its comment; the rest stay in and are scored in every arm, so they mostly dilute a difference rather than favor one side. Lab members will label the items the human checked, for a human-to-human figure.</li>
+    <li>Label quality is audited blind, by two model raters and a human. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, the rater the human checked finds about <span data-value="readings.audit_valid_openstack"></span> with a rewrite that answers its comment; the rest stay in and are scored in every arm, so they mostly dilute a difference rather than favor one side.</li>
     <li>Every filtering rule and what it removed is published: ajbarea.github.io/sphragis/dataset</li>
     <li>Contamination: every month of data starts after the model's weights were uploaded, and three methods compare it with a window from before. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; a secondary reading drops them, and AI-disclosing changes.</li>
     <li>Everything derived is pseudonymized, with addresses swept from comments. RIT's human-subjects office ruled in writing that this is not human-subjects research.</li>

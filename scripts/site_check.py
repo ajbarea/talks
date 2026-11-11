@@ -262,22 +262,36 @@ def run(url: str) -> Report:
             page.evaluate(STATE),
         )
 
-        # On a 1080p monitor the browser leaves about 940 px: the centered talk's actions stay above the fold.
-        page.set_viewport_size({"width": 1920, "height": 940})
-        page.wait_for_timeout(700)
-        bottom = page.evaluate(
-            "document.querySelector('.talk:not([aria-hidden]) .actions').getBoundingClientRect().bottom"
-        )
-        r.check("Open the deck and the downloads show without scrolling at 1920x940", bottom <= 940 - 24, bottom)
-        for w, h in ((1366, 768), (1280, 720)):
+        # The centered talk's actions stay on the first screen, for every talk: on a 1080p monitor's browser
+        # (about 940 px), on short laptops, and Open the deck on a phone.
+        names = page.evaluate("[...document.querySelectorAll('.talk')].map((t) => t.dataset.name)")
+        for w, h, what in (
+            (1920, 940, ".actions"),
+            (1366, 768, ".actions"),
+            (1280, 720, ".actions"),
+            (390, 844, ".open"),
+        ):
             page.set_viewport_size({"width": w, "height": h})
-            page.wait_for_timeout(700)
-            bottom = page.evaluate(
-                "document.querySelector('.talk:not([aria-hidden]) .actions').getBoundingClientRect().bottom"
+            over = {}
+            for name in names:
+                page.goto("about:blank")
+                page.goto(f"{url}#{name}")
+                page.wait_for_timeout(900)
+                bottom = page.evaluate(
+                    f"document.querySelector('.talk:not([aria-hidden]) {what}').getBoundingClientRect().bottom"
+                )
+                if bottom > h - 8:
+                    over[name] = round(bottom)
+            r.check(
+                f"{'the actions show' if what == '.actions' else 'Open the deck shows'} without scrolling at {w}x{h}, "
+                "every talk",
+                not over,
+                over,
             )
-            r.check(f"the actions show without scrolling at {w}x{h}", bottom <= h - 16, bottom)
         page.set_viewport_size({"width": 1920, "height": 1080})
-        page.wait_for_timeout(700)
+        page.goto("about:blank")
+        page.goto(url)
+        page.wait_for_timeout(SETTLE_MS)
         borders = page.evaluate(CHIP_BORDER)
         r.check("each chip's border reaches 3:1 against the page (light)", min(borders) >= 3, borders)
         r.check("every focus ring stands out (3:1), light", all(c >= 3 for _, c in rings(page)), rings(page))

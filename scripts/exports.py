@@ -30,7 +30,8 @@ MARK = ".talks-exports"
 #: The preview's size: half the 1920x1080 slide, sharp at the index's widest card on a 2x screen.
 THUMB = (960, 540)
 #: The preview's loop: the title slide's own entrance, sampled by seeking its animations, ending
-#: on the still. Played on hover, so it is fetched only then.
+#: on the still. The index plays it once on the centered talk: under 5 s, so it needs no pause control
+#: (WCAG 2.2.2).
 LOOP_FPS = 10
 LOOP_SECONDS = 4.4
 #: Hides what is not slide, as the PowerPoint export does.
@@ -110,7 +111,7 @@ def export(
                 save_all=True,
                 append_images=frames[1:],
                 duration=round(1000 / LOOP_FPS),
-                loop=2,
+                loop=1,
                 quality=72,
                 method=4,
             )

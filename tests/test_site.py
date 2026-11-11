@@ -407,3 +407,11 @@ def test_the_cover_flow_animates_only_transform_and_opacity() -> None:
             end += 1
         props = set(re.findall(r"([a-z-]+):", css[start:end]))
         assert props <= ({"z-index"} if name == "flow-z" else {"transform", "opacity"}), name
+
+
+def test_the_preview_loop_plays_once_and_briefly() -> None:
+    """It starts on its own on the centered talk, so it must end within 5 s (WCAG 2.2.2) and not repeat."""
+    exports = (ROOT / "scripts" / "exports.py").read_text()
+    assert "loop=1," in exports
+    seconds = float(re.search(r"^LOOP_SECONDS = ([\d.]+)$", exports, re.M).group(1))
+    assert seconds < 5

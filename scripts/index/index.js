@@ -29,6 +29,7 @@
     dots.append(dot);
   });
   if (n > 1) prev.hidden = next.hidden = dots.hidden = false;
+  else document.querySelector(".hint")?.setAttribute("hidden", "");
   // A pointer press on a cover or a dot never takes focus: both sit in hidden content, and focus already in
   // the carousel is carried to the new centered talk when it settles.
   for (const el of [strip, dots]) {

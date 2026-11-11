@@ -57,9 +57,12 @@ Each talk gets its own strong identity on a light ground for lit rooms, and ever
 - 📋 Hook counts on slide 9: Claude Code 33 rechecked 11-04, rivals as of 11-02 (data/deck-data.js `hooks`); recount from each tool's hooks page before any later reuse.
 - 📋 Optional YouTube cut (youtube-director Mode B): notes are the narration; each slide's `Sources:` line goes in the description.
 
-## FA deck slide 5 audit (#61, PR #62 merged 11-02)
-- ✅ Slide 5 matches sphragis main b9e8ccd; live. `foreign_sized` flips to "sized" when sphragis#246 merges; no deck edit needed then.
-- 📋 Refresh routine guardrails (in #61) wait on AJ's personal login (needs-you.md).
+## Federated Agents deck accuracy pass (#99, PR #100, branch deck/fa-big-accuracy)
+- ✅ Every slide, note, script line and FAQ agrees with papers 1b6e349: development verdicts cut (slide 8 rewritten, forest slide cut, FAQ statuses gone), H2 = Qt's C++ vs Chromium, novelty = the report's sentence, planted check over three orgs (figures.py reads Qt), N fixed, VENUE dates, two of four attacks built (min-loss, disaggregation planned), "house style".
+- ✅ figures.py: unbound dev-verdict derivations and their tests removed; forest/trend CSS removed. 15 talk slides, 17 backups; script 1,054 words.
+- ✅ 5 Opus rounds + 2 verify passes, last clean; Copilot's 4 rows rejected (federated-design scope). `make check` green, PDF 0 overlaps.
+- 📋 Heph merges and deploys PR #100.
+- Verify: `make check` with SLIDES=<techne>/plugins/graphe/skills/slides/scripts/slides.py SPHRAGIS=<sphragis main>; renders at 1920 and phone; overlap check = pdftotext -bbox-layout lines overlapping by over half a line.
 
 ## Federated Agents: Step One (federated-agents-step-one/), LDQIS Fri Nov 13
 - 📋 Branch talk/federated-agents-step-one (#97, open, Heph merges): lab explainer deck, IBM Plex on white, spot inks with one job each (ultramarine the plan, magenta hatch sealed or open, green found, yellow the lab, grey and ink context). Present Nov 13, 2 pm.

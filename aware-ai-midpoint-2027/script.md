@@ -22,7 +22,7 @@ Here's what's built. An open-source tool turns public code review into checked l
 
 ## 5. Alongside the study: a lab rotation, an oral paper, and talks
 
-Alongside the study: in my AWARE-AI lab rotation with Professor Richard Lange's BONSAI lab, I opened four pull requests to the lab's shared code, including tests that run on every change and a memory fix. Our hackathon teams won two awards. Our makesense paper was accepted as an oral at IAAI-27, in Montréal next month, and our team has two chapters in the SCADS 2026 technical report. With my lab, I'm a co-author on a journal paper and a conference paper on federated learning, and we gave a talk at the Rochester Security Summit.
+Alongside the study: in my AWARE-AI lab rotation with Professor Richard Lange's BONSAI lab, I opened four pull requests to the lab's shared code, including tests that run on every change and a memory fix. Our hackathon teams won two awards. Our makesense paper was accepted as an oral at IAAI-27, in Montréal next month, and I co-authored two chapters in the SCADS 2026 technical report. With my lab, I'm a co-author on a journal paper and a conference paper on federated learning, and we gave a talk at the Rochester Security Summit.
 
 ## 6. Next, reviewers judge the plan; then the sealed months answer whether house style is learnable
 

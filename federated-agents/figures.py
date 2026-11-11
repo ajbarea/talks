@@ -37,16 +37,6 @@ def load(name: str) -> dict:
     return json.loads(path.read_text())
 
 
-def interval(entry: dict) -> str:
-    return f"{entry['estimate']:+.3f} [{entry['low']:+.3f}, {entry['high']:+.3f}]"
-
-
-#: The rule the study registered: pooled estimand, crossed interval, three seeds. Every figure
-#: the deck shows is read from this cell and no other, because a deck that quotes one rule while
-#: the report quotes another is worse than a deck with no numbers.
-REGISTERED = ("pooled", "crossed")
-
-
 #: The suffix sphragis gives artifacts decoded at the registered repetition penalty, 1.0.
 DECODER = "-rp1.0"
 
@@ -58,77 +48,8 @@ METRIC = "logprob_per_token"
 #: `neutral.PLANT_FRACTION`).
 PLANT = "0.5"
 
-#: How a development pilot's reading of the team-specific contrast reads aloud, from its verdict
-#: at the stricter Holm level (sphragis `decomposition.cell_verdict`) and whether its interval
-#: sits inside the SESOI band: (predicate after "OpenStack's assistant", the title's phrase for
-#: one community, the title's phrase when every community reads alike). A state not listed fails
-#: the build rather than reading as some other one.
-TEAM_READING = {
-    ("supported", False): ("is better on its own code", "a team-specific gain", "team-specific gains in both"),
-    ("supported", True): (
-        "is better on its own code, by less than matters",
-        "a small team gain",
-        "small team-specific gains",
-    ),
-    # Inside the SESOI band but not above zero: any gain is below what matters, not shown absent.
-    ("inconclusive", True): (
-        "shows at most a small gain",
-        "at most a small one",
-        "team-specific gains are small",
-    ),
-    ("inconclusive", False): ("is not settled yet", "no answer yet", "team-specific gains are open"),
-    # Bounded: the interval's upper end lies below the SESOI (sphragis research log 2026-10-14).
-    ("bounded", True): ("shows no gain that matters", "none that matters", "no team-specific gain that matters"),
-    ("bounded", False): ("shows no gain that matters", "none that matters", "no team-specific gain that matters"),
-}
-
-#: How H2's development pilot (Qt's sibling half against an adapter from another organization)
-#: reads on the status slide, keyed as TEAM_READING. A state not listed fails the build.
-FOREIGN_STATUS = {
-    ("supported", False): "Qt's assistant wins",
-    ("supported", True): "Qt's assistant wins, by less than matters",
-    ("inconclusive", True): "at most a small gain",
-    ("inconclusive", False): "no answer yet",
-    ("bounded", True): "no gain that matters",
-    ("bounded", False): "no gain that matters",
-}
-
 #: The communities on the slides, in the order they are named.
 ORGS = {"openstack": "OpenStack", "wikimedia": "Wikimedia"}
-
-
-def team_reading(pilot: dict) -> tuple[str, str, str]:
-    """One community's development reading of H1 on the registered score, in words."""
-    return _worded(pilot, TEAM_READING, "TEAM_READING")
-
-
-def foreign_status(pilot: dict) -> str:
-    """H2's development reading against one foreign organization, as the status slide words it.
-
-    An exploratory arm takes no simulation, so it can never read bounded (sphragis
-    registered-decisions: a cell is bounded only once its sensitivity simulation is registered).
-    """
-    if pilot.get("exploratory") and pilot["verdicts"]["0.975"] == "bounded":
-        raise SystemExit("an exploratory arm read bounded, but it takes no simulation")
-    return _worded(pilot, FOREIGN_STATUS, "FOREIGN_STATUS")
-
-
-def _worded[T](pilot: dict, wording: dict[tuple[str, bool], T], name: str) -> T:
-    """A pilot's wording, keyed by its verdict at the stricter Holm level and its SESOI flag."""
-    if pilot.get("metric") != METRIC:
-        raise SystemExit(f"the pilot is on {pilot.get('metric')}, not {METRIC}")
-    level = "0.975"
-    key = (pilot["verdicts"][level], pilot["within_sesoi"][level])
-    if key not in wording:
-        raise SystemExit(f"no wording for a pilot reading {key}; add one to {name}")
-    return wording[key]
-
-
-def team_title(readings: dict[str, tuple[str, str, str]]) -> str:
-    """The findings slide's headline: one phrase when every community reads alike, else each by name."""
-    if len(set(readings.values())) == 1:
-        return next(iter(readings.values()))[2]
-    return ", ".join(f"{phrase} on {ORGS[org]}" for org, (_, phrase, _) in readings.items())
 
 
 def planted_runs(org: str) -> list[str]:
@@ -317,43 +238,6 @@ def funnel(values: dict) -> dict:
     return out
 
 
-#: The split of the team-specific contrast (sphragis research log 2026-10-15): the parts that add
-#: up to s, by the pilots' component files, read at the stricter Holm level.
-SPLITS = {
-    "names": (("identifier", "names"), ("other", "the rest")),
-    "edit": (("changed", "what the fix changed"), ("copied", "code carried over")),
-}
-
-
-def split() -> dict:
-    """Each community's development contrast, whole and split two ways, with 97.5% intervals."""
-    level = "0.975"
-    out = {}
-    for org, name in ORGS.items():
-        whole = load(f"partition-pilot-{org}-likelihood.json")
-        if whole.get("metric") != METRIC:
-            raise SystemExit(f"{org}'s pilot is on {whole.get('metric')}, not {METRIC}")
-
-        def cell(d: dict) -> dict:
-            interval = d["intervals"][level]
-            return {"estimate": d["estimate"], "low": interval["low"], "high": interval["high"]}
-
-        entry = {"name": name, "whole": cell(whole)}
-        for key, parts in SPLITS.items():
-            entry[key] = []
-            for component, label in parts:
-                part = load(f"partition-pilot-{org}-likelihood-split-{component}.json")
-                if part.get("metric") != f"{METRIC}:{component}" or part["run_files"] != whole["run_files"]:
-                    raise SystemExit(f"{org}'s {component} split is not read on the pilot's runs")
-                entry[key].append({"label": label, **cell(part)})
-            end = load(f"partition-pilot-{org}-likelihood-split-end.json")["estimate"]
-            total = sum(p["estimate"] for p in entry[key]) + end
-            if not math.isclose(total, whole["estimate"], abs_tol=1e-6):
-                raise SystemExit(f"{org}'s {key} parts add to {total}, not {whole['estimate']}")
-        out[org] = entry
-    return out
-
-
 def windows() -> dict[str, tuple[str, str]]:
     """The study's time windows, from sphragis `corpus/windows.py` (start inclusive, end exclusive)."""
     path = SPHRAGIS / "sphragis" / "corpus" / "windows.py"
@@ -400,10 +284,6 @@ def trained_setup() -> tuple[str, int, int]:
     return seen.pop()
 
 
-def registered(name: str) -> dict:
-    return load(name)["readings"][REGISTERED[0]][REGISTERED[1]]["per_org"]
-
-
 def readings() -> dict[str, str | int | bool]:
     """Every figure and flag the deck shows, by the name a slide binds it to."""
     values: dict[str, str | int | bool] = {}
@@ -417,121 +297,31 @@ def readings() -> dict[str, str | int | bool]:
     # Every figure here comes from data the study may publish: Qt's records fetched before its
     # 2026-10-15 grant are in none of them (sphragis research log), and data/readings.js is public.
     values["funnel"] = funnel(values)
-    values["split"] = split()
-    # The split slide claims only what the intervals show. Its claims are about the communities
-    # whose whole gain is clear (interval above zero): there the fix carries it and the part
-    # outside names is above zero. Carried-over code is "next to none" only if every
-    # community's interval holds zero; a community without a clear gain is named as unsettled.
-    sp = values["split"]
-    gain = [o for o in sp.values() if o["whole"]["low"] > 0]
-    unsettled = [o["name"] for o in sp.values() if o["whole"]["low"] <= 0]
-    values["split_gain_orgs"] = " and ".join(o["name"] for o in gain)
-    values["split_in_fix"] = bool(gain) and all(o["edit"][0]["low"] > 0 for o in gain)
-    values["split_beyond_names"] = bool(gain) and all(o["names"][1]["low"] > 0 for o in gain)
-    values["split_copied_none"] = all(o["edit"][1]["low"] <= 0 <= o["edit"][1]["high"] for o in sp.values())
-    values["split_unsettled_orgs"] = " and ".join(unsettled)
-    values["split_any_unsettled"] = bool(unsettled)
     # The label audit on OpenStack's items alone (sphragis label-audit-v2-openstack.json): the
     # share of lessons whose rewrite answers its comment, by the rater the human checked.
     audit = load("label-audit-v2-openstack.json")
     valid = audit["valid_shares"]["A"]
     values["audit_valid_openstack"] = f"{100 * valid['share']:.0f}%"
     values["audit_items_openstack"] = audit["items"]
-    # How far OpenStack's development pilot moves when read without its AI-assisted examples, on
-    # the registered score (sphragis research log, 2026-10-21).
-    pilot = load("partition-pilot-openstack-likelihood-sensitivities.json")
-    if pilot.get("metric") != METRIC:
-        raise SystemExit(f"the sensitivities are on {pilot.get('metric')}, not {METRIC}")
-    values["ai_shift_openstack"] = f"{pilot['without']['ai_assisted']['estimate'] - pilot['estimate']:+.4f}"
     # The backport lookup (sphragis research log, 2026-10-20): the share of development targets
     # whose added lines already stood in their project at the weight upload, as a range over the
-    # communities, and whether leaving them out keeps each development pilot's reading, on the
-    # registered score at the deck's level.
+    # communities.
     shares = []
     for org in ("openstack", "wikimedia", "qt"):
         dev = load(f"backport-lookup-{org}.json")["windows"]["dev"]
         shares.append(dev["found"] / dev["examples"])
     low, high = round(100 * min(shares)), round(100 * max(shares))
     values["found_share_dev"] = f"{low}%" if low == high else f"{low}% to {high}%"
-    holds = []
-    for org in ORGS:
-        read = load(f"partition-pilot-{org}-likelihood-sensitivities.json")
-        if read.get("metric") != METRIC:
-            raise SystemExit(f"the sensitivities are on {read.get('metric')}, not {METRIC}")
-        primary = read["intervals"]["0.975"]["low"] > 0
-        without = read["without"]["found_before_checkpoint"]["intervals"]["0.975"]["low"] > 0
-        holds.append(primary == without)
-    values["found_holds"] = all(holds)
-    # The retrieval comparator on the development window: own half's pool minus sibling's, at
-    # k = 1 and 3, the adapters over the same partitions, and the sibling-minus-foreign contrast.
-    for org in ("openstack", "wikimedia"):
-        read = load(f"retrieval-reading-{org}{DECODER}.json")
-        for k in ("1", "3"):
-            cell = read["ks"][k]
-            values[f"retrieval_k{k}_{org}"] = interval(cell["own_minus_sibling"])
-            values[f"retrieval_org_k{k}_{org}"] = interval(cell["sibling_minus_foreign"])
-        values[f"retrieval_adapters_{org}"] = interval(read["adapters"]["own_minus_sibling"])
-        values[f"retrieval_partitions_{org}"] = len(read["partitions"])
-    # The rules-file comparator on the same partitions: the distilled file's own half minus
-    # sibling, and the adapters' over the same partitions and examples.
-    for org in ("openstack", "wikimedia"):
-        read = load(f"rules-reading-{org}{DECODER}.json")
-        values[f"rules_distilled_{org}"] = interval(read["families"]["distilled"]["own_minus_sibling"])
-        values[f"rules_adapters_{org}"] = interval(read["adapters"]["own_minus_sibling"])
-        values[f"rules_partitions_{org}"] = len(read["partitions"])
+    # The retrieval comparator's development partitions (its readings, on exact match, bind nothing).
+    values["retrieval_partitions_openstack"] = len(load(f"retrieval-reading-openstack{DECODER}.json")["partitions"])
     # How much more often a tuned adapter's greedy output is its own half's reference than the base
     # model's, over the positive control's arms (sphragis likelihood-sesoi.json).
     control = load("likelihood-sesoi.json")
     values["tuned_exact_gain"] = f"{100 * control['adapter_minus_base']['exact_match']:.0f}"
-    # The team-specific contrast on the registered score, each community's development pilot.
-    team = {}
-    for org in ORGS:
-        pilot = load(f"partition-pilot-{org}-likelihood.json")
-        team[org] = team_reading(pilot)
-        values[f"team_{org}"] = team[org][0]
-        values[f"team_gain_{org}"] = pilot["verdicts"]["0.975"] == "supported"
-    values["team_title"] = team_title(team)
-    # The development pilots read again with relation chains as the resampled unit, H1's
-    # registered cluster unit (sphragis research log, 2026-10-21): whether every community's
-    # verdict at the deck's level is the one it has by change.
-    same = []
-    for org in (*ORGS, "qt"):
-        by_change = load(f"partition-pilot-{org}-likelihood.json")
-        by_chain = load(f"partition-pilot-{org}-likelihood-chains.json")
-        if by_chain.get("metric") != METRIC or by_chain["cluster_unit"]["unit"] != "chain":
-            raise SystemExit(f"{org}'s chain pilot is not on {METRIC} by chain")
-        same.append(by_change["verdicts"]["0.975"] == by_chain["verdicts"]["0.975"])
-    values["chains_hold"] = all(same)
-    # Qt's development pilot, read before Qt is admitted: the status slide names its reading alone
-    # (sphragis research log, 2026-10-18).
-    values["team_qt"] = team_reading(load("partition-pilot-qt-likelihood.json"))[0]
-    # H2's development pilot, Qt against an adapter tuned on Chromium, read by chain, its registered
-    # unit; and whether its simulation sized a K (sphragis research log, 2026-10-29: no K in the
-    # registered grid held its null, so `k_coverage.py` wrote no artifact).
-    foreign = load("partition-pilot-qt-foreignchromium-likelihood-chains.json")
-    if foreign.get("hypothesis") != "H2" or foreign["cluster_unit"]["unit"] != "chain":
-        raise SystemExit("the Chromium pilot is not H2's by chain")
-    values["foreign_qt"] = team_reading(foreign)[0]
-    values["foreign_status_chromium"] = foreign_status(foreign)
-    values["foreign_sized"] = any(RESULTS.glob("k-coverage-qt-foreign*.json"))
-    # H2's registered K, once its simulation sized one (sphragis research log, 2026-11-02: K = 40,
-    # calibrated); 0 until then, and the slide binds it only when foreign_sized holds.
-    sized = sorted(RESULTS.glob("k-coverage-qt-foreignchromium-likelihood-chains.json"))
-    values["k_foreign"] = json.loads(sized[0].read_text())["runs"] if sized else 0
-    # Fuchsia's exploratory arm, read beside Chromium's on the same runs, by chain; it binds
-    # nothing and takes no simulation (sphragis research log, 2026-11-01).
-    fuchsia = load("partition-pilot-qt-foreignfuchsia-likelihood-chains.json")
-    if (
-        fuchsia.get("hypothesis") != "H2"
-        or fuchsia.get("foreign_source") != "fuchsia"
-        or not fuchsia.get("exploratory")
-        or fuchsia["cluster_unit"]["unit"] != "chain"
-    ):
-        raise SystemExit("the Fuchsia pilot is not H2's exploratory arm by chain")
-    values["foreign_fuchsia_qt"] = team_reading(fuchsia)[0]
-    values["foreign_status_fuchsia"] = foreign_status(fuchsia)
+    # H2's registered K, the cap its simulation took (sphragis research log, 2026-11-02: K = 40, calibrated).
+    values["k_foreign"] = load("k-coverage-qt-foreignchromium-likelihood-chains.json")["runs"]
     # Check 5: each half's own marker planted in half its training lessons; how many runs found it.
-    planted = {org: planted_runs(org) for org in ("openstack", "wikimedia")}
+    planted = {org: planted_runs(org) for org in (*ORGS, "qt")}
     if len({len(v) for v in planted.values()}) != 1:
         raise SystemExit(f"planted runs differ in number: { {o: len(v) for o, v in planted.items()} }")
     every = [v for runs in planted.values() for v in runs]

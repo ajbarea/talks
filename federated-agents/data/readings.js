@@ -76,120 +76,14 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
       "kept": 5513
     }
   },
-  "split": {
-    "openstack": {
-      "name": "OpenStack",
-      "whole": {
-        "estimate": 0.02305021727715797,
-        "low": 0.008145324293454754,
-        "high": 0.04024369981785635
-      },
-      "names": [
-        {
-          "label": "names",
-          "estimate": 0.012249016851533125,
-          "low": 0.0032097074283315204,
-          "high": 0.02410721176669904
-        },
-        {
-          "label": "the rest",
-          "estimate": 0.009995501556084042,
-          "low": 0.0003335622382540494,
-          "high": 0.021820974048927886
-        }
-      ],
-      "edit": [
-        {
-          "label": "what the fix changed",
-          "estimate": 0.021306064638517953,
-          "low": 0.007640259510037272,
-          "high": 0.03767409192183458
-        },
-        {
-          "label": "code carried over",
-          "estimate": 0.0009384537690992168,
-          "low": -0.002845744544010688,
-          "high": 0.004087064039295262
-        }
-      ]
-    },
-    "wikimedia": {
-      "name": "Wikimedia",
-      "whole": {
-        "estimate": 0.00577163930547922,
-        "low": -0.0004116679858655984,
-        "high": 0.012544619911359328
-      },
-      "names": [
-        {
-          "label": "names",
-          "estimate": 0.0011478070119528892,
-          "low": -0.002448794693315202,
-          "high": 0.004809179677393776
-        },
-        {
-          "label": "the rest",
-          "estimate": 0.0044877338910825374,
-          "low": -0.0008094440182479349,
-          "high": 0.010388757617587308
-        }
-      ],
-      "edit": [
-        {
-          "label": "what the fix changed",
-          "estimate": 0.006344746854330593,
-          "low": 0.0009681018772627384,
-          "high": 0.012064287175512556
-        },
-        {
-          "label": "code carried over",
-          "estimate": -0.0007092059512951682,
-          "low": -0.0034288307958933078,
-          "high": 0.0017769198551416303
-        }
-      ]
-    }
-  },
-  "split_gain_orgs": "OpenStack",
-  "split_in_fix": true,
-  "split_beyond_names": true,
-  "split_copied_none": true,
-  "split_unsettled_orgs": "Wikimedia",
-  "split_any_unsettled": true,
   "audit_valid_openstack": "83%",
   "audit_items_openstack": 191,
-  "ai_shift_openstack": "+0.0028",
   "found_share_dev": "4% to 5%",
-  "found_holds": true,
-  "retrieval_k1_openstack": "+0.012 [-0.005, +0.028]",
-  "retrieval_k3_openstack": "+0.017 [+0.000, +0.034]",
-  "retrieval_adapters_openstack": "-0.000 [-0.017, +0.016]",
   "retrieval_partitions_openstack": 10,
-  "retrieval_k1_wikimedia": "+0.009 [-0.004, +0.024]",
-  "retrieval_org_k1_wikimedia": "+0.045 [+0.028, +0.062]",
-  "retrieval_k3_wikimedia": "+0.012 [-0.003, +0.027]",
-  "retrieval_adapters_wikimedia": "+0.007 [-0.006, +0.020]",
-  "rules_distilled_openstack": "-0.003 [-0.009, +0.003]",
-  "rules_adapters_openstack": "-0.000 [-0.017, +0.016]",
-  "rules_partitions_openstack": 10,
-  "rules_distilled_wikimedia": "-0.001 [-0.006, +0.004]",
-  "rules_adapters_wikimedia": "+0.007 [-0.006, +0.020]",
   "tuned_exact_gain": "24",
-  "team_openstack": "is better on its own code",
-  "team_gain_openstack": true,
-  "team_wikimedia": "shows at most a small gain",
-  "team_gain_wikimedia": false,
-  "team_title": "a team-specific gain on OpenStack, at most a small one on Wikimedia",
-  "chains_hold": true,
-  "team_qt": "is better on its own code",
-  "foreign_qt": "is not settled yet",
-  "foreign_status_chromium": "no answer yet",
-  "foreign_sized": true,
   "k_foreign": 40,
-  "foreign_fuchsia_qt": "is better on its own code",
-  "foreign_status_fuchsia": "Qt's assistant wins",
-  "planted_runs": 20,
-  "planted_found": 20,
+  "planted_runs": 30,
+  "planted_found": 30,
   "planted_all": true,
   "k_openstack": 10,
   "k_reproducibility_openstack": 10,

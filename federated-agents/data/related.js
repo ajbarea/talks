@@ -162,7 +162,7 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, {
         group: "shared + private parts",
         x: "the company,\nbefore training",
         y: "for whose\nit is",
-        oneLine: "The company lists what may feed the shared adapter before training, and the shared adapter is tested for which company it came from.",
+        oneLine: "The company lists what may feed the shared adapter before training, and the shared adapter will be tested for which company it came from.",
         ours: true,
       },
     ],

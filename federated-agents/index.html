@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Federated Agents</title>
-  <meta name="description" content="Coding agents that learn each company's house rules without its code leaving.">
+  <meta name="description" content="Coding agents that learn each company's house style without its code leaving.">
   <meta property="og:title" content="Federated Agents">
-  <meta property="og:description" content="Coding agents that learn each company's house rules without its code leaving.">
+  <meta property="og:description" content="Coding agents that learn each company's house style without its code leaving.">
   <link rel="stylesheet" href="../vendor/reveal/reset.css">
   <link rel="stylesheet" href="../vendor/reveal/reveal.css">
   <link rel="stylesheet" href="../shared/deck.css">
@@ -22,7 +22,7 @@
 <section class="title-slide">
   <span class="kicker">AJ Barea · PhD student, Rochester Institute of Technology</span>
   <h1>Federated Agents</h1>
-  <p class="subtitle">Coding agents that learn each company's house rules without its code leaving</p>
+  <p class="subtitle">Coding agents that learn each company's house style without its code leaving</p>
   <svg class="motif" viewBox="0 0 420 300" aria-hidden="true" focusable="false">
     <g class="m-co" data-motion="pop" data-delay="200"><rect x="4" y="40" width="150" height="220" rx="12"/><rect x="266" y="40" width="150" height="220" rx="12"/></g>
     <g data-motion="stagger" data-child="pop" data-delay="350" data-step="110">
@@ -40,7 +40,7 @@
     <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/federated-agents" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM14 4h1v1h-1zM16 4h1v1h-1zM18 4h2v1h-2zM22 4h2v1h-2zM26 4h2v1h-2zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM19 5h3v1h-3zM24 5h2v1h-2zM27 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM15 6h1v1h-1zM18 6h1v1h-1zM21 6h1v1h-1zM24 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM13 7h5v1h-5zM21 7h1v1h-1zM23 7h1v1h-1zM26 7h2v1h-2zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM14 8h2v1h-2zM20 8h1v1h-1zM23 8h1v1h-1zM27 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h3v1h-3zM16 9h1v1h-1zM18 9h1v1h-1zM21 9h1v1h-1zM24 9h3v1h-3zM28 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM13 11h4v1h-4zM18 11h1v1h-1zM21 11h1v1h-1zM23 11h3v1h-3zM28 11h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM9 12h2v1h-2zM12 12h3v1h-3zM16 12h5v1h-5zM22 12h4v1h-4zM27 12h1v1h-1zM29 12h1v1h-1zM31 12h1v1h-1zM6 13h1v1h-1zM8 13h2v1h-2zM12 13h1v1h-1zM15 13h2v1h-2zM18 13h1v1h-1zM20 13h1v1h-1zM24 13h1v1h-1zM28 13h4v1h-4zM35 13h2v1h-2zM7 14h1v1h-1zM10 14h1v1h-1zM13 14h1v1h-1zM15 14h2v1h-2zM20 14h2v1h-2zM23 14h4v1h-4zM30 14h3v1h-3zM34 14h1v1h-1zM36 14h1v1h-1zM5 15h3v1h-3zM9 15h1v1h-1zM11 15h1v1h-1zM13 15h3v1h-3zM18 15h2v1h-2zM21 15h1v1h-1zM23 15h3v1h-3zM29 15h2v1h-2zM32 15h2v1h-2zM35 15h1v1h-1zM4 16h2v1h-2zM7 16h4v1h-4zM12 16h2v1h-2zM23 16h1v1h-1zM25 16h1v1h-1zM28 16h4v1h-4zM33 16h1v1h-1zM35 16h2v1h-2zM4 17h1v1h-1zM6 17h1v1h-1zM11 17h6v1h-6zM19 17h2v1h-2zM25 17h1v1h-1zM28 17h1v1h-1zM30 17h1v1h-1zM32 17h1v1h-1zM35 17h2v1h-2zM8 18h3v1h-3zM12 18h1v1h-1zM14 18h2v1h-2zM24 18h1v1h-1zM26 18h2v1h-2zM29 18h4v1h-4zM34 18h2v1h-2zM4 19h2v1h-2zM7 19h2v1h-2zM12 19h1v1h-1zM15 19h1v1h-1zM17 19h3v1h-3zM21 19h1v1h-1zM23 19h1v1h-1zM25 19h3v1h-3zM30 19h2v1h-2zM35 19h1v1h-1zM6 20h1v1h-1zM8 20h1v1h-1zM10 20h5v1h-5zM16 20h1v1h-1zM21 20h1v1h-1zM23 20h3v1h-3zM28 20h1v1h-1zM30 20h1v1h-1zM32 20h1v1h-1zM35 20h1v1h-1zM5 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM11 21h1v1h-1zM15 21h1v1h-1zM17 21h2v1h-2zM20 21h1v1h-1zM25 21h1v1h-1zM27 21h3v1h-3zM31 21h1v1h-1zM33 21h1v1h-1zM35 21h1v1h-1zM4 22h1v1h-1zM8 22h1v1h-1zM10 22h1v1h-1zM17 22h2v1h-2zM20 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM28 22h3v1h-3zM34 22h3v1h-3zM4 23h1v1h-1zM6 23h1v1h-1zM12 23h1v1h-1zM15 23h1v1h-1zM17 23h1v1h-1zM19 23h1v1h-1zM21 23h2v1h-2zM24 23h3v1h-3zM29 23h1v1h-1zM31 23h1v1h-1zM35 23h2v1h-2zM5 24h1v1h-1zM8 24h1v1h-1zM10 24h1v1h-1zM12 24h1v1h-1zM15 24h1v1h-1zM17 24h2v1h-2zM20 24h3v1h-3zM25 24h1v1h-1zM27 24h3v1h-3zM35 24h2v1h-2zM6 25h1v1h-1zM9 25h1v1h-1zM12 25h3v1h-3zM16 25h1v1h-1zM18 25h3v1h-3zM22 25h3v1h-3zM26 25h1v1h-1zM28 25h3v1h-3zM35 25h2v1h-2zM4 26h7v1h-7zM13 26h2v1h-2zM16 26h1v1h-1zM19 26h1v1h-1zM22 26h1v1h-1zM24 26h3v1h-3zM29 26h2v1h-2zM32 26h1v1h-1zM34 26h1v1h-1zM36 26h1v1h-1zM5 27h1v1h-1zM7 27h1v1h-1zM9 27h1v1h-1zM11 27h3v1h-3zM16 27h1v1h-1zM18 27h1v1h-1zM20 27h1v1h-1zM22 27h1v1h-1zM25 27h1v1h-1zM28 27h1v1h-1zM30 27h2v1h-2zM33 27h1v1h-1zM35 27h2v1h-2zM4 28h1v1h-1zM7 28h1v1h-1zM9 28h2v1h-2zM14 28h2v1h-2zM17 28h1v1h-1zM19 28h1v1h-1zM21 28h1v1h-1zM23 28h1v1h-1zM25 28h1v1h-1zM27 28h6v1h-6zM36 28h1v1h-1zM12 29h2v1h-2zM15 29h4v1h-4zM23 29h6v1h-6zM32 29h2v1h-2zM36 29h1v1h-1zM4 30h7v1h-7zM14 30h2v1h-2zM17 30h2v1h-2zM24 30h3v1h-3zM28 30h1v1h-1zM30 30h1v1h-1zM32 30h3v1h-3zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM16 31h1v1h-1zM20 31h1v1h-1zM23 31h1v1h-1zM25 31h2v1h-2zM28 31h1v1h-1zM32 31h1v1h-1zM36 31h1v1h-1zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM14 32h1v1h-1zM17 32h1v1h-1zM19 32h2v1h-2zM24 32h1v1h-1zM28 32h6v1h-6zM35 32h2v1h-2zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h3v1h-3zM16 33h4v1h-4zM21 33h1v1h-1zM23 33h3v1h-3zM28 33h1v1h-1zM30 33h1v1h-1zM32 33h2v1h-2zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM14 34h1v1h-1zM17 34h2v1h-2zM21 34h1v1h-1zM24 34h2v1h-2zM32 34h3v1h-3zM36 34h1v1h-1zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h1v1h-1zM15 35h3v1h-3zM19 35h4v1h-4zM25 35h1v1h-1zM27 35h3v1h-3zM4 36h7v1h-7zM12 36h2v1h-2zM16 36h1v1h-1zM20 36h1v1h-1zM22 36h1v1h-1zM25 36h1v1h-1zM27 36h2v1h-2zM32 36h1v1h-1zM35 36h1v1h-1z"/></svg>
   </div>
   <!-- /qr -->
-  <aside class="notes"><ul><li>Hi, I'm AJ Barea, a PhD student at RIT</li><li>Federated Agents: coding agents learn each company's house rules</li><li>The company's code never leaves the building</li></ul></aside>
+  <aside class="notes"><ul><li>Hi, I'm AJ Barea, a PhD student at RIT</li><li>Federated Agents: coding agents learn each company's house style</li><li>The company's code never leaves the building</li></ul></aside>
 </section>
 
 <section data-contribution data-chapter="1 · The point">
@@ -74,16 +74,16 @@
     <div class="contrib-side">
       <p class="count"><span class="big" data-motion="count" data-dur="1200" data-value="readings.corpus_examples_openstack"></span>lessons from OpenStack</p>
       <p class="count"><span class="big" data-motion="count" data-dur="1200" data-value="readings.corpus_examples_wikimedia"></span>lessons from Wikimedia</p>
-      <p class="also">The same tool builds GitHub communities; Apache and .NET qualify for a replication.</p>
+      <p class="also">The same tool builds Qt's data, and GitHub's for a replication: Apache and .NET qualify.</p>
     </div>
   </div>
-  <p class="lead"><b>Why you should care:</b> your reviewers repeat rules no AI assistant has seen. Lessons like these could teach them.</p>
-  <aside class="notes"><ul><li>A tool turns public code review into lessons: comment, code, the developer's next code</li><li><span data-value="readings.corpus_examples_openstack"></span> OpenStack, <span data-value="readings.corpus_examples_wikimedia"></span> Wikimedia; GitHub replication built</li><li>Why care: your reviewers' rules, learned without your code leaving</li></ul></aside>
+  <p class="lead"><b>Why you should care:</b> your reviewers repeat rules AI assistants rarely see. Lessons like these could teach them.</p>
+  <aside class="notes"><ul><li>A tool turns public code review into lessons: comment, code, the developer's next code</li><li><span data-value="readings.corpus_examples_openstack"></span> OpenStack, <span data-value="readings.corpus_examples_wikimedia"></span> Wikimedia; GitHub replication built</li><li>Why care: your reviewers' rules, which assistants rarely see</li></ul></aside>
 </section>
 
 <section data-chapter="2 · The problem">
   <span class="kicker">2 · The problem</span>
-  <h2>AI coding assistants miss a company's unwritten house rules</h2>
+  <h2>AI coding assistants miss a company's unwritten house style</h2>
   <blockquote class="rule">
     <b>A house rule, as a reviewer states it</b>
     "Please use our <code>db.query()</code> helper. We never open raw connections."
@@ -100,8 +100,8 @@
       <pre><code>rows = db.query(q)</code></pre>
     </figure>
   </div>
-  <p class="lead">Rules files hold the rules a company writes down. The unwritten ones are learned in code review, which AI assistants never see.</p>
-  <aside class="notes"><ul><li>The assistant opens a raw connection; reviewers send it back: use our helper</li><li>Some rules sit in a rules file the assistant reads</li><li>Most are learned in code review, which assistants never see</li></ul></aside>
+  <p class="lead">Rules files hold the rules a company writes down. The unwritten ones are learned in code review, which AI assistants rarely see.</p>
+  <aside class="notes"><ul><li>The assistant opens a raw connection; reviewers send it back: use our helper</li><li>Some rules sit in a rules file the assistant reads</li><li>Most are learned in code review, which assistants rarely see</li></ul></aside>
 </section>
 
 <section data-chapter="2 · The problem">
@@ -315,28 +315,24 @@
 
 <section data-chapter="3 · The idea">
   <span class="kicker">3 · The idea</span>
-  <h2>Other designs let the method pick what is shared; none tests whose it is</h2>
+  <h2>Other designs let the method pick what's shared; none I found tests its source</h2>
   <div class="relmap wide" data-source="related" data-differs="off"></div>
   <p class="footnote">Each grey dot is a published design<span class="web-only"> (hover or tap for a summary)</span>. Each was tested on public datasets, not real organizations' data.</p>
-  <aside class="notes"><ul><li>Grey dots: published designs. Across: who decides what is shared</li><li>Up: whether anyone tested the shared part; none asked whose it is</li><li>Mine, in blue and orange: the company decides before training, and I test where the shared part came from</li></ul></aside>
+  <aside class="notes"><ul><li>Grey dots: published designs. Across: who decides what is shared</li><li>Up: whether anyone tested the shared part; none I found asked whose it is</li><li>Mine, in blue and orange: the company decides before training, and I will test where the shared part came from</li></ul></aside>
 </section>
 
 <section data-chapter="4 · What first runs show">
   <span class="kicker">4 · What first runs show</span>
-  <h2>Tuning helps, <span data-value="readings.team_title"></span></h2>
+  <h2>Tuning helps; the sealed test asks if the gain is the team's</h2>
   <div class="cards panels findings" style="--n:3">
     <div class="card">
       <b>Tuning helps</b>
       <p class="gain"><svg class="trend up" viewBox="0 0 40 40" aria-hidden="true" focusable="false"><path d="M20,36 V8 M8,19 L20,6 L32,19"/></svg>+<span data-value="readings.tuned_exact_gain"></span><span class="per">in 100</span></p>
-      <p>Tuned on its community's reviews, an assistant gets about <span data-value="readings.tuned_exact_gain"></span> more fixes in 100 exactly right.</p>
+      <p>Tuned on its community's reviews, an assistant gets about <span data-value="readings.tuned_exact_gain"></span> more fixes in 100 exactly right than the untuned model.</p>
     </div>
     <div class="card">
       <b>The team-specific part</b>
-      <ul class="trends">
-        <li><span data-if="readings.team_gain_openstack"><svg class="trend up" viewBox="0 0 40 40" role="img" aria-label="a gain"><path d="M20,36 V8 M8,19 L20,6 L32,19"/></svg></span><span data-unless="readings.team_gain_openstack"><svg class="trend flat" viewBox="0 0 40 40" role="img" aria-label="no clear gain"><path d="M4,20 H34 M23,8 L35,20 L23,32"/></svg></span><span><b>OpenStack</b> <span data-value="readings.team_openstack"></span></span></li>
-        <li><span data-if="readings.team_gain_wikimedia"><svg class="trend up" viewBox="0 0 40 40" role="img" aria-label="a gain"><path d="M20,36 V8 M8,19 L20,6 L32,19"/></svg></span><span data-unless="readings.team_gain_wikimedia"><svg class="trend flat" viewBox="0 0 40 40" role="img" aria-label="no clear gain"><path d="M4,20 H34 M23,8 L35,20 L23,32"/></svg></span><span><b>Wikimedia</b> <span data-value="readings.team_wikimedia"></span></span></li>
-      </ul>
-      <p>Each community's own assistant against its sibling's, on the real fix.</p>
+      <p>A half's own assistant against its sibling half's is one registered test, read only on the sealed months.</p>
     </div>
     <div class="card">
       <b>Next: does it leak?</b>
@@ -345,32 +341,22 @@
         <path class="ask" d="M100,65 L128,65"/><circle r="6" class="ask-dot" aria-hidden="true" data-motion="flow" data-path="M104,65 L136,65" data-delay="900" data-dur="1100" data-iter="3"/><path class="ask-head" d="M126,57 L138,65 L126,73 z"/>
         <rect class="private" x="142" y="26" width="94" height="78" rx="3"/><text x="189" y="54" text-anchor="middle">"came</text><text x="189" y="74" text-anchor="middle">from</text><text x="189" y="94" text-anchor="middle">Co. A?"</text>
       </svg>
-      <p>The attacks on published privacy designs are built.</p>
+      <p>Two attacks on published privacy designs are built.</p>
     </div>
   </div>
-  <p class="footnote">First runs on development data; the sealed test is sized to settle them.</p>
-  <aside class="notes"><ul><li>Development data, not the sealed test</li><li>Tuned: about <span data-value="readings.tuned_exact_gain"></span> more fixes in 100 exactly right</li><li>OpenStack's own assistant <span data-value="readings.team_openstack"></span>; Wikimedia's <span data-value="readings.team_wikimedia"></span>. Leak attacks built</li></ul></aside>
-</section>
-
-<section data-chapter="4 · What first runs show">
-  <span class="kicker">4 · What first runs show</span>
-  <h2 data-if="readings.split_in_fix"><span data-value="readings.split_gain_orgs"></span>'s clear gain sits in the fix itself<span data-if="readings.split_beyond_names">, not only in names</span></h2>
-  <h2 data-unless="readings.split_in_fix">Where the team-specific gain sits is not settled yet</h2>
-  <div class="forest" data-source="readings.split" data-splits="names,edit" data-accent="1,0" data-unit="gain in the fix's log-probability, per token"></div>
-  <p class="key"><b>Names:</b> the fix's identifiers; <b>the rest:</b> every other token. <b>What the fix changed:</b> the tokens the developer rewrote; <b>code carried over:</b> the tokens kept as they were.</p>
-  <p class="footnote">Development data, exploratory. Dot: the gain; line: its 97.5% interval.</p>
-  <aside class="notes"><ul><li>Is it just names? Each gain split into parts that add up to it</li><li><span data-if="readings.split_beyond_names">On <span data-value="readings.split_gain_orgs"></span>, part clearly lies outside names; </span><span data-if="readings.split_in_fix">the fix itself carries it</span><span data-unless="readings.split_in_fix">whether the fix carries it is open</span></li><li><span data-if="readings.split_copied_none">Carried-over code: next to none. </span><span data-if="readings.split_any_unsettled"><span data-value="readings.split_unsettled_orgs"></span> unsettled; </span>the sealed test reads both again</li></ul></aside>
+  <p class="footnote">Development data, by exact match: a check that tuning works, not a test result.</p>
+  <aside class="notes"><ul><li>Development data, not the sealed test</li><li>Tuned: about <span data-value="readings.tuned_exact_gain"></span> more fixes in 100 exactly right than untuned</li><li>Own against sibling waits for the sealed months. Two leak attacks built</li></ul></aside>
 </section>
 
 <section data-chapter="5 · What's built">
   <span class="kicker">5 · What's built</span>
   <h2>Every step up to the sealed test is built</h2>
   <ol class="stages" data-motion="stagger" data-child="rise" data-step="200" data-delay="150">
-    <li class="built"><span class="state">Built</span><b>The dataset</b><p>Public code review in, checked lessons out. Names dropped; test months sealed.</p></li>
+    <li class="built"><span class="state">Built</span><b>The dataset</b><p>Public code review in, checked lessons out. Accounts pseudonymized; test months sealed.</p></li>
     <li class="built"><span class="state">Built</span><b>The study</b><p>Split each community in two, train an add-on per half, and score each on the real fix.</p></li>
     <li class="next"><span class="state">Planned</span><b>Next</b><p>Open the sealed test, build shared and private add-ons, and try to break them.</p></li>
   </ol>
-  <aside class="notes"><ul><li>Dataset: collect, drop names, pair comment with next code, clean, seal the test months</li><li>Study: two halves per community, an add-on each, scored on the developer's real fix</li><li>Next: sealed test, shared and private add-ons, the attacks</li></ul></aside>
+  <aside class="notes"><ul><li>Dataset: collect, pseudonymize accounts, pair comment with next code, clean, seal the test months</li><li>Study: two halves per community, an add-on each, scored on the developer's real fix</li><li>Next: sealed test, shared and private add-ons, the attacks</li></ul></aside>
 </section>
 
 <section data-chapter="5 · What's built">
@@ -398,15 +384,15 @@
       <b data-if="readings.planted_all">A planted rule is caught</b>
       <b data-unless="readings.planted_all">A planted rule was missed</b>
       <div class="dots count fragment" data-dots="readings.planted_found" data-of="readings.planted_runs" data-cols="10"></div>
-      <p>A fake house rule, planted in half the training lessons, was found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span> runs<span data-unless="readings.planted_all">; the test waits until that is fixed</span>.</p>
+      <p>A fake house rule, planted in half the training lessons, was found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span> development runs<span data-unless="readings.planted_all">; the test waits until that is fixed</span>.</p>
     </div>
     <div class="card">
       <b>Sized to find a real effect</b>
       <div class="dots count fragment" data-dots="readings.sized_found" data-of="readings.sized_studies" data-cols="10"></div>
-      <p>With a real effect of the smallest size that matters, <span data-value="readings.sized_found"></span> of <span data-value="readings.sized_studies"></span> simulated studies find it.</p>
+      <p>With a real effect of the smallest size that matters, at least <span data-value="readings.sized_found"></span> of <span data-value="readings.sized_studies"></span> simulated studies find it.</p>
     </div>
   </div>
-  <aside class="notes"><ul><li>Must win twice: the whole fix, and the fix without its names</li><li>Averaged over many splits; planted rule found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span> runs</li><li>Simulations: a real effect of the smallest size that matters is found almost every time</li></ul></aside>
+  <aside class="notes"><ul><li>Own against sibling must win twice: the whole fix, and the fix without its names</li><li>Averaged over many splits; planted rule found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span> runs</li><li>Simulations: a real effect of the smallest size that matters is found almost every time</li></ul></aside>
 </section>
 
 <section data-chapter="6 · Where it stands">
@@ -415,12 +401,12 @@
   <ol class="road" data-motion="stagger" data-child="rise" data-step="260" data-delay="200">
     <li class="done"><i aria-hidden="true"></i><span class="when">Ongoing, this fall</span><b>Tool and datasets</b>collect, clean and check real code review</li>
     <li class="now"><i aria-hidden="true"></i><span class="when">Now, due Nov 20</span><b>Plan to reviewers</b>a registered report for MSR 2027</li>
-    <li class="next"><i aria-hidden="true"></i><span class="when">From February</span><b>The sealed test</b>can a team's habits be learned, and where do they stop?</li>
+    <li class="next"><i aria-hidden="true"></i><span class="when">From February, if accepted</span><b>The sealed test</b>can a team's habits be learned, and where do they stop?</li>
     <li class="next"><i aria-hidden="true"></i><span class="when">Then</span><b>Shared and private add-ons</b>build them and try to break them</li>
     <li class="goal"><i aria-hidden="true"></i><span class="when">The goal</span><b>Federated coding agents</b>that learn each company's rules without its code leaving</li>
   </ol>
-  <p class="footnote">Registered report: the method is peer-reviewed before the test data is collected, so a "no" is still published.</p>
-  <aside class="notes"><ul><li>Datasets: stage one, still collecting and checking</li><li>Nov 20: the plan to MSR 2027 as a registered report; even a no is published</li><li>February: the sealed test, then the two add-ons and the attacks</li></ul></aside>
+  <p class="footnote">Registered report: the method is peer-reviewed before the test data is collected, so publication rests on the method, not the answer.</p>
+  <aside class="notes"><ul><li>Datasets: stage one, still collecting and checking</li><li>Nov 20: the plan to MSR 2027 as a registered report; reviewers judge the method, not the answer</li><li>If accepted Feb 4: the sealed test, the full paper to EMSE before Sep 30, then the add-ons and attacks</li></ul></aside>
 </section>
 
 <section data-chapter="6 · Where it stands">
@@ -436,10 +422,10 @@
         <li class="in">Qt <span>in</span></li>
       </ul>
       <div class="aside-test">
-        <b class="sub">Beside it: Qt against Google projects</b>
+        <b class="sub">Also tested: Qt's C++ against Google projects' C++</b>
         <ul data-motion="stagger" data-child="rise" data-delay="450">
-          <li class="vs">Chromium <span>registered; <i data-value="readings.foreign_status_chromium"></i></span></li>
-          <li class="vs">Fuchsia <span>exploratory; <i data-value="readings.foreign_status_fuchsia"></i></span></li>
+          <li class="vs">Chromium <span>registered</span></li>
+          <li class="vs">Fuchsia <span>exploratory</span></li>
         </ul>
       </div>
     </div>
@@ -449,29 +435,29 @@
       <ul data-motion="stagger" data-child="rise" data-delay="650">
         <li class="in">Apache <span>qualifies</span></li>
         <li class="in">.NET <span>qualifies</span></li>
-        <li class="out">LLVM <span>one project dominates</span></li>
-        <li class="out">Grafana <span>too little data</span></li>
+        <li class="out">LLVM <span>no split qualifies</span></li>
+        <li class="out">Grafana <span>no split qualifies</span></li>
       </ul>
     </div>
   </div>
-  <aside class="notes"><ul><li>OpenStack, Wikimedia, Qt decide; each must pass. Qt said yes in writing</li><li>Beside it: Qt against Chromium (registered) and Fuchsia (exploratory)</li><li>GitHub replication: Apache and .NET qualify. Membership fixed by Nov 20</li></ul></aside>
+  <aside class="notes"><ul><li>OpenStack, Wikimedia, Qt decide; each must pass. Qt said yes in writing</li><li>Also tested: Qt against Chromium (registered) and Fuchsia (exploratory)</li><li>GitHub replication: Apache and .NET qualify. Membership fixed by Nov 20</li></ul></aside>
 </section>
 
 <section data-conclusion>
   <h2>Before agents share a team's habits, test that there are habits to learn</h2>
   <div class="recap" style="--n:3" data-motion="stagger" data-child="rise" data-step="150">
     <div class="tile ours"><p class="num"><span data-value="readings.corpus_examples_openstack"></span> + <span data-value="readings.corpus_examples_wikimedia"></span></p><p>checked lessons from real code review, OpenStack and Wikimedia</p></div>
-    <div class="tile ours"><p class="num">+<span data-value="readings.tuned_exact_gain"></span> in 100</p><p>more fixes exactly right once an assistant is tuned on its community's reviews</p></div>
-    <div class="tile ours"><p class="num">OpenStack</p><p>its own assistant <span data-value="readings.team_openstack"></span><span data-if="readings.split_in_fix">, the gain in the fix itself</span>; Wikimedia's <span data-value="readings.team_wikimedia"></span></p></div>
+    <div class="tile ours"><p class="num">+<span data-value="readings.tuned_exact_gain"></span> in 100</p><p>more development fixes exactly right once an assistant is tuned on its community's reviews</p></div>
+    <div class="tile ours"><p class="num"><span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span></p><p>development splits in which the score found a planted house rule, in all three communities</p></div>
   </div>
   <div class="open">
     <p class="open-h">Open problems</p>
     <ul>
-      <li>Whether the gain holds on the sealed test months, in every community</li>
+      <li>Whether style transfers on the sealed months: own against sibling in every community, and Qt against Chromium</li>
       <li>Whether the shared add-on gives away which company it came from</li>
     </ul>
   </div>
-  <aside class="notes"><ul><li>First test there are team habits to learn, then share them without the code</li><li><span data-value="readings.corpus_examples_openstack"></span> + <span data-value="readings.corpus_examples_wikimedia"></span> lessons; +<span data-value="readings.tuned_exact_gain"></span> in 100 tuned; OpenStack's own assistant <span data-value="readings.team_openstack"></span></li><li>Open: does it hold on the sealed test; does the shared add-on leak. "That's my talk."</li></ul></aside>
+  <aside class="notes"><ul><li>First test there are team habits to learn, then share them without the code</li><li><span data-value="readings.corpus_examples_openstack"></span> + <span data-value="readings.corpus_examples_wikimedia"></span> lessons; +<span data-value="readings.tuned_exact_gain"></span> in 100 tuned; planted rule found <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span></li><li>Open: own against sibling, Qt against Chromium, and does the shared add-on leak. "That's my talk."</li></ul></aside>
 </section>
 
 <section class="closing">
@@ -530,58 +516,58 @@
       <desc id="pipe-d">Row one, built: collect public reviews, drop account names and hash account ids, pair each comment and its code with the next version, drop bots and approvals, drop copies, and split by month with the test months sealed. Row two, built and read on the development months: split a community's projects in two, train one small add-on per half on the same frozen model, score how likely each add-on finds the code the developer wrote next, and compare the own half's add-on with the other half's over many splits. Row three, planned: read the sealed test, where every community must gain; build shared and private add-ons; and try to break them.</desc>
       <defs><marker id="head-pipe" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
       <g><text x="0" y="20" class="lane">Build the dataset <tspan class="lane-state">(built)</tspan></text><rect class="stage" x="0" y="28" width="176" height="92" rx="3"/><text x="88" y="58" class="b" text-anchor="middle">Collect</text><text x="88" y="84" class="s" text-anchor="middle">public reviews,</text><text x="88" y="108" class="s" text-anchor="middle">by host rules</text><path class="link" d="M179,74 L197,74" marker-end="url(#head-pipe)"/><rect class="stage" x="200" y="28" width="176" height="92" rx="3"/><text x="288" y="58" class="b" text-anchor="middle">Accounts</text><text x="288" y="84" class="s" text-anchor="middle">names dropped,</text><text x="288" y="108" class="s" text-anchor="middle">ids hashed</text><path class="link" d="M379,74 L397,74" marker-end="url(#head-pipe)"/><rect class="stage" x="400" y="28" width="176" height="92" rx="3"/><text x="488" y="58" class="b" text-anchor="middle">Pair</text><text x="488" y="84" class="s" text-anchor="middle">comment, code</text><text x="488" y="108" class="s" text-anchor="middle">→ next version</text><path class="link" d="M579,74 L597,74" marker-end="url(#head-pipe)"/><rect class="stage" x="600" y="28" width="176" height="92" rx="3"/><text x="688" y="58" class="b" text-anchor="middle">Clean</text><text x="688" y="84" class="s" text-anchor="middle">drop bots and</text><text x="688" y="108" class="s" text-anchor="middle">approvals</text><path class="link" d="M779,74 L797,74" marker-end="url(#head-pipe)"/><rect class="stage" x="800" y="28" width="176" height="92" rx="3"/><text x="888" y="58" class="b" text-anchor="middle">Drop copies</text><text x="888" y="84" class="s" text-anchor="middle">exact, near,</text><text x="888" y="108" class="s" text-anchor="middle">boilerplate</text><path class="link" d="M979,74 L997,74" marker-end="url(#head-pipe)"/><rect class="stage" x="1000" y="28" width="176" height="92" rx="3"/><text x="1088" y="58" class="b" text-anchor="middle">Split</text><text x="1088" y="84" class="s" text-anchor="middle">by month;</text><text x="1088" y="108" class="s" text-anchor="middle">test sealed</text><rect class="win-train" x="0" y="130" width="380" height="34" rx="8"/><text x="190" y="154" class="s" text-anchor="middle">train: <tspan data-value="readings.window_train"></tspan></text><rect class="win-dev" x="399" y="130" width="380" height="34" rx="8"/><text x="589" y="154" class="s" text-anchor="middle">development: <tspan data-value="readings.window_dev"></tspan></text><rect class="win-test" x="798" y="130" width="380" height="34" rx="8"/><text x="988" y="154" class="s" text-anchor="middle">sealed test: <tspan data-value="readings.window_test"></tspan></text></g>
-      <g><text x="0" y="200" class="lane">Run the study <tspan class="lane-state">(built, read on the development months)</tspan></text><rect class="stage run" x="0" y="210" width="250" height="118" rx="3"/><text x="125" y="240" class="b" text-anchor="middle">Split in two</text><text x="125" y="266" class="s" text-anchor="middle">each community's</text><text x="125" y="290" class="s" text-anchor="middle">projects, in many</text><text x="125" y="314" class="s" text-anchor="middle">seeded ways</text><path class="link" d="M252,269 L267,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="270" y="210" width="330" height="118" rx="3"/><text x="435" y="240" class="b" text-anchor="middle">Train each half</text><text x="435" y="266" class="s" text-anchor="middle"><tspan data-value="readings.method_model"></tspan>,</text><text x="435" y="290" class="s" text-anchor="middle">frozen, + an add-on on</text><text x="435" y="314" class="s" text-anchor="middle">up to <tspan data-value="readings.method_lessons"></tspan> lessons a half</text><path class="link" d="M602,269 L617,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="620" y="210" width="270" height="118" rx="3"/><text x="755" y="240" class="b" text-anchor="middle">Score the real fix</text><text x="755" y="266" class="s" text-anchor="middle">how likely each add-on</text><text x="755" y="290" class="s" text-anchor="middle">finds the code the</text><text x="755" y="314" class="s" text-anchor="middle">developer wrote next</text><path class="link" d="M892,269 L907,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="910" y="210" width="270" height="118" rx="3"/><text x="1045" y="240" class="b" text-anchor="middle">Compare</text><text x="1045" y="266" class="s" text-anchor="middle">own half's add-on vs.</text><text x="1045" y="290" class="s" text-anchor="middle">the other half's,</text><text x="1045" y="314" class="s" text-anchor="middle">averaged over splits</text></g>
-      <g><text x="0" y="360" class="lane">Next <tspan class="lane-state">(planned)</tspan></text><rect class="next" x="0" y="370" width="380" height="92" rx="3"/><text x="190" y="400" class="b" text-anchor="middle">Read the sealed test</text><text x="190" y="426" class="s" text-anchor="middle">after reviewers accept the plan;</text><text x="190" y="450" class="s" text-anchor="middle">every community must gain</text><path class="link" d="M382,416 L397,416" marker-end="url(#head-pipe)"/><rect class="next" x="399" y="370" width="380" height="92" rx="3"/><text x="589" y="400" class="b" text-anchor="middle">Shared and private add-ons</text><text x="589" y="426" class="s" text-anchor="middle">only the shared add-on's</text><text x="589" y="450" class="s" text-anchor="middle">changes go to a server</text><path class="link" d="M781,416 L796,416" marker-end="url(#head-pipe)"/><rect class="next" x="798" y="370" width="380" height="92" rx="3"/><text x="988" y="400" class="b" text-anchor="middle">Try to break them</text><text x="988" y="426" class="s" text-anchor="middle">with the attacks already built</text><text x="988" y="450" class="s" text-anchor="middle">on published designs</text></g>
+      <g><text x="0" y="200" class="lane">Run the study <tspan class="lane-state">(built, read on the development months)</tspan></text><rect class="stage run" x="0" y="210" width="250" height="118" rx="3"/><text x="125" y="240" class="b" text-anchor="middle">Split in two</text><text x="125" y="266" class="s" text-anchor="middle">each community's</text><text x="125" y="290" class="s" text-anchor="middle">projects, in many</text><text x="125" y="314" class="s" text-anchor="middle">seeded ways</text><path class="link" d="M252,269 L267,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="270" y="210" width="330" height="118" rx="3"/><text x="435" y="240" class="b" text-anchor="middle">Train each half</text><text x="435" y="266" class="s" text-anchor="middle"><tspan data-value="readings.method_model"></tspan>,</text><text x="435" y="290" class="s" text-anchor="middle">frozen, + an add-on on</text><text x="435" y="314" class="s" text-anchor="middle"><tspan data-value="readings.method_lessons"></tspan> lessons a half</text><path class="link" d="M602,269 L617,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="620" y="210" width="270" height="118" rx="3"/><text x="755" y="240" class="b" text-anchor="middle">Score the real fix</text><text x="755" y="266" class="s" text-anchor="middle">how likely each add-on</text><text x="755" y="290" class="s" text-anchor="middle">finds the code the</text><text x="755" y="314" class="s" text-anchor="middle">developer wrote next</text><path class="link" d="M892,269 L907,269" marker-end="url(#head-pipe)"/><rect class="stage run" x="910" y="210" width="270" height="118" rx="3"/><text x="1045" y="240" class="b" text-anchor="middle">Compare</text><text x="1045" y="266" class="s" text-anchor="middle">own half's add-on vs.</text><text x="1045" y="290" class="s" text-anchor="middle">the other half's,</text><text x="1045" y="314" class="s" text-anchor="middle">averaged over splits</text></g>
+      <g><text x="0" y="360" class="lane">Next <tspan class="lane-state">(planned)</tspan></text><rect class="next" x="0" y="370" width="380" height="92" rx="3"/><text x="190" y="400" class="b" text-anchor="middle">Read the sealed test</text><text x="190" y="426" class="s" text-anchor="middle">after reviewers accept the plan;</text><text x="190" y="450" class="s" text-anchor="middle">every community must gain</text><path class="link" d="M382,416 L397,416" marker-end="url(#head-pipe)"/><rect class="next" x="399" y="370" width="380" height="92" rx="3"/><text x="589" y="400" class="b" text-anchor="middle">Shared and private add-ons</text><text x="589" y="426" class="s" text-anchor="middle">only the shared add-on's</text><text x="589" y="450" class="s" text-anchor="middle">changes go to a server</text><path class="link" d="M781,416 L796,416" marker-end="url(#head-pipe)"/><rect class="next" x="798" y="370" width="380" height="92" rx="3"/><text x="988" y="400" class="b" text-anchor="middle">Try to break them</text><text x="988" y="426" class="s" text-anchor="middle">with the two attacks built</text><text x="988" y="450" class="s" text-anchor="middle">on published designs</text></g>
     </svg>
     <svg data-only="phone" viewBox="0 0 464 802" role="img" aria-labelledby="pipe-pt pipe-pd">
       <title id="pipe-pt">The study's pipeline, from public code review to the sealed test</title>
       <desc id="pipe-pd">Row one, built: collect public reviews, drop account names and hash account ids, pair each comment and its code with the next version, drop bots and approvals, drop copies, and split by month with the test months sealed. Row two, built and read on the development months: split a community's projects in two, train one small add-on per half on the same frozen model, score how likely each add-on finds the code the developer wrote next, and compare the own half's add-on with the other half's over many splits. Row three, planned: read the sealed test, where every community must gain; build shared and private add-ons; and try to break them.</desc>
       <defs><marker id="head-pipe-p" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="head" d="M0,0 L10,5 L0,10 z"/></marker></defs>
-      <rect class="stage" x="4" y="2" width="456" height="346" rx="3"/><text x="20" y="34" class="lane">Build the dataset <tspan class="lane-state">(built)</tspan></text><text x="20" y="70" class="s">Collect public code review</text><text x="20" y="102" class="s">Drop account names, hash ids</text><text x="20" y="134" class="s">Pair comment, code, next version</text><text x="20" y="166" class="s">Drop bots and approvals</text><text x="20" y="198" class="s">Drop exact and near copies</text><text x="20" y="230" class="s">Split by month; test sealed</text><text x="20" y="262" class="s">Train: <tspan data-value="readings.window_train"></tspan></text><text x="20" y="294" class="s">Development: <tspan data-value="readings.window_dev"></tspan></text><text x="20" y="326" class="s">Sealed test: <tspan data-value="readings.window_test"></tspan></text><path class="link" d="M232,352 L232,380" marker-end="url(#head-pipe-p)"/><rect class="stage run" x="4" y="388" width="456" height="218" rx="3"/><text x="20" y="420" class="lane">Run the study <tspan class="lane-state">(built)</tspan></text><text x="20" y="456" class="s">Split each community in two</text><text x="20" y="488" class="s">Frozen <tspan data-value="readings.method_model"></tspan></text><text x="20" y="520" class="s">Add-on a half, up to <tspan data-value="readings.method_lessons"></tspan> lessons</text><text x="20" y="552" class="s">Score each on the developer's fix</text><text x="20" y="584" class="s">Own half vs. other, averaged</text><path class="link" d="M232,610 L232,638" marker-end="url(#head-pipe-p)"/><rect class="next" x="4" y="646" width="456" height="152" rx="3"/><text x="20" y="678" class="lane">Next <tspan class="lane-state">(planned)</tspan></text><text x="20" y="714" class="s">Read the sealed test</text><text x="20" y="746" class="s">Shared and private add-ons</text><text x="20" y="778" class="s">Try to break them</text>
+      <rect class="stage" x="4" y="2" width="456" height="346" rx="3"/><text x="20" y="34" class="lane">Build the dataset <tspan class="lane-state">(built)</tspan></text><text x="20" y="70" class="s">Collect public code review</text><text x="20" y="102" class="s">Drop account names, hash ids</text><text x="20" y="134" class="s">Pair comment, code, next version</text><text x="20" y="166" class="s">Drop bots and approvals</text><text x="20" y="198" class="s">Drop exact and near copies</text><text x="20" y="230" class="s">Split by month; test sealed</text><text x="20" y="262" class="s">Train: <tspan data-value="readings.window_train"></tspan></text><text x="20" y="294" class="s">Development: <tspan data-value="readings.window_dev"></tspan></text><text x="20" y="326" class="s">Sealed test: <tspan data-value="readings.window_test"></tspan></text><path class="link" d="M232,352 L232,380" marker-end="url(#head-pipe-p)"/><rect class="stage run" x="4" y="388" width="456" height="218" rx="3"/><text x="20" y="420" class="lane">Run the study <tspan class="lane-state">(built)</tspan></text><text x="20" y="456" class="s">Split each community in two</text><text x="20" y="488" class="s">Frozen <tspan data-value="readings.method_model"></tspan></text><text x="20" y="520" class="s">Add-on a half, <tspan data-value="readings.method_lessons"></tspan> lessons each</text><text x="20" y="552" class="s">Score each on the developer's fix</text><text x="20" y="584" class="s">Own half vs. other, averaged</text><path class="link" d="M232,610 L232,638" marker-end="url(#head-pipe-p)"/><rect class="next" x="4" y="646" width="456" height="152" rx="3"/><text x="20" y="678" class="lane">Next <tspan class="lane-state">(planned)</tspan></text><text x="20" y="714" class="s">Read the sealed test</text><text x="20" y="746" class="s">Shared and private add-ons</text><text x="20" y="778" class="s">Try to break them</text>
     </svg>
   </div>
-  <p class="small">The add-on is a LoRA adapter (rank <span data-value="readings.method_rank"></span>); the score is the real fix's mean log-probability per token. Every filtering rule is published at ajbarea.github.io/sphragis/dataset.</p>
+  <p class="small">The add-on is a LoRA adapter (rank <span data-value="readings.method_rank"></span>); the score is the real fix's mean log-probability per token, on every token and on the tokens outside names. Every filtering rule is published at ajbarea.github.io/sphragis/dataset.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 <section id="faq-closed" class="backup">
   <h2>What if companies use different or closed models?</h2>
   <p>The add-ons need a base model whose weights every party can run and train against, so the federation is for companies that host an open-weight model. A company that buys a closed model by the token cannot carry the shared add-on.</p>
-  <p>Its route is the written one: a rules file or instructions the closed model reads. The study measures that route beside the adapters, in the rules-file slides.</p>
+  <p>Its route is the written one: a rules file or instructions the closed model reads. An exploratory arm measures that route beside the adapters (see the rules-file question).</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 <section id="faq-leakage" class="backup">
   <h2>What guarantee can be offered about leakage?</h2>
   <p>None yet, and saying otherwise would be the mistake this work exists to correct.</p>
-  <p>What exists is a <em>measurement</em>: given a boundary, does the part that crosses it still identify its source? The published boundaries go through it.</p>
-  <p>A guarantee needs a mechanism with a proof, and the candidates are secure aggregation and differential privacy. Both are measured here rather than assumed.</p>
+  <p>What exists is a <em>measurement</em>: given a boundary, does the part that crosses it still identify its source? The published boundaries will go through it.</p>
+  <p>A guarantee needs a mechanism with a proof, and the candidates are secure aggregation and differential privacy. Both will be measured rather than assumed.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 <section id="faq-test" class="backup">
   <h2>What are the pre-registered test and the privacy attacks?</h2>
-  <p><b>The test:</b> does an add-on trained on an organization's own reviews beat one trained on a sibling slice of the same organization, on months the model has not seen? It passes only if that holds in every organization tested, on the whole fix and without its names. The rule and the sealed test months were fixed before any test result existed.</p>
-  <p><b>The second contrast:</b> on Qt, does an add-on from a sibling slice of Qt beat one from Chromium, another organization? It is a registered test; first runs are not settled. Fuchsia, another organization, is read beside it, exploratory.</p>
+  <p><b>The test:</b> does an add-on trained on one half of an organization's projects beat one trained on the other half, on the first half's unseen months? It passes only if, in OpenStack, Wikimedia and Qt, it clears zero under its registered rule on the whole fix and without its names. The rule and the sealed test months were fixed before any test result existed.</p>
+  <p><b>The second contrast:</b> on Qt's C++, does Qt's sibling-half add-on beat one trained on as much C++ from Chromium, another organization? It is the registered test of whether an organization carries style beyond its projects, in this one case. Fuchsia, a second foreign organization, is read beside it, exploratory.</p>
   <p><b>The attacks:</b> does the shared part still reveal its source?</p>
   <ul>
     <li><em>Source attribution</em>: which organization did this add-on come from?</li>
-    <li><em>Min-loss attack</em>: assign an example to the source whose add-on fits it best (the baseline).</li>
+    <li><em>Min-loss attack</em> (planned): assign an example to the source whose add-on fits it best (the baseline).</li>
     <li><em>Aggregate attack</em>: read the combined update, not one organization's.</li>
-    <li><em>Gradient disaggregation</em>: undo secure aggregation.</li>
+    <li><em>Gradient disaggregation</em> (planned): undo secure aggregation.</li>
   </ul>
   <p>A measurement, not a guarantee.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
-  <aside class="notes"><span data-if="readings.planted_all">Word-for-word matching missed the planted rule in most runs, so the test scores probability. </span><span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>Changes stacked on one another in review, Gerrit's relation chains, are not independent, so the test resamples whole chains, not single changes; I fixed that before reading anything under it. <span data-if="readings.chains_hold">On development data, no community's reading moves under chains. </span><span data-unless="readings.chains_hold">On development data, a community's reading moves under chains. </span>For the Chromium contrast, no number of splits the plan allows held false alarms at the planned rate, so it takes the most allowed, declared as a change, with its pass mark set from simulated false alarms. On the score without names, Wikimedia's simulated false alarms ran above the promised rate, so its pass mark is also set from simulated false alarms. The test is sized to the standard registered reports ask for.</aside>
+  <aside class="notes"><span data-if="readings.planted_all">Word-for-word matching missed the planted rule in most runs, so the test scores probability. </span><span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>Changes stacked on one another in review, Gerrit's relation chains, are not independent, so the test resamples whole chains, not single changes; I fixed that after the first readings, before reading any chain. For the Chromium contrast, no number of splits the plan allows held false alarms at the planned rate, so it takes the most allowed, declared as a change, with its pass mark set from simulated false alarms. On the score without names, Wikimedia's simulated false alarms ran above the promised rate, so its pass mark is also set from simulated false alarms. The test is sized at 95% joint power.</aside>
 </section>
 
 <section id="faq-communities" class="backup">
   <h2>Who is in the test, and why?</h2>
   <ul>
-    <li><b>The main test:</b> OpenStack, Wikimedia and Qt; each must pass. Qt gave permission in writing and passes the same data checks; in first runs, Qt's own group's assistant <span data-value="readings.team_qt"></span>.</li>
-    <li><b>Qt against another organization:</b> the first of three Google projects, in a fixed order, with enough review data to match Qt's: Chromium, then Fuchsia, then Android. Chromium has enough, so it is the registered comparison; in first runs, Qt's own assistant <span data-value="readings.foreign_qt"></span>.<span data-if="readings.foreign_sized"> Simulations sized it at <span data-value="readings.k_foreign"></span> splits.</span><span data-unless="readings.foreign_sized"> It takes the most splits the plan allows.</span> Its pass mark comes from simulated false alarms.</li>
-    <li><b>Fuchsia</b> is read beside it, exploratory, so a gain against both rests less on one kind of software. In first runs, Qt's own assistant <span data-value="readings.foreign_fuchsia_qt"></span>.</li>
-    <li><b>GitHub:</b> review is often optional there, so it is a separate replication, under GitHub's research terms. A community qualifies when it splits into two halves of three or more projects, alike in language, each large enough, no project over half of either. Apache and .NET qualify. LLVM does not: one project would be over half of its half. Grafana has too little data.</li>
+    <li><b>The main test:</b> OpenStack, Wikimedia and Qt; each must pass. Qt gave permission in writing and passes the same data checks.</li>
+    <li><b>Qt against another organization:</b> Chromium, the registered comparison, gave permission in writing. Its adapters train on as much C++ as Qt's sibling half, from <code>chromium/src</code>, so the test does not also cross a language. No number of splits the plan allows held simulated false alarms at the planned rate, so it takes the most, <span data-value="readings.k_foreign"></span>, and its pass mark comes from simulated false alarms.</li>
+    <li><b>Fuchsia</b> is read beside it, exploratory, so a gain against both rests less on one kind of software.</li>
+    <li><b>GitHub:</b> review is often optional there, so it is a separate replication, under GitHub's research terms. A community qualifies when it splits into two halves of three or more projects, alike in language, each large enough, no project over half of either. Apache and .NET qualify; LLVM and Grafana have no split that does.</li>
     <li>Membership is fixed by November 20, before any test result exists.</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -592,10 +578,10 @@
   <p>Labels are not inferred. An example is a code hunk, the reviewer comments anchored to it, and the author's next revision, taken directly from the review server.</p>
   <ul>
     <li>Author comments are excluded, so the signal is a reviewer's, not a self-edit.</li>
-    <li>Near-duplicates are removed before the split; leftover overlap is reported.</li>
-    <li>Label quality is audited blind, by two model raters, a human, and an open-weight model anyone can rerun. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, about <span data-value="readings.audit_valid_openstack"></span> have a rewrite that answers its comment; the rest stay in and are scored in every arm, so they dilute a difference rather than favor one side.</li>
+    <li>Near-duplicates are removed before the split; leftover overlap must stay under a registered cap.</li>
+    <li>Label quality is audited blind, by two model raters and a human. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, the rater the human checked finds about <span data-value="readings.audit_valid_openstack"></span> with a rewrite that answers its comment; the rest stay in and are scored in every arm, so they mostly dilute a difference rather than favor one side.</li>
     <li>Every filtering rule and what it removed is published: ajbarea.github.io/sphragis/dataset</li>
-    <li>Contamination rests on provenance: every month of data starts after the model's weights were uploaded. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; leaving them out <span data-if="readings.found_holds">does not change OpenStack's or Wikimedia's reading</span><span data-unless="readings.found_holds">changes a reading</span>. Dropping AI-assisted commits (by trailer) moves OpenStack's estimate by <span data-value="readings.ai_shift_openstack"></span>.</li>
+    <li>Contamination: every month of data starts after the model's weights were uploaded, and three methods compare it with a window from before. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; a secondary reading drops them, and AI-disclosing changes.</li>
     <li>Everything derived is pseudonymized, with addresses swept from comments. RIT's human-subjects office ruled in writing that this is not human-subjects research.</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -610,7 +596,7 @@
 
 <section id="faq-people" class="backup">
   <h2>Aren't conventions really the reviewers', and don't they change?</h2>
-  <p>Partly, and the study checks it. Nearly every test example shares a reviewer with the other half of its own organization and none with a foreign one, so a reviewer effect would show up as the organization's advantage over a foreign one. An analysis planned before the test months open asks whether that advantage grows with how much of the training data the example's own reviewers wrote. Review is concentrated: in OpenStack, Wikimedia and Qt alike, the busiest tenth of reviewers are credited with about half the training examples.</p>
+  <p>Partly, and the study checks it. In OpenStack and Wikimedia, nearly every development example shares a reviewer with its sibling half, so a reviewer effect would show up as the organization's advantage over a foreign one; the study also measures how many reviewers Qt shares with Chromium. An analysis planned before the test months open asks whether that advantage grows with how much of the training data the example's own reviewers wrote. Review is concentrated: in OpenStack, Wikimedia and Qt alike, the busiest tenth of reviewers are credited with about half the training examples.</p>
   <p>People also come and go. The test months come after the training months, so conventions that changed with the people count against the result rather than for it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
@@ -626,7 +612,7 @@
 <section id="faq-beyond" class="backup">
   <h2>Is the dataset useful beyond this one model?</h2>
   <p>Yes. An example is a reviewer's comment, the code it was about, and the developer's real next revision. Nothing in it comes from a model, so any model or agent can be trained on it or scored against it.</p>
-  <p>The communities span several languages: OpenStack's examples are led by Python, Wikimedia's by PHP and JavaScript, and the two GitHub members, Apache and .NET, add Java, C# and more.</p>
+  <p>The communities span several languages: OpenStack's examples are led by Python, Wikimedia's by PHP and JavaScript, Qt's by C++, and the two GitHub members, Apache and .NET, add Java, C# and more.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
@@ -634,14 +620,14 @@
   <h2>Would a different model do better?</h2>
   <div class="figure">
     <svg data-only="desktop" viewBox="0 0 1180 190" role="img" aria-labelledby="models-t models-d">
-      <title id="models-t">Candidate models placed by the month their training data ends</title>
-      <desc id="models-d">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (September 2024) were trained before it, so they are fair tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
+      <title id="models-t">Candidate models placed by data end or release month</title>
+      <desc id="models-d">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (released September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the corpus.</desc>
       <line class="axis" x1="20" y1="96" x2="1160" y2="96"/>
       <line class="cut" x1="437" y1="62" x2="437" y2="130"/>
       <circle class="fair" cx="154" cy="96" r="12"/>
-      <text x="20" y="40" class="b">Llama-3.1-8B</text><text x="20" y="64" class="s">second family, data end Dec 2023</text>
+      <text x="20" y="40" class="b">Llama-3.1-8B</text><text x="20" y="64" class="s">second family (Instruct), data end Dec 2023</text>
       <circle class="fair" cx="404" cy="96" r="12"/>
-      <text x="340" y="152" text-anchor="middle" class="b">Qwen2.5-Coder-7B</text><text x="340" y="176" text-anchor="middle" class="s">the registered model, Sep 2024</text>
+      <text x="340" y="152" text-anchor="middle" class="b">Qwen2.5-Coder-7B</text><text x="340" y="176" text-anchor="middle" class="s">registered (Instruct), out Sep 2024</text>
       <circle class="unfair" cx="637" cy="96" r="12"/>
       <text x="637" y="40" text-anchor="middle" class="b">Qwen3-8B</text><text x="637" y="64" text-anchor="middle" class="s">Apr 2025</text>
       <circle class="unfair" cx="737" cy="96" r="12"/>
@@ -651,13 +637,13 @@
       <text x="1037" y="152" text-anchor="middle" class="b">Gemma 4</text><text x="1037" y="176" text-anchor="middle" class="s">Apr 2026</text>
     </svg>
     <svg data-only="phone" viewBox="0 0 464 560" role="img" aria-labelledby="models-pt models-pd">
-      <title id="models-pt">Candidate models placed by the month their training data ends</title>
-      <desc id="models-pd">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (September 2024) were trained before it, so they are fair tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
+      <title id="models-pt">Candidate models placed by data end or release month</title>
+      <desc id="models-pd">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (released September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the corpus.</desc>
       <line class="axis" x1="28" y1="8" x2="28" y2="552"/>
       <circle class="fair" cx="28" cy="28" r="11"/>
       <text x="54" y="34" class="b">Llama-3.1-8B</text><text x="54" y="62" class="s">second family, data end Dec 2023</text>
       <circle class="fair" cx="28" cy="108" r="11"/>
-      <text x="54" y="114" class="b">Qwen2.5-Coder-7B</text><text x="54" y="142" class="s">the registered model, Sep 2024</text>
+      <text x="54" y="114" class="b">Qwen2.5-Coder-7B</text><text x="54" y="142" class="s">registered (Instruct), out Sep 2024</text>
       <line class="cut" x1="8" y1="180" x2="456" y2="180"/>
       <text x="54" y="208" class="s">corpus begins, Oct 2024</text>
       <circle class="unfair" cx="28" cy="252" r="11"/>
@@ -669,55 +655,34 @@
       <text x="54" y="494" class="b">Gemma 4</text><text x="54" y="522" class="s">Apr 2026</text>
     </svg>
   </div>
-  <p class="small">Dashed line: the corpus begins, October 2024. Filled: trained before it, so a fair test. Hollow: may have seen the test data.</p>
-  <p>More models buy generality, not a better answer: the question is whether a team's habits can be learned at all, and a model that may have read the test code cannot settle that. A second family checks the result is not a Qwen quirk.</p>
+  <p class="small">Dashed line: the corpus begins, October 2024. Filled: trained before it, so a fairer test. Hollow: may have seen the corpus.</p>
+  <p>More models buy generality, not a better answer: the question is where a team's learned habits transfer, and a model that may have read the corpus cannot settle that. A second family, exploratory, checks whether it is a Qwen quirk.</p>
   <p class="small">Compressing the base model to 4 bits (QLoRA) saves memory and at best matches quality, so the main test does not use it. It is planned for the privacy half, because the deployment being tested uses it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 <section id="faq-retrieval" class="backup">
   <h2>Would showing the model past reviews do the same?</h2>
-  <p>That is the cheapest competitor: no training, just the most similar past reviews pasted into the prompt. The study ran it, before the test window, on the same split as the adapters: the base model given the one or three closest past reviews from its own half or from the sibling half, over the first <span data-value="readings.retrieval_partitions_openstack"></span> ways of splitting each organization's projects.</p>
-  <table class="data">
-    <thead><tr><td></td><th scope="col">one past review</th><th scope="col">three past reviews</th><th scope="col">adapters, same splits</th></tr></thead>
-    <tbody>
-      <tr><th scope="row">OpenStack</th><td class="num" data-value="readings.retrieval_k1_openstack"></td><td class="num" data-value="readings.retrieval_k3_openstack"></td><td class="num" data-value="readings.retrieval_adapters_openstack"></td></tr>
-      <tr><th scope="row">Wikimedia</th><td class="num" data-value="readings.retrieval_k1_wikimedia"></td><td class="num" data-value="readings.retrieval_k3_wikimedia"></td><td class="num" data-value="readings.retrieval_adapters_wikimedia"></td></tr>
-    </tbody>
-  </table>
-  <p class="small">Each cell is own half minus sibling half in exact match, the study's secondary measure, with its 95% interval. None clears the smallest effect the study counts as meaningful, so by the rule written before the run, retrieval does not show a half-level convention. On exact match the adapters' intervals on the same splits are too wide to decide either way. Past reviews from the organization's own other half do beat the other organization's for Wikimedia (<span data-value="readings.retrieval_org_k1_wikimedia"></span> with one review), so retrieval does pick up the organization.</p>
+  <p>That is the cheapest competitor: no training, just the most similar past reviews pasted into the prompt. It is registered as an exploratory arm beside the adapters: the base model given the one or three closest past reviews from its own half, the sibling half or another organization, on the same examples.</p>
+  <p>It is scored by exact match, the study's secondary measure, and binds no verdict. It ran on the development months over the first <span data-value="readings.retrieval_partitions_openstack"></span> splits, but exact match missed a planted house rule in most runs, so those readings cannot show whether retrieval learns a convention. The sealed test reports it beside the adapters.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 <section id="faq-rulesfile" class="backup">
   <h2>Why not just write the rules in a file, like AGENTS.md?</h2>
   <p>That is how coding agents take conventions today: rules files (AGENTS.md, CLAUDE.md, Cursor rules), organization instructions and memory. They hold what someone wrote down.</p>
-  <p>What no one has measured is whether they capture a team's conventions. A 2026 study found developer-written context files helped agents slightly (not significantly), generated ones did not, and both cost about a fifth more inference (Gloaguen et al., arXiv:2602.11988); it does not ask whether the code follows the team's habits.</p>
-  <p>So the study adds a rules-file arm beside the adapters: the base model given the organization's written conventions, or a file distilled from each half's review comments, scored on own, sibling and foreign code by exact match, the study's secondary measure. Qwen3.6-27B distills it, since the 7B model invented rules and citations; a rule must cite two or more comments and share most of its words with one.</p>
-  <p class="back"><a href="#/faq">Back to the questions</a></p>
-</section>
-
-<section id="faq-rules-result" class="backup">
-  <h2>What did the rules file do?</h2>
-  <p>The study ran it before the test window, on the same <span data-value="readings.rules_partitions_openstack"></span> splits of each organization as retrieval: the base model given the rules file distilled from its own half's reviews, or from the sibling half's.</p>
-  <table class="data">
-    <thead><tr><td></td><th scope="col">rules file</th><th scope="col">adapters, same splits</th></tr></thead>
-    <tbody>
-      <tr><th scope="row">OpenStack</th><td class="num" data-value="readings.rules_distilled_openstack"></td><td class="num" data-value="readings.rules_adapters_openstack"></td></tr>
-      <tr><th scope="row">Wikimedia</th><td class="num" data-value="readings.rules_distilled_wikimedia"></td><td class="num" data-value="readings.rules_adapters_wikimedia"></td></tr>
-    </tbody>
-  </table>
-  <p class="small">Each cell is own half minus sibling half in exact match, the study's secondary measure, with its 95% interval. The rules file's intervals sit inside the smallest effect the study counts as meaningful, so by the rule written before the run, a file distilled from a team's reviews carries no half-level convention. On exact match the adapters' intervals on the same splits are too wide to decide either way. That file did not raise the model's exact match over no file either.</p>
+  <p>What no study I found measures is whether they capture a team's conventions. A 2026 study found developer-written context files helped agents slightly (not significantly), generated ones did not, and both cost about a fifth more inference (Gloaguen et al., arXiv:2602.11988); it does not ask whether the code follows the team's habits.</p>
+  <p>So an exploratory arm, registered beside the adapters, adds a rules file: the base model given the organization's written conventions, or a file distilled from each half's review comments, given own, sibling or foreign files and scored by exact match, the study's secondary measure, binding no verdict. Qwen3.6-27B distills it, since the 7B model invented rules and citations; a rule must cite two or more comments and share most of its words with one. Like retrieval, its development readings on exact match cannot settle it; the sealed test reports it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 <section id="faq-prior" class="backup">
   <h2>How is this different from other shared-and-private agent work?</h2>
   <p>Splitting what agents learn into shared and private parts is no longer new. Federated Agent Optimization (Yang et al., arXiv:2610.01195) defines the field; FedWorld (arXiv:2608.01561) sorts rules into shared, cluster and private by the evidence clients give for and against them; ShareMem and FederatedSkill split memories and skills by an LLM's judgment.</p>
-  <p>Each decides the split by evidence on a server or an LLM's judgment, not by the owner declaring it from where each example came from. Three things here are not done elsewhere:</p>
+  <p>Each decides the split by evidence on a server or an LLM's judgment, not by the owner declaring it from where each example came from. To my knowledge, three things here are new:</p>
   <ul>
     <li><b>The owner declares the boundary before training</b>, by where each example came from, and that declaration decides which examples may teach the shared part.</li>
-    <li><b>Tacit review conventions</b> are what is learned, with a pre-registered test of whether they are learned, and a second registered test of whether the organization is where learning stops transferring.</li>
+    <li><b>Tacit review conventions</b> are what is learned. No study I know of tests whether learned style transfers more from an organization's other projects than from a foreign organization; the report tests that in Qt, against Chromium.</li>
     <li><b>The shared part is audited by attribution</b>: can someone tell which organization it came from?</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -725,7 +690,7 @@
 
 <section id="faq-monitor" class="backup">
   <h2>Could it train an agent that checks another agent?</h2>
-  <p>In principle, yes, and it is a later use rather than this study. The label audit already grades whether a developer's revision answers the reviewer's comment (answers it, partly, not at all, or needs more context). That is the judgment a checking agent would make about a coding agent's change before a human sees it.</p>
+  <p>In principle, yes, and it is a later use rather than this study. The label audit already grades whether a developer's revision answers the reviewer's comment (answers it, partly, not actionable, an unrelated rewrite, or needs more context). That is the judgment a checking agent would make about a coding agent's change before a human sees it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 

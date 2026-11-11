@@ -1,6 +1,6 @@
 # Federated Agents
 
-The talk on Federated Agents: coding agents that learn each company's house rules without its
+The talk on Federated Agents: coding agents that learn each company's house style without its
 code leaving. A short talk for someone new to the work, then a list of frequently asked questions
 whose items link to their answers.
 

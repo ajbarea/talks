@@ -13,9 +13,11 @@ from __future__ import annotations
 
 import functools
 import http.server
+import importlib.util
 import pathlib
 import re
 import sys
+import tempfile
 import threading
 
 from axe_playwright_python.sync_playwright import Axe
@@ -32,6 +34,27 @@ STATE = """() => {
     loop: !!(all[c] && all[c].querySelector('img[data-loop]')),
     anim: all[c] ? getComputedStyle(all[c].querySelector('.cover')).animationName : null,
   };
+}"""
+#: Counts the live region's announcements from now on.
+COUNT = """() => { window.__said = 0; const live = document.querySelector('[aria-live]');
+  (window.__watch ||= new MutationObserver(() => { window.__said++; }))
+    .observe(live, {childList: true, characterData: true, subtree: true}); }"""
+#: Which control has focus, and whether it is in the centered talk.
+FOCUS = """(() => { const a = document.activeElement;
+  return [a.className, a.closest('.talk') === document.querySelector('.talk:not([aria-hidden])')]; })()"""
+#: The focused control's focus ring against the colour behind it, as a contrast ratio (0 when it has none).
+RING = """() => {
+  const el = document.activeElement;
+  if (el === document.body) return null;  // Tab has wrapped past the last control
+  const st = getComputedStyle(el);
+  const rgb = (c) => (c.match(/[\\d.]+/g) || []).slice(0, 3).map(Number);
+  const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  const band = el.closest('.stage') && !el.closest('.about');
+  const behind = band ? [21, 32, 43] : rgb(getComputedStyle(document.body).backgroundColor);
+  const name = el.className || el.textContent.trim().slice(0, 20);
+  return [name, st.outlineStyle === 'none' ? 0 : Math.round(ratio(rgb(st.outlineColor), behind) * 10) / 10];
 }"""
 #: Long enough for a smooth glide to land and the strip to report it has settled.
 SETTLE_MS = 1400
@@ -50,6 +73,16 @@ class Report:
 def axe(page: Page) -> list[str]:
     result = Axe().run(page, options={"runOnly": ["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa", "best-practice"]})
     return [f"{v['id']} {v['nodes'][0]['target']}" for v in result.response["violations"]]
+
+
+def rings(page: Page) -> list[list]:
+    """Tab through the page from the top, reading each control's focus ring."""
+    page.evaluate("document.activeElement && document.activeElement.blur(); window.scrollTo(0, 0)")
+    seen = []
+    for _ in range(12):
+        page.keyboard.press("Tab")
+        seen.append(page.evaluate(RING))
+    return [ring for ring in seen if ring]
 
 
 def serve(root: pathlib.Path) -> tuple[http.server.ThreadingHTTPServer, str]:
@@ -80,25 +113,29 @@ def run(url: str) -> Report:
           region: document.getElementById('talks').getAttribute('aria-roledescription'),
           slides: [...document.querySelectorAll('.talk')].every((t) => t.getAttribute('role') === 'group'
             && t.getAttribute('aria-roledescription') === 'slide'),
-          names: [...document.querySelectorAll('.talk')].map((t) => t.getAttribute('aria-labelledby').split(' ')
-            .map((id) => document.getElementById(id).textContent).join('')),
+          names: [...document.querySelectorAll('.talk')].map((t) => t.getAttribute('aria-label')),
+          titles: [...document.querySelectorAll('.talk h2')].map((h) => h.textContent.trim()),
         })""")
         r.check("carousel and slide roles", roles["region"] == "carousel" and roles["slides"], roles)
         r.check(
             "each slide named by its title and position",
-            all(name.endswith(f", {i + 1} of {s['n']}") for i, name in enumerate(roles["names"])),
+            roles["names"] == [f"{t}, {i + 1} of {s['n']}" for i, t in enumerate(roles["titles"])],
             roles["names"],
         )
         if s["loop"]:
             r.check("the centered talk plays its preview loop", s["img"] == "thumb-loop.webp", s["img"])
 
+        page.evaluate(COUNT)
         page.keyboard.press("ArrowRight")
         page.wait_for_timeout(SETTLE_MS)
         s = page.evaluate(STATE)
         r.check(
-            "ArrowRight centers the next talk and announces it once settled",
-            s["c"] == middle + 1 and s["live"].endswith(f"{middle + 2} of {s['n']}") and s["hash"],
-            s,
+            "ArrowRight centers the next talk and announces it exactly once, after it settles",
+            s["c"] == middle + 1
+            and s["live"].endswith(f"{middle + 2} of {s['n']}")
+            and s["hash"]
+            and page.evaluate("window.__said") == 1,
+            [s, page.evaluate("window.__said")],
         )
         page.keyboard.press("ArrowLeft")
         page.keyboard.press("ArrowLeft")
@@ -115,14 +152,53 @@ def run(url: str) -> Report:
             page.get_attribute(".prev", "aria-disabled") == "true",
         )
 
+        for start in (".open", ".chip"):
+            page.focus(f".talk:not([aria-hidden]) {start}")
+            page.evaluate(COUNT)
+            page.keyboard.press("ArrowRight")
+            page.wait_for_timeout(SETTLE_MS)
+            focus = page.evaluate(FOCUS)
+            r.check(
+                f"from {start}, focus moves to the new centered talk's Open the deck, read once (no live text)",
+                focus == ["open", True] and page.evaluate("window.__said") == 0,
+                [focus, page.evaluate("window.__said")],
+            )
         page.focus(".talk:not([aria-hidden]) .open")
-        page.keyboard.press("ArrowRight")
+        side = page.locator(".talk").nth(0).locator(".cover").bounding_box()
+        assert side is not None
+        page.mouse.click(side["x"] + side["width"] * 0.3, side["y"] + side["height"] / 2)
         page.wait_for_timeout(SETTLE_MS)
-        focus = page.evaluate(
-            "(() => { const a = document.activeElement; return [a.className, a.closest('.talk') === "
-            "document.querySelector('.talk:not([aria-hidden])')]; })()"
+        r.check(
+            "a click on a cover never leaves focus in hidden content",
+            page.evaluate(FOCUS) == ["open", True],
+            page.evaluate(FOCUS),
         )
-        r.check("focus moves to the new centered talk's Open the deck", focus == ["open", True], focus)
+        page.locator(".dots button").nth(2).click()
+        page.wait_for_timeout(SETTLE_MS)
+        r.check("nor does a click on a dot", page.evaluate(FOCUS) == ["open", True], page.evaluate(FOCUS))
+
+        # A resize or zoom keeps the centered talk, the focus, the address and the silence.
+        page.goto("about:blank")
+        page.goto(url)
+        page.wait_for_timeout(SETTLE_MS)
+        page.focus(".talk:not([aria-hidden]) .open")
+        page.evaluate(COUNT)
+        before = page.evaluate(STATE)
+        for w, h in ((1280, 800), (1024, 640), (640, 480), (1920, 1080)):
+            page.set_viewport_size({"width": w, "height": h})
+            page.wait_for_timeout(700)
+        after = page.evaluate(STATE)
+        r.check(
+            "resizing keeps the talk, focus, address and announces nothing",
+            after["c"] == before["c"]
+            and after["hash"] == before["hash"]
+            and page.evaluate("window.__said") == 0
+            and page.evaluate(FOCUS) == ["open", True],
+            [before, after, page.evaluate("window.__said")],
+        )
+
+        r.check("axe, 1920, light", not (v := axe(page)), v)
+        r.check("every focus ring stands out (3:1), light", all(c >= 3 for _, c in rings(page)), rings(page))
 
         page.goto("about:blank")
         page.goto(url)
@@ -132,9 +208,16 @@ def run(url: str) -> Report:
             page.keyboard.press("Tab")
             tabbed.append(page.evaluate("document.activeElement.closest('[aria-hidden], [inert]') === null"))
         r.check("Tab never reaches a hidden talk", all(tabbed), tabbed)
-        r.check("axe, 1920, light", not (v := axe(page)), v)
         r.check("no script errors", not errors, errors)
         page.close()
+
+        ctx = browser.new_context(viewport={"width": 1920, "height": 1080}, color_scheme="dark")
+        dark = ctx.new_page()
+        dark.goto(url)
+        dark.wait_for_timeout(SETTLE_MS)
+        r.check("axe, 1920, dark", not (v := axe(dark)), v)
+        r.check("every focus ring stands out (3:1), dark", all(c >= 3 for _, c in rings(dark)), rings(dark))
+        ctx.close()
 
         for scheme in ("light", "dark"):
             ctx = browser.new_context(
@@ -210,6 +293,26 @@ def main() -> int:
         report = run(url)
     finally:
         server.shutdown()
+    # A build without exports draws each talk's title on a blank cover: check it reads in both themes.
+    with tempfile.TemporaryDirectory() as tmp:
+        spec = importlib.util.spec_from_file_location("talks_site", pathlib.Path(__file__).with_name("site.py"))
+        assert spec and spec.loader
+        site = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(site)
+        site.build(pathlib.Path(tmp) / "site")
+        server, url = serve(pathlib.Path(tmp) / "site")
+        try:
+            with sync_playwright() as p:
+                browser = p.chromium.launch()
+                for scheme in ("light", "dark"):
+                    page = browser.new_page(viewport={"width": 1920, "height": 1080}, color_scheme=scheme)
+                    page.goto(url)
+                    page.wait_for_timeout(SETTLE_MS)
+                    report.check(f"axe, blank covers, {scheme}", not (v := axe(page)), v)
+                    page.close()
+                browser.close()
+        finally:
+            server.shutdown()
     if report.failed:
         print(f"{len(report.failed)} check(s) failed", file=sys.stderr)
         return 1

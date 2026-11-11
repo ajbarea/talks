@@ -145,7 +145,8 @@ def item(
     and a row of small labelled downloads and links. The page script turns the list into a cover flow."""
     t, d = html.escape(title), html.escape(description)
     loop_attr = f' data-loop="{name}/thumb-loop.webp"' if loop else ""
-    priority = ' fetchpriority="high"' if centered else ' loading="lazy"'
+    # Every preview loads at once anyway: its reflection draws from the same file.
+    priority = ' fetchpriority="high"' if centered else ""
     picture = (
         f'<a class="cover" href="{name}/" tabindex="-1" aria-hidden="true" draggable="false" '
         f"style=\"--thumb: url('{name}/thumb.webp')\">"

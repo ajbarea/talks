@@ -366,7 +366,7 @@ def test_the_script_wires_the_carousel_pattern() -> None:
         '"aria-roledescription", "carousel"',
         '"role", "group"',
         '"aria-roledescription", "slide"',
-        "aria-labelledby",
+        "aria-label",
         ".inert = !here",
         '"aria-hidden", "true"',
         "aria-disabled",
@@ -384,7 +384,6 @@ def test_the_centered_talk_alone_loads_eagerly_and_loops(site, repo: Path, tmp_p
     talks = _talks((out / "index.html").read_text())
     middle = list(talks)[(len(talks) - 1) // 2]
     assert [n for n, t in talks.items() if 'fetchpriority="high"' in t] == [middle]
-    assert all('loading="lazy"' in t for n, t in talks.items() if n != middle)
     assert all(f"--thumb: url('{n}/thumb.webp')" in t for n, t in talks.items())
 
 

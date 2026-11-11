@@ -10,6 +10,7 @@
   const n = slides.length;
   const reduce = matchMedia("(prefers-reduced-motion: reduce)");
   const timelines = CSS.supports("animation-timeline: view()");
+  const scrollend = "onscrollend" in window;
   const live = root.querySelector("[aria-live]");
   const prev = root.querySelector(".prev");
   const next = root.querySelector(".next");
@@ -18,21 +19,21 @@
 
   root.setAttribute("aria-roledescription", "carousel");
   slides.forEach((s, i) => {
-    const pos = document.createElement("span");
-    pos.className = "sr-only";
-    pos.id = `pos-${s.dataset.name}`;
-    pos.textContent = `, ${i + 1} of ${n}`;
-    s.querySelector("h2").after(pos);
     s.setAttribute("role", "group");
     s.setAttribute("aria-roledescription", "slide");
-    s.setAttribute("aria-labelledby", `title-${s.dataset.name} ${pos.id}`);
+    s.setAttribute("aria-label", `${title(s)}, ${i + 1} of ${n}`);
     const dot = document.createElement("button");
     dot.type = "button";
     dot.tabIndex = -1;
     dot.addEventListener("click", () => go(i));
     dots.append(dot);
   });
-  prev.hidden = next.hidden = dots.hidden = false;
+  if (n > 1) prev.hidden = next.hidden = dots.hidden = false;
+  // A pointer press on a cover or a dot never takes focus: both sit in hidden content, and focus already in
+  // the carousel is carried to the new centered talk when it settles.
+  for (const el of [strip, dots]) {
+    el.addEventListener("mousedown", (e) => e.target.closest(".cover, button") && e.preventDefault());
+  }
 
   // Geometry, read once and again only when the strip changes size: the strip scrolls one slot per talk.
   let slot = slides[0].offsetWidth;
@@ -47,7 +48,7 @@
   };
   const step = (d) => go((target ?? current) + d);
 
-  // The preview loop plays only on the centered talk, and only once it is loaded, so the cover never blanks.
+  // The preview loop plays only on the centered talk, once it has decoded, so the cover never blanks.
   let loading = null;
   const play = (s) => {
     const img = s.querySelector("img[data-loop]");
@@ -60,14 +61,23 @@
     }, () => {});
   };
   const still = (s) => {
-    const img = s.querySelector("img[data-loop]");
-    if (img) img.src = img.getAttribute("src").replace(/thumb-loop\.webp$/, "thumb.webp");
+    const img = s && s.querySelector("img[data-loop]");
+    if (img && img.src.endsWith("thumb-loop.webp")) img.src = img.src.replace(/thumb-loop\.webp$/, "thumb.webp");
+  };
+
+  // A resize or zoom moves the snap points: the centered talk stays centered, so nothing else changes.
+  let width = strip.clientWidth;
+  const keep = () => {
+    if (current < 0 || strip.clientWidth === width) return;
+    width = strip.clientWidth;
+    slot = slides[0].offsetWidth;
+    strip.scrollTo({ left: left(current), behavior: "instant" });
   };
 
   // A talk is centered once the strip comes to rest: only then do the hidden talks change and the change is read out.
   const settle = (announce) => {
-    const i = nearest();
     target = null;
+    const i = nearest();
     if (i === current) return;
     const old = slides[current];
     const focused = old && old.contains(document.activeElement) ? document.activeElement : null;
@@ -78,21 +88,20 @@
       else s.setAttribute("aria-hidden", "true");
       s.querySelector(".about").inert = !here;
       dots.children[k].setAttribute("aria-current", here ? "true" : "false");
-      if (!here) still(s);
     });
+    still(old);
     prev.setAttribute("aria-disabled", i === 0 ? "true" : "false");
     next.setAttribute("aria-disabled", i === n - 1 ? "true" : "false");
     mark(i);
-    play(slides[i]);
+    if (document.readyState === "complete") play(slides[i]);
     if (focused) {
-      // Keep focus on the same control of the new centered talk instead of losing it to the page.
-      const kind = focused.matches(".open") ? ".open" : focused.closest("h2") ? "h2 a" : ".open";
-      slides[i].querySelector(kind).focus({ preventScroll: true });
-    }
-    if (announce) {
+      // Keep focus on the same control of the new centered talk instead of losing it to the page; moving
+      // focus into the new slide already reads its name, so the live region stays quiet.
+      slides[i].querySelector(focused.closest("h2") ? "h2 a" : ".open").focus({ preventScroll: true });
+    } else if (announce) {
       live.textContent = `${title(slides[i])}, ${i + 1} of ${n}`;
-      history.replaceState(history.state, "", `#${slides[i].dataset.name}`);
     }
+    if (announce) history.replaceState(history.state, "", `#${slides[i].dataset.name}`);
   };
 
   // Without view timelines the covers turn by class, set whenever the nearest talk changes mid-glide.
@@ -107,31 +116,35 @@
     });
   };
 
-  let rest = 0;
-  let queued = false;
-  strip.addEventListener("scroll", () => {
-    if (!timelines && !queued) {
-      queued = true;
-      requestAnimationFrame(() => { queued = false; mark(nearest()); });
-    }
-    clearTimeout(rest);
-    rest = setTimeout(() => !dragging && settle(true), "onscrollend" in window ? 600 : 120);
-  }, { passive: true });
-  strip.addEventListener("scrollend", () => {
-    if (dragging) return;
-    clearTimeout(rest);
-    settle(true);
-  });
+  // Settling waits for scrollend; a per-frame scroll listener runs only where scrollend or view timelines lack.
+  let dragging = false;
+  if (!timelines || !scrollend) {
+    let rest = 0;
+    let queued = false;
+    strip.addEventListener("scroll", () => {
+      if (!timelines && !queued) {
+        queued = true;
+        requestAnimationFrame(() => { queued = false; mark(nearest()); });
+      }
+      if (scrollend) return;
+      clearTimeout(rest);
+      rest = setTimeout(() => !dragging && settle(true), 120);
+    }, { passive: true });
+  }
+  strip.addEventListener("scrollend", () => !dragging && settle(true));
 
   prev.addEventListener("click", () => prev.getAttribute("aria-disabled") !== "true" && step(-1));
   next.addEventListener("click", () => next.getAttribute("aria-disabled") !== "true" && step(1));
 
-  // Arrow keys glide from anywhere on the page that is not a form field; Home and End inside the carousel.
+  // Arrow keys glide from inside the carousel, or from the page while the stage is in view; Home and End inside.
+  let inView = true;
+  const seen = new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { threshold: 0.4 });
+  seen.observe(root.querySelector(".stage"));
   document.addEventListener("keydown", (e) => {
     if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
     const t = e.target;
     const inside = root.contains(t);
-    if (!inside && t !== document.body && t !== document.documentElement) return;
+    if (!inside && !(inView && (t === document.body || t === document.documentElement))) return;
     if (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
     const d = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
     if (d) step(d);
@@ -153,7 +166,6 @@
   });
 
   // A mouse drags the strip like a finger: it follows the pointer, then glides on by the release speed.
-  let dragging = false;
   let x0 = 0, s0 = 0, trail = [];
   strip.addEventListener("pointerdown", (e) => {
     if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest(".about")) return;
@@ -207,16 +219,21 @@
     lastAbs = abs;
   }, { passive: false });
 
-  new ResizeObserver(() => {
-    slot = slides[0].offsetWidth;
-    if (current >= 0) strip.scrollTo({ left: left(current), behavior: "instant" });
-  }).observe(strip);
-  reduce.addEventListener("change", () => (reduce.matches ? slides.forEach(still) : play(slides[current])));
+  new ResizeObserver(keep).observe(strip);
+  addEventListener("resize", keep);
+  reduce.addEventListener("change", () => (reduce.matches ? still(slides[current]) : play(slides[current])));
+  // A link to another talk on this page, followed or typed, glides to it.
+  addEventListener("hashchange", () => {
+    const i = slides.findIndex((s) => `#${s.dataset.name}` === location.hash);
+    if (i >= 0 && i !== current) go(i);
+  });
 
-  // Open on the talk named in the address, else the middle one, with nothing read out.
+  // Open on the talk named in the address, else the middle one, with nothing read out; its loop waits for load.
   const named = slides.findIndex((s) => `#${s.dataset.name}` === location.hash);
   strip.scrollLeft = left(named >= 0 ? named : Math.floor((n - 1) / 2));
   settle(false);
+  if (document.readyState === "complete") play(slides[current]);
+  else addEventListener("load", () => play(slides[current]), { once: true });
 
   // The talk opens out of the cover that was clicked.
   addEventListener("pageswap", (e) => {

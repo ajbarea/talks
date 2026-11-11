@@ -101,6 +101,9 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
 .flow .covers { display: flex; gap: 0; max-width: none; margin: 0; padding: 0 calc(50% - var(--slot) / 2) 0.5rem;
   overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
   scrollbar-width: none; position: relative; touch-action: pan-x pan-y;
+  /* Its own scrolling layer at every pixel ratio (Chrome gives a see-through scroller one only from 1.5x),
+     so a busy main thread never holds up a glide. */
+  will-change: scroll-position;
   background: radial-gradient(70% 115% at 50% 34%, var(--stage-glow), var(--night) 58%, var(--stage-floor))
     top / 100% var(--band-h) no-repeat; }
 .flow .covers::-webkit-scrollbar { display: none; }
@@ -115,7 +118,7 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   animation: flow-tilt linear both; animation-timeline: --talk;
   animation-range: cover calc(50% - var(--slot)) cover calc(50% + var(--slot)); }
 .flow .cover img { border-radius: inherit; }
-.flow .cover.blank { color: var(--night-ink); background: var(--label); }
+.flow .cover.blank { color: var(--night-ink); background: color-mix(in oklab, var(--night), white 14%); }
 /* A shade that deepens as a cover turns away, and its reflection on the stage floor. */
 .flow .cover::before { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit;
   background: rgb(4 8 12); pointer-events: none;
@@ -154,15 +157,15 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
 .flow .step.next { right: clamp(0.5rem, 2.5vw, 2.5rem); }
 .flow .step:hover { background: rgb(36 56 76 / 0.85); border-color: rgb(241 244 246 / 0.55); }
 .flow .step[aria-disabled="true"] { opacity: 0.35; cursor: default; }
-.flow .stage :focus-visible { outline-color: var(--night-ink); }
+.flow .step:focus-visible, .flow .dots button:focus-visible { outline-color: var(--night-ink); }
 .flow .dots { position: absolute; z-index: 1001; left: 50%; top: calc(var(--band-h) - 2.1rem);
   transform: translateX(-50%); display: flex; gap: 2px; }
 .flow .dots button { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer;
   display: grid; place-items: center; }
-.flow .dots button::before { content: ""; width: 7px; height: 7px; border-radius: 4px;
-  background: rgb(241 244 246 / 0.38); transition: width 0.3s cubic-bezier(0.22, 0.8, 0.3, 1), background 0.3s; }
+.flow .dots button::before { content: ""; width: 20px; height: 7px; border-radius: 4px; transform: scaleX(0.35);
+  background: rgb(241 244 246 / 0.38); transition: transform 0.3s cubic-bezier(0.22, 0.8, 0.3, 1), background 0.3s; }
 .flow .dots button:hover::before { background: rgb(241 244 246 / 0.7); }
-.flow .dots button[aria-current="true"]::before { width: 20px; background: #cf9426; }
+.flow .dots button[aria-current="true"]::before { transform: none; background: #cf9426; }
 
 /* With reduced motion the covers stay flat: smaller to the sides, no turn, no preview loop. */
 @media (prefers-reduced-motion: reduce) {

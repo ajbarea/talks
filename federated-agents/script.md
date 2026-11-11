@@ -34,7 +34,7 @@ The grey dots are published designs. Across the bottom: who decides what is shar
 
 ## 8. Tuning helps; the sealed test asks if the gain is the team's
 
-These are first runs on development data, not the sealed test. First, tuning helps: tuned on its community's own reviews, an assistant gets about {readings.tuned_exact_gain} more of every 100 reviewer fixes exactly right than the untuned model. Second, the team-specific part: I split a community's projects into two groups, each with its own assistant. Whether a group's own assistant beats its sibling's is one registered test, read only on the sealed months; the development runs sized that test, and its answer waits for the sealed months. Next is privacy: can someone tell which company the shared add-on came from? The attacks are built.
+These are first runs on development data, not the sealed test. First, tuning helps: tuned on its community's own reviews, an assistant gets about {readings.tuned_exact_gain} more of every 100 reviewer fixes exactly right than the untuned model. Second, the team-specific part: I split a community's projects into two groups, each with its own assistant. Whether a group's own assistant beats its sibling's is one registered test, read only on the sealed months; the development runs sized that test, and its answer waits for the sealed months. Next is privacy: can someone tell which company the shared add-on came from? Two of the attacks are built.
 
 ## 9. Every step up to the sealed test is built
 

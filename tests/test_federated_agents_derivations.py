@@ -27,51 +27,6 @@ def _write(root: Path, name: str, data: dict) -> None:
     (root / name).write_text(json.dumps(data))
 
 
-def _pilot(verdict: str, within: bool, metric: str = "logprob_per_token") -> dict:
-    return {"metric": metric, "verdicts": {"0.975": verdict}, "within_sesoi": {"0.975": within}}
-
-
-@pytest.mark.parametrize(
-    "key",
-    ["supported/False", "supported/True", "inconclusive/True", "inconclusive/False", "bounded/True", "bounded/False"],
-)
-def test_every_mapped_pilot_state_has_wording(figures, key: str) -> None:
-    verdict, within = key.split("/")
-    assert all(figures.team_reading(_pilot(verdict, within == "True")))
-
-
-@pytest.mark.parametrize("pilot", [_pilot("contradicted", True), _pilot("supported", False, metric="exact_match")])
-def test_an_unworded_state_or_another_metric_fails_the_build(figures, pilot: dict) -> None:
-    with pytest.raises(SystemExit):
-        figures.team_reading(pilot)
-
-
-def test_the_foreign_status_words_every_state_the_team_reading_does(figures) -> None:
-    assert set(figures.FOREIGN_STATUS) == set(figures.TEAM_READING)
-    assert all(figures.FOREIGN_STATUS.values())
-
-
-@pytest.mark.parametrize("pilot", [_pilot("contradicted", True), _pilot("supported", False, metric="exact_match")])
-def test_an_unworded_foreign_state_or_another_metric_fails_the_build(figures, pilot: dict) -> None:
-    with pytest.raises(SystemExit):
-        figures.foreign_status(pilot)
-
-
-def test_an_exploratory_arm_read_bounded_fails_the_build(figures) -> None:
-    pilot = {**_pilot("bounded", True), "exploratory": True}
-    with pytest.raises(SystemExit):
-        figures.foreign_status(pilot)
-    assert figures.foreign_status(_pilot("bounded", True)) == figures.FOREIGN_STATUS[("bounded", True)]
-
-
-def test_the_title_names_each_community_only_when_they_differ(figures) -> None:
-    gain = figures.TEAM_READING[("supported", False)]
-    none = figures.TEAM_READING[("inconclusive", True)]
-    assert figures.team_title({"openstack": gain, "wikimedia": gain}) == gain[2]
-    differ = figures.team_title({"openstack": gain, "wikimedia": none})
-    assert differ == f"{gain[1]} on OpenStack, {none[1]} on Wikimedia"
-
-
 def _planted_run(seed: int, *, org: str = "openstack", rate: float = 0.4) -> dict:
     source = f"train -> dev windows under /d/corpus-partition-{org}-p{seed}-plant0.5/{{half}}/refined"
     rows = [{"exact_match": 1.0}] * int(10 * rate) + [{"exact_match": 0.0}] * (10 - int(10 * rate))

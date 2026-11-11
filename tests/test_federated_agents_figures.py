@@ -51,7 +51,7 @@ def test_the_guard_fails_when_a_figure_is_edited_by_hand(tmp_path: Path) -> None
     shutil.copy(DECK / "figures.py", deck)
     shutil.copy(DECK / "index.html", deck)
     original = (DECK / "data" / "readings.js").read_text()
-    edited = original.replace('"split_in_fix"', '"split_in_fix_x"', 1)
+    edited = original.replace('"planted_found"', '"planted_found_x"', 1)
     assert edited != original, "the edit must change the figures, or the guard is not exercised"
     (deck / "data" / "readings.js").write_text(edited)
     result = subprocess.run(

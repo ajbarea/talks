@@ -259,17 +259,6 @@ figure.code pre {
 .trend { width: 1em; height: 1em; flex: none; }
 .trend path { fill: none; stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
 .trend.up path { stroke: var(--fix-line); }
-.trend.flat path { stroke: var(--neutral-line); }
-.findings .trends { margin: 4px 0 6px; padding: 0; list-style: none; }
-.findings .trends li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin: 0 0 12px;
-  font-size: 0.74em;
-}
-.findings .trends .trend { width: 1.9em; height: 1.9em; margin-top: 2px; }
-.findings .trends b { display: inline; margin: 0; color: var(--ink); }
 .findings .card > p:last-child { color: var(--muted); font-size: 0.72em; }
 
 /* The four research fields: one drawing and one sentence each, all context. */
@@ -286,11 +275,6 @@ figure.code pre {
 .mini .line { stroke: var(--ink); stroke-width: 3; }
 .mini .arrow { stroke: #57534e; stroke-width: 3; fill: none; }
 .mini .upd { fill: var(--shared); stroke: #fff; stroke-width: 2; }
-
-/* The forest plot's key, under the figure. */
-.key { margin: 6px 0 0; font-size: 0.66em; color: var(--muted); }
-.key b { color: var(--ink); }
-html:not(.phone) .forest svg { max-height: 430px; }
 
 /* Three stages: built in navy, planned dashed. */
 .stages {
@@ -522,10 +506,9 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .group li span { margin-left: auto; }
 .phone table.data { font-size: 0.9em; }
 .phone .backup table.data th, .phone .backup table.data td { padding: 6px 6px; }
-/* The system face runs wider than the shared one, so long answers and the tall forest plot step down on a phone. */
+/* The system face runs wider than the shared one, so long answers step down on a phone. */
 .phone .reveal .slides section.backup { font-size: 0.72em; }
 .phone .faq, .phone .back, .phone .backup .small, .phone .faq-index .faq-sub { font-size: 0.92em; }
-.phone .forest svg { display: block; width: 88%; margin: 0 auto; }
 .phone .figure text.s { font-size: 23px; }
 .phone .panels { gap: 10px; }
 .phone .panels .card { gap: 4px; }
@@ -533,7 +516,6 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .reveal h2 { font-size: 1.3em; }
 .phone blockquote.rule b { font-size: 0.85em; }
 .phone figure.code pre { font-size: 0.85em; }
-.phone .key { font-size: 0.72em; }
 .phone .findings .card p.gain { font-size: 1.9em; }
 .phone .findings .card p.gain .per { font-size: 0.4em; }
 .phone .stages li { min-height: 0; }
@@ -559,11 +541,6 @@ html.m-live .road.m-go::before { animation: m-wipe 1000ms var(--m-ease) 200ms ba
 .phone .aside-test li { font-size: 0.8em; }
 
 
-/* The forest plot, in the talk's own marks. */
-.forest .forest-ci.whole, .forest .forest-pt.whole { stroke: var(--frame); fill: var(--frame); }
-.forest .forest-ci.part { stroke: var(--mark-rival); }
-.forest .forest-pt.part { fill: var(--mark-rival); stroke: var(--mark-rival); }
-.forest .forest-ci.ours, .forest .forest-pt.ours { stroke: var(--mark-ours); fill: var(--mark-ours); }
 .flow .flow-end.kept { fill: var(--card); stroke: var(--mark-ours); }
 .flow .flow-big.kept { fill: var(--ours-ink); }
 /* The system face runs wider than the shared one, so the figure's labels step down to stay in their columns. */

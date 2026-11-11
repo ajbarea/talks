@@ -540,7 +540,7 @@
 <section id="faq-leakage" class="backup">
   <h2>What guarantee can be offered about leakage?</h2>
   <p>None yet, and saying otherwise would be the mistake this work exists to correct.</p>
-  <p>What exists is a <em>measurement</em>: given a boundary, does the part that crosses it still identify its source? The published boundaries go through it.</p>
+  <p>What exists is a <em>measurement</em>: given a boundary, does the part that crosses it still identify its source? The published boundaries will go through it.</p>
   <p>A guarantee needs a mechanism with a proof, and the candidates are secure aggregation and differential privacy. Both will be measured rather than assumed.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
@@ -578,7 +578,7 @@
   <p>Labels are not inferred. An example is a code hunk, the reviewer comments anchored to it, and the author's next revision, taken directly from the review server.</p>
   <ul>
     <li>Author comments are excluded, so the signal is a reviewer's, not a self-edit.</li>
-    <li>Near-duplicates are removed before the split; leftover overlap is reported.</li>
+    <li>Near-duplicates are removed before the split; leftover overlap must stay under a registered cap.</li>
     <li>Label quality is audited blind, by two model raters and a human. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, the rater the human checked finds about <span data-value="readings.audit_valid_openstack"></span> with a rewrite that answers its comment; the rest stay in and are scored in every arm, so they mostly dilute a difference rather than favor one side.</li>
     <li>Every filtering rule and what it removed is published: ajbarea.github.io/sphragis/dataset</li>
     <li>Contamination: every month of data starts after the model's weights were uploaded, and three methods compare it with a window from before. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; a secondary reading drops them, and AI-disclosing changes.</li>
@@ -656,7 +656,7 @@
     </svg>
   </div>
   <p class="small">Dashed line: the corpus begins, October 2024. Filled: trained before it, so a fairer test. Hollow: may have seen the corpus.</p>
-  <p>More models buy generality, not a better answer: the question is whether a team's habits can be learned at all, and a model that may have read the corpus cannot settle that. A second family, exploratory, checks whether it is a Qwen quirk.</p>
+  <p>More models buy generality, not a better answer: the question is where a team's learned habits transfer, and a model that may have read the corpus cannot settle that. A second family, exploratory, checks whether it is a Qwen quirk.</p>
   <p class="small">Compressing the base model to 4 bits (QLoRA) saves memory and at best matches quality, so the main test does not use it. It is planned for the privacy half, because the deployment being tested uses it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>

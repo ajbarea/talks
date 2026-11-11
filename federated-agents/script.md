@@ -10,7 +10,7 @@ Hi, I'm AJ Barea, a PhD student at RIT. This is Federated Agents: coding agents 
 
 ## 2. I built two checked datasets of real code-review lessons
 
-Here's what I did. I built an open-source tool that turns public code review into checked lessons. Each lesson is three things: a reviewer's comment, the code it was about, and the code the developer wrote next. With it I built two datasets: {readings.corpus_examples_openstack} lessons from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia, and the same tool builds Qt's data and GitHub's for a replication. Here's why you should care. If you write code on a team, your reviewers keep repeating rules that AI assistants rarely see. Lessons like these could teach them, and my study first tests whether an assistant can learn them at all. Let me start with one of those rules.
+Here's what I did. I built an open-source tool that turns public code review into checked lessons. Each lesson is three things: a reviewer's comment, the code it was about, and the code the developer wrote next. With it I built two datasets: {readings.corpus_examples_openstack} lessons from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia, and the same tool builds Qt's data and GitHub's for a replication. Here's why you should care. If you write code on a team, your reviewers keep repeating rules that AI assistants rarely see. Lessons like these could teach them, and my study first tests whether what it learns is the team's own. Let me start with one of those rules.
 
 ## 3. AI coding assistants miss a company's unwritten house style
 

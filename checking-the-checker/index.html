@@ -58,7 +58,7 @@
       <figcaption><span class="tag-read">Checked: nothing</span><span class="tag-said fragment" data-fragment-index="0">Said: all OK</span></figcaption>
     </figure>
     <div class="claim fragment" data-fragment-index="1">
-      <p><b>What I did:</b> traced six silent failures in my own citation checker, sorted them into three groups with a guard for each, and tested two guards on five public checkers.</p>
+      <p><b>What I did:</b> found six silent failures in my own citation checker, sorted them into three groups, gave each a guard, and tried two guards on five public checkers.</p>
       <p><b>Why you should care:</b> your tests, CI and linters say "all clear" too. If a tool can't fail, "all clear" tells you nothing.</p>
     </div>
   </div>
@@ -100,7 +100,7 @@
   <figure class="cases-fig">
     <div class="bars" data-bars="cases"></div>
   </figure>
-  <p class="footnote">Bar: days from the commit that let a run go wrong to its fix (case 3: how long the flawed score existed), from the repository history.</p>
+  <p class="footnote">Bar: days the failure lasted, from the repository history.</p>
   <aside class="notes"><ul><li>dokimasia: <span data-value="checker.entries"></span> entries shared by <span data-value="checker.papers"></span> papers</li><li>Case 1: build said success with an empty bibliography for <span data-value="case1.days"></span> days</li><li>One tool, studied by its builder: shows these happen, not how often</li></ul></aside>
 </section>
 
@@ -129,8 +129,7 @@
       <p class="guard fragment" data-fragment-index="3"><span class="glabel">Guard</span><span data-value="groups.report.guard"></span></p>
     </div>
   </div>
-  <p class="reach fragment" data-fragment-index="4"><span class="reach-no">A test of a check runs the check, so it can never see a check that didn't run.</span><span class="reach-yes">A test can catch wrong inputs and misreported results.</span></p>
-  <p class="footnote">A case sits at the first step whose output was wrong.</p>
+  <p class="reach fragment" data-fragment-index="4"><span class="reach-no">A test runs the check, so it never sees one that didn't run.</span><span class="reach-yes">A test can catch wrong inputs and misreported results.</span></p>
   <aside class="notes"><ul><li>A check chooses what to check, reads inputs, reports: each group fails one step and gets its own guard</li><li>Did not run (cases 1, 2): guard, work out what to check and name what was skipped. Wrong inputs (3 to 5): guard, break the check on purpose</li><li>Misreported (6, arXiv refusals): guard, no answer but "not found". Then: a test never sees a check that didn't run</li></ul></aside>
 </section>
 
@@ -142,20 +141,19 @@
     <div class="rebreak" data-columns="rebreak.mutations"></div>
     <p class="after fragment">Both misses now have tests.</p>
   </figure>
-  <p class="footnote">Paper term: fault injection.</p>
   <aside class="notes"><ul><li><span data-value="rebreak.total"></span> small changes that break my six fixes again</li><li><span data-value="rebreak.caught"></span> caught; 2 got through: an empty compiled bibliography, the removed refusal line</li><li>Both misses have tests now</li></ul></aside>
 </section>
 
 <section data-chapter="4 · Other checkers">
   <span class="kicker">4 · Other checkers</span>
   <h2>Three of five public checkers printed a clean result after checking nothing</h2>
-  <table class="matrix" data-matrix="checkers.tools" data-clean="checkers.cleanAfterNothing" data-all="checkers.allNotFound" data-count="checkers.toolCount" data-clean-label="Printed a clean verdict" data-other-label="Printed no clean verdict">
+  <table class="matrix" data-matrix="checkers.tools" data-clean="checkers.cleanAfterNothing" data-all="checkers.allNotFound" data-count="checkers.toolCount" data-clean-label="Clean result after nothing to check" data-other-label="No clean result after nothing to check">
     <thead>
       <tr><th scope="col" rowspan="2">Tool</th><th scope="colgroup" colspan="2" class="g-norun"><span class="hg">Did not run: nothing to check</span></th><th scope="col" class="g-report fragment" data-fragment-index="1"><span class="hg">Misreported</span></th></tr>
       <tr><th scope="col" data-short="Unreadable PDF">Unreadable PDF</th><th scope="col" data-short="No references">No reference section</th><th scope="col" class="fragment" data-fragment-index="1" data-short="Network cut">Network cut, 10 real references</th></tr>
     </thead>
   </table>
-  <p class="key"><span class="k-bad"><span class="mark" aria-hidden="true">✕</span>clean verdict</span><span class="k-good"><span class="mark" aria-hidden="true">✓</span>said it checked nothing</span><span class="k-warn"><span class="mark" aria-hidden="true">!</span>warned, then went on</span><span class="k-bad fragment" data-fragment-index="1"><span class="mark" aria-hidden="true">✕</span>“not found” for a failed lookup</span><span class="k-mixed fragment" data-fragment-index="1"><span class="mark" aria-hidden="true">~</span>mixed</span><span class="k-none fragment" data-fragment-index="1"><span class="mark" aria-hidden="true">–</span>does not apply</span></p>
+  <p class="key"><span class="k-bad"><span class="mark" aria-hidden="true">✕</span>clean verdict<span class="fragment" data-fragment-index="1">, or “not found” for a failed lookup</span></span><span class="k-good"><span class="mark" aria-hidden="true">✓</span>said it checked nothing</span><span class="k-warn"><span class="mark" aria-hidden="true">!</span>warned, then went on</span><span class="k-mixed fragment" data-fragment-index="1"><span class="mark" aria-hidden="true">~</span>mixed</span><span class="k-none fragment" data-fragment-index="1"><span class="mark" aria-hidden="true">–</span>does not apply</span></p>
   <p class="footnote">The five tools a 2026 comparison study tested, run once per input with no API keys, October 2026.</p>
   <aside class="notes"><ul><li>The 5 tools a 2026 study compared; two kinds of nothing to check</li><li><span data-value="checkers.cleanAfterNothing"></span> of <span data-value="checkers.toolCount"></span> printed a clean verdict anyway</li><li>Network cut, 10 real references, 4 tools (HalluCiteChecker is local): <span data-value="checkers.allNotFound"></span> reported all as not found</li></ul></aside>
 </section>
@@ -203,6 +201,7 @@
   <h2>Backup slides</h2>
   <p class="faq-sub">Frequently asked questions</p>
   <ol class="faq">
+    <li><a href="#/faq-models">Why do language models invent references?</a></li>
     <li><a href="#/faq-found">How was each failure found?</a></li>
     <li><a href="#/faq-after">What does the checker print after the fixes?</a></li>
     <li><a href="#/faq-new">Aren't these just ordinary bugs? What is new?</a></li>
@@ -216,6 +215,17 @@
     <li><a href="#/faq-verified">What does "verified" mean here?</a></li>
     <li><a href="#/faq-references">Where are the references?</a></li>
   </ol>
+</section>
+
+<section id="faq-models" class="backup">
+  <h2>Why language models invent references, and what a checker can find</h2>
+  <div class="cards" style="--n:3">
+    <div class="card"><b>A guess scores better than "I don't know"</b><p>Kalai et al. (2025): models are trained and graded in ways that reward guessing over admitting uncertainty. A made-up reference is one such guess.</p></div>
+    <div class="card"><b>A reference is a fact to recall</b><p>Authors, title, venue and year are arbitrary, so a model fills the gap with a plausible one. Nothing in the text marks it as invented.</p></div>
+    <div class="card"><b>A checker finds what does not exist</b><p>Mine looks each reference up and compares title, author and year. It cannot tell whether a real paper supports the sentence that cites it.</p></div>
+  </div>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+  <aside class="notes">Kalai and colleagues argue training and benchmark scoring reward guessing. A made-up reference is a guess that looks right. A checker finds references that do not exist, not real ones that are misused: see the "verified" slide.</aside>
 </section>
 
 <section id="faq-found" class="backup">
@@ -363,6 +373,7 @@ bibcheck: at least one host was throttling this run, so these say nothing about 
     <li>F. Badalova, P. Mayr, Detecting hallucinated and suspicious citations, arXiv:2607.22693, 2026</li>
     <li>K. Kim, W. Brendel, P. Reizinger, HALLMARK, arXiv:2607.18360v2, 2026</li>
     <li>E. Hill, Four ways to forge a bundle my own verifier calls clean: refusal-site mutation testing of an evidence-bundle verifier, arXiv:2608.26183, 2026</li>
+    <li>A. T. Kalai, O. Nachum, S. S. Vempala, E. Zhang, Why language models hallucinate, arXiv:2509.04664, 2025</li>
     <li>D. Yuan et al., Simple testing can prevent most critical failures, OSDI 2014</li>
     <li>H. Jergas, C. Baethge, Quotation accuracy in medical journal articles, PeerJ, 2015</li>
     <li>Tools: CheckIfExist e460565, HalluCiteChecker v0.1.2, Hallucinator v0.2.4, HalRef v0.1.0, RefChecker v3.1.6; <a href="https://github.com/ajbarea/techne">techne</a> 13e74ff</li>

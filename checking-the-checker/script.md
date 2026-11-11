@@ -6,11 +6,11 @@
 
 ## 1. Checking the Checker
 
-Hi, I'm AJ, a first-year PhD student here. This talk is about a tool I wrote to check my papers' references, and the six times it failed without telling me. If a term isn't clear, stop me. Let me start with what a different tool printed.
+Hi, I'm AJ, a first-year PhD student here. This talk is about a tool I wrote to check my papers' references, and the six times it failed without telling me. Let me start with what a different tool printed.
 
 ## 2. A clean report counts only if the checker can fail and says what it skipped
 
-This is what a public citation checker printed for a PDF cut to its first 2,000 bytes. One line says it found nothing, and a later line says everything passed anyway. That's my one point today. A clean report counts only if the checker can fail, and tells you what it skipped. Here's what I did. In four weeks of use, I found six times my own checker had failed silently. I sorted those failures into three groups, found a guard for each, and tested two of the guards on five public checkers. Here's why you should care. Think of the last green check you saw in your CI. How do you know it ran? If a tool can't fail, all clear tells you nothing. So why citation checkers?
+This is what a public citation checker printed for a PDF cut to its first 2,000 bytes. One line says it found nothing, and a later line says everything passed anyway. That's my one point today. A clean report counts only if the checker can fail, and tells you what it skipped. Here's what I did. In four weeks of use, my own checker failed silently six times. I sorted the failures into three groups, gave each a guard, and tried two guards on five public checkers. Here's why you should care. Think of the last green check you saw in your CI. How do you know it ran? If a tool can't fail, all clear tells you nothing. So why citation checkers?
 
 ## 3. AI models still invent references, and a top conference now checks them with software
 
@@ -26,7 +26,7 @@ Every check does three things: it chooses what to check, it reads the inputs, an
 
 ## 6. Today's tests caught {rebreak.caught} of {rebreak.total} small changes that break my six fixes again
 
-To test the guards today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each. For cases 1 and 2, a change breaks the guard that replaced the old defect, like the build gate or the code that works out what to check; the old defects were outside the tool, so a test of the tool can't reach them. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. So I asked whether other checkers have the same gaps.
+To test the guards today, I wrote eleven small changes that each break one of my six fixes again, and ran the tests after each. For cases 1 and 2, whose old defects sat outside the tool, a change breaks the guard that replaced them, like the build gate. Each column is one change, and its height is how many tests failed. Nine of the eleven were caught. Two got through. One let the check pass a paper whose compiled bibliography was empty. The other removed the line that says a server was refusing requests. Both have tests now. So I asked whether other checkers have the same gaps.
 
 ## 7. Three of five public checkers printed a clean result after checking nothing
 

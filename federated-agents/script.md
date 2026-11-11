@@ -30,7 +30,7 @@ My idea: every company runs the same frozen, open-weight base model with two sma
 
 ## 7. Other designs let the method pick what's shared; none I found tests its source
 
-The grey dots are published designs. Across the bottom: who decides what is shared, from training itself to a fixed rule or a filter. Up the side: whether anyone tested the shared part. Most never did, and none I found asked whose it is. Mine, in blue and orange, lets the company decide before training, and tests which company the shared part came from.
+The grey dots are published designs. Across the bottom: who decides what is shared, from training itself to a fixed rule or a filter. Up the side: whether anyone tested the shared part. Most never did, and none I found asked whose it is. Mine, in blue and orange, lets the company decide before training, and will test which company the shared part came from.
 
 ## 8. Tuning helps; the sealed test asks if the gain is the team's
 
@@ -60,7 +60,7 @@ OpenStack, Wikimedia and Qt decide the answer, and each must pass; Qt said yes i
 
 ## 14. Before agents share a team's habits, test that there are habits to learn
 
-Before agents share a team's habits, I first test that there are habits to learn. I built two datasets of real review lessons, {readings.corpus_examples_openstack} from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia. On the development months, an assistant tuned on them gets about {readings.tuned_exact_gain} more fixes in 100 exactly right, and the score found a planted house rule in {readings.planted_found} of {readings.planted_runs} splits, across all three communities. Two problems stay open. Whether style transfers on the sealed months: a community's own assistant against its sibling's everywhere, and Qt against Chromium. And whether the shared add-on gives away which company it came from. That's my talk.
+Before agents share a team's habits, I first test that there are habits to learn. I built two datasets of real review lessons, {readings.corpus_examples_openstack} from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia. On the development months, an assistant tuned on them gets about {readings.tuned_exact_gain} more fixes in 100 exactly right, and the score found a planted house rule in {readings.planted_found} of {readings.planted_runs} splits, across all three communities. Two problems stay open. Whether style transfers on the sealed months: a community's own assistant against its sibling's in all three, and Qt against Chromium. And whether the shared add-on gives away which company it came from. That's my talk.
 
 <!-- Open problems: sphragis README "Where it stands" (the confirmatory contrast has not been run; dev readings size the design) and the FAQ on leakage (a measurement, not yet run on the shared add-on). -->
 

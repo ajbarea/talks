@@ -78,7 +78,7 @@
     </div>
   </div>
   <p class="lead"><b>Why you should care:</b> your reviewers repeat rules AI assistants rarely see. Lessons like these could teach them.</p>
-  <aside class="notes"><ul><li>A tool turns public code review into lessons: comment, code, the developer's next code</li><li><span data-value="readings.corpus_examples_openstack"></span> OpenStack, <span data-value="readings.corpus_examples_wikimedia"></span> Wikimedia; GitHub replication built</li><li>Why care: your reviewers' rules, learned without your code leaving</li></ul></aside>
+  <aside class="notes"><ul><li>A tool turns public code review into lessons: comment, code, the developer's next code</li><li><span data-value="readings.corpus_examples_openstack"></span> OpenStack, <span data-value="readings.corpus_examples_wikimedia"></span> Wikimedia; GitHub replication built</li><li>Why care: your reviewers' rules, which assistants rarely see</li></ul></aside>
 </section>
 
 <section data-chapter="2 · The problem">
@@ -318,7 +318,7 @@
   <h2>Other designs let the method pick what's shared; none I found tests its source</h2>
   <div class="relmap wide" data-source="related" data-differs="off"></div>
   <p class="footnote">Each grey dot is a published design<span class="web-only"> (hover or tap for a summary)</span>. Each was tested on public datasets, not real organizations' data.</p>
-  <aside class="notes"><ul><li>Grey dots: published designs. Across: who decides what is shared</li><li>Up: whether anyone tested the shared part; none I found asked whose it is</li><li>Mine, in blue and orange: the company decides before training, and I test where the shared part came from</li></ul></aside>
+  <aside class="notes"><ul><li>Grey dots: published designs. Across: who decides what is shared</li><li>Up: whether anyone tested the shared part; none I found asked whose it is</li><li>Mine, in blue and orange: the company decides before training, and I will test where the shared part came from</li></ul></aside>
 </section>
 
 <section data-chapter="4 · What first runs show">
@@ -344,7 +344,7 @@
       <p>The attacks on published privacy designs are built.</p>
     </div>
   </div>
-  <p class="footnote">Development data, by exact match: it sizes the test, not its answer.</p>
+  <p class="footnote">Development data, by exact match: a check that tuning works, not a test result.</p>
   <aside class="notes"><ul><li>Development data, not the sealed test</li><li>Tuned: about <span data-value="readings.tuned_exact_gain"></span> more fixes in 100 exactly right than untuned</li><li>Own against sibling waits for the sealed months. Leak attacks built</li></ul></aside>
 </section>
 
@@ -547,7 +547,7 @@
 
 <section id="faq-test" class="backup">
   <h2>What are the pre-registered test and the privacy attacks?</h2>
-  <p><b>The test:</b> does an add-on trained on one half of an organization's projects beat one trained on the other half, on the first half's unseen months? It passes only if, in OpenStack, Wikimedia and Qt, its interval sits above zero at its registered level on the whole fix and without its names. The rule and the sealed test months were fixed before any test result existed.</p>
+  <p><b>The test:</b> does an add-on trained on one half of an organization's projects beat one trained on the other half, on the first half's unseen months? It passes only if, in OpenStack, Wikimedia and Qt, it clears zero under its registered rule on the whole fix and without its names. The rule and the sealed test months were fixed before any test result existed.</p>
   <p><b>The second contrast:</b> on Qt's C++, does an add-on from a sibling slice of Qt beat one trained on as much C++ from Chromium, another organization? It is the registered test of whether an organization carries style beyond its projects, in this one case. Fuchsia, a second foreign organization, is read beside it, exploratory.</p>
   <p><b>The attacks:</b> does the shared part still reveal its source?</p>
   <ul>
@@ -581,7 +581,7 @@
     <li>Near-duplicates are removed before the split; leftover overlap is reported.</li>
     <li>Label quality is audited blind, by two model raters and a human. On OpenStack's <span data-value="readings.audit_items_openstack"></span> audited lessons, the rater the human checked finds about <span data-value="readings.audit_valid_openstack"></span> with a rewrite that answers its comment; the rest stay in and are scored in every arm, so they mostly dilute a difference rather than favor one side.</li>
     <li>Every filtering rule and what it removed is published: ajbarea.github.io/sphragis/dataset</li>
-    <li>Contamination: every month of data starts after the model's weights were uploaded, and three methods compare it with a window from before. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; the test is read again without them, and without AI-disclosing changes.</li>
+    <li>Contamination: every month of data starts after the model's weights were uploaded, and three methods compare it with a window from before. About <span data-value="readings.found_share_dev"></span> of development fixes were already in their project's code then; a secondary reading drops them, and AI-disclosing changes.</li>
     <li>Everything derived is pseudonymized, with addresses swept from comments. RIT's human-subjects office ruled in writing that this is not human-subjects research.</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
@@ -621,11 +621,11 @@
   <div class="figure">
     <svg data-only="desktop" viewBox="0 0 1180 190" role="img" aria-labelledby="models-t models-d">
       <title id="models-t">Candidate models placed by the month their training data ends</title>
-      <desc id="models-d">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
+      <desc id="models-d">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (released September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
       <line class="axis" x1="20" y1="96" x2="1160" y2="96"/>
       <line class="cut" x1="437" y1="62" x2="437" y2="130"/>
       <circle class="fair" cx="154" cy="96" r="12"/>
-      <text x="20" y="40" class="b">Llama-3.1-8B</text><text x="20" y="64" class="s">second family, data end Dec 2023</text>
+      <text x="20" y="40" class="b">Llama-3.1-8B</text><text x="20" y="64" class="s">second family (Instruct), data end Dec 2023</text>
       <circle class="fair" cx="404" cy="96" r="12"/>
       <text x="340" y="152" text-anchor="middle" class="b">Qwen2.5-Coder-7B</text><text x="340" y="176" text-anchor="middle" class="s">registered (Instruct), out Sep 2024</text>
       <circle class="unfair" cx="637" cy="96" r="12"/>
@@ -638,10 +638,10 @@
     </svg>
     <svg data-only="phone" viewBox="0 0 464 560" role="img" aria-labelledby="models-pt models-pd">
       <title id="models-pt">Candidate models placed by the month their training data ends</title>
-      <desc id="models-pd">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
+      <desc id="models-pd">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (released September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
       <line class="axis" x1="28" y1="8" x2="28" y2="552"/>
       <circle class="fair" cx="28" cy="28" r="11"/>
-      <text x="54" y="34" class="b">Llama-3.1-8B</text><text x="54" y="62" class="s">second family, data end Dec 2023</text>
+      <text x="54" y="34" class="b">Llama-3.1-8B</text><text x="54" y="62" class="s">second family (Instruct), data end Dec 2023</text>
       <circle class="fair" cx="28" cy="108" r="11"/>
       <text x="54" y="114" class="b">Qwen2.5-Coder-7B</text><text x="54" y="142" class="s">registered (Instruct), out Sep 2024</text>
       <line class="cut" x1="8" y1="180" x2="456" y2="180"/>
@@ -672,7 +672,7 @@
   <h2>Why not just write the rules in a file, like AGENTS.md?</h2>
   <p>That is how coding agents take conventions today: rules files (AGENTS.md, CLAUDE.md, Cursor rules), organization instructions and memory. They hold what someone wrote down.</p>
   <p>What no study I found measures is whether they capture a team's conventions. A 2026 study found developer-written context files helped agents slightly (not significantly), generated ones did not, and both cost about a fifth more inference (Gloaguen et al., arXiv:2602.11988); it does not ask whether the code follows the team's habits.</p>
-  <p>So an exploratory arm, registered beside the adapters, adds a rules file: the base model given the organization's written conventions, or a file distilled from each half's review comments, scored on own, sibling and foreign code by exact match, the study's secondary measure, binding no verdict. Qwen3.6-27B distills it, since the 7B model invented rules and citations; a rule must cite two or more comments and share most of its words with one. Like retrieval, its development readings on exact match cannot settle it; the sealed test reports it.</p>
+  <p>So an exploratory arm, registered beside the adapters, adds a rules file: the base model given the organization's written conventions, or a file distilled from each half's review comments, given own, sibling or foreign files and scored by exact match, the study's secondary measure, binding no verdict. Qwen3.6-27B distills it, since the 7B model invented rules and citations; a rule must cite two or more comments and share most of its words with one. Like retrieval, its development readings on exact match cannot settle it; the sealed test reports it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 

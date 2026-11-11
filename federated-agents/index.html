@@ -541,14 +541,14 @@
   <h2>What guarantee can be offered about leakage?</h2>
   <p>None yet, and saying otherwise would be the mistake this work exists to correct.</p>
   <p>What exists is a <em>measurement</em>: given a boundary, does the part that crosses it still identify its source? The published boundaries go through it.</p>
-  <p>A guarantee needs a mechanism with a proof, and the candidates are secure aggregation and differential privacy. Both are measured here rather than assumed.</p>
+  <p>A guarantee needs a mechanism with a proof, and the candidates are secure aggregation and differential privacy. Both will be measured rather than assumed.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
 
 <section id="faq-test" class="backup">
   <h2>What are the pre-registered test and the privacy attacks?</h2>
   <p><b>The test:</b> does an add-on trained on one half of an organization's projects beat one trained on the other half, on the first half's unseen months? It passes only if, in OpenStack, Wikimedia and Qt, it clears zero under its registered rule on the whole fix and without its names. The rule and the sealed test months were fixed before any test result existed.</p>
-  <p><b>The second contrast:</b> on Qt's C++, does an add-on from a sibling slice of Qt beat one trained on as much C++ from Chromium, another organization? It is the registered test of whether an organization carries style beyond its projects, in this one case. Fuchsia, a second foreign organization, is read beside it, exploratory.</p>
+  <p><b>The second contrast:</b> on Qt's C++, does Qt's sibling-half add-on beat one trained on as much C++ from Chromium, another organization? It is the registered test of whether an organization carries style beyond its projects, in this one case. Fuchsia, a second foreign organization, is read beside it, exploratory.</p>
   <p><b>The attacks:</b> does the shared part still reveal its source?</p>
   <ul>
     <li><em>Source attribution</em>: which organization did this add-on come from?</li>
@@ -596,7 +596,7 @@
 
 <section id="faq-people" class="backup">
   <h2>Aren't conventions really the reviewers', and don't they change?</h2>
-  <p>Partly, and the study checks it. Nearly every development example shares a reviewer with the other half of its own organization, so a reviewer effect would show up as the organization's advantage over a foreign one; the study also measures how many reviewers Qt shares with Chromium. An analysis planned before the test months open asks whether that advantage grows with how much of the training data the example's own reviewers wrote. Review is concentrated: in OpenStack, Wikimedia and Qt alike, the busiest tenth of reviewers are credited with about half the training examples.</p>
+  <p>Partly, and the study checks it. In OpenStack and Wikimedia, nearly every development example shares a reviewer with its sibling half, so a reviewer effect would show up as the organization's advantage over a foreign one; the study also measures how many reviewers Qt shares with Chromium. An analysis planned before the test months open asks whether that advantage grows with how much of the training data the example's own reviewers wrote. Review is concentrated: in OpenStack, Wikimedia and Qt alike, the busiest tenth of reviewers are credited with about half the training examples.</p>
   <p>People also come and go. The test months come after the training months, so conventions that changed with the people count against the result rather than for it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
@@ -620,8 +620,8 @@
   <h2>Would a different model do better?</h2>
   <div class="figure">
     <svg data-only="desktop" viewBox="0 0 1180 190" role="img" aria-labelledby="models-t models-d">
-      <title id="models-t">Candidate models placed by the month their training data ends</title>
-      <desc id="models-d">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (released September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
+      <title id="models-t">Candidate models placed by data end or release month</title>
+      <desc id="models-d">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (released September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the corpus.</desc>
       <line class="axis" x1="20" y1="96" x2="1160" y2="96"/>
       <line class="cut" x1="437" y1="62" x2="437" y2="130"/>
       <circle class="fair" cx="154" cy="96" r="12"/>
@@ -637,8 +637,8 @@
       <text x="1037" y="152" text-anchor="middle" class="b">Gemma 4</text><text x="1037" y="176" text-anchor="middle" class="s">Apr 2026</text>
     </svg>
     <svg data-only="phone" viewBox="0 0 464 560" role="img" aria-labelledby="models-pt models-pd">
-      <title id="models-pt">Candidate models placed by the month their training data ends</title>
-      <desc id="models-pd">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (released September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the test data.</desc>
+      <title id="models-pt">Candidate models placed by data end or release month</title>
+      <desc id="models-pd">The corpus begins October 2024. Llama-3.1-8B (data end December 2023) and Qwen2.5-Coder-7B (released September 2024) were trained before it, so they are fairer tests. Qwen3-8B (April 2025), Qwen3-Coder-30B and gpt-oss-20b (July and August 2025) and Gemma 4 (April 2026) may have seen the corpus.</desc>
       <line class="axis" x1="28" y1="8" x2="28" y2="552"/>
       <circle class="fair" cx="28" cy="28" r="11"/>
       <text x="54" y="34" class="b">Llama-3.1-8B</text><text x="54" y="62" class="s">second family (Instruct), data end Dec 2023</text>
@@ -655,8 +655,8 @@
       <text x="54" y="494" class="b">Gemma 4</text><text x="54" y="522" class="s">Apr 2026</text>
     </svg>
   </div>
-  <p class="small">Dashed line: the corpus begins, October 2024. Filled: trained before it, so a fairer test. Hollow: may have seen the test data.</p>
-  <p>More models buy generality, not a better answer: the question is whether a team's habits can be learned at all, and a model that may have read the test code cannot settle that. A second family, exploratory, checks whether it is a Qwen quirk.</p>
+  <p class="small">Dashed line: the corpus begins, October 2024. Filled: trained before it, so a fairer test. Hollow: may have seen the corpus.</p>
+  <p>More models buy generality, not a better answer: the question is whether a team's habits can be learned at all, and a model that may have read the corpus cannot settle that. A second family, exploratory, checks whether it is a Qwen quirk.</p>
   <p class="small">Compressing the base model to 4 bits (QLoRA) saves memory and at best matches quality, so the main test does not use it. It is planned for the privacy half, because the deployment being tested uses it.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
 </section>
@@ -682,7 +682,7 @@
   <p>Each decides the split by evidence on a server or an LLM's judgment, not by the owner declaring it from where each example came from. To my knowledge, three things here are new:</p>
   <ul>
     <li><b>The owner declares the boundary before training</b>, by where each example came from, and that declaration decides which examples may teach the shared part.</li>
-    <li><b>Tacit review conventions</b> are what is learned, with a pre-registered test of whether they transfer between halves of an organization. No study I know of tests whether learned style transfers more from an organization's other projects than from a foreign organization; the report tests that in Qt, against Chromium.</li>
+    <li><b>Tacit review conventions</b> are what is learned. No study I know of tests whether learned style transfers more from an organization's other projects than from a foreign organization; the report tests that in Qt, against Chromium.</li>
     <li><b>The shared part is audited by attribution</b>: can someone tell which organization it came from?</li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>

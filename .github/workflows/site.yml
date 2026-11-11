@@ -86,6 +86,9 @@ jobs:
       - name: Lay out the site
         run: python3 scripts/site.py _site --exports _exports
 
+      - name: Check the index page in Chromium
+        run: make site-check SLIDES=.deps/techne/plugins/graphe/skills/slides/scripts/slides.py
+
       - name: Configure Pages
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0

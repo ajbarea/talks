@@ -38,7 +38,7 @@
   // Geometry, read once and again only when the strip changes size: the strip scrolls one slot per talk.
   let slot = slides[0].offsetWidth;
   const left = (i) => slides[i].offsetLeft + slot / 2 - strip.clientWidth / 2;
-  const nearest = () => Math.max(0, Math.min(n - 1, Math.round((strip.scrollLeft - left(0)) / slot)));
+  const nearest = () => (slot > 0 ? Math.max(0, Math.min(n - 1, Math.round((strip.scrollLeft - left(0)) / slot))) : 0);
 
   let current = -1;
   let target = null; // where keys and the wheel are taking the strip, so presses add up mid-glide
@@ -57,7 +57,7 @@
     loading = loop;
     loop.src = img.dataset.loop;
     loop.decode().then(() => {
-      if (loading === loop && slides[current] === s) img.src = loop.src;
+      if (loading === loop && slides[current] === s && !reduce.matches) img.src = loop.src;
     }, () => {});
   };
   const still = (s) => {
@@ -68,9 +68,11 @@
   // A resize or zoom moves the snap points: the centered talk stays centered, so nothing else changes.
   let width = strip.clientWidth;
   const keep = () => {
-    if (current < 0 || strip.clientWidth === width) return;
-    width = strip.clientWidth;
-    slot = slides[0].offsetWidth;
+    const w = strip.clientWidth;
+    const s = slides[0].offsetWidth; // the slot follows the window's height too
+    if (current < 0 || (w === width && s === slot)) return;
+    width = w;
+    slot = s;
     strip.scrollTo({ left: left(current), behavior: "instant" });
   };
 
@@ -89,6 +91,7 @@
       s.querySelector(".about").inert = !here;
       dots.children[k].setAttribute("aria-current", here ? "true" : "false");
     });
+    dots.style.setProperty("--at", i);
     still(old);
     prev.setAttribute("aria-disabled", i === 0 ? "true" : "false");
     next.setAttribute("aria-disabled", i === n - 1 ? "true" : "false");
@@ -138,7 +141,7 @@
 
   // Arrow keys glide from inside the carousel, or from the page while the stage is in view; Home and End inside.
   let inView = true;
-  const seen = new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { threshold: 0.4 });
+  const seen = new IntersectionObserver(([e]) => { inView = e.isIntersecting; }, { threshold: 0.15 });
   seen.observe(root.querySelector(".stage"));
   document.addEventListener("keydown", (e) => {
     if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
@@ -190,7 +193,8 @@
       dragging = false;
       go(Math.round(at + fling));
       // Snapping comes back once the glide has landed on its talk, so it never jumps mid-glide.
-      const land = () => { clearTimeout(late); strip.classList.remove("dragging"); };
+      // A release that lands exactly on a talk scrolls nowhere, so no scrollend comes: settle here too.
+      const land = () => { clearTimeout(late); strip.classList.remove("dragging"); settle(true); };
       const late = setTimeout(land, 900);
       strip.addEventListener("scrollend", land, { once: true });
     };
@@ -199,11 +203,13 @@
     strip.addEventListener("pointercancel", up);
   });
 
-  // A vertical wheel over the stage steps one talk per notch or per trackpad gesture; at either end the page
-  // scrolls on. Sideways trackpad swipes scroll the strip natively.
+  // A vertical wheel over the covers steps one talk per notch or per trackpad gesture; at either end, and
+  // anywhere off the covers, the page scrolls on. Sideways trackpad swipes scroll the strip natively.
   let lastWheel = 0, lastStep = 0, lastAbs = 0;
   strip.addEventListener("wheel", (e) => {
     if (e.ctrlKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY) || e.target.closest(".about")) return;
+    const row = slides[Math.max(0, current)].querySelector(".cover").getBoundingClientRect();
+    if (e.clientY < row.top || e.clientY > row.bottom) return;
     const d = Math.sign(e.deltaY);
     const to = (target ?? current) + d;
     if (to < 0 || to >= n) return;

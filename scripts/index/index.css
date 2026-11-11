@@ -28,6 +28,7 @@ header { margin-bottom: 3rem; }
 header > * { max-width: 44rem; }
 h1 { font: 700 clamp(2.5rem, 6vw, 4.2rem)/1 var(--display); margin: 0 0 1rem; color: var(--ours-line); }
 header p { margin: 0; color: var(--muted); font-size: 1.2rem; }
+.hint { display: none; }
 header a, footer a { color: var(--neutral-ink); }
 header a { display: inline-block; padding: 0.5rem 0; margin: -0.5rem 0; }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
@@ -42,15 +43,16 @@ kbd { font: inherit; font-weight: 700; padding: 0 0.35em; border: 1px solid var(
 h2 { font: 700 1.9rem/1.15 var(--display); margin: 0 0 0.5rem; }
 h2 a { color: inherit; text-decoration: none; display: inline-block; padding: 0.2rem 0; }
 h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.18em; }
-.description { margin: 0 0 1.25rem; color: var(--muted); max-width: 40rem; }
+.description { margin: 0 0 1.1rem; color: var(--muted); max-width: 44rem; }
 .open { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; padding: 0.55rem 1.15rem;
   border-radius: 4px; background: var(--ink); color: var(--paper); font-weight: 700; text-decoration: none; }
 .open svg { transition: transform 0.2s ease; }
 .open:hover { background: color-mix(in oklab, var(--ink), var(--paper) 16%); }
 .open:hover svg { transform: translateX(3px); }
-.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.375rem; padding: 0; margin: 0.875rem 0 0; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
+.chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.375rem; padding: 0; margin: 0; }
 .chip { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 32px; padding: 0.2rem 0.65rem;
-  border: 1px solid var(--line); border-radius: 4px; color: var(--ink); font-size: 0.875rem; font-weight: 650;
+  border: 1px solid color-mix(in oklab, var(--muted), var(--paper) 45%); border-radius: 4px; color: var(--ink); font-size: 0.875rem; font-weight: 650;
   line-height: 1.2; text-decoration: none; white-space: nowrap; }
 .chip svg { color: var(--muted); flex: none; }
 .chip:hover { background: var(--band); border-color: var(--muted); }
@@ -80,23 +82,34 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
    Every per-frame change is a transform or an opacity driven by the strip's own scroll position (a view
    timeline per talk), so the glide runs on the compositor without any script per frame. */
 .flow {
-  --w: min(42rem, 36vw, calc((100svh - 25rem) * 1.25));  /* the centered cover's width */
+  /* The centered cover's width: as large as the screen allows while its actions stay above the fold. */
+  --w: max(12rem, min(48rem, 40vw, calc((100svh - 28rem) * 1.43)));
   --h: calc(var(--w) * 9 / 16);
   --slot: calc(var(--w) * 0.28);                           /* the distance between two talks' centers */
   --push: 46%;                                              /* how far a side cover stands off the center */
   --tilt: 64deg;
-  --side: 0.88;
+  --side: 0.78;
   --depth: calc(var(--w) * 2.2);
-  --top: clamp(1.5rem, 2.6vw, 2.5rem);
-  --refl: calc(var(--h) * 0.44);
-  --band-h: calc(var(--top) + var(--h) + var(--refl));
-  --about: min(44rem, calc(100vw - 2.5rem));
+  --top: clamp(1.5rem, 2.2vw, 2rem);
+  --refl: calc(var(--h) * 0.24);
+  --floor: 0px;                                            /* room under the reflections for the controls */
+  --fade: 2.5rem;                                          /* the stage melts into the page over this */
+  --band-h: calc(var(--top) + var(--h) + var(--refl) + var(--floor) + var(--fade));
+  --about: min(58rem, calc(100vw - 2.5rem));
 }
 @media (max-width: 760px) {
-  .flow { --w: min(76vw, 26rem); --slot: calc(var(--w) * 0.26); --push: 44%; --tilt: 64deg; --top: 1.5rem;
-    --refl: calc(var(--h) * 0.42); }
+  .flow { --w: max(12rem, min(76vw, 26rem)); --slot: calc(var(--w) * 0.26); --push: 44%; --top: 1.5rem;
+    --refl: calc(var(--h) * 0.34); --floor: 3rem; --fade: 1.5rem; }
+  .flow .talk { scroll-snap-stop: always; }
 }
-.flow header { margin-bottom: 2rem; }
+.flow header { margin-bottom: 1.75rem; }
+.flow .hint { display: block; margin-top: 0.4rem; font-size: 1rem; }
+@media (min-width: 1400px) {
+  .flow main { padding-top: 2.75rem; }
+  .flow header { display: grid; grid-template-columns: auto minmax(0, 44rem); justify-content: start; column-gap: 4rem;
+    align-items: end; }
+  .flow header h1 { margin: 0; grid-row: span 2; }
+}
 .flow .stage { position: relative; }
 .flow .covers { display: flex; gap: 0; max-width: none; margin: 0; padding: 0 calc(50% - var(--slot) / 2) 0.5rem;
   overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
@@ -104,7 +117,13 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   /* Its own scrolling layer at every pixel ratio (Chrome gives a see-through scroller one only from 1.5x),
      so a busy main thread never holds up a glide. */
   will-change: scroll-position;
-  background: radial-gradient(70% 115% at 50% 34%, var(--stage-glow), var(--night) 58%, var(--stage-floor))
+  background:
+    linear-gradient(transparent calc(var(--band-h) - var(--fade)),
+      color-mix(in oklab, var(--paper) 18%, transparent) calc(var(--band-h) - var(--fade) * 0.7),
+      color-mix(in oklab, var(--paper) 50%, transparent) calc(var(--band-h) - var(--fade) * 0.45),
+      color-mix(in oklab, var(--paper) 82%, transparent) calc(var(--band-h) - var(--fade) * 0.2),
+      var(--paper) var(--band-h)) top / 100% calc(var(--band-h) + 4px) no-repeat,
+    radial-gradient(70% 115% at 50% 34%, var(--stage-glow), var(--night) 58%, var(--stage-floor))
     top / 100% var(--band-h) no-repeat; }
 .flow .covers::-webkit-scrollbar { display: none; }
 .flow .covers.dragging { scroll-snap-type: none; cursor: grabbing; }
@@ -119,33 +138,44 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   animation-range: cover calc(50% - var(--slot)) cover calc(50% + var(--slot)); }
 .flow .cover img { border-radius: inherit; }
 .flow .cover.blank { color: var(--night-ink); background: color-mix(in oklab, var(--night), white 14%); }
-/* A shade that deepens as a cover turns away, and its reflection on the stage floor. */
+/* A shade that deepens toward a turned cover's far edge (flipped for the left side), and its reflection. */
 .flow .cover::before { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit;
-  background: rgb(4 8 12); pointer-events: none;
+  background: linear-gradient(to right, rgb(4 8 12 / 0.12), rgb(4 8 12 / 0.62)); pointer-events: none;
   animation: flow-shade linear both; animation-timeline: --talk;
   animation-range: cover calc(50% - var(--slot)) cover calc(50% + var(--slot)); }
-.flow .cover[style]::after { content: ""; position: absolute; left: 0; right: 0; top: calc(100% + 3px); height: 34%;
-  border-radius: inherit; background: var(--thumb) bottom / 100% calc(100% / 0.34) no-repeat; transform: scaleY(-1); pointer-events: none;
+.flow .cover[style]::after { content: ""; position: absolute; left: 0; right: 0; top: calc(100% + 3px); height: 28%;
+  border-radius: inherit; background: var(--thumb) bottom / 100% calc(100% / 0.28) no-repeat; transform: scaleY(-1); pointer-events: none;
   -webkit-mask-image: linear-gradient(to top, rgb(0 0 0 / 0.32), transparent);
   mask-image: linear-gradient(to top, rgb(0 0 0 / 0.32), transparent); }
-.flow .about { width: var(--about); margin: calc(var(--refl) + 1.5rem) calc((var(--slot) - var(--about)) / 2) 0;
+.flow .about { width: var(--about); margin: calc(var(--refl) + var(--floor) + var(--fade) + 0.5rem)
+    calc((var(--slot) - var(--about)) / 2) 0;
   text-align: center; display: flex; flex-direction: column; align-items: center;
   animation: flow-about linear both; animation-timeline: --talk;
   animation-range: cover calc(50% - var(--slot)) cover calc(50% + var(--slot)); }
-.flow .about .chips { justify-content: center; }
+.flow .about .actions, .flow .about .chips { justify-content: center; }
 @keyframes flow-z { 0%, 100% { z-index: 0; } 50% { z-index: 1000; } }
+/* A cover holds its side pose for the outer part of a step and swings flat across the middle, so the turn snaps
+   without two half-turned covers meeting in a seam or the center standing empty. */
 @keyframes flow-tilt {
   0% { transform: perspective(var(--depth)) translateX(var(--push)) rotateY(var(--tilt)) scale(var(--side)); }
+  20% { transform: perspective(var(--depth)) translateX(calc(var(--push) * 0.95)) rotateY(var(--tilt)) scale(var(--side)); }
   50% { transform: perspective(var(--depth)) translateX(0) rotateY(0deg) scale(1); }
+  80% { transform: perspective(var(--depth)) translateX(calc(var(--push) * -0.95)) rotateY(calc(-1 * var(--tilt))) scale(var(--side)); }
   100% { transform: perspective(var(--depth)) translateX(calc(-1 * var(--push))) rotateY(calc(-1 * var(--tilt))) scale(var(--side)); }
 }
-@keyframes flow-shade { 0%, 100% { opacity: 0.5; } 50% { opacity: 0; } }
-/* The text under the stage holds nearly still and cross-fades: it drifts a little with the glide. */
+@keyframes flow-shade {
+  0%, 20% { opacity: 1; transform: none; }
+  49.9% { transform: none; }
+  50% { opacity: 0; }
+  50.1% { transform: scaleX(-1); }
+  80%, 100% { opacity: 1; transform: scaleX(-1); }
+}
+/* The text under the stage cross-fades and drifts a little with the glide. */
 @keyframes flow-about {
-  0% { transform: translateX(calc(var(--slot) * -0.8)); opacity: 0; }
-  32%, 68% { opacity: 0; }
+  0% { transform: translateX(calc(var(--slot) * -0.6)); opacity: 0; }
+  25%, 75% { opacity: 0; }
   50% { transform: none; opacity: 1; }
-  100% { transform: translateX(calc(var(--slot) * 0.8)); opacity: 0; }
+  100% { transform: translateX(calc(var(--slot) * 0.6)); opacity: 0; }
 }
 
 /* Previous and next, at the stage's edges, and the position of the centered talk on the floor. */
@@ -153,24 +183,27 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border-radius: 50%;
   border: 1px solid rgb(241 244 246 / 0.3); background: rgb(21 32 43 / 0.55); color: var(--night-ink);
   cursor: pointer; }
-.flow .step.prev { left: clamp(0.5rem, 2.5vw, 2.5rem); }
-.flow .step.next { right: clamp(0.5rem, 2.5vw, 2.5rem); }
+.flow .step.prev { left: max(0.5rem, calc(50% - var(--w) / 2 - 58px)); }
+.flow .step.next { right: max(0.5rem, calc(50% - var(--w) / 2 - 58px)); }
 .flow .step:hover { background: rgb(36 56 76 / 0.85); border-color: rgb(241 244 246 / 0.55); }
 .flow .step[aria-disabled="true"] { opacity: 0.35; cursor: default; }
 .flow .step:focus-visible, .flow .dots button:focus-visible { outline-color: var(--night-ink); }
-.flow .dots { position: absolute; z-index: 1001; left: 50%; top: calc(var(--band-h) - 2.1rem);
-  transform: translateX(-50%); display: flex; gap: 2px; }
-.flow .dots button { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer;
+/* The dots sit on the floor; a gold pill slides to the centered talk's dot (the script sets --at). */
+.flow .dots { position: absolute; z-index: 1001; left: 50%; top: calc(var(--band-h) - var(--fade) - 2.4rem);
+  transform: translateX(-50%); display: flex; }
+.flow .dots button { width: 26px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer;
   display: grid; place-items: center; }
-.flow .dots button::before { content: ""; width: 20px; height: 7px; border-radius: 4px; transform: scaleX(0.35);
-  background: rgb(241 244 246 / 0.38); transition: transform 0.3s cubic-bezier(0.22, 0.8, 0.3, 1), background 0.3s; }
-.flow .dots button:hover::before { background: rgb(241 244 246 / 0.7); }
-.flow .dots button[aria-current="true"]::before { transform: none; background: #cf9426; }
+.flow .dots button::before { content: ""; width: 8px; height: 8px; border-radius: 50%;
+  background: rgb(241 244 246 / 0.45); transition: background 0.2s; }
+.flow .dots button:hover::before { background: rgb(241 244 246 / 0.8); }
+.flow .dots::after { content: ""; position: absolute; left: 1px; top: 7px; width: 24px; height: 10px; border-radius: 5px;
+  background: #cf9426; pointer-events: none; transform: translateX(calc(var(--at, 0) * 26px));
+  transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.3, 1); }
 
 /* With reduced motion the covers stay flat: smaller to the sides, no turn, no preview loop. */
 @media (prefers-reduced-motion: reduce) {
   .flow .cover { animation-name: flow-flat; }
-  .flow .dots button::before, .open svg { transition: none; }
+  .flow .dots::after, .open svg { transition: none; }
 }
 @keyframes flow-flat {
   0% { transform: translateX(58%) scale(0.72); }
@@ -187,7 +220,8 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   .flow .talk.left .cover {
     transform: perspective(var(--depth)) translateX(calc(-1 * var(--push))) rotateY(calc(-1 * var(--tilt))) scale(var(--side)); }
   .flow .talk.here .cover { transform: perspective(var(--depth)); }
-  .flow .cover::before { opacity: 0.5; transition: opacity 0.45s; }
+  .flow .cover::before { opacity: 1; transition: opacity 0.45s; }
+  .flow .talk.left .cover::before { transform: scaleX(-1); }
   .flow .talk.here .cover::before { opacity: 0; }
   .flow .about { opacity: 0; transition: opacity 0.3s; }
   .flow .talk.here .about { opacity: 1; }
@@ -204,6 +238,8 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
 @media (max-width: 760px) {
   .flow header { margin-bottom: 1.5rem; }
   .flow h2 { font-size: 1.55rem; }
-  .flow .step { top: calc(var(--band-h) - 3.6rem); }
-  .flow .dots { top: calc(var(--band-h) - 2.85rem); }
+  .flow .step { top: calc(var(--top) + var(--h) + var(--refl) + (var(--floor) - 44px) / 2); }
+  .flow .step.prev { left: 1rem; }
+  .flow .step.next { right: 1rem; }
+  .flow .dots { top: calc(var(--top) + var(--h) + var(--refl) + (var(--floor) - 24px) / 2); }
 }

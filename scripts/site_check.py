@@ -184,7 +184,7 @@ def run(url: str) -> Report:
         page.focus(".talk:not([aria-hidden]) .open")
         page.evaluate(COUNT)
         before = page.evaluate(STATE)
-        for w, h in ((1280, 800), (1024, 640), (640, 480), (1920, 1080)):
+        for w, h in ((1280, 800), (1024, 640), (640, 480), (1920, 1080), (1920, 700), (1920, 1080)):
             page.set_viewport_size({"width": w, "height": h})
             page.wait_for_timeout(700)
         after = page.evaluate(STATE)
@@ -198,6 +198,39 @@ def run(url: str) -> Report:
         )
 
         r.check("axe, 1920, light", not (v := axe(page)), v)
+
+        # A drag released exactly on the next talk scrolls nowhere afterwards, and must still settle there.
+        # At 1250 px the slot is a whole 140 px, so the release can land exactly on the next talk.
+        page.set_viewport_size({"width": 1250, "height": 1080})
+        page.wait_for_timeout(700)
+        before = page.evaluate(STATE)["c"]
+        # The exact distance from here to the next talk's resting place, as the strip measures it.
+        dx = page.evaluate(
+            "(() => { const s = document.querySelector('.covers'), t = s.children[" + str(before + 1) + "];"
+            " return t.offsetLeft + t.offsetWidth / 2 - s.clientWidth / 2 - s.scrollLeft; })()"
+        )
+        page.mouse.move(625, 400)
+        page.mouse.down()
+        for k in range(1, 11):
+            page.mouse.move(625 - dx * k / 10, 400)
+            page.wait_for_timeout(16)
+        page.wait_for_timeout(400)
+        page.mouse.up()
+        page.wait_for_timeout(SETTLE_MS)
+        s = page.evaluate(STATE)
+        r.check(
+            "a drag that ends exactly on a talk settles on it", s["c"] == before + 1 and s["inert"][s["c"]] is False, s
+        )
+
+        # On a 1080p monitor the browser leaves about 940 px: the centered talk's actions stay above the fold.
+        page.set_viewport_size({"width": 1920, "height": 940})
+        page.wait_for_timeout(700)
+        bottom = page.evaluate(
+            "document.querySelector('.talk:not([aria-hidden]) .actions').getBoundingClientRect().bottom"
+        )
+        r.check("Open the deck and the downloads show without scrolling at 1920x940", bottom <= 940 - 24, bottom)
+        page.set_viewport_size({"width": 1920, "height": 1080})
+        page.wait_for_timeout(700)
         r.check("every focus ring stands out (3:1), light", all(c >= 3 for _, c in rings(page)), rings(page))
 
         page.goto("about:blank")
@@ -243,6 +276,21 @@ def run(url: str) -> Report:
                 phone.evaluate("document.documentElement.scrollWidth <= innerWidth"),
             )
             ctx.close()
+
+        ctx = browser.new_context(viewport={"width": 844, "height": 390}, is_mobile=True, has_touch=True)
+        low = ctx.new_page()
+        low_errors: list[str] = []
+        low.on("pageerror", lambda e: low_errors.append(str(e)))
+        low.goto(url)
+        low.wait_for_timeout(SETTLE_MS)
+        s = low.evaluate(STATE)
+        width = low.evaluate("document.querySelector('.talk:not([aria-hidden]) .cover').getBoundingClientRect().width")
+        r.check(
+            "a landscape phone (844x390) shows a talk",
+            width > 100 and s["shown"] == 1 and not low_errors,
+            [width, s, low_errors],
+        )
+        ctx.close()
 
         ctx = browser.new_context(viewport={"width": 1920, "height": 1080}, reduced_motion="reduce")
         still = ctx.new_page()

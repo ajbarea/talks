@@ -29,9 +29,8 @@ NOT_TALKS = {"vendor", "shared", "scripts", "tests"}
 MARK = ".talks-site"
 #: A talk folder's notes (README.md) and scripts stay in the repository.
 SKIP = shutil.ignore_patterns("*.py", "__pycache__", "*.md", "talk.json")
-#: The links a talk may name, in the order the index shows them, with their short labels and what
-#: assistive technology reads after the label.
-LINKS = {"code": ("Code", " on GitHub"), "docs": ("Docs", ""), "video": ("Video", "")}
+#: The links a talk may name, in the order the index shows them, with their labels.
+LINKS = {"code": "Code on GitHub", "docs": "Docs site", "video": "Video"}
 
 
 def is_moved(d: pathlib.Path) -> bool:
@@ -162,18 +161,16 @@ def item(
         for ext, label in (DOWNLOADS.items() if sizes else ())
     ]
     chips += [
-        f'<li><a class="chip" href="{html.escape(url)}">{icon(kind)}{LINKS[kind][0]}'
-        + (f'<span class="sr-only">{LINKS[kind][1]}</span>' if LINKS[kind][1] else "")
-        + "</a></li>"
+        f'<li><a class="chip" href="{html.escape(url)}">{icon(kind)}{LINKS[kind]}</a></li>'
         for kind, url in named.items()
     ]
-    more = f'\n          <ul class="chips">{"".join(chips)}</ul>' if chips else ""
+    more = f'<ul class="chips">{"".join(chips)}</ul>' if chips else ""
     return f"""      <div class="talk" id="talk-{name}" data-name="{name}">
         {picture}
         <div class="about">
-          <h2 id="title-{name}"><a href="{name}/">{t}</a></h2>
+          <h2><a href="{name}/">{t}</a></h2>
           <p class="description">{d}</p>
-          <a class="open" href="{name}/">Open the deck{icon("open", 18)}</a>{more}
+          <div class="actions"><a class="open" href="{name}/">Open the deck{icon("open", 18)}</a>{more}</div>
         </div>
       </div>"""
 

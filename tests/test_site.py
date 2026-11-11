@@ -327,12 +327,12 @@ def test_every_talk_offers_its_deck_downloads_and_links_once(site, repo: Path, t
     assert list(talks) == ["alpha-talk", "beta-talk"]
     for name, talk in talks.items():
         assert talk.count(f'<a class="open" href="{name}/">Open the deck') == 1
-        assert f'<h2 id="title-{name}"><a href="{name}/">' in talk
+        assert f'<h2><a href="{name}/">' in talk
         for ext, label in (("pptx", "PowerPoint"), ("pdf", "PDF")):
             assert f'href="{name}/{name}.{ext}" download>' in talk and f"Download </span>{label} " in talk
     alpha = talks["alpha-talk"]
     assert alpha.index("github.com/a/b") < alpha.index("youtu.be/x")
-    assert 'Code<span class="sr-only"> on GitHub</span>' in alpha and ">Video</a>" in alpha
+    assert ">Code on GitHub</a>" in alpha and ">Video</a>" in alpha
     assert "github.com" not in talks["beta-talk"]
 
 

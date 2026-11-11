@@ -10,7 +10,7 @@ Hi, I'm AJ Barea, a PhD student at RIT. This is Federated Agents: coding agents 
 
 ## 2. I built two checked datasets of real code-review lessons
 
-Here's what I did. I built an open-source tool that turns public code review into checked lessons. Each lesson is three things: a reviewer's comment, the code it was about, and the code the developer wrote next. With it I built two datasets: {readings.corpus_examples_openstack} lessons from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia, and the same tool builds Qt's data and GitHub's for a replication. Here's why you should care. If you write code on a team, your reviewers keep repeating rules that AI assistants rarely see. Lessons like these could teach them, and my study tests whether an assistant learns them without your code leaving. Let me start with one of those rules.
+Here's what I did. I built an open-source tool that turns public code review into checked lessons. Each lesson is three things: a reviewer's comment, the code it was about, and the code the developer wrote next. With it I built two datasets: {readings.corpus_examples_openstack} lessons from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia, and the same tool builds Qt's data and GitHub's for a replication. Here's why you should care. If you write code on a team, your reviewers keep repeating rules that AI assistants rarely see. Lessons like these could teach them, and my study first tests whether an assistant can learn them at all. Let me start with one of those rules.
 
 ## 3. AI coding assistants miss a company's unwritten house style
 
@@ -28,7 +28,7 @@ This work sits where four research fields meet. Learning together, apart: many o
 
 My idea: every company runs the same frozen, open-weight base model with two small add-ons. The blue one is shared: only each company's changes to it go to a server that averages them, so code never travels. The orange one is private and never leaves. Before training, the company lists which repositories may feed the shared add-on; the rest teach only the private one, and anyone can audit the list.
 
-## 7. Other designs let the method pick what is shared; none I found tests whose it is
+## 7. Other designs let the method pick what's shared; none I found tests its source
 
 The grey dots are published designs. Across the bottom: who decides what is shared, from training itself to a fixed rule or a filter. Up the side: whether anyone tested the shared part. Most never did, and none I found asked whose it is. Mine, in blue and orange, lets the company decide before training, and tests which company the shared part came from.
 
@@ -48,19 +48,19 @@ Here's what the tool sets aside on OpenStack. Most review comments go; the bigge
 
 ## 11. The test is built so it can't fool me
 
-I made sure the test can't fool me. The main test must win twice: on the whole fix, and on the fix without its names, so a team's names alone cannot pass it. Each dot on the left is one way of dividing the data; any one can mislead, so the test averages many. I planted a fake house rule in half the training lessons: {if readings.planted_all}the test found it in every run.{/if}{unless readings.planted_all}it was missed in some runs, so the test waits until that is fixed.{/unless} And in simulations, it finds a real effect of the smallest size that matters almost every time.
+I made sure the test can't fool me. The main test must win twice: on the whole fix, and on the fix without its names, so a team's names alone cannot pass it. Each dot on the left is one way of dividing the data; any one can mislead, so the test averages many. On the development months, I planted a fake house rule in half the training lessons: {if readings.planted_all}the test found it in every run.{/if}{unless readings.planted_all}it was missed in some runs, so the test waits until that is fixed.{/unless} And in simulations, it finds a real effect of the smallest size that matters almost every time.
 
 ## 12. The datasets are stage one; federated coding agents are the goal
 
-The datasets are stage one, and I'm still collecting and checking data. By November 20th the plan goes to MSR 2027, the Mining Software Repositories conference, as a registered report: reviewers judge the method before any result exists, so publication rests on the method, not the answer. If they accept it in February, I open the sealed test and the full paper goes to the journal Empirical Software Engineering before September 30th; then I build the two add-ons and try to break them, toward federated coding agents.
+The datasets are stage one, and I'm still collecting and checking data. By November 20th the plan goes to MSR 2027, the Mining Software Repositories conference, as a registered report: reviewers judge the method before any test result exists, so publication rests on the method, not the answer. If they accept it in February, I open the sealed test and the full paper goes to the journal Empirical Software Engineering before September 30th; then I build the two add-ons and try to break them, toward federated coding agents.
 
 ## 13. Three communities decide the answer, and GitHub checks it elsewhere
 
-OpenStack, Wikimedia and Qt decide the answer, and each must pass; Qt said yes in writing. Beside them, Qt's C++ is compared with Google projects' C++: Chromium is the registered comparison, and Fuchsia is exploratory. GitHub, where review is often optional, is a separate replication: Apache and .NET qualify, LLVM and Grafana don't. Membership is fixed by November 20th, before any test result exists.
+OpenStack, Wikimedia and Qt decide the answer, and each must pass; Qt said yes in writing. Second, Qt's C++ is compared with Google projects' C++: Chromium is the registered comparison, and Fuchsia is exploratory. GitHub, where review is often optional, is a separate replication: Apache and .NET qualify, LLVM and Grafana don't. Membership is fixed by November 20th, before any test result exists.
 
 ## 14. Before agents share a team's habits, test that there are habits to learn
 
-Before agents share a team's habits, I first test that there are habits to learn. I built two datasets of real review lessons, {readings.corpus_examples_openstack} from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia. Tuned on them, an assistant gets about {readings.tuned_exact_gain} more fixes in 100 exactly right. And the score found a planted house rule in {readings.planted_found} of {readings.planted_runs} splits, across all three communities. Two problems stay open. Whether style transfers on the sealed months: a community's own assistant against its sibling's everywhere, and Qt against Chromium. And whether the shared add-on gives away which company it came from. That's my talk.
+Before agents share a team's habits, I first test that there are habits to learn. I built two datasets of real review lessons, {readings.corpus_examples_openstack} from OpenStack and {readings.corpus_examples_wikimedia} from Wikimedia. On the development months, an assistant tuned on them gets about {readings.tuned_exact_gain} more fixes in 100 exactly right, and the score found a planted house rule in {readings.planted_found} of {readings.planted_runs} splits, across all three communities. Two problems stay open. Whether style transfers on the sealed months: a community's own assistant against its sibling's everywhere, and Qt against Chromium. And whether the shared add-on gives away which company it came from. That's my talk.
 
 <!-- Open problems: sphragis README "Where it stands" (the confirmatory contrast has not been run; dev readings size the design) and the FAQ on leakage (a measurement, not yet run on the shared add-on). -->
 

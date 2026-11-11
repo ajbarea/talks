@@ -194,7 +194,12 @@
       go(Math.round(at + fling));
       // Snapping comes back once the glide has landed on its talk, so it never jumps mid-glide.
       // A release that lands exactly on a talk scrolls nowhere, so no scrollend comes: settle here too.
-      const land = () => { clearTimeout(late); strip.classList.remove("dragging"); settle(true); };
+      const land = () => {
+        clearTimeout(late);
+        strip.removeEventListener("scrollend", land); // a glide that scrolled nowhere never used it up
+        strip.classList.remove("dragging");
+        settle(true);
+      };
       const late = setTimeout(land, 900);
       strip.addEventListener("scrollend", land, { once: true });
     };
@@ -208,8 +213,9 @@
   let lastWheel = 0, lastStep = 0, lastAbs = 0;
   strip.addEventListener("wheel", (e) => {
     if (e.ctrlKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY) || e.target.closest(".about")) return;
-    const row = slides[Math.max(0, current)].querySelector(".cover").getBoundingClientRect();
-    if (e.clientY < row.top || e.clientY > row.bottom) return;
+    const cover = slides[Math.max(0, current)].querySelector(".cover"); // its box before the turn
+    const top = strip.getBoundingClientRect().top + cover.offsetTop;
+    if (e.clientY < top || e.clientY > top + cover.offsetHeight) return;
     const d = Math.sign(e.deltaY);
     const to = (target ?? current) + d;
     if (to < 0 || to >= n) return;

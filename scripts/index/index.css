@@ -52,7 +52,7 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
 .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.375rem; padding: 0; margin: 0; }
 .chip { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 32px; padding: 0.2rem 0.65rem;
-  border: 1px solid color-mix(in oklab, var(--muted), var(--paper) 45%); border-radius: 4px; color: var(--ink); font-size: 0.875rem; font-weight: 650;
+  border: 1px solid color-mix(in oklab, var(--muted), var(--paper) 35%); border-radius: 4px; color: var(--ink); font-size: 0.875rem; font-weight: 650;
   line-height: 1.2; text-decoration: none; white-space: nowrap; }
 .chip svg { color: var(--muted); flex: none; }
 .chip:hover { background: var(--band); border-color: var(--muted); }
@@ -97,8 +97,12 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   --band-h: calc(var(--top) + var(--h) + var(--refl) + var(--floor) + var(--fade));
   --about: min(58rem, calc(100vw - 2.5rem));
 }
+@media (max-width: 1399px) {
+  /* The header stacks here and stands taller, so the cover gives up the height. */
+  .flow { --w: max(12rem, min(48rem, 40vw, calc((100svh - 34.5rem) * 1.43))); }
+}
 @media (max-width: 760px) {
-  .flow { --w: max(12rem, min(76vw, 26rem)); --slot: calc(var(--w) * 0.26); --push: 44%; --top: 1.5rem;
+  .flow { --w: max(12rem, min(76vw, 26rem, calc((100svh - 12rem) * 1.2))); --slot: calc(var(--w) * 0.26); --push: 44%; --top: 1.5rem;
     --refl: calc(var(--h) * 0.34); --floor: 3rem; --fade: 1.5rem; }
   .flow .talk { scroll-snap-stop: always; }
 }
@@ -154,21 +158,21 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   animation-range: cover calc(50% - var(--slot)) cover calc(50% + var(--slot)); }
 .flow .about .actions, .flow .about .chips { justify-content: center; }
 @keyframes flow-z { 0%, 100% { z-index: 0; } 50% { z-index: 1000; } }
-/* A cover holds its side pose for the outer part of a step and swings flat across the middle, so the turn snaps
-   without two half-turned covers meeting in a seam or the center standing empty. */
+/* A cover holds its side pose at the very end of a step and swings flat across the rest, so at mid-step the two
+   covers stand a little apart: no seam where half-turned covers meet, and no empty center. */
 @keyframes flow-tilt {
   0% { transform: perspective(var(--depth)) translateX(var(--push)) rotateY(var(--tilt)) scale(var(--side)); }
-  20% { transform: perspective(var(--depth)) translateX(calc(var(--push) * 0.95)) rotateY(var(--tilt)) scale(var(--side)); }
+  8% { transform: perspective(var(--depth)) translateX(calc(var(--push) * 0.98)) rotateY(var(--tilt)) scale(var(--side)); }
   50% { transform: perspective(var(--depth)) translateX(0) rotateY(0deg) scale(1); }
-  80% { transform: perspective(var(--depth)) translateX(calc(var(--push) * -0.95)) rotateY(calc(-1 * var(--tilt))) scale(var(--side)); }
+  92% { transform: perspective(var(--depth)) translateX(calc(var(--push) * -0.98)) rotateY(calc(-1 * var(--tilt))) scale(var(--side)); }
   100% { transform: perspective(var(--depth)) translateX(calc(-1 * var(--push))) rotateY(calc(-1 * var(--tilt))) scale(var(--side)); }
 }
 @keyframes flow-shade {
-  0%, 20% { opacity: 1; transform: none; }
+  0%, 8% { opacity: 1; transform: none; }
   49.9% { transform: none; }
   50% { opacity: 0; }
   50.1% { transform: scaleX(-1); }
-  80%, 100% { opacity: 1; transform: scaleX(-1); }
+  92%, 100% { opacity: 1; transform: scaleX(-1); }
 }
 /* The text under the stage cross-fades and drifts a little with the glide. */
 @keyframes flow-about {
@@ -187,6 +191,7 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
 .flow .step.next { right: max(0.5rem, calc(50% - var(--w) / 2 - 58px)); }
 .flow .step:hover { background: rgb(36 56 76 / 0.85); border-color: rgb(241 244 246 / 0.55); }
 .flow .step[aria-disabled="true"] { opacity: 0.35; cursor: default; }
+.flow .step[hidden], .flow .dots[hidden] { display: none; }
 .flow .step:focus-visible, .flow .dots button:focus-visible { outline-color: var(--night-ink); }
 /* The dots sit on the floor; a gold pill slides to the centered talk's dot (the script sets --at). */
 .flow .dots { position: absolute; z-index: 1001; left: 50%; top: calc(var(--band-h) - var(--fade) - 2.4rem);

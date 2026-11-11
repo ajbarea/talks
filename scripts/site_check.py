@@ -47,7 +47,10 @@ RING = """() => {
   const el = document.activeElement;
   if (el === document.body) return null;  // Tab has wrapped past the last control
   const st = getComputedStyle(el);
-  const rgb = (c) => (c.match(/[\\d.]+/g) || []).slice(0, 3).map(Number);
+  // Any CSS colour (rgb(), oklab(), color-mix results) as sRGB bytes, read back through a canvas.
+  const ctx = Object.assign(document.createElement('canvas'), {width: 1, height: 1}).getContext('2d');
+  const rgb = (c) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = c; ctx.fillRect(0, 0, 1, 1);
+    return [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3); };
   const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
     return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
   const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
@@ -55,6 +58,19 @@ RING = """() => {
   const behind = band ? [21, 32, 43] : rgb(getComputedStyle(document.body).backgroundColor);
   const name = el.className || el.textContent.trim().slice(0, 20);
   return [name, st.outlineStyle === 'none' ? 0 : Math.round(ratio(rgb(st.outlineColor), behind) * 10) / 10];
+}"""
+#: Each visible chip's border colour against the page, as a contrast ratio.
+CHIP_BORDER = """() => {
+  // Any CSS colour (rgb(), oklab(), color-mix results) as sRGB bytes, read back through a canvas.
+  const ctx = Object.assign(document.createElement('canvas'), {width: 1, height: 1}).getContext('2d');
+  const rgb = (c) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = c; ctx.fillRect(0, 0, 1, 1);
+    return [...ctx.getImageData(0, 0, 1, 1).data].slice(0, 3); };
+  const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+    return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+  const page = rgb(getComputedStyle(document.body).backgroundColor);
+  return [...document.querySelectorAll('.talk:not([aria-hidden]) .chip')].map((c) => {
+    const [x, y] = [lum(rgb(getComputedStyle(c).borderTopColor)), lum(page)].sort((p, q) => q - p);
+    return Math.round(((x + 0.05) / (y + 0.05)) * 100) / 100; });
 }"""
 #: Long enough for a smooth glide to land and the strip to report it has settled.
 SETTLE_MS = 1400
@@ -222,6 +238,30 @@ def run(url: str) -> Report:
             "a drag that ends exactly on a talk settles on it", s["c"] == before + 1 and s["inert"][s["c"]] is False, s
         )
 
+        # A drag past the last talk scrolls nowhere on release; the next drag must still move the strip.
+        page.set_viewport_size({"width": 1920, "height": 1080})
+        page.wait_for_timeout(700)
+        page.keyboard.press("End")
+        page.wait_for_timeout(SETTLE_MS)
+
+        def drag(dx: float) -> None:
+            page.mouse.move(960, 400)
+            page.mouse.down()
+            for k in range(1, 11):
+                page.mouse.move(960 + dx * k / 10, 400)
+                page.wait_for_timeout(16)
+            page.wait_for_timeout(300)  # a still release: no fling, so a drag past the end glides nowhere
+            page.mouse.up()
+            page.wait_for_timeout(SETTLE_MS)
+
+        drag(-300)
+        drag(260)
+        r.check(
+            "a drag after a drag past the end still glides",
+            page.evaluate(STATE)["c"] <= s["n"] - 2,
+            page.evaluate(STATE),
+        )
+
         # On a 1080p monitor the browser leaves about 940 px: the centered talk's actions stay above the fold.
         page.set_viewport_size({"width": 1920, "height": 940})
         page.wait_for_timeout(700)
@@ -229,8 +269,17 @@ def run(url: str) -> Report:
             "document.querySelector('.talk:not([aria-hidden]) .actions').getBoundingClientRect().bottom"
         )
         r.check("Open the deck and the downloads show without scrolling at 1920x940", bottom <= 940 - 24, bottom)
+        for w, h in ((1366, 768), (1280, 720)):
+            page.set_viewport_size({"width": w, "height": h})
+            page.wait_for_timeout(700)
+            bottom = page.evaluate(
+                "document.querySelector('.talk:not([aria-hidden]) .actions').getBoundingClientRect().bottom"
+            )
+            r.check(f"the actions show without scrolling at {w}x{h}", bottom <= h - 16, bottom)
         page.set_viewport_size({"width": 1920, "height": 1080})
         page.wait_for_timeout(700)
+        borders = page.evaluate(CHIP_BORDER)
+        r.check("each chip's border reaches 3:1 against the page (light)", min(borders) >= 3, borders)
         r.check("every focus ring stands out (3:1), light", all(c >= 3 for _, c in rings(page)), rings(page))
 
         page.goto("about:blank")
@@ -250,6 +299,8 @@ def run(url: str) -> Report:
         dark.wait_for_timeout(SETTLE_MS)
         r.check("axe, 1920, dark", not (v := axe(dark)), v)
         r.check("every focus ring stands out (3:1), dark", all(c >= 3 for _, c in rings(dark)), rings(dark))
+        borders = dark.evaluate(CHIP_BORDER)
+        r.check("each chip's border reaches 3:1 against the page (dark)", min(borders) >= 3, borders)
         ctx.close()
 
         for scheme in ("light", "dark"):

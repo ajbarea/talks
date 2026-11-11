@@ -263,12 +263,14 @@ def run(url: str) -> Report:
         )
 
         # The centered talk's actions stay on the first screen, for every talk: on a 1080p monitor's browser
-        # (about 940 px), on short laptops, and Open the deck on a phone.
+        # (about 940 px), on short laptops and a landscape tablet, and Open the deck on a phone with its browser
+        # toolbars collapsed (390x844; with them shown, it sits one short scroll down, as the PR says).
         names = page.evaluate("[...document.querySelectorAll('.talk')].map((t) => t.dataset.name)")
         for w, h, what in (
             (1920, 940, ".actions"),
             (1366, 768, ".actions"),
             (1280, 720, ".actions"),
+            (1024, 768, ".actions"),
             (390, 844, ".open"),
         ):
             page.set_viewport_size({"width": w, "height": h})

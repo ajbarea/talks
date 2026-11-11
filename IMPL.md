@@ -1,22 +1,23 @@
-# IMPL: the talks landing page as a cover flow, 2026-11-10
+# IMPL: the talks landing page as a cover flow, 2026-11-11
 
-Branch feat/coverflow, issue #101. Only the index page changes (`scripts/site.py`, `scripts/index/`); no deck is touched.
+Branch feat/coverflow, issue #101, PR #102 (assigned ajbarea). Only the index page changes (`scripts/site.py`, `scripts/index/`, the loop count in `scripts/exports.py`); no deck is touched. Do NOT merge: AJ approves the look first.
 
 ## Slice
-The deck picker becomes a cover flow: the centered talk large, neighbours turned in 3D with reflections on a dark stage; arrow keys, swipe, trackpad, wheel, mouse drag and a click on a side cover glide; the centered talk plays its loop; its title, description, one "Open the deck" and a row of small labelled downloads and links sit below. No script: the old cards.
+The deck picker is a cover flow: centered talk large, neighbours turned in 3D with reflections on a dark stage that fades into the page; keys, swipe, trackpad, wheel over the covers, mouse drag and clicks glide; the centered talk plays its loop once; title, description, one "Open the deck" and small labelled chips below. No script: the old cards.
 
 ## Done
-- ✅ Native scroll-snap strip; each talk's tilt, shade and caption crossfade are CSS view-timeline animations (transform and opacity only), Baseline since Firefox 159; the script only settles the centered talk (scrollend + debounce), keys, wheel, drag, click, loop swap, APG roles, inert, live region, focus kept.
-- ✅ Light and dark from the page's tokens; reduced motion = flat covers, instant glides, no loop; a class fallback for browsers without view timelines.
-- ✅ `scripts/site_check.py` + `make site-check` (in `make check` and CI): roles, keys, focus, Tab, targets, reduced motion, no-script, axe at 1920 and phone in both themes.
-- ✅ Markup tests in `tests/test_site.py`, each guard mutant-checked.
+- ✅ Scroll-snap strip + CSS view timelines (transform/opacity only); script settles on scrollend, APG carousel roles, inert, one polite announcement, focus carried to the new talk.
+- ✅ Four review rounds (a11y, perf, UX, verify x3); every Blocking and Should-fix fixed or kept by a documented choice in the PR body; Copilot's two points declined with reasons.
+- ✅ `make site-check` (in `make check` and CI): 40+ checks incl. axe in both themes, fold for every talk, resize, drags, focus rings, chip borders; new checks mutation-proven.
+- ✅ Frame timing: p95 16.7 ms at 1920 and on a 4x phone; 44rem cover cap and flat shade chosen by measurement.
+- ✅ Shots in fleet-briefing/shots/2026-11-11/talks-coverflow-*.
 
 ## Next
-- 📋 Measure, shots, Opus reviews (accessibility, performance, UX), Copilot review, PR; AJ approves the look before merge.
+- 📋 Round-5 read (ceiling) result; then AJ judges the look on #102; merge only on his yes.
 
 ## Verify
-- `make site SLIDES=...` with `_exports/` present, then `make site-check SLIDES=...` (under the heavy lock), `make lint`, `uv run pytest -q tests/test_site.py`.
-- Serve `_site` and look at 1920 and 390 in both themes; glide with keys, wheel and drag.
+- With `_exports/` present: `make site`, `flock -o /tmp/fleet-heavy.lock make site-check SLIDES=...`, `make lint`, `uv run pytest -q tests/test_site.py`.
+- Frame timing: the rAF + trace script from the PR's Measurements section (headless Chromium, 1920 and 390x844 at 4x CPU).
 
 ## Next (not started)
 - Custom thumbnails for Tier 1 uploads that still show an auto frame (upload-package.md recipe).

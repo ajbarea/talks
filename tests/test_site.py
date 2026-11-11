@@ -371,6 +371,7 @@ def test_the_script_wires_the_carousel_pattern() -> None:
         '"aria-hidden", "true"',
         "aria-disabled",
         "scrollend",
+        '.hint")?.setAttribute("hidden"',
     ):
         assert wiring in js, wiring
 
@@ -413,5 +414,7 @@ def test_the_preview_loop_plays_once_and_briefly() -> None:
     """It starts on its own on the centered talk, so it must end within 5 s (WCAG 2.2.2) and not repeat."""
     exports = (ROOT / "scripts" / "exports.py").read_text()
     assert "loop=1," in exports
+    fps = int(re.search(r"^LOOP_FPS = (\d+)$", exports, re.M).group(1))
     seconds = float(re.search(r"^LOOP_SECONDS = ([\d.]+)$", exports, re.M).group(1))
-    assert seconds < 5
+    assert "range(round(LOOP_FPS * LOOP_SECONDS) + 1)" in exports
+    assert (round(fps * seconds) + 1) / fps < 5  # the frames written, at their rate

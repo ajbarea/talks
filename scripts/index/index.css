@@ -107,13 +107,6 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   /* The header stacks here and stands taller, so the cover gives up the height. */
   .flow { --chrome: 34.5rem; }
 }
-@media (min-width: 1100px) and (max-height: 820px) {
-  /* A short laptop screen: a tighter header gives the cover the room. */
-  .flow { --chrome: 27.5rem; }
-  .flow main { padding-top: 1.25rem; }
-  .flow header { margin-bottom: 1rem; }
-  .flow header h1 { font-size: 3rem; }
-}
 @media (max-width: 760px) {
   .flow { --w: max(12rem, min(76vw, 26rem, calc((100svh - 30rem) * 1.78))); --slot: calc(var(--w) * 0.26); --push: 44%; --top: 1.5rem;
     --refl: calc(var(--h) * 0.34); --floor: 3rem; --fade: 1.5rem; }
@@ -126,6 +119,20 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   .flow header { display: grid; grid-template-columns: auto minmax(0, 44rem); justify-content: start; column-gap: 4rem;
     align-items: end; }
   .flow header h1 { margin: 0; grid-row: span 2; }
+}
+@media (min-width: 1100px) and (max-height: 820px) {
+  /* A short laptop screen: a tighter header gives the cover the room. */
+  .flow { --chrome: 25.25rem; }
+  .flow main { padding-top: 1.25rem; }
+  .flow header { margin-bottom: 1rem; }
+  .flow header h1 { font-size: 3rem; }
+}
+@media (min-width: 761px) and (max-width: 1099px) and (max-height: 820px) {
+  /* A tablet on its side: the stacked header tightens the same way. */
+  .flow { --chrome: 31rem; }
+  .flow main { padding-top: 1.25rem; }
+  .flow header { margin-bottom: 1rem; }
+  .flow header h1 { font-size: 2.6rem; margin-bottom: 0.5rem; }
 }
 .flow .stage { position: relative; }
 .flow .covers { display: flex; gap: 0; max-width: none; margin: 0; padding: 0 calc(50% - var(--slot) / 2) 0.5rem;
@@ -260,7 +267,7 @@ h2 a:hover { text-decoration: underline; text-decoration-thickness: 2px; text-un
   .flow .dots { top: calc(var(--top) + var(--h) + var(--refl) + (var(--floor) - 24px) / 2); }
 }
 @media (max-height: 480px) {
-  /* A phone on its side: the header steps back so a talk and its actions fit. */
+  /* A phone on its side: the header steps back so the cover and its title fit on the first screen. */
   .flow main { padding-top: 0.75rem; }
   .flow header { margin-bottom: 0.5rem; }
   .flow header h1 { font-size: 1.8rem; margin: 0; }

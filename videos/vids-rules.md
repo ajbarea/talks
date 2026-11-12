@@ -5,12 +5,12 @@ Every script in `videos/` follows these rules. They come from the [YouTube direc
 
 ## Why the rules exist
 
-Vids makes each clip with Gemini Omni from that clip's prompt alone, and an Omni clip is 10 seconds at most ([Opus Clip's Gemini Omni guide](https://www.opus.pro/blog/how-to-use-gemini-omni-beginners-guide); AJ's sessions agree). Whatever a prompt leaves out, Vids makes up, and the made-up parts read as AI slop. Anything inside double quotes is spoken aloud.
+Vids makes each clip with Gemini Omni from that clip's prompt alone, and an Omni clip is 15 seconds at most since [Gemini Omni 1.2 Flash, Nov 5 2026](https://the-decoder.com/googles-gemini-omni-1-2-flash-stretches-ai-video-clips-to-15-seconds-and-cuts-pricing-by-30-percent/) (10 seconds before, [Opus Clip's Gemini Omni guide](https://www.opus.pro/blog/how-to-use-gemini-omni-beginners-guide); AJ's sessions agree). Whatever a prompt leaves out, Vids makes up, and the made-up parts read as AI slop. Anything inside double quotes is spoken aloud.
 
 ## The rules
 
-1. **One segment is one clip, 10 seconds or less.** Aim for 8 to 10. Head each one `### Segment N (m:ss – m:ss): Title`; a Short's segments are `S1`, `S2`, and so on.
-2. **The spoken line fits its clip, with a second to spare.** At about 150 words a minute, a 10-second clip holds 22 words once a second is left for pauses and the cut. The lint times every line at that rate and counts a number by its digits ('2025' takes two words' time).
+1. **One segment is one clip, 15 seconds or less.** Aim for 12 to 15. Head each one `### Segment N (m:ss – m:ss): Title`; a Short's segments are `S1`, `S2`, and so on.
+2. **The spoken line fits its clip, with a second to spare.** At about 150 words a minute, a 15-second clip holds 35 words once a second is left for pauses and the cut. The lint times every line at that rate and counts a number by its digits ('2025' takes two words' time).
 3. **Every segment states five fields, in full:**
    - `Environment & Lighting`: the set, the light, the camera and the framing (16:9 or 9:16).
    - `Avatar (Wardrobe & Physicality)`: the outfit, the posture and each gesture with its time ('At 0:14, points to the chart').

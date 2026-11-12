@@ -34,8 +34,8 @@ Researched 2026-10-31. Google help pages carry no date unless noted. "Doc" means
 | Help me create (draft from prompt) | Blank Vid, then File > Storyboard. Type `@` to attach a Doc, Slides or PDF. Outputs outline, scenes, media, script, voiceover. Works only on a **new, unedited, unnamed** file | [Plan with AI](https://support.google.com/docs/answer/15067819?hl=en) |
 | Docs, PDF or Word to video | Summary video with script and narration. Plans include Google AI Plus, Pro, Ultra. Menu path unconfirmed | [2026-09-02 post](https://workspaceupdates.googleblog.com/2026/09/turn-google-docs-pdfs-and-word-files-into-video-summaries-in-Google-Vids.html) |
 | Slides to video | Paste slides into the timeline: each slide becomes a scene and its speaker notes become the script. Themes, animations and videos do not carry over | [Best practices](https://support.google.com/a/users/answer/15599399?hl=en) |
-| AI video clips (Gemini Omni; earlier posts say Veo) | 3 to 10 s per clip, 16:9 or 9:16, 720p or 1080p, 24 fps. Up to 7 reference images plus an avatar. Extend works only on clips from **this session**. Edit changes only the last 10 s of an upload. History clears when the tab closes, so Insert first | [Omni clips](https://support.google.com/docs/answer/16143507?hl=en) |
-| Omni 1.1 Flash | Exact duration control, 1080p generation or upscale, better extension | [2026-09-23 post](https://workspaceupdates.googleblog.com/2026/09/gemini-omni-11-flash-now-in-vids-with-improved-extension-quality-1080p-and-duration-control.html) |
+| AI video clips (Gemini Omni; earlier posts say Veo) | 3 to 15 s per clip (Omni 1.2 Flash, Nov 5 2026; 10 s before), 16:9 or 9:16, 720p or 1080p, 24 fps. Up to 7 reference images plus an avatar. Extend works only on clips from **this session**. Edit changes only the last 10 s of an upload. History clears when the tab closes, so Insert first | [Omni clips](https://support.google.com/docs/answer/16143507?hl=en) |
+| Omni 1.1 Flash | Exact duration control, 1080p generation or upscale, better extension. Omni generates natively at 720p; 1080p is an upscale, so draft and retake at 720p and upscale only the final clips before export (whether 1080p costs more quota is unconfirmed: check the Vids usage meter) | [2026-09-23 post](https://workspaceupdates.googleblog.com/2026/09/gemini-omni-11-flash-now-in-vids-with-improved-extension-quality-1080p-and-duration-control.html) |
 | Preset and custom avatars | Up to 60 s per avatar video. Audio tags (type `[`) set pace and emotion. "Avatar outdated" badge after a script edit | [AI avatars](https://support.google.com/docs/answer/16334946?hl=en) |
 | AI voiceover | Right rail Voiceover > Current scene or All scenes. Script max 2,500 characters, plain text, 23 languages | [Voiceovers](https://support.google.com/docs/answer/15070345?hl=en) |
 | Image generation | Nano Banana Pro, 30 a month on Workspace and AI Pro | [Usage limits](https://knowledge.workspace.google.com/ai/usage-limits-gemini?hl=en) |
@@ -100,7 +100,7 @@ Google's pages disagree. Treat the counter in the product as the truth.
 | Add scene | A "+" or new-scene control by the scene strip | **Inferred** |
 | Stock media | Sidebar Stock > search > click item | Doc ([Stock media](https://support.google.com/docs/answer/15001094?hl=en)) |
 | Upload own media | Start-menu Upload is doc. The in-project upload control is **inferred** | Mixed |
-| AI clip | Right rail AI video > Create > orientation, 3 to 10 s > Generate > **Insert** | Doc ([Omni clips](https://support.google.com/docs/answer/16143507?hl=en)) |
+| AI clip | Right rail AI video > Create > orientation, 3 to 15 s > Generate > **Insert** | Doc ([Omni clips](https://support.google.com/docs/answer/16143507?hl=en)) |
 | Personal avatar clip | AI Video > Create > Avatar > pick it > prompt > Generate | Doc ([Personal avatar](https://support.google.com/docs/answer/16970930?hl=en)) |
 | Voiceover | Right rail Voiceover > scope > script > Insert voiceover | Doc ([Voiceovers](https://support.google.com/docs/answer/15070345?hl=en)) |
 | Download MP4 | File > Download as MP4 ([Best practices](https://support.google.com/a/users/answer/15599399?hl=en)). Get started says File > Make a copy > MP4, likely a doc error. Look for "Download" | Doc, conflicting |
@@ -112,7 +112,7 @@ Google's pages disagree. Treat the counter in the product as the truth.
 
 ## 6. Pitfalls from the repo
 
-- "an Omni clip is 10 seconds at most... Whatever a prompt leaves out, Vids makes up... Anything inside double quotes is spoken aloud." (`vids-rules.md:8`; Google confirms 3 to 10 s)
+- "an Omni clip is 15 seconds at most... Whatever a prompt leaves out, Vids makes up... Anything inside double quotes is spoken aloud." (`vids-rules.md:8`; Google confirms 3 to 10 s)
 - Music generates "30 seconds at a time" (`vids-rules.md:35`).
 - Check that enough generations are left for every segment plus retakes (`vids-rules.md:47`).
 - "One narrator for the whole video." When the avatar quota runs out, record your own voice, which uses no AI quota (`youtube-director/references/production-notes.md:8-9`).

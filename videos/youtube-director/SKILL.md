@@ -7,7 +7,7 @@ description: Write, storyboard, script or optimize a YouTube video of any length
 
 Origin: AJ's YouTube director skill draft of October 18, 2026, kept in his private ideas repository; moved here with this header, the note below, the examples (now in [references/examples.md](references/examples.md)), and Phase 6's upload package and live check, added after the earthquake video of October 29, 2026.
 
-In this repository every Mode A script also follows [../vids-rules.md](../vids-rules.md) (one clip is 10 seconds at most; the lint `videos/check_script.py` checks it), and where a talk deck exists, the narration comes from the deck's speaker notes (`graphe:slides`). The disclosure rule in [../README.md](../README.md) overrides the constraint below about keeping the pipeline invisible: every video says an AI avatar of AJ narrates it.
+In this repository every Mode A script also follows [../vids-rules.md](../vids-rules.md) (one clip is 15 seconds at most; the lint `videos/check_script.py` checks it), and where a talk deck exists, the narration comes from the deck's speaker notes (`graphe:slides`). The disclosure rule in [../README.md](../README.md) overrides the constraint below about keeping the pipeline invisible: every video says an AI avatar of AJ narrates it.
 
 **Production modes:**
 

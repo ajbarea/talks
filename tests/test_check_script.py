@@ -104,8 +104,8 @@ def test_a_pointer_to_another_segment_is_flagged(pointer: str) -> None:
     assert any("say it in full" in p for p in problems(text))
 
 
-@pytest.mark.parametrize("span, ok", [("0:00 – 0:10", True), ("0:00 – 0:11", False), ("1:05 - 1:05", False)])
-def test_a_clip_runs_one_to_ten_seconds(span: str, ok: bool) -> None:
+@pytest.mark.parametrize("span, ok", [("0:00 – 0:15", True), ("0:00 – 0:16", False), ("1:05 - 1:05", False)])
+def test_a_clip_runs_one_to_fifteen_seconds(span: str, ok: bool) -> None:
     text = GOOD.replace("0:00 – 0:10", span)
     assert (not any("segment runs" in p for p in problems(text))) is ok
 
@@ -118,6 +118,14 @@ def test_a_heading_without_a_span_is_flagged() -> None:
 def test_a_spoken_line_must_leave_a_second_spare(words: int, ok: bool) -> None:
     line = " ".join(["word"] * words)
     text = GOOD.replace("Say you give your agent fifty rules. It breaks one. Here's why.", line)
+    assert (not any("spoken line needs" in p for p in problems(text))) is ok
+
+
+@pytest.mark.parametrize("words, ok", [(35, True), (36, False)])
+def test_a_fifteen_second_clip_holds_thirty_five_words(words: int, ok: bool) -> None:
+    line = " ".join(["word"] * words)
+    text = GOOD.replace("Say you give your agent fifty rules. It breaks one. Here's why.", line)
+    text = text.replace("0:00 – 0:10", "0:00 – 0:15")
     assert (not any("spoken line needs" in p for p in problems(text))) is ok
 
 

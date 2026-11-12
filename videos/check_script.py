@@ -11,8 +11,8 @@ import sys
 from dataclasses import dataclass, field
 
 HERE = pathlib.Path(__file__).resolve().parent
-#: A Gemini Omni clip in Vids runs at most 10 seconds.
-MAX_SECONDS = 10
+#: A Gemini Omni clip in Vids runs at most 15 seconds (Omni 1.2 Flash, 2026-11-05; 10 before).
+MAX_SECONDS = 15
 #: US conversational rate, about 150 words a minute; a spoken line is timed at it.
 WORDS_PER_MINUTE = 150
 #: Room a spoken line leaves in its clip for directed pauses and the cut.

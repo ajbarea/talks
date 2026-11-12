@@ -1114,6 +1114,8 @@
         // One Tab stop per experiment; the arrow keys move between its dots (a roving tabindex).
         const lines = [];
         grid.addEventListener("keydown", (ev) => {
+          // Alt+Left and Cmd+Left are the browser's Back.
+          if (ev.ctrlKey || ev.metaKey || ev.altKey) return;
           const at = lines.flatMap((l, y) => l.map((b, x) => [b, x, y])).find(([b]) => b === ev.target);
           if (!at) return;
           let [, x, y] = at;
@@ -1188,6 +1190,8 @@
   });
   // Arrow keys move between tabs (WAI-ARIA tabs pattern, automatic activation).
   tablist.addEventListener("keydown", (e) => {
+    // Alt+Left and Cmd+Left are the browser's Back.
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     const i = TABS.findIndex(([t]) => t === state.tab);
     let j = null;
     if (e.key === "ArrowRight") j = (i + 1) % TABS.length;

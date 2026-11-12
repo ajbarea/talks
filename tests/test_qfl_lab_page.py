@@ -195,3 +195,29 @@ def test_the_many_draw_jobs_cancel_resume_and_rerun() -> None:
     assert got["failure"] == {**full, "terminated": True, "inWorker": False}
     assert got["thread"] == {**full, "inWorker": False}
     assert got["shouldRun"] == [False, True, True]
+
+
+def _bodies(src: str, start: str) -> list[str]:
+    """The brace-balanced body after each match of `start` (a handler's opening)."""
+    out = []
+    for m in re.finditer(start, src):
+        i = src.index("{", m.end() - 1)
+        depth = 0
+        for j in range(i, len(src)):
+            depth += {"{": 1, "}": -1}.get(src[j], 0)
+            if depth == 0:
+                out.append(src[i : j + 1])
+                break
+    return out
+
+
+def test_every_key_handler_leaves_browser_shortcuts_alone() -> None:
+    # A handler that takes a key (preventDefault) must leave Ctrl, Meta and Alt keys to the
+    # browser (Alt+Left and Cmd+Left are Back, Ctrl+P prints), or say how it treats them.
+    src = (LAB / "app.js").read_text()
+    starts = [r'addEventListener\("keydown", \(\w+\) => \{', r"function onKey\(\w+\) \{"]
+    bodies = [b for st in starts for b in _bodies(src, st)]
+    taking = [b for b in bodies if "preventDefault" in b]
+    assert len(taking) == 4  # the player, the runs grid, the tabs bar, the embed's forwarder
+    for b in taking:
+        assert all(k in b for k in ("ctrlKey", "metaKey", "altKey")), b[:120]

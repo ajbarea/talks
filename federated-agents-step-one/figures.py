@@ -15,6 +15,9 @@ SPHRAGIS points at a sphragis checkout; the default is a sibling of this reposit
 from __future__ import annotations
 
 import argparse
+import datetime as dt
+import difflib
+import hashlib
 import importlib.util
 import json
 import math
@@ -26,6 +29,8 @@ HERE = pathlib.Path(__file__).resolve().parent
 SPHRAGIS = pathlib.Path(os.environ.get("SPHRAGIS") or HERE.parents[1] / "sphragis")
 RESULTS = SPHRAGIS / "datasets" / "results"
 READINGS = HERE / "data" / "readings.js"
+#: The corpus itself is not in git; CI reuses the committed example (see `example`).
+CORPUS = pathlib.Path(os.environ.get("SPHRAGIS_CORPUS") or SPHRAGIS / "datasets" / "gerrit")
 
 #: The Gerrit organizations of the confirmatory design, in the order the slides name them.
 ORGS = {"openstack": "OpenStack", "wikimedia": "Wikimedia", "qt": "Qt"}
@@ -170,6 +175,151 @@ def planted(values: dict, fa) -> None:
     values["planted_found"] = every.count("pass")
 
 
+#: The one corpus example the "what Sphragis builds" slide shows: an OpenStack train-window hunk
+#: that the human checker and both model raters labeled valid. Only its code is read; the
+#: protocol publishes no review text, so its comments never leave the corpus.
+EXAMPLE = (
+    "openstack:I7584e060b9fe3a1d81f98be624eab6176b92354b:"
+    "controllerconfig/controllerconfig/upgrade-scripts/200-cis-benchmark-support.sh:1:8"
+)
+#: SHA-256 of the example's [before, after, created day, project], so a run without the corpus
+#: (CI) still checks the committed code against the corpus row it was drawn from.
+EXAMPLE_DIGEST = "4c05d828aaa808d310fde1dd7f0ed7f2ef124a5484a2ada56ccacb8bf5ca9a3a"
+#: Windows an example on a slide may come from: frozen and public, never the sealed test window.
+SHOWABLE = ("train", "dev")
+AUDIT = "label-audit-v2.json"
+AUDIT_RATERS = ("human", "A", "B")
+#: The report quotes the label audit on OpenStack's items alone (sphragis research log,
+#: 2026-10-15): the pooled figure rested partly on Qt records fetched before Qt's permission.
+AUDIT_ORG = "openstack"
+AUDIT_BY_ORG = f"label-audit-v2-{AUDIT_ORG}.json"
+
+
+def marked(old: str, new: str) -> tuple[list, list]:
+    """Each side as [text, changed] runs, so the slide can mark what the fix changed."""
+    a: list = []
+    b: list = []
+
+    def add(runs: list, text: str, changed: bool) -> None:
+        if runs and runs[-1][1] == changed:
+            runs[-1][0] += text
+        elif text:
+            runs.append([text, changed])
+
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, old, new, autojunk=False).get_opcodes():
+        add(a, old[i1:i2], tag != "equal")
+        add(b, new[j1:j2], tag != "equal")
+    return a, b
+
+
+def committed_figure() -> dict:
+    """DECK_FIGURE as committed, for the example when the corpus is not on this machine."""
+    if not READINGS.is_file():
+        return {}
+    _, _, tail = READINGS.read_text().partition("window.DECK_FIGURE = ")
+    return json.loads(tail.rstrip().removesuffix(";")) if tail else {}
+
+
+def addresses() -> object:
+    """sphragis's own test for a third-party email address, which its release redaction uses."""
+    path = SPHRAGIS / "sphragis" / "corpus" / "redact.py"
+    spec = importlib.util.spec_from_file_location("sphragis_redact", path)
+    if spec is None or spec.loader is None or not path.is_file():
+        raise SystemExit(f"missing {path}; the example's address check comes from sphragis")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.third_party_addresses
+
+
+def example_digest(before: str, after: str, day: str, project: str) -> str:
+    return hashlib.sha256(json.dumps([before, after, day, project]).encode()).hexdigest()
+
+
+def example(values: dict, figure: dict, fa) -> None:
+    """The slide's example: its code before and after review, where and when it was written, and
+    its audit labels, which must all be valid since the slide says so. Only its code fields are
+    read; its review comments never leave the corpus."""
+    labels = load(AUDIT)["labels"].get(EXAMPLE)
+    if not labels or any(labels.get(r, {}).get("label") != "valid" for r in AUDIT_RATERS):
+        raise SystemExit(f"{EXAMPLE} is not labeled valid by {', '.join(AUDIT_RATERS)}")
+    org = EXAMPLE.split(":", 1)[0]
+    found = None
+    for path in sorted((CORPUS / org / "examples").glob("*.jsonl")):
+        with path.open() as rows:
+            for line in rows:
+                if EXAMPLE in line:
+                    row = json.loads(line)
+                    if row["id"] == EXAMPLE:
+                        found = row
+                        break
+        if found:
+            break
+    if found is None:
+        committed = committed_figure().get("example")
+        if not committed or committed.get("id") != EXAMPLE:
+            raise SystemExit(f"no corpus at {CORPUS} and no committed copy of {EXAMPLE}")
+        missing = [k for k in ("before", "after", "day", "project") if k not in committed]
+        if missing:
+            raise SystemExit(f"the committed copy of {EXAMPLE} lacks {', '.join(missing)}; run with the corpus")
+        print(f"no corpus at {CORPUS}; the example's code is the committed copy", file=sys.stderr)
+        # Rebuilt from the committed text, so the digest covers everything the slide shows.
+        row = {
+            "before": "".join(text for text, _ in committed["before"]),
+            "after": "".join(text for text, _ in committed["after"]),
+            "created": committed["day"],
+            "project": committed["project"],
+        }
+    else:
+        row = found
+    day = row["created"][:10]
+    window = next((w for w, (start, end) in fa.windows().items() if start <= day < end), None)
+    before, after = marked(row["before"], row["after"])
+    drawn = {
+        "id": EXAMPLE,
+        "window": window,
+        "day": day,
+        "month": f"{dt.date.fromisoformat(day):%b %Y}",
+        "project": row["project"],
+        "before": before,
+        "after": after,
+    }
+    if window not in SHOWABLE:
+        raise SystemExit(f"{EXAMPLE} falls in the {window} window, not in {SHOWABLE}")
+    if example_digest(row["before"], row["after"], day, row["project"]) != EXAMPLE_DIGEST:
+        raise SystemExit(f"{EXAMPLE}: the example's code or date no longer matches EXAMPLE_DIGEST")
+    found_addresses = addresses()("\n".join((row["before"], row["after"])))
+    if found_addresses:
+        raise SystemExit(f"{EXAMPLE}: its code holds {len(found_addresses)} email address(es)")
+    figure["example"] = drawn
+    values["example_org"] = ORGS[org]
+    values["example_project"] = drawn["project"]
+    values["example_month"] = drawn["month"]
+    values["example_window"] = {"train": "training", "dev": "development"}[drawn["window"]]
+
+
+def label_audit(values: dict) -> None:
+    """How many of AUDIT_ORG's examples a person checked each reader called valid.
+
+    The raters' counts are read on the human's items from the labels; the human's count must
+    equal the per-organization report's own figure, which the paper quotes.
+    """
+    audit = load(AUDIT)
+    if "valid" not in audit["rubric"]:
+        raise SystemExit(f"{AUDIT}: no 'valid' label in the rubric {audit['rubric']}")
+    checked = [v for k, v in audit["labels"].items() if k.startswith(f"{AUDIT_ORG}:") and "human" in v]
+    counts = {r: sum(v[r]["label"] == "valid" for v in checked) for r in AUDIT_RATERS}
+    human = load(AUDIT_BY_ORG)["valid_shares"]["human"]
+    if (human["n"], human["valid"]) != (len(checked), counts["human"]):
+        raise SystemExit(
+            f"{AUDIT_BY_ORG}: the human's {human['valid']} valid of {human['n']} differs from "
+            f"{counts['human']} of {len(checked)} read from {AUDIT}"
+        )
+    values["audit_org"] = ORGS[AUDIT_ORG]
+    values["audit_checked"] = len(checked)
+    for rater, n in counts.items():
+        values[f"audit_valid_{rater.lower()}"] = n
+
+
 def readings() -> tuple[dict, dict]:
     fa = federated_agents()
     values: dict = {}
@@ -180,6 +330,8 @@ def readings() -> tuple[dict, dict]:
     sizing(values)
     split_example(values, figure)
     planted(values, fa)
+    example(values, figure, fa)
+    label_audit(values)
     return values, figure
 
 

@@ -54,7 +54,7 @@ The toy is the easy end: one input against many gradient entries, so the noise m
 
 Next, batches. If the client averages its gradient over several examples, the attacker has to solve for all of them at once: more unknowns, but the same number of effective parameters, the angles whose gradient can be nonzero.
 
-Up to {rq3.leakMax} unknowns per effective parameter, every circuit leaked on at least {rq3.fewestBelow} of {paper.seeds} seeds. From {rq3.heldMin} up, none did. And these weren't stuck searches: the attacker always found a different batch that fit the gradient just as well. With more unknowns than equations, many batches are expected to fit the same gradient, and the attack found one that fit as well every time.
+Up to {rq3.leakMax} unknowns per effective parameter, every circuit leaked on at least {rq3.fewestBelow} of {paper.seeds} seeds. From {rq3.heldMin} up, none did. And these weren't stuck searches: the attacker always found a different batch that fit the gradient just as well. With more unknowns than equations, many batches are expected to fit the same gradient.
 
 ## Hiding the label helped a little; training the circuit made no detectable net change
 

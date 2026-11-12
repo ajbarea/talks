@@ -17,6 +17,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import difflib
+import hashlib
 import importlib.util
 import json
 import math
@@ -181,6 +182,9 @@ EXAMPLE = (
     "openstack:I7584e060b9fe3a1d81f98be624eab6176b92354b:"
     "controllerconfig/controllerconfig/upgrade-scripts/200-cis-benchmark-support.sh:1:8"
 )
+#: SHA-256 of the example's [before, after, created day, project], so a run without the corpus
+#: (CI) still checks the committed code against the corpus row it was drawn from.
+EXAMPLE_DIGEST = "4c05d828aaa808d310fde1dd7f0ed7f2ef124a5484a2ada56ccacb8bf5ca9a3a"
 #: Windows an example on a slide may come from: frozen and public, never the sealed test window.
 SHOWABLE = ("train", "dev")
 AUDIT = "label-audit-v2.json"
@@ -212,9 +216,25 @@ def committed_figure() -> dict:
     return json.loads(tail.rstrip().removesuffix(";")) if tail else {}
 
 
+def addresses() -> object:
+    """sphragis's own test for a third-party email address, which its release redaction uses."""
+    path = SPHRAGIS / "sphragis" / "corpus" / "redact.py"
+    spec = importlib.util.spec_from_file_location("sphragis_redact", path)
+    if spec is None or spec.loader is None or not path.is_file():
+        raise SystemExit(f"missing {path}; the example's address check comes from sphragis")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.third_party_addresses
+
+
+def example_digest(before: str, after: str, day: str, project: str) -> str:
+    return hashlib.sha256(json.dumps([before, after, day, project]).encode()).hexdigest()
+
+
 def example(values: dict, figure: dict, fa) -> None:
     """The slide's example: its code before and after review, where and when it was written, and
-    its audit labels, which must all be valid since the slide says so."""
+    its audit labels, which must all be valid since the slide says so. Only its code fields are
+    read; its review comments never leave the corpus."""
     labels = load(AUDIT)["labels"].get(EXAMPLE)
     if not labels or any(labels.get(r, {}).get("label") != "valid" for r in AUDIT_RATERS):
         raise SystemExit(f"{EXAMPLE} is not labeled valid by {', '.join(AUDIT_RATERS)}")
@@ -235,22 +255,28 @@ def example(values: dict, figure: dict, fa) -> None:
         if not drawn or drawn.get("id") != EXAMPLE:
             raise SystemExit(f"no corpus at {CORPUS} and no committed copy of {EXAMPLE}")
         print(f"no corpus at {CORPUS}; the example's code is the committed copy", file=sys.stderr)
-        figure["example"] = drawn
     else:
         day = found["created"][:10]
         window = next((w for w, (start, end) in fa.windows().items() if start <= day < end), None)
-        if window not in SHOWABLE:
-            raise SystemExit(f"{EXAMPLE} falls in the {window} window, not in {SHOWABLE}")
         before, after = marked(found["before"], found["after"])
-        figure["example"] = {
+        drawn = {
             "id": EXAMPLE,
             "window": window,
+            "day": day,
             "month": f"{dt.date.fromisoformat(day):%b %Y}",
             "project": found["project"],
             "before": before,
             "after": after,
         }
-    drawn = figure["example"]
+    if drawn.get("window") not in SHOWABLE:
+        raise SystemExit(f"{EXAMPLE} falls in the {drawn.get('window')} window, not in {SHOWABLE}")
+    code = ["".join(text for text, _ in drawn[side]) for side in ("before", "after")]
+    if example_digest(*code, drawn["day"], drawn["project"]) != EXAMPLE_DIGEST:
+        raise SystemExit(f"{EXAMPLE}: the example's code or date no longer matches EXAMPLE_DIGEST")
+    found_addresses = addresses()("\n".join(code))
+    if found_addresses:
+        raise SystemExit(f"{EXAMPLE}: its code holds {len(found_addresses)} email address(es)")
+    figure["example"] = drawn
     values["example_org"] = ORGS[org]
     values["example_project"] = drawn["project"]
     values["example_month"] = drawn["month"]

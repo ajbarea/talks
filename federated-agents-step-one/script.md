@@ -23,7 +23,7 @@ Here's what I did. I built Sphragis, which turned public code review from {readi
 
 ## 5. Sphragis pairs reviewed code with the developer's next version, so no label is guessed
 
-Here's one real example, from OpenStack. A reviewer commented on this line, and I leave the comment off, since the study publishes no review text. The developer's next version put quotes around the dollar zero. That next version is the label, so nothing is guessed. To check the labels, I read {readings.audit_checked} examples by hand and called {readings.audit_valid_human} valid, meaning the change does what the comment asked. Two model raters called {readings.audit_valid_a} and {readings.audit_valid_b}, so the share of good labels holds up under a human reading.
+One real example, from OpenStack. A reviewer commented on this line, and I leave the comment off, since the study publishes no review text. The developer's next version put quotes around the dollar zero. That next version is the label, so nothing is guessed. To check the labels, I read {readings.audit_checked} examples by hand and called {readings.audit_valid_human} valid, meaning the change does what the comment asked. Two model raters called {readings.audit_valid_a} and {readings.audit_valid_b}, so the share of good labels matches a human reading, though not item by item.
 
 ## 6. In federated terms, the first question is who the client should be
 

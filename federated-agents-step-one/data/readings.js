@@ -61,6 +61,7 @@ window.DECK_FIGURE = {
   "example": {
     "id": "openstack:I7584e060b9fe3a1d81f98be624eab6176b92354b:controllerconfig/controllerconfig/upgrade-scripts/200-cis-benchmark-support.sh:1:8",
     "window": "train",
+    "day": "2025-03-14",
     "month": "Mar 2025",
     "project": "starlingx/config",
     "before": [

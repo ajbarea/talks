@@ -300,20 +300,30 @@ def example(values: dict, figure: dict, fa) -> None:
 def label_audit(values: dict) -> None:
     """How many of AUDIT_ORG's examples a person checked each reader called valid.
 
-    The raters' counts are read on the human's items from the labels; the human's count must
-    equal the per-organization report's own figure, which the paper quotes.
+    Counts are read on the human's items from the labels, and each must equal the
+    per-organization report the paper quotes: the human's valid share, and each model rater's
+    valid column in its valid-against-the-rest table with the human (rows human, columns rater).
     """
     audit = load(AUDIT)
     if "valid" not in audit["rubric"]:
         raise SystemExit(f"{AUDIT}: no 'valid' label in the rubric {audit['rubric']}")
     checked = [v for k, v in audit["labels"].items() if k.startswith(f"{AUDIT_ORG}:") and "human" in v]
+    missing = sorted({r for v in checked for r in AUDIT_RATERS if r not in v})
+    if missing:
+        raise SystemExit(f"{AUDIT}: a checked {AUDIT_ORG} item lacks a label from {', '.join(missing)}")
     counts = {r: sum(v[r]["label"] == "valid" for v in checked) for r in AUDIT_RATERS}
-    human = load(AUDIT_BY_ORG)["valid_shares"]["human"]
-    if (human["n"], human["valid"]) != (len(checked), counts["human"]):
-        raise SystemExit(
-            f"{AUDIT_BY_ORG}: the human's {human['valid']} valid of {human['n']} differs from "
-            f"{counts['human']} of {len(checked)} read from {AUDIT}"
-        )
+    report = load(AUDIT_BY_ORG)
+    human = report["valid_shares"]["human"]
+    expected = {"human": (human["n"], human["valid"])}
+    for rater in AUDIT_RATERS[1:]:
+        table = report["pairs"][f"human~{rater} valid_vs_rest"]
+        expected[rater] = (table["items"], sum(row["True"] for row in table["confusion"].values()))
+    for rater, (n, valid) in expected.items():
+        if (n, valid) != (len(checked), counts[rater]):
+            raise SystemExit(
+                f"{AUDIT_BY_ORG}: {rater}'s {valid} valid of {n} differs from "
+                f"{counts[rater]} of {len(checked)} read from {AUDIT}"
+            )
     values["audit_org"] = ORGS[AUDIT_ORG]
     values["audit_checked"] = len(checked)
     for rater, n in counts.items():

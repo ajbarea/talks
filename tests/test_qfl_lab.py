@@ -339,3 +339,15 @@ def test_a_changed_macro_is_caught(tmp_path: pathlib.Path, macro: str) -> None:
     )
     assert run.returncode != 0
     assert macro in (run.stderr + run.stdout), run.stderr + run.stdout
+
+
+@needs_node
+def test_the_lab_pages_toy_note_matches_the_simulator() -> None:
+    got = js(
+        "console.log(JSON.stringify([1, 2, 4, 8].map((r) => { let n = 0;"
+        " for (let s = 1; s <= 200; s++) n += Q.attack(Q.client(s, r, 8 / r, 0), 10).outcome === 'recovered';"
+        " return n; })))"
+    )
+    note = (TALK / "lab" / "index.html").read_text()
+    m = re.search(r"\((\d+) to (\d+) of 200 at every repetition count\)", note)
+    assert m and (int(m.group(1)), int(m.group(2))) == (min(got), max(got))

@@ -154,8 +154,9 @@ PDF and in a downloaded copy, the slide shows the paper's figure and a link to t
 | Restarts | Restarts; 8 × 1, exact | Stuck with 1 restart, recovered from 2 on | Inputs recovered, of 20, with 1, 2, 5, 10, 20 restarts: 9, 15, 19, 20, 20 |
 | Shots | Shots; 2 × 4, 10 restarts | Recovered from exact down to 1,000 shots (0.035 rad); close at 100 (0.054) and 10 (0.162) | Within 0.2 rad, of 20, at 10, 100, 1,000 shots and exact: 15, 19, 20, 20 |
 
-Controls: click, or Tab into the panel and use the arrow keys, which never turn the slide while a
-control has them. After a click the next clicker press turns the slide again.
+Controls: click, or Tab into the panel. The scrubber, the step buttons, the number box and the
+shots list keep the arrow keys; elsewhere in the panel, and after a click on a button or the
+scrubber, the clicker's keys turn the slide. Page Down and Page Up always turn it.
 
 ## If the live panel misbehaves
 

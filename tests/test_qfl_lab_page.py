@@ -10,6 +10,10 @@ from __future__ import annotations
 import json
 import pathlib
 import re
+import shutil
+import subprocess
+
+import pytest
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 TALK = ROOT / "qfl-privacy"
@@ -63,7 +67,7 @@ def test_the_restarts_rows_match_the_deck() -> None:
     by = {}
     for r in rows(exp="budget"):
         by.setdefault(f"{r['reps']}×{r['layers']}", []).append(r)
-    small = {k: sum(x["best10"] == "recovered" for x in v) for k, v in by.items()}
+    small = {k: sum(x["bestSmall"] == "recovered" for x in v) for k, v in by.items()}
     large = {k: sum(x["best"] == "recovered" for x in v) for k, v in by.items()}
     hardest = DECK["budget"]["hardest"]
     assert DECK["paper"]["seeds"] - large[hardest] == DECK["budget"]["hardestHeld"]
@@ -125,16 +129,31 @@ def test_each_lab_slide_frames_a_real_tab_and_keeps_the_paper_figure() -> None:
     assert "lab.js" not in re.findall(r'<script src="([^"]+)"', deck)
 
 
+@pytest.mark.skipif(shutil.which("node") is None, reason="needs node")
 def test_only_the_decks_own_frames_steer_it() -> None:
-    src = (TALK / "lab-embed.js").read_text()
-    assert "x.contentWindow === e.source" in src
-    assert 'd.source !== "qfl-lab"' in src
-    assert "Object.hasOwn(KEYS, d.key)" in src
+    out = subprocess.run(
+        ["node", str(ROOT / "tests" / "qfl_embed_harness.js"), str(TALK / "lab-embed.js")],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    got = json.loads(out.stdout)
+    # Wrong origin, a stranger window, another tag, a prototype key and an absurd height do nothing.
+    assert got == {"calls": ["next"], "tooTall": "", "height": "513px"}
+
+
+def test_the_embed_reuses_the_decks_phone_tests() -> None:
+    deck = (ROOT / "shared" / "deck.js").read_text()
+    embed = (TALK / "lab-embed.js").read_text()
+    for query in re.findall(r'matchMedia\("([^"]+)"\)', embed):
+        assert f'matchMedia("{query}")' in deck
 
 
 def test_each_still_link_opens_its_own_slides_tab() -> None:
     deck = (TALK / "index.html").read_text()
-    still = r'data-lab-src="lab/index\.html#([^"]+)".*?<p class="lab-link">.*?href="lab/index\.html#([^"]+)"'
+    # The still shows in the exported PDF too, so its link is the live address, not a file path.
+    live = re.escape("https://ajbarea.github.io/talks/qfl-privacy/lab/#")
+    still = rf'data-lab-src="lab/index\.html#([^"]+)".*?<p class="lab-link">.*?href="{live}([^"]+)"'
     pairs = re.findall(still, deck, re.S)
     assert len(pairs) == 3
     for frame, link in pairs:

@@ -11,7 +11,7 @@
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const TH = { recovered: RUNS.thresholds.recovered, close: RUNS.thresholds.close };
   const BLOCKS = Q.TOY.blocks;
-  const REPS = [1, 2, 4, 8];
+  const REPS = Q.TOY.steps.reps.reps;
   const SHOTS = [10, 100, 1000, 10000, 100000, 1000000, 0];
   const NS = [20, 100, 200];
   const TABS = [
@@ -88,6 +88,8 @@
   // Controls replace the history entry; a new tab adds one, so Back returns to the last tab.
   function commit(push) {
     const h = hashOf(state);
+    // "Open the full lab" carries the panel's current state.
+    for (const a of document.querySelectorAll("a.open-full")) a.href = `index.html${hashOf({ ...state, embed: 0 })}`;
     if (h === location.hash) return;
     if (push) history.pushState(null, "", h);
     else history.replaceState(null, "", h);
@@ -229,7 +231,10 @@
   function makeScope(box, opts) {
     const panel = el("div", { class: `panel${opts.split ? " split" : ""}` }, box);
     const head = el("div", { class: "panel-head" }, panel);
-    const title = el("h3", {}, head, opts.title || "");
+    const title = el("h3", {}, head);
+    // In a slide, beside the paper's figure, the panel says it is the toy.
+    if (embed) el("span", { class: "toy-tag" }, title, "Toy");
+    title.append(opts.title || "");
     const sub = el("span", { class: "sub" }, head);
     const body = el("div", { class: "p-body" }, panel);
     // One grid: the plot beside the sphere, the readouts under them; a narrow screen puts the
@@ -260,7 +265,7 @@
     let tm = null;
     let pts = [];
     let shape = null;
-    let lastLanded = -1;
+    let lastLanded = null;
     const half = SPAN / 2;
     const X = (v) => PAD.l + ((((v % Q.TAU) + Q.TAU) % Q.TAU) / Q.TAU) * SPAN;
     const wrapped = (a, b) => Math.abs(a[0] - b[0]) > half;
@@ -309,6 +314,12 @@
         full: a.runs.map(() => sv("path", { d: "" }, plot.paths)),
         segs: a.runs.map(() => Array.from({ length: PACE.trail }, () => sv("line", { "stroke-opacity": 0 }, plot.trails))),
         balls: a.runs.map(() => sv("circle", { r: 0, class: "ball rolling" }, plot.balls)),
+        // Each restart's whole path, drawn once it lands; what each restart showed last frame
+        // (-1 not drawn yet, 0 not started, 1 on screen), and whether its trail has faded out.
+        d: pts.map(fullPath),
+        seen: a.runs.map(() => -1),
+        pathOn: a.runs.map(() => null),
+        faded: a.runs.map(() => false),
       };
       if (tbody) {
         tbody.textContent = "";
@@ -319,7 +330,7 @@
           return { tr, cells: [el("td", {}, tr, "–"), el("td", {}, tr, "–"), el("td", {}, tr, "–"), el("td", { class: "o" }, tr, "waiting")] };
         });
       }
-      lastLanded = -1;
+      lastLanded = null;
     }
 
     // Landing time of restart i, for the transport's tick marks and its step-to-landing keys.
@@ -329,6 +340,7 @@
       if (!A) return;
       const n = A.runs.length;
       let landed = 0;
+      let started = 0;
       let hits = 0;
       const done = t >= tm.T;
       for (let i = 0; i < n; i++) {
@@ -337,11 +349,18 @@
         const ball = shape.balls[i];
         const r = A.runs[i];
         if (local < 0) {
-          ball.setAttribute("r", 0);
-          shape.full[i].setAttribute("d", "");
-          shape.segs[i].forEach((s) => s.setAttribute("stroke-opacity", 0));
+          if (shape.seen[i] !== 0) {
+            shape.seen[i] = 0;
+            shape.pathOn[i] = null;
+            shape.faded[i] = false;
+            ball.setAttribute("r", 0);
+            shape.full[i].setAttribute("d", "");
+            shape.segs[i].forEach((s) => s.setAttribute("stroke-opacity", 0));
+          }
           continue;
         }
+        shape.seen[i] = 1;
+        started += 1;
         const f = Math.min(1, local) * (tr.length - 1);
         const p = at(tr, f);
         const isLanded = local >= 1;
@@ -350,8 +369,14 @@
           if (r.outcome === "recovered") hits += 1;
         }
         set(ball, { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: done && i === A.best ? 9 : 6, class: `ball ${isLanded ? r.outcome : "rolling"}${done && i === A.best ? " best" : ""}` });
-        shape.full[i].setAttribute("d", isLanded ? fullPath(tr) : "");
+        if (shape.pathOn[i] !== isLanded) {
+          shape.pathOn[i] = isLanded;
+          shape.full[i].setAttribute("d", isLanded ? shape.d[i] : "");
+        }
         const fade = reduce ? 0 : local < 1 ? 1 : Math.max(0, 1 - ((local - 1) * PACE.roll) / PACE.fade);
+        // A trail that has faded out stays out until the restart is drawn again from earlier on.
+        if (fade === 0 && shape.faded[i]) continue;
+        shape.faded[i] = fade === 0;
         shape.segs[i].forEach((s, k) => {
           const a = at(tr, Math.max(0, f - k - 1));
           const z = at(tr, Math.max(0, f - k));
@@ -360,7 +385,7 @@
         });
       }
       // The parts that change only when a restart lands are redrawn only then.
-      const key = done ? n + 1 : landed;
+      const key = done ? -1 : landed * (n + 1) + started;
       if (key === lastLanded) return;
       lastLanded = key;
       const list = A.runs.slice(0, landed).map((r) => [r.end, r.outcome]);
@@ -415,6 +440,9 @@
   // One transport drives one or more scopes on one clock. A step is one drawn point of a path
   // (three of the attack's 150 optimiser steps); Shift steps to the next or previous landing.
   const STEP = PACE.roll / 50;
+  // The shown view's transport takes the keys; one listener, so rebuilt views leave none behind.
+  let activeKeys = null;
+  document.addEventListener("keydown", (e) => activeKeys && activeKeys(e));
   function makeTransport(box, scopes, opts = {}) {
     const wrap = el("div", { class: "transport" }, box);
     const keys = el("div", { class: "keys" }, wrap);
@@ -444,23 +472,34 @@
     let last = 0;
     let stepTimer = 0;
     const ticks = () => Math.max(1, Math.round(T / STEP));
+    let lastWhere = "";
+    const secs = (v) => (v / 1000).toFixed(1);
+    const valueText = () => `${secs(t)} of ${secs(T)} seconds; ${where.textContent}`;
     function draw() {
       scopes.forEach((s) => s.seek(t));
       scrub.value = String(Math.round(t / STEP));
-      const lead = scopes[0];
-      const land = lead.landings();
+      const land = scopes[0].landings();
       const landed = land.filter(([at]) => at <= t).length;
       const rolling = land.findIndex(([at]) => at > t && at - PACE.roll <= t);
-      const s = (v) => (v / 1000).toFixed(1);
-      where.innerHTML = "";
-      if (t >= T) el("b", {}, where, "Search finished");
+      let bold = `${landed} of ${land.length} landed`;
+      let rest = "";
+      if (t >= T) bold = "Search finished";
       else if (rolling >= 0) {
         const k = Math.round(((t - (land[rolling][0] - PACE.roll)) / PACE.roll) * 150);
-        el("b", {}, where, `Restart ${rolling + 1} of ${land.length} rolling`);
-        where.append(`, optimiser step ${Math.min(150, Math.max(0, k))} of 150; ${landed} landed`);
-      } else el("b", {}, where, `${landed} of ${land.length} landed`);
-      scrub.setAttribute("aria-valuetext", `${s(t)} of ${s(T)} seconds; ${where.textContent}`);
-      right.firstChild?.nodeType === 3 ? (right.firstChild.textContent = `${s(t)} s of ${s(T)} s `) : right.prepend(`${s(t)} s of ${s(T)} s `);
+        bold = `Restart ${rolling + 1} of ${land.length} rolling`;
+        rest = `, optimiser step ${Math.min(150, Math.max(0, k))} of 150; ${landed} landed`;
+      }
+      if (bold + rest !== lastWhere) {
+        lastWhere = bold + rest;
+        where.textContent = "";
+        el("b", {}, where, bold);
+        if (rest) where.append(rest);
+      }
+      // While it plays, the scrubber is not re-announced every frame.
+      if (!playing) scrub.setAttribute("aria-valuetext", valueText());
+      const clockText = `${secs(t)} s of ${secs(T)} s `;
+      if (right.firstChild?.nodeType === 3) right.firstChild.textContent = clockText;
+      else right.prepend(clockText);
     }
     function setPlaying(on) {
       playing = on;
@@ -468,7 +507,10 @@
       play.setAttribute("aria-label", on ? "Pause" : t >= T ? "Replay" : "Play");
       cancelAnimationFrame(raf);
       clearTimeout(stepTimer);
-      if (!on) return;
+      if (!on) {
+        scrub.setAttribute("aria-valuetext", valueText());
+        return;
+      }
       if (t >= T) t = 0;
       if (reduce) {
         // No motion: each press of play shows the search one landing at a time.
@@ -508,12 +550,15 @@
     back.addEventListener("click", (e) => (e.shiftKey ? stepLanding(-1) : goto(t - STEP)));
     fwd.addEventListener("click", (e) => (e.shiftKey ? stepLanding(1) : goto(t + STEP)));
     scrub.addEventListener("input", () => goto(Number(scrub.value) * STEP));
-    // Keys anywhere in the view: Space plays and pauses, arrows step, Shift+arrows jump to the
-    // next landing, Home and End go to the ends. Keys typed into a control keep their own meaning.
+    // Keys anywhere in the view, or with nothing focused: Space plays and pauses, arrows step,
+    // Shift+arrows jump to the next landing, Home and End go to the ends. Keys typed into a
+    // control, and Space on a button, link or disclosure, keep their own meaning.
     const view = opts.keyScope || box;
-    view.addEventListener("keydown", (e) => {
+    function onKey(e) {
+      if (e.defaultPrevented || !(e.target === document.body || view.contains(e.target))) return;
       const tag = e.target.tagName;
       if (e.target !== scrub && (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA")) return;
+      if (e.key === " " && (tag === "SUMMARY" || tag === "A")) return;
       if (e.key === " " && tag !== "BUTTON") {
         e.preventDefault();
         setPlaying(!playing);
@@ -528,7 +573,7 @@
           goto(e.key === "Home" ? 0 : T);
         }
       }
-    });
+    }
     return {
       // Load new attacks into the scopes and start from the beginning: motion starts by itself
       // only when asked (autoplay) and never under reduced motion, which shows the end.
@@ -541,11 +586,13 @@
           i.style.left = `${(100 * at) / T}%`;
         }
         t = autoplay && !reduce ? 0 : T;
+        activeKeys = onKey;
         draw();
         setPlaying(Boolean(autoplay && !reduce));
       },
       stop() {
         setPlaying(false);
+        if (activeKeys === onKey) activeKeys = null;
       },
       get playing() {
         return playing;
@@ -560,13 +607,21 @@
   let worker = null;
   let workerOk = location.protocol !== "file:";
   let jobId = 0;
+  // One job runs at a time, for whichever view started it last; starting another cancels it.
+  let cancelCurrent = null;
+  // If the Worker fails mid-job, the job carries on here from the next hidden input.
+  let onWorkerError = null;
   function startWorker() {
     if (!workerOk || worker) return worker;
     try {
       worker = new Worker("worker.js");
-      worker.addEventListener("error", () => {
+      worker.addEventListener("error", (e) => {
+        e.preventDefault();
         workerOk = false;
         worker = null;
+        const resume = onWorkerError;
+        onWorkerError = null;
+        if (resume) resume();
       });
     } catch {
       workerOk = false;
@@ -574,48 +629,71 @@
     }
     return worker;
   }
+  // Returns the job's cancel function; isCurrent(cancel) says whether that job is still running.
   function tallyRun(step, n, onScore, onDone) {
+    if (cancelCurrent) cancelCurrent();
     const id = ++jobId;
+    let seed = 1;
+    let raf = 0;
+    let handler = null;
     const w = startWorker();
+    const cancel = () => {
+      cancelAnimationFrame(raf);
+      if (handler && w) w.removeEventListener("message", handler);
+      handler = null;
+      if (onWorkerError === onThread) onWorkerError = null;
+      if (cancelCurrent === cancel) cancelCurrent = null;
+    };
+    const finish = () => {
+      cancel();
+      onDone();
+    };
+    function onThread() {
+      if (handler && w) w.removeEventListener("message", handler);
+      handler = null;
+      let jobs = seed <= n ? Q.tallyJobs(step, seed) : [];
+      const tick = () => {
+        if (id !== jobId) return;
+        const until = performance.now() + 8;
+        while (seed <= n && performance.now() < until) {
+          const j = jobs.find((x) => x.runs.length < x.n);
+          if (j) {
+            Q.addRestart(j.c, j.runs, undefined, TH);
+            continue;
+          }
+          onScore(seed, Q.tallyScore(step, jobs, TH));
+          seed += 1;
+          if (seed <= n) jobs = Q.tallyJobs(step, seed);
+        }
+        if (seed > n) finish();
+        else raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }
+    cancelCurrent = cancel;
     if (w) {
-      const handler = (e) => {
+      handler = (e) => {
         if (e.data.id !== id) return;
-        if (e.data.done) {
-          w.removeEventListener("message", handler);
-          onDone();
-        } else onScore(e.data.seed, e.data.scores);
+        if (e.data.done) finish();
+        else {
+          onScore(e.data.seed, e.data.scores);
+          seed = e.data.seed + 1;
+        }
       };
       w.addEventListener("message", handler);
+      onWorkerError = onThread;
       w.postMessage({ id, step, from: 1, to: n, th: TH });
-      return () => w.removeEventListener("message", handler);
-    }
-    let seed = 1;
-    let jobs = Q.tallyJobs(step, seed);
-    let raf = 0;
-    const tick = () => {
-      if (id !== jobId) return;
-      const until = performance.now() + 8;
-      while (seed <= n && performance.now() < until) {
-        const j = jobs.find((x) => x.runs.length < x.n);
-        if (j) {
-          Q.addRestart(j.c, j.runs, undefined, TH);
-          continue;
-        }
-        onScore(seed, Q.tallyScore(step, jobs, TH));
-        seed += 1;
-        if (seed <= n) jobs = Q.tallyJobs(step, seed);
-      }
-      if (seed > n) onDone();
-      else raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    } else onThread();
+    return cancel;
   }
+  const isCurrent = (cancel) => cancel !== null && cancelCurrent === cancel;
 
   // The rows: one per value of the step's control, one mark per hidden input, a count on the
   // right, laid out like the paper's figure beside them.
+  const TOY_R = Q.TOY.steps.reps.restarts;
+  const SHOT_STEP = Q.TOY.steps.shots;
   const ROWSPEC = {
-    reps: { head: ["r × ℓ", "restarts of 10 that found it, a pie per input"], values: Q.TOY.steps.reps.reps, label: (r) => `${r}×${BLOCKS / r}`, of: (n) => n * 10 },
+    reps: { head: ["r × ℓ", `restarts of ${TOY_R} that found it, a pie per input`], values: Q.TOY.steps.reps.reps, label: (r) => `${r}×${BLOCKS / r}`, of: (n) => n * TOY_R },
     restarts: { head: ["restarts", "inputs recovered by the best restart"], values: Q.TOY.steps.restarts.restarts, label: String, of: (n) => n },
     shots: { head: ["shots", `inputs guessed within ${TH.close} rad`], values: Q.TOY.steps.shots.shots, label: (v) => (v ? v.toLocaleString("en-US") : "exact"), of: (n) => n },
   };
@@ -632,8 +710,10 @@
     let csv = [];
     let n = 0;
     let lastHere = [null, 0];
+    let complete = false;
     function build(count) {
       n = count;
+      complete = false;
       capText.textContent = ` 1 qubit, hidden inputs 1 to ${n}, not picked. ${opts.fixed}.`;
       grid.textContent = "";
       el("span", { class: "hd" }, grid, spec.head[0]);
@@ -664,7 +744,7 @@
             m.classList.remove("pending");
             if (step === "reps") {
               m.dataset.f = "1";
-              m.style.setProperty("--f", String(s / 10));
+              m.style.setProperty("--f", String(s / TOY_R));
             } else m.classList.toggle("hit", Boolean(s));
             row.total += Number(s);
             row.done += 1;
@@ -679,6 +759,7 @@
           grid.setAttribute("aria-label", `The toy over hidden inputs 1 to ${n}, ${spec.head[1]}, of ${spec.of(n)}: ${words}`);
           progress.textContent = `${n} hidden inputs in ${secs} s${worker ? ", in a background thread" : ""}.`;
           stop = null;
+          complete = true;
         },
       );
     }
@@ -693,6 +774,8 @@
     return {
       run,
       here,
+      // Finished, or still running: another view's job cancels this one, and showing it again reruns it.
+      settled: () => complete || isCurrent(stop),
       csv() {
         const header = ["input", ...spec.values.map((v) => `${spec.head[0]} ${spec.label(v)}`)].join(",");
         return [header, ...csv.sort((a, b) => a[0] - b[0]).map((r) => r.join(","))].join("\n");
@@ -758,7 +841,7 @@
       a.remove();
     }, 0);
   }
-  const csvCell = (v) => (v === null || v === undefined ? "" : /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v));
+  const csvCell = (v) => (v === null || v === undefined ? "" : /[",\r\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v));
   const paperCsv = () => [RUNS.columns.join(","), ...RUNS.rows.map((r) => r.map(csvCell).join(","))].join("\n");
 
   // ---- controls --------------------------------------------------------------------------------
@@ -870,12 +953,12 @@
     const lo = makeScope(bench, { title: "1 repetition × 8 blocks", closedTable: true });
     const hi = makeScope(bench, { title: "8 repetitions × 1 block", closedTable: true, onDone: (w) => announce(`8 × 1: ${w}`) });
     const tp = makeTransport(box, [lo, hi], { keyScope: box });
-    const draws = drawsSection(box, "reps", "10 restarts, exact gradients", paperReps);
+    const draws = drawsSection(box, "reps", `${TOY_R} restarts, exact gradients`, paperReps);
     function update(autoplay) {
       picker.sync();
       commit(false);
-      lo.load(attackOf(state.input, 1, 0, 10), `hidden input ${state.input}`);
-      hi.load(attackOf(state.input, 8, 0, 10), `hidden input ${state.input}`);
+      lo.load(attackOf(state.input, 1, 0, TOY_R), `hidden input ${state.input}`);
+      hi.load(attackOf(state.input, BLOCKS, 0, TOY_R), `hidden input ${state.input}`);
       tp.restart(autoplay);
       draws.here(null, state.input);
     }
@@ -886,13 +969,13 @@
   function repsEmbed(box, knobs, picker) {
     segKnob(knobs, "Circuit, r × ℓ", REPS, state.reps, circuit, (v) => ((state.reps = v), update(true)));
     const bench = el("div", { class: "bench" }, box);
-    const scope = makeScope(bench, { title: "The toy circuit, 10 restarts, exact gradients", onDone: announce, noTable: true });
+    const scope = makeScope(bench, { title: `1 qubit, ${TOY_R} restarts, exact gradients`, onDone: announce, noTable: true });
     const tp = makeTransport(box, [scope], { keyScope: box });
-    const draws = drawsSection(box, "reps", "10 restarts, exact gradients", paperReps);
+    const draws = drawsSection(box, "reps", `${TOY_R} restarts, exact gradients`, paperReps);
     function update(autoplay) {
       picker.sync();
       commit(false);
-      scope.load(attackOf(state.input, state.reps, 0, 10), `hidden input ${state.input}; ${circuit(state.reps)}`);
+      scope.load(attackOf(state.input, state.reps, 0, TOY_R), `hidden input ${state.input}; ${circuit(state.reps)}`);
       tp.restart(autoplay);
       draws.here(state.reps, state.input);
     }
@@ -913,7 +996,7 @@
     function update(autoplay) {
       picker.sync();
       commit(false);
-      scope.load(attackOf(state.input, 8, 0, state.restarts), `hidden input ${state.input}; ${state.restarts} restart${state.restarts === 1 ? "" : "s"}`);
+      scope.load(attackOf(state.input, Q.TOY.steps.restarts.reps, 0, state.restarts), `hidden input ${state.input}; ${state.restarts} restart${state.restarts === 1 ? "" : "s"}`);
       tp.restart(autoplay);
       draws.here(Q.TOY.steps.restarts.restarts.includes(state.restarts) ? state.restarts : null, state.input);
     }
@@ -927,13 +1010,13 @@
     const picker = inputPicker(knobs, () => update(true));
     selectKnob(knobs, "Shots per expectation value", SHOTS, state.shots, shotsWord, (v) => ((state.shots = v), update(true)));
     const bench = el("div", { class: "bench" }, box);
-    const scope = makeScope(bench, { title: "2 repetitions × 4 blocks, 10 restarts", onDone: announce, split: !embed, noTable: embed });
+    const scope = makeScope(bench, { title: `${SHOT_STEP.reps} repetitions × ${BLOCKS / SHOT_STEP.reps} blocks, ${SHOT_STEP.restarts} restarts`, onDone: announce, split: !embed, noTable: embed });
     const tp = makeTransport(box, [scope], { keyScope: box });
-    const draws = drawsSection(box, "shots", "2 × 4, 10 restarts", paperShots);
+    const draws = drawsSection(box, "shots", `${circuit(SHOT_STEP.reps)}, ${SHOT_STEP.restarts} restarts`, paperShots);
     function update(autoplay) {
       picker.sync();
       commit(false);
-      scope.load(attackOf(state.input, 2, state.shots, 10), `hidden input ${state.input}; ${shotsWord(state.shots)}`);
+      scope.load(attackOf(state.input, SHOT_STEP.reps, state.shots, SHOT_STEP.restarts), `hidden input ${state.input}; ${shotsWord(state.shots)}`);
       tp.restart(autoplay);
       draws.here(Q.TOY.steps.shots.shots.includes(state.shots) ? state.shots : null, state.input);
     }
@@ -958,41 +1041,49 @@
     const pair = el("div", { class: "pair" }, sec);
     const d = makeDraws(pair, step, { fixed });
     if (!embed) paperFig(pair);
-    let started = false;
     return {
       ensure() {
-        if (started) return;
-        started = true;
-        d.run(embed ? 20 : state.n);
+        if (!d.settled()) d.run(embed ? 20 : state.n);
       },
       here: (v, input) => d.here(v, input),
     };
   }
 
+  // The paper's settings and lines, read from the bundle and picked as figures.py picks them.
+  const PS = RUNS.settings;
+  const plain = (r) => r.shots === 0 && r.batch === 1;
+  const most = (rows, f) => Math.max(...rows.map(f));
   function paperReps(box) {
-    // The figure's lines: 8 qubits and 8 trainable blocks on each, so the parameter count is fixed.
-    const rows = ALL.filter((r) => r.exp === "rq1" && r.qubits === 8 && r.reps * r.layers === BLOCKS);
+    // The figure's line: the most qubits and the most trainable blocks, so the parameter count is
+    // fixed while the repetitions vary.
+    const rq1 = ALL.filter((r) => r.exp === "rq1" && plain(r));
+    const n = most(rq1, (r) => r.qubits);
+    const top = most(rq1, (r) => r.reps * r.layers);
+    const rows = rq1.filter((r) => r.qubits === n && r.reps * r.layers === top);
     const groups = [...bySetting(rows, (r) => `${r.reps}×${r.layers}`)].map(([k, rs]) => ({
       label: k,
       rows: rs,
       count: `${count(rs, (r) => r.best === "recovered")}, hits ${rs.reduce((a, r) => a + lettersHit(r), 0)}`,
       words: `${count(rs, (r) => r.best === "recovered")} of ${rs.length} seeds recovered`,
     }));
-    paperStrips(box, "The paper", " 8 qubits, the same parameter count on each line, 20 seeds, 10 restarts each. Hits: restarts of 200 that found the input.", groups, { countHead: "recovered, hits" });
+    const tries = PS.seeds * PS.restarts;
+    paperStrips(box, "The paper", ` ${n} qubits, the same parameter count on each line, ${PS.seeds} seeds, ${PS.restarts} restarts each. Hits: restarts of ${tries} that found the input.`, groups, { countHead: "recovered, hits" });
   }
   function paperBudget(box) {
-    const rows = ALL.filter((r) => r.exp === "budget");
-    const cls = (r) => (r.best10 === "recovered" ? "recovered" : r.best === "recovered" ? "close" : "");
+    const rows = ALL.filter((r) => r.exp === "budget" && plain(r));
+    const n = most(rows, (r) => r.qubits);
+    const [few, many] = [PS.restarts, PS.budgetRestarts];
+    const cls = (r) => (r.bestSmall === "recovered" ? "recovered" : r.best === "recovered" ? "close" : "");
     const groups = [...bySetting(rows, (r) => `${r.reps}×${r.layers}`)].map(([k, rs]) => ({
       label: k,
       rows: rs,
-      count: `${count(rs, (r) => r.best10 === "recovered")}→${count(rs, (r) => r.best === "recovered")}`,
-      words: `${count(rs, (r) => r.best10 === "recovered")} recovered with 10 restarts, ${count(rs, (r) => r.best === "recovered")} with 50`,
+      count: `${count(rs, (r) => r.bestSmall === "recovered")}→${count(rs, (r) => r.best === "recovered")}`,
+      words: `${count(rs, (r) => r.bestSmall === "recovered")} recovered with ${few} restarts, ${count(rs, (r) => r.best === "recovered")} with ${many}`,
     }));
-    paperStrips(box, "The paper", " the hardest 8-qubit circuits, 20 seeds, rerun with 50 restarts.", groups, {
+    paperStrips(box, "The paper", ` the hardest ${n}-qubit circuits, ${PS.seeds} seeds, rerun with ${many} restarts.`, groups, {
       cls,
-      countHead: "10→50",
-      key: [["recovered", "with 10 restarts"], ["close", "only with 50"], ["", "neither"]],
+      countHead: `${few}→${many}`,
+      key: [["recovered", `with ${few} restarts`], ["close", `only with ${many}`], ["", "neither"]],
     });
   }
   function paperShots(box) {
@@ -1006,7 +1097,7 @@
       const rows = ALL.filter((r) => r.exp === "rq2" && r.shots === s);
       const within = (r) => r.best === "recovered" || r.best === "close";
       const groups = [...bySetting(rows, (r) => `${r.qubits}q ${r.reps}×${r.layers}`)].map(([k, rs]) => ({ label: k, rows: rs, count: String(count(rs, within)), words: `${count(rs, within)} of ${rs.length} seeds within ${TH.close} rad` }));
-      paperStrips(fig, "The paper", ` ${s.toLocaleString("en-US")} shots per expectation value, 20 seeds.`, groups, {
+      paperStrips(fig, "The paper", ` ${s.toLocaleString("en-US")} shots per expectation value, ${PS.seeds} seeds.`, groups, {
         cls: (r) => (within(r) ? "recovered" : ""),
         countHead: `within ${TH.close} rad`,
         key: [["recovered", `guessed within ${TH.close} rad`], ["", "not"]],
@@ -1058,14 +1149,38 @@
         el("span", { class: "hd" }, grid, "seeds");
         el("span", { class: "hd cnt" }, grid, "recovered");
         const detail = el("p", { class: "detail", "aria-live": "polite" }, sec, "Pick a dot to read that attack.");
+        // One Tab stop per experiment; the arrow keys move between its dots (a roving tabindex).
+        const lines = [];
+        grid.addEventListener("keydown", (ev) => {
+          const at = lines.flatMap((l, y) => l.map((b, x) => [b, x, y])).find(([b]) => b === ev.target);
+          if (!at) return;
+          let [, x, y] = at;
+          if (ev.key === "ArrowRight") x += 1;
+          else if (ev.key === "ArrowLeft") x -= 1;
+          else if (ev.key === "ArrowDown") y += 1;
+          else if (ev.key === "ArrowUp") y -= 1;
+          else if (ev.key === "Home") x = 0;
+          else if (ev.key === "End") x = lines[y].length - 1;
+          else return;
+          ev.preventDefault();
+          y = Math.max(0, Math.min(lines.length - 1, y));
+          x = Math.max(0, Math.min(lines[y].length - 1, x));
+          ev.target.tabIndex = -1;
+          lines[y][x].tabIndex = 0;
+          lines[y][x].focus();
+        });
         for (const [k, rs] of bySetting(rows, (r) => keyOf[e.id](r).join(" · "))) {
           el("span", { class: "lab" }, grid, k);
           const dots = el("span", { class: "dots" }, grid);
+          const line = [];
+          lines.push(line);
           for (const r of rs) {
-            const b = el("button", { type: "button", class: r.best, "aria-pressed": "false", "aria-label": `${k}, seed ${r.seed}: ${WORD[r.best]}` }, dots);
+            const b = el("button", { type: "button", class: r.best, tabindex: lines.length === 1 && !line.length ? "0" : "-1", "aria-pressed": "false", "aria-label": `${k}, seed ${r.seed}: ${WORD[r.best]}` }, dots);
+            line.push(b);
             b.addEventListener("click", () => {
               sec.querySelectorAll('.dots button[aria-pressed="true"]').forEach((x) => x.setAttribute("aria-pressed", "false"));
               b.setAttribute("aria-pressed", "true");
+              for (const l of lines) for (const x of l) x.tabIndex = x === b ? 0 : -1;
               detail.textContent = "";
               el("b", {}, detail, `${k}, seed ${r.seed}: `);
               detail.append(`best restart ${WORD[r.best]}, ${rad(r.error)} rad from the input; ${lettersHit(r)} of ${r.outcomes.length} restarts recovered it. Each restart in order: `);
@@ -1141,10 +1256,13 @@
   function reroute() {
     readHash();
     if (current) built[current]?.hide();
+    if (cancelCurrent) cancelCurrent();
     for (const [id] of TABS) {
       if (id === "intro" || !built[id]) continue;
       built[id].hide();
-      document.getElementById(`view-${id}`).textContent = "";
+      // A fresh, empty section: the old one's listeners go with it.
+      const old = document.getElementById(`view-${id}`);
+      old.replaceWith(old.cloneNode(false));
       delete built[id];
     }
     current = null;
@@ -1158,8 +1276,11 @@
   if (embed) {
     document.body.classList.add("embed");
     // The deck sizes the frame to the page's height.
-    const post = (msg) => window.parent !== window && window.parent.postMessage({ source: "qfl-lab", ...msg }, "*");
-    new ResizeObserver(() => post({ height: Math.ceil(document.documentElement.scrollHeight) })).observe(document.body);
+    // The deck and the page share an origin; nothing is sent to any other.
+    const post = (msg) => window.parent !== window && window.parent.postMessage({ source: "qfl-lab", ...msg }, location.origin);
+    // The page's own height (main's), so the frame can shrink as well as grow.
+    const main = document.querySelector("main");
+    new ResizeObserver(() => post({ height: Math.ceil(main.getBoundingClientRect().height) + 4 })).observe(main);
     // A presenter's clicker sends page or arrow keys. Keys a control does not use go to the deck,
     // and a click hands the keyboard back, so the next press turns the slide.
     const DECK = new Set(["PageDown", "PageUp", "ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", " ", "n", "p", "b", "."]);
@@ -1175,9 +1296,13 @@
         post({ key: e.key, shift: e.shiftKey });
       }
     }, true);
+    // After a click on a button or the scrubber, the keyboard goes back to the deck. A number
+    // box or a list keeps it, so it can be typed into.
     document.addEventListener("pointerup", (e) => {
+      const c = e.target.closest?.('button, input[type="range"]');
+      if (!c) return;
       setTimeout(() => {
-        e.target.closest?.("input, button, select")?.blur();
+        c.blur();
         post({ focus: true });
       }, 0);
     });

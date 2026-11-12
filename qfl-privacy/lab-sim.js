@@ -9,9 +9,9 @@
   "use strict";
 
   const TAU = 2 * Math.PI;
-  // The paper's outcome thresholds (qflp: RECOVERED_RAD, CLOSE_RAD, EXPLAINS_SLACK). lab.js passes
-  // the first two from data/readings.js, so a change in the paper reaches the panel; the slack is
-  // fixed here.
+  // The paper's outcome thresholds (qflp: RECOVERED_RAD, CLOSE_RAD, EXPLAINS_SLACK). The lab
+  // page passes the first two from lab/data/runs.js, so a change in the paper reaches the panel;
+  // the slack is fixed here.
   const DEFAULTS = { recovered: 0.05, close: 0.2, slack: 1e-6 };
 
   // mulberry32: a small seeded generator, so a preset replays the same run on every machine.

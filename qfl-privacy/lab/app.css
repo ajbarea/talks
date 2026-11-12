@@ -212,11 +212,16 @@ table.runs td.o i { display: inline-block; width: 11px; height: 11px; margin-rig
 .exp h3 { font-size: 1.1rem; }
 .exp .sub { margin: 2px 0 10px; color: var(--muted); font-size: 0.92rem; }
 .exp .strips { grid-template-columns: max-content minmax(0, 1fr) max-content; }
-.dots button { width: 13px; height: 13px; padding: 0; border: 0; border-radius: 50%; background: var(--open); box-shadow: inset 0 0 0 1.5px var(--muted); cursor: pointer; }
-.dots button.recovered { background: var(--leak); box-shadow: none; }
-.dots button.close { background: var(--leak-tint); box-shadow: inset 0 0 0 2px var(--leak); }
-.dots button.ambiguous { background: var(--held-tint); box-shadow: inset 0 0 0 2px var(--held); }
-.dots button[aria-pressed="true"] { outline: 2px solid var(--ink); outline-offset: 1px; }
+/* Each dot is a 24px target (WCAG 2.5.8) drawing a 14px mark. */
+.exp .dots { gap: 0; }
+.exp .strips .lab, .exp .strips .cnt { line-height: 24px; }
+.dots button { position: relative; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%; background: none; cursor: pointer; }
+.dots button::before { content: ""; position: absolute; inset: 5px; border-radius: 50%; background: var(--open); box-shadow: inset 0 0 0 1.5px var(--muted); }
+.dots button.recovered::before { background: var(--leak); box-shadow: none; }
+.dots button.close::before { background: var(--leak-tint); box-shadow: inset 0 0 0 2px var(--leak); }
+.dots button.ambiguous::before { background: var(--held-tint); box-shadow: inset 0 0 0 2px var(--held); }
+.dots button[aria-pressed="true"]::before { outline: 2px solid var(--ink); outline-offset: 2px; }
+.dots button:focus-visible { outline: 3px solid var(--held); outline-offset: -1px; }
 .detail { min-height: 3.2em; margin-top: 10px; padding: 8px 10px; background: var(--paper); border-radius: 6px; font-size: 0.9rem; }
 .detail .letters { font-family: var(--mono); letter-spacing: 0.08em; }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; }
@@ -260,11 +265,13 @@ table.runs td.o i { display: inline-block; width: 11px; height: 11px; margin-rig
    the free control, sphere | loss plot | readouts on one row, a one-line transport, the rows. */
 body.embed { background: transparent; font-size: 18px; }
 body.embed main { max-width: none; padding: 2px; }
-body.embed .top, body.embed footer, body.embed .view > h2, body.embed .lede, body.embed .panel-head,
+body.embed .top, body.embed footer, body.embed .view > h2, body.embed .lede, body.embed .panel-head .sub,
 body.embed details.table, body.embed .strip-fig.paper, body.embed .draws-head h3, body.embed .rand { display: none; }
 body.embed .knobs { margin: 0 0 8px; gap: 8px 18px; }
 body.embed .bench { grid-template-columns: minmax(0, 1fr); }
 body.embed .panel { padding: 8px 12px 10px; }
+body.embed .panel-head { margin-bottom: 2px; }
+body.embed .panel-head h3 { font-size: 0.9rem; }
 body.embed .scope { grid-template-columns: minmax(90px, 0.8fr) minmax(0, 3fr) minmax(150px, 1.2fr); grid-template-areas: "bloch plot read"; }
 body.embed .readouts { flex-direction: column; gap: 8px; }
 body.embed .transport { grid-template-columns: auto minmax(0, 1fr) auto; margin-top: 8px; }

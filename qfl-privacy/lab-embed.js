@@ -33,7 +33,8 @@
     ArrowUp: () => Reveal.up(), b: () => Reveal.togglePause(), ".": () => Reveal.togglePause(),
   };
   window.addEventListener("message", (e) => {
-    // Only this deck's own lab frames may steer it.
+    // Only this deck's own lab frames, from its own origin, may steer it.
+    if (e.origin !== location.origin) return;
     const f = frames.find((x) => x.contentWindow === e.source);
     const d = e.data;
     if (!f || !d || d.source !== "qfl-lab") return;

@@ -7,6 +7,8 @@
   <meta name="description" content="A live lab for the CSCI-739 talk When do quantum circuits keep federated training data private?: run a gradient-matching attack on a one-qubit re-uploading circuit in your browser, step through its search, compare settings over many hidden inputs, and browse every run the paper made.">
   <meta property="og:title" content="Gradient Inversion Lab">
   <meta property="og:description" content="Run a gradient-matching attack on a toy quantum circuit in your browser, beside every run the paper made.">
+  <!-- Inside a slide the page follows the deck, which is light. -->
+  <script>if (/(^|[#&])embed=1(&|$)/.test(location.hash)) document.documentElement.dataset.theme = "light";</script>
   <link rel="stylesheet" href="app.css">
 </head>
 <body>
@@ -99,7 +101,7 @@
   <p class="sr-only" role="status" id="status"></p>
 </main>
 <footer>
-  <p><span class="toy-tag">Toy</span>The live panels run a one-qubit data re-uploading circuit, simulated in this page, with the paper's outcome rule and thresholds. One qubit is the easy end: its gradient is far larger than its shot noise. The paper's 4- and 8-qubit results are in <a href="#tab=runs">The paper's runs</a>, as the paper's <a href="https://github.com/ajbarea/csci739-qfl-privacy/tree/main/results">results/</a> record them, scored by the deck's figures.py with the paper's rule.</p>
+  <p><span class="toy-tag">Toy</span>The live panels run a one-qubit data re-uploading circuit, simulated in this page, with the paper's outcome rule and thresholds. One qubit is the easy end: its gradient is far larger than its shot noise, and with 10 restarts its best guess finds nearly every input (198 to 200 of 200 at every repetition count), so the toy shows the paper's trend in restarts that found the input, not in inputs held. The paper's 4- and 8-qubit results are in <a href="#tab=runs">The paper's runs</a>, as the paper's <a href="https://github.com/ajbarea/csci739-qfl-privacy/tree/main/results">results/</a> record them, scored by the deck's figures.py with the paper's rule.</p>
 </footer>
 <script src="../lab-sim.js"></script>
 <script src="data/runs.js"></script>

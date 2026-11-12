@@ -552,10 +552,12 @@
     scrub.addEventListener("input", () => goto(Number(scrub.value) * STEP));
     // Keys anywhere in the view, or with nothing focused: Space plays and pauses, arrows step,
     // Shift+arrows jump to the next landing, Home and End go to the ends. Keys typed into a
-    // control, and Space on a button, link or disclosure, keep their own meaning.
+    // control, Space on a button, link or disclosure, and any key with Ctrl, Meta or Alt (the
+    // browser's: Cmd+Left is Back) keep their own meaning.
     const view = opts.keyScope || box;
     function onKey(e) {
-      if (e.defaultPrevented || !(e.target === document.body || view.contains(e.target))) return;
+      if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (!(e.target === document.body || view.contains(e.target))) return;
       const tag = e.target.tagName;
       if (e.target !== scrub && (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA")) return;
       if (e.key === " " && (tag === "SUMMARY" || tag === "A")) return;

@@ -277,7 +277,7 @@
   <span class="kicker">2 · Live lab</span>
   <h2>At a fixed parameter count, more encoding repetitions left the search stuck more often</h2>
   <div class="lab-row">
-    <div class="lab web-only" data-lab="reps"></div>
+    <iframe class="lab-frame" data-lab-src="lab/index.html#tab=reps&amp;embed=1&amp;reps=1" title="Live lab: the toy circuit with its encoding repetitions free"></iframe>
     <figure class="paper">
       <figcaption><b>The paper</b> 8 qubits, <span data-value="rq1.params"></span> effective parameters, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:reps -->
@@ -376,6 +376,7 @@
 </svg>
 <!-- /fig -->
       <p class="key"><span class="item"><i class="k-leak"></i>recovered, best of <span data-value="paper.restarts"></span> restarts</span><span class="item"><i class="k-open"></i>not</span><br>hits: restarts of <span data-value="rq1.tries"></span> that found the input</p>
+      <p class="lab-link"><b>Try it live</b> <a href="https://ajbarea.github.io/talks/qfl-privacy/lab/#tab=reps&amp;reps=1">ajbarea.github.io/talks/qfl-privacy/lab</a></p>
     </figure>
   </div>
   <aside class="notes"><ul><li>Drag repetitions 1 to 8: the dips multiply; this one input barely moves, so point at the rows: inputs 1 to 20, the pies thin out</li><li>Paper: <span data-value="rq1.rec1"></span> to <span data-value="rq1.rec8"></span> of <span data-value="paper.seeds"></span> seeds; restarts that hit <span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span> of <span data-value="rq1.tries"></span></li><li>Every failure here was stuck, not ambiguous</li></ul></aside>
@@ -385,7 +386,7 @@
   <span class="kicker">2 · Live lab</span>
   <h2>Stuck is not private: with <span data-value="budget.large"></span> restarts, most stuck seeds gave up their input</h2>
   <div class="lab-row">
-    <div class="lab web-only" data-lab="restarts"></div>
+    <iframe class="lab-frame" data-lab-src="lab/index.html#tab=restarts&amp;embed=1&amp;restarts=1" title="Live lab: the toy circuit with its restarts free"></iframe>
     <figure class="paper">
       <figcaption><b>The paper</b> 8 qubits, <span data-value="budget.small"></span> then <span data-value="budget.large"></span> restarts, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:restarts -->
@@ -485,6 +486,7 @@
 <!-- /fig -->
       <p class="key"><span class="item"><i class="k-leak"></i>with <span data-value="budget.small"></span> restarts</span><span class="item"><i class="k-ring"></i>only with <span data-value="budget.large"></span></span><span class="item"><i class="k-open"></i>neither</span></p>
       <p class="paper-note"><span data-value="budget.hardest"></span>: <span data-value="budget.hardestRate"></span>% of restarts found the input; <span data-value="budget.hardestHeld"></span> seeds held.</p>
+      <p class="lab-link"><b>Try it live</b> <a href="https://ajbarea.github.io/talks/qfl-privacy/lab/#tab=restarts&amp;restarts=1">ajbarea.github.io/talks/qfl-privacy/lab</a></p>
     </figure>
   </div>
   <aside class="notes"><ul><li>Toy at 8 × 1: add restarts; the lowest loss wins, no truth needed. Rows: about half at 1 restart, all at 20</li><li>Paper: <span data-value="budget.othersMin"></span> to <span data-value="budget.othersMax"></span> of <span data-value="paper.seeds"></span> recovered with <span data-value="budget.large"></span> restarts; about <span data-value="budget.secondsPerClient"></span> s per client</li><li><span data-value="budget.hardest"></span> held <span data-value="budget.hardestHeld"></span> seeds: its cost is unknown, not infinite</li></ul></aside>
@@ -494,7 +496,7 @@
   <span class="kicker">2 · Live lab</span>
   <h2>With <span data-value="rq2.lowShots"></span> shots at 8 qubits, this attack almost always failed</h2>
   <div class="lab-row">
-    <div class="lab web-only" data-lab="shots"></div>
+    <iframe class="lab-frame" data-lab-src="lab/index.html#tab=shots&amp;embed=1&amp;shots=0" title="Live lab: the toy circuit with its shots free"></iframe>
     <figure class="paper">
       <figcaption><b>The paper</b> <span data-value="rq2.lowShots"></span> shots per expectation value, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:shots -->
@@ -638,6 +640,7 @@
 <!-- /fig -->
       <p class="key"><span class="item"><i class="k-leak"></i>guessed within <span data-value="paper.closeRad"></span> rad</span><span class="item"><i class="k-open"></i>not</span></p>
       <p class="paper-note">At 8 qubits the noise was as large as the gradient (median squared norms): <span data-value="rq2.noise8"></span> against <span data-value="rq2.signal8"></span>.</p>
+      <p class="lab-link"><b>Try it live</b> <a href="https://ajbarea.github.io/talks/qfl-privacy/lab/#tab=shots&amp;shots=0">ajbarea.github.io/talks/qfl-privacy/lab</a></p>
     </figure>
   </div>
   <aside class="notes"><ul><li>Toy: drag shots down; the dip lifts and shifts, the end points spread; rows: the attack still finds nearly every input at 100 shots, misses several at 10</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of <span data-value="paper.seeds"></span> seeds within <span data-value="paper.closeRad"></span> rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li><li>Blocked this attack, not a guarantee: shot noise is no substitute for calibrated DP-SGD noise (Sedrakyan et al., 2026)</li></ul></aside>
@@ -886,10 +889,9 @@
 </div>
 </div>
 <script src="data/readings.js"></script>
-<script src="lab-sim.js"></script>
 <script src="../vendor/reveal/reveal.js"></script>
 <script src="../vendor/reveal/notes.js"></script>
-<script src="lab.js"></script>
+<script src="lab-embed.js"></script>
 <script src="../shared/deck.js"></script>
 <script src="../shared/motion.js"></script>
 <script src="../shared/tip.js"></script>

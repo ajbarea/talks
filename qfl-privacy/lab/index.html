@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gradient Inversion Lab</title>
+  <meta name="description" content="A live lab for the CSCI-739 talk When do quantum circuits keep federated training data private?: run a gradient-matching attack on a one-qubit re-uploading circuit in your browser, step through its search, compare settings over many hidden inputs, and browse every run the paper made.">
+  <meta property="og:title" content="Gradient Inversion Lab">
+  <meta property="og:description" content="Run a gradient-matching attack on a toy quantum circuit in your browser, beside every run the paper made.">
+  <!-- Inside a slide the page follows the deck, which is light. -->
+  <script>if (/(^|[#&])embed=1(&|$)/.test(location.hash)) document.documentElement.dataset.theme = "light";</script>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <h1>Gradient inversion lab<small>When do quantum circuits keep federated training data private?</small></h1>
+      <nav class="links" aria-label="Elsewhere">
+        <a href="../index.html">Slides</a>
+        <a href="https://github.com/ajbarea/csci739-qfl-privacy">Code and results</a>
+      </nav>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Lab sections"></div>
+  </div>
+</header>
+<main>
+  <section class="view" id="view-intro" data-tab="intro" role="tabpanel" hidden>
+    <div class="intro">
+      <div>
+        <h2>The data stays home; the gradient travels</h2>
+        <p class="lede">In federated learning, clients such as phones or hospitals train one shared model without pooling their data. Each round, a client trains the current model on its own data and sends back only an update, here a gradient. The server averages the updates into the next model.</p>
+        <p>The gradient is a list of numbers, one per trainable angle, so it feels private. But a curious server knows the circuit. It can guess an input, compute that guess's gradient, and adjust the guess until the two gradients match. If they match, the guess is usually the input. That is a gradient-matching attack.</p>
+        <p>This lab runs that attack in your browser on a <b>toy</b>: one qubit, one hidden input. It shows the mechanism. The numbers that answer the research question are the paper's, in the last tab.</p>
+        <ol class="steps-list">
+          <li><a href="#tab=attack">One attack</a>: watch one search, pause it at a wrong dip, step it, scrub it.</li>
+          <li><a href="#tab=reps">Repetitions</a>, <a href="#tab=restarts">Restarts</a>, <a href="#tab=shots">Shots</a>: change one thing, over many hidden inputs.</li>
+          <li><a href="#tab=runs">The paper's runs</a>: every seed and setting the paper ran, with downloads.</li>
+        </ol>
+      </div>
+      <figure>
+    <svg class="fl" viewBox="0 0 1180 452" role="img" aria-label="Diagram of one round of federated learning: three clients each keep their own data and train on it; each sends only its update, here a gradient, up to the server; the server averages the updates and sends the new model back down to every client.">
+      <defs>
+        <marker id="fl-up" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="up-head" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="fl-down" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="down-head" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="box server" x="420" y="8" width="340" height="118" rx="12"/>
+      <text class="box-title" x="590" y="52" text-anchor="middle">Server</text>
+      <text class="box-text" x="590" y="90" text-anchor="middle">averages the updates</text>
+      <g class="avg"><circle cx="722" cy="44" r="22"/><text x="722" y="53" text-anchor="middle">Σ</text></g>
+      <path class="up" d="M196,270 L520,132" marker-end="url(#fl-up)"/>
+      <path class="down" d="M556,132 L232,270" marker-end="url(#fl-down)"/>
+      <path class="up" d="M574,270 L574,132" marker-end="url(#fl-up)"/>
+      <path class="down" d="M606,132 L606,270" marker-end="url(#fl-down)"/>
+      <path class="up" d="M984,270 L660,132" marker-end="url(#fl-up)"/>
+      <path class="down" d="M624,132 L948,270" marker-end="url(#fl-down)"/>
+      <circle class="g-dot" r="11" style="offset-path: path('M196,270 L520,132'); --d: 0.3s"/>
+      <circle class="g-dot" r="11" style="offset-path: path('M574,270 L574,132'); --d: 0.5s"/>
+      <circle class="g-dot" r="11" style="offset-path: path('M984,270 L660,132'); --d: 0.7s"/>
+      <circle class="m-dot" r="9" style="offset-path: path('M556,132 L232,270'); --d: 2.5s"/>
+      <circle class="m-dot" r="9" style="offset-path: path('M606,132 L606,270'); --d: 2.5s"/>
+      <circle class="m-dot" r="9" style="offset-path: path('M624,132 L948,270'); --d: 2.5s"/>
+      <rect class="chip" x="226" y="166" width="244" height="38" rx="19"/>
+      <text class="chip-text" x="348" y="193" text-anchor="middle">gradient travels</text>
+      <rect class="chip model" x="720" y="166" width="244" height="38" rx="19"/>
+      <text class="chip-text model" x="842" y="193" text-anchor="middle">new model back</text>
+      <g class="client">
+        <rect class="box" x="40" y="276" width="310" height="132" rx="12"/>
+        <text class="box-title" x="195" y="312" text-anchor="middle">Client 1</text>
+        <rect class="data" x="62" y="330" width="64" height="16" rx="5"/><rect class="data" x="62" y="350" width="64" height="16" rx="5"/><rect class="data" x="62" y="370" width="64" height="16" rx="5"/>
+        <text class="box-text" x="142" y="352">its own data</text>
+        <text class="box-text" x="142" y="382">trains on it</text>
+      </g>
+      <g class="client">
+        <rect class="box" x="435" y="276" width="310" height="132" rx="12"/>
+        <text class="box-title" x="590" y="312" text-anchor="middle">Client 2</text>
+        <rect class="data" x="457" y="330" width="64" height="16" rx="5"/><rect class="data" x="457" y="350" width="64" height="16" rx="5"/><rect class="data" x="457" y="370" width="64" height="16" rx="5"/>
+        <text class="box-text" x="537" y="352">its own data</text>
+        <text class="box-text" x="537" y="382">trains on it</text>
+      </g>
+      <g class="client">
+        <rect class="box" x="830" y="276" width="310" height="132" rx="12"/>
+        <text class="box-title" x="985" y="312" text-anchor="middle">Client 3</text>
+        <rect class="data" x="852" y="330" width="64" height="16" rx="5"/><rect class="data" x="852" y="350" width="64" height="16" rx="5"/><rect class="data" x="852" y="370" width="64" height="16" rx="5"/>
+        <text class="box-text" x="932" y="352">its own data</text>
+        <text class="box-text" x="932" y="382">trains on it</text>
+      </g>
+      <path class="home" d="M40,424 L40,434 L1140,434 L1140,424"/>
+      <text class="home-text" x="590" y="452" text-anchor="middle">the data stays home</text>
+    </svg>
+        <button class="btn" type="button" id="fl-again">Play the round again</button>
+        <figcaption class="note">One round: clients train on their own data and send only their update; the server averages them (McMahan et al., 2017).</figcaption>
+      </figure>
+    </div>
+  </section>
+  <section class="view" id="view-attack" data-tab="attack" role="tabpanel" hidden></section>
+  <section class="view" id="view-reps" data-tab="reps" role="tabpanel" hidden></section>
+  <section class="view" id="view-restarts" data-tab="restarts" role="tabpanel" hidden></section>
+  <section class="view" id="view-shots" data-tab="shots" role="tabpanel" hidden></section>
+  <section class="view" id="view-runs" data-tab="runs" role="tabpanel" hidden></section>
+  <p class="sr-only" role="status" id="status"></p>
+</main>
+<footer>
+  <p><span class="toy-tag">Toy</span>The live panels run a one-qubit data re-uploading circuit, simulated in this page, with the paper's outcome rule and thresholds. One qubit is the easy end: its gradient is far larger than its shot noise, and with 10 restarts its best guess finds nearly every input (198 to 200 of 200 at every repetition count), so the toy shows the paper's trend in restarts that found the input, not in inputs held. The paper's 4- and 8-qubit results are in <a href="#tab=runs">The paper's runs</a>, as the paper's <a href="https://github.com/ajbarea/csci739-qfl-privacy/tree/main/results">results/</a> record them, scored by the deck's figures.py with the paper's rule.</p>
+</footer>
+<script src="../lab-sim.js"></script>
+<script src="data/runs.js"></script>
+<script src="jobs.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

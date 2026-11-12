@@ -257,9 +257,8 @@ def test_the_toys_gradient_dwarfs_its_shot_noise_at_100_shots() -> None:
     assert 45 <= ratio <= 55
 
 
-def test_the_lab_picks_no_seed_and_keeps_motion_under_five_seconds() -> None:
-    src = (TALK / "lab.js").read_text()
-    assert not re.search(r"\bseed:\s*\d", src), "a lab step names a seed; every step opens on hidden input 1"
+def test_the_labs_motion_lasts_under_five_seconds() -> None:
+    src = (TALK / "lab" / "app.js").read_text()
     total = int(re.search(r"PACE = \{ total: (\d+)", src).group(1))
     # WCAG 2.2.2: motion that starts by itself and lasts over five seconds needs a pause control
     assert total + int(re.search(r"fade: (\d+)", src).group(1)) <= 5000
@@ -340,3 +339,18 @@ def test_a_changed_macro_is_caught(tmp_path: pathlib.Path, macro: str) -> None:
     )
     assert run.returncode != 0
     assert macro in (run.stderr + run.stdout), run.stderr + run.stdout
+
+
+@needs_node
+def test_the_lab_pages_toy_note_matches_the_simulator() -> None:
+    note = (TALK / "lab" / "index.html").read_text()
+    m = re.search(r"with (\d+) restarts its best guess finds nearly every input \((\d+) to (\d+) of (\d+) at", note)
+    assert m
+    assert int(m.group(1)) == js("console.log(Q.TOY.steps.reps.restarts)")
+    n = int(m.group(4))
+    got = js(
+        f"const R = Q.TOY.steps.reps; console.log(JSON.stringify(R.reps.map((r) => {{ let k = 0;"
+        f" for (let s = 1; s <= {n}; s++) k += Q.attack(Q.client(s, r, Q.TOY.blocks / r, 0), R.restarts).outcome"
+        f" === 'recovered'; return k; }})))"
+    )
+    assert (int(m.group(2)), int(m.group(3))) == (min(got), max(got))

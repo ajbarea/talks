@@ -138,11 +138,15 @@ few samples per client give the whole loss curve. The
 outcome rule and thresholds are the paper's. Every number you quote about the paper comes from the
 right-hand figure; the counts at the panel's foot are the toy's own, and the panel labels them so.
 
-Each lab slide opens on hidden input 1. "Next input" steps through inputs 1 to 20, the
-simulator's first seeds, not picked. One input is a noisy sample, so the rows at the foot of the
-panel run all twenty for each value of the control, scored like the paper's figure beside them. A search
-takes about 5 seconds: restarts are released one after another, each rolling for 1.8 s with a short
-trail. "Replay slowly" plays it 2.5 times slower. Reduced motion shows each end at once.
+Each lab slide shows the lab page (ajbarea.github.io/talks/qfl-privacy/lab) at that slide's tab,
+opening on hidden input 1; − and + step through the simulator's seeds, not picked. One input is a
+noisy sample, so the rows at the foot of the panel run inputs 1 to 20 for each value of the control,
+scored like the paper's figure beside them. A search takes about 5 seconds: restarts are released one
+after another, each rolling for 1.8 s with a short fading trail. The bar under the panel is its
+timeline: Play or Pause, step one point back or forward (Shift jumps to the next landing), drag to
+scrub, and ½× or ¼× to slow it. Reduced motion opens on the end; step through it instead. "Open the
+full lab" opens the page with every tab, including every run the paper made. On a phone, in the
+PDF and in a downloaded copy, the slide shows the paper's figure and a link to the lab page instead.
 
 | Slide | Control | Hidden input 1 | The rows (inputs 1 to 20) |
 |---|---|---|---|
@@ -150,19 +154,22 @@ trail. "Replay slowly" plays it 2.5 times slower. Reduced motion shows each end 
 | Restarts | Restarts; 8 × 1, exact | Stuck with 1 restart, recovered from 2 on | Inputs recovered, of 20, with 1, 2, 5, 10, 20 restarts: 9, 15, 19, 20, 20 |
 | Shots | Shots; 2 × 4, 10 restarts | Recovered from exact down to 1,000 shots (0.035 rad); close at 100 (0.054) and 10 (0.162) | Within 0.2 rad, of 20, at 10, 100, 1,000 shots and exact: 15, 19, 20, 20 |
 
-Sliders: drag with the mouse, or Tab to one and use the arrow keys. Arrow keys inside a slider never
-turn the slide.
+Controls: click, or Tab into the panel. The scrubber, the step buttons, the number box and the
+shots list keep the arrow keys; elsewhere in the panel, and after a click on a button or the
+scrubber, the clicker's keys turn the slide. Page Down and Page Up always turn it.
 
 ## If the live panel misbehaves
 
-- **The clicker moved a slider instead of the slide:** press Esc, then advance.
-- **A result differs from what you meant to show:** press "Reset"; every input replays identically.
+- **The clicker moved a control instead of the slide:** click the slide's title, then advance.
+- **A result differs from what you meant to show:** set hidden input 1 again and press Replay;
+  every input replays identically.
 - **One input goes against the slide:** expected; say "one input is a noisy sample" and point at the
   rows, which carry the trend. Never step through inputs hunting for one that agrees.
-- **The animation is too quick to talk over:** press "Replay slowly".
+- **The animation is too quick to talk over:** press ½× or ¼× and Replay, or Pause and step.
 - **The panel is blank or frozen:** carry on from the paper's figure; it holds the slide's claim.
-  The PDF and PowerPoint copies leave the panel out by design.
-- **No network:** the deck works offline once loaded, and from a downloaded copy opened as a file.
+  The PDF and PowerPoint copies show the paper's figure and the lab's address in its place.
+- **No network:** the deck works offline once loaded; a downloaded copy opened as a file shows the
+  paper's figures without the panel.
 - **Someone asks why the toy is so easy at 100 shots:** its gradient is about 50 times its shot
   noise there (median squared norms, inputs 1 to 200, 2 × 4). At 8 qubits the paper's noise was as
   large as the gradient (0.16 against 0.14). Entries per input match (15 each), so it is the

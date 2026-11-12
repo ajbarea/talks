@@ -174,7 +174,7 @@
 .lab :focus-visible { outline: 3px solid var(--held); outline-offset: 2px; }
 .lab-fixed { display: none; }
 .lab-origin { color: var(--muted); }
-.trace .halo { paint-order: stroke; stroke: #fff; stroke-width: 6px; stroke-linejoin: round; }
+.trace .plate { fill: #fff; fill-opacity: 0.92; }
 
 /* -------------------------------------------------------------- conclusion -- */
 .recap .tile .num { color: var(--leak-ink); }

@@ -81,7 +81,7 @@
       <p><b>Why you should care:</b> these are the gradients our parameter-shift code computes. With exact gradients, one input and a known label, every untrained circuit with one encoding layer and two or more trainable layers leaked it on <span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span> seeds.</p>
     </div>
   </div>
-  <aside class="notes"><ul><li>Federated learning: data stays home, gradients travel; the server searches for an input with the same gradient</li><li>What I did: <span data-value="rq1.attacks"></span> exact-gradient attacks, then noise, batches, labels, training; <span data-value="paper.seeds"></span> seeds each</li><li>Why care: untrained, one encoding layer, two or more trainable layers, exact gradients: leaked on every seed</li></ul></aside>
+  <aside class="notes"><ul><li>Federated learning: data stays home, gradients travel; the server searches for an input with the same gradient</li><li>What I did: <span data-value="rq1.attacks"></span> exact-gradient attacks, then noise, batches, labels, training; <span data-value="paper.seeds"></span> seeds each</li><li>Why care: untrained, one encoding layer, two or more trainable layers, exact gradients, one input, known label: leaked on every seed</li></ul></aside>
 </section>
 
 <section data-chapter="1 · The attack">
@@ -637,7 +637,7 @@
     </figure>
     <div class="batch-text">
       <p><b>Hidden label:</b> fewer recovered, p = <span data-value="rq4.p"></span>; <span data-value="rq4.knownOnlyTwo"></span> of the <span data-value="rq4.knownOnly"></span> seeds were in batches of two.</p>
-      <p><b>Trained circuit:</b> no net change, p = <span data-value="rq5.p"></span>, across <span data-value="rq5.tasks"></span> tasks that leaned opposite ways.</p>
+      <p><b>Trained circuit:</b> no detectable net change, p = <span data-value="rq5.p"></span>, across <span data-value="rq5.tasks"></span> tasks that leaned opposite ways.</p>
     </div>
   </div>
   <p class="footnote">p: exact McNemar test on the paired seeds, settings pooled.</p>
@@ -658,7 +658,7 @@
       <li>Does the attacker's cost grow exponentially with the number of qubits?</li>
     </ul>
   </div>
-  <aside class="notes"><ul><li>Shallow encodings leak; repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li>Noise at 8 qubits and big batches actually hid the input</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
+  <aside class="notes"><ul><li>One encoding layer with two or more trainable layers leaked (untrained, exact); repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li>Noise at 8 qubits and big batches actually hid the input</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
 </section>
 
 <section class="closing">
@@ -744,10 +744,10 @@
 </section>
 
 <section id="faq-trained" class="backup">
-  <h2>Training: no net change, and one lead on low-frequency curves</h2>
+  <h2>Training: no detectable net change, and one lead on low-frequency curves</h2>
   <p class="lead">Pooled over the <span data-value="rq5.tasks"></span> tasks, <span data-value="rq5.before"></span> seeds were recovered only before training and <span data-value="rq5.after"></span> only after (p = <span data-value="rq5.p"></span>). On low-frequency curves the counts were <span data-value="rq5.leadBefore"></span> and <span data-value="rq5.leadAfter"></span>, but that is also the task every circuit fit best (test accuracy <span data-value="rq5.leadAcc"></span> or more), so a better fit may explain it. One dataset, one example per seed: a lead to test.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
-  <aside class="notes">Kumar et al. saw a low-frequency target make privacy worse; this lead points the other way, with a different setup.</aside>
+  <aside class="notes">In Kumar et al., a low-frequency target made privacy worse for a model with 2 qubits per feature, while 4 qubits per feature kept it; this lead points the other way, with a different setup.</aside>
 </section>
 
 <section id="faq-limits" class="backup">
@@ -773,6 +773,7 @@
     <li>J. Geiping et al., Inverting gradients: how easy is it to break privacy in federated learning?, NeurIPS 2020</li>
     <li>A. Pérez-Salinas et al., Data re-uploading for a universal quantum classifier, Quantum, 2020</li>
     <li>M. Schuld et al., Evaluating analytic gradients on quantum hardware, Physical Review A, 2019</li>
+    <li>M. Schuld, R. Sweke, J. J. Meyer, Effect of data encoding on the expressive power of variational quantum-machine-learning models, Physical Review A, 2021</li>
     <li>D. P. Kingma, J. Ba, Adam: a method for stochastic optimization, ICLR 2015</li>
     <li>Code and results: <a href="https://github.com/ajbarea/csci739-qfl-privacy">github.com/ajbarea/csci739-qfl-privacy</a></li>
   </ul>

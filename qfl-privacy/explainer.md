@@ -76,7 +76,7 @@ print(xs[L(xs) < 1e-8].round(2))` finds the truth at 0.80 and a second exact mat
 ### Effective parameters, P_eff = P − N
 
 The circuit has P = 2rℓN angles: r repetitions, ℓ blocks, two rotations per qubit per block. The
-last block's Z rotations come just before a Z measurement, so they never change the output; their
+last block's Z rotations are followed only by CNOTs and a Z measurement, so they never change the output; their
 gradient is always zero. The other P − N angles each give one useful equation.
 
 ### Unknowns per effective parameter, NB / P_eff (batch slide)

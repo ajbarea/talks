@@ -170,8 +170,9 @@
     const curve = sv("path", { class: "curve" }, s);
     const paths = sv("g", { class: "paths" }, s);
     const balls = sv("g", { class: "balls" }, s);
-    // Drawn last, over the curve, with a white halo.
-    sv("text", { x: PAD.l + 8, y: PAD.t + 20, class: "axis halo" }, s, "\u2191 matching loss");
+    // Drawn last, on a white plate, so neither the curve nor a ball crosses it.
+    sv("rect", { x: PAD.l + 2, y: PAD.t + 1, width: 170, height: 28, rx: 4, class: "plate" }, s);
+    sv("text", { x: PAD.l + 8, y: PAD.t + 22, class: "axis" }, s, "\u2191 matching loss");
     return { s, title, truth, curve, paths, balls };
   }
 

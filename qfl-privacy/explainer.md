@@ -65,7 +65,7 @@ print(xs[L(xs) < 1e-8].round(2))` finds the truth at 0.80 and a second exact mat
 
 ### The four outcomes
 
-- **Recovered:** every input within 0.05 rad of the truth.
+- **Recovered:** every feature of the input within 0.05 rad of the truth.
 - **Close:** within 0.2 rad. Still a leak at noisy shot counts.
 - **Ambiguous:** further away, but L(x̂) ≤ L(x) + 10⁻⁶‖g‖². Another input fits the gradient at
   least as well as the truth, so the gradient cannot tell them apart. The 10⁻⁶‖g‖² term is a small

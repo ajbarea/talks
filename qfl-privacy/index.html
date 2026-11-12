@@ -104,7 +104,7 @@
         <circle class="sketch-ball found" cx="210" cy="125" r="9"/>
         <text class="sketch-note" x="210" y="172" text-anchor="middle">illustration, not data</text>
       </svg>
-      <p>When the gradient gives more equations than there are unknown inputs, a numerical search finds the input.</p>
+      <p>When the gradient gives as many equations as there are unknown inputs or more, a numerical search finds the input.</p>
     </figure>
   </div>
   <p class="lead fragment">My question: on one family of circuits, with one attack, where does each claim hold?</p>
@@ -161,7 +161,7 @@
       <p class="eq">L(x̂) = ‖ ∇<sub>θ</sub> (f(x̂; θ) − y)² − g ‖²</p>
       <p class="eq-gloss">How far my guess's gradient is from the one I received. Zero means a perfect match.</p>
       <ul class="outcomes">
-        <li class="o-recovered"><b>Recovered</b> every input within <span data-value="paper.recoveredRad"></span> rad</li>
+        <li class="o-recovered"><b>Recovered</b> every feature within <span data-value="paper.recoveredRad"></span> rad</li>
         <li class="o-close"><b>Close</b> within <span data-value="paper.closeRad"></span> rad</li>
         <li class="o-ambiguous"><b>Ambiguous</b> another input fits as well</li>
         <li class="o-stuck"><b>Stuck</b> the search ends at a worse fit</li>
@@ -277,7 +277,7 @@
       <p class="key"><span class="item"><i class="k-leak"></i>recovered, best of <span data-value="paper.restarts"></span> restarts</span><span class="item"><i class="k-open"></i>not</span><br>hits: restarts of <span data-value="rq1.tries"></span> that found the input</p>
     </figure>
   </div>
-  <aside class="notes"><ul><li>Drag repetitions 1 to 8: the dips multiply, fewer restarts land on the input</li><li>Paper: <span data-value="rq1.rec1"></span> to <span data-value="rq1.rec8"></span> of 20 seeds; restarts that hit <span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span> of <span data-value="rq1.tries"></span></li><li>Every failure here was stuck, not ambiguous</li></ul></aside>
+  <aside class="notes"><ul><li>Drag repetitions 1 to 8: the dips multiply, fewer restarts land on the input</li><li>Paper: <span data-value="rq1.rec1"></span> to <span data-value="rq1.rec8"></span> of <span data-value="paper.seeds"></span> seeds; restarts that hit <span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span> of <span data-value="rq1.tries"></span></li><li>Every failure here was stuck, not ambiguous</li></ul></aside>
 </section>
 
 <section class="lab-slide" data-chapter="2 · Live lab">
@@ -386,7 +386,7 @@
       <p class="paper-note"><span data-value="budget.hardest"></span>: <span data-value="budget.hardestRate"></span>% of restarts found the input; <span data-value="budget.hardestHeld"></span> seeds held.</p>
     </figure>
   </div>
-  <aside class="notes"><ul><li>Toy at 8 × 1: one restart is stuck; add restarts until one lands. Paper: <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits</li><li>Paper: <span data-value="budget.othersMin"></span> to <span data-value="budget.othersMax"></span> of 20 recovered with <span data-value="budget.large"></span> restarts; about <span data-value="budget.secondsPerClient"></span> s per client</li><li><span data-value="budget.hardest"></span> held <span data-value="budget.hardestHeld"></span> seeds: its cost is unknown, not infinite</li></ul></aside>
+  <aside class="notes"><ul><li>Toy at 8 × 1: one restart is stuck; add restarts until one lands. Paper: <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits</li><li>Paper: <span data-value="budget.othersMin"></span> to <span data-value="budget.othersMax"></span> of <span data-value="paper.seeds"></span> recovered with <span data-value="budget.large"></span> restarts; about <span data-value="budget.secondsPerClient"></span> s per client</li><li><span data-value="budget.hardest"></span> held <span data-value="budget.hardestHeld"></span> seeds: its cost is unknown, not infinite</li></ul></aside>
 </section>
 
 <section class="lab-slide" data-chapter="2 · Live lab">
@@ -539,7 +539,7 @@
       <p class="paper-note">At 8 qubits the noise was as large as the gradient (median squared norms): <span data-value="rq2.noise8"></span> against <span data-value="rq2.signal8"></span>.</p>
     </figure>
   </div>
-  <aside class="notes"><ul><li>Toy: drag shots down; the dip blurs and the guess slides off, worst at 10 shots</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of 20 seeds within 0.2 rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li></ul></aside>
+  <aside class="notes"><ul><li>Toy: drag shots down; the dip lifts and shifts and the guess slides off, worst at 10 shots</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of <span data-value="paper.seeds"></span> seeds within <span data-value="paper.closeRad"></span> rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li></ul></aside>
 </section>
 
 <section data-chapter="3 · What else hides it">
@@ -605,7 +605,7 @@
       <p class="def">Effective parameter: a trainable angle whose gradient can be nonzero. The last Z rotations never are.</p>
     </div>
   </div>
-  <aside class="notes"><ul><li>Batch of B inputs: N times B unknowns, same effective parameters</li><li>Leaked up to <span data-value="rq3.leakMax"></span> unknowns per effective parameter, never from <span data-value="rq3.heldMin"></span>; the crossover sits between</li><li>Past it: ambiguous, another batch fits exactly</li></ul></aside>
+  <aside class="notes"><ul><li>Batch of B inputs: N times B unknowns, same effective parameters</li><li>Leaked up to <span data-value="rq3.leakMax"></span> unknowns per effective parameter, never from <span data-value="rq3.heldMin"></span>; the crossover sits between</li><li>Past it: ambiguous, another batch fits as well</li></ul></aside>
 </section>
 
 <section data-chapter="3 · What else hides it">
@@ -641,14 +641,14 @@
     </div>
   </div>
   <p class="footnote">p: exact McNemar test on the paired seeds, settings pooled.</p>
-  <aside class="notes"><ul><li>Label-free attack: <span data-value="rq4.knownOnly"></span> vs <span data-value="rq4.unknownOnly"></span>, p = <span data-value="rq4.p"></span>; the extra failures were stuck</li><li>Training, step 0 vs <span data-value="rq5.steps"></span>: <span data-value="rq5.before"></span> vs <span data-value="rq5.after"></span>, p = <span data-value="rq5.p"></span></li><li>Low-frequency curves: a lead only (backup)</li></ul></aside>
+  <aside class="notes"><ul><li>Label-free attack: <span data-value="rq4.knownOnly"></span> vs <span data-value="rq4.unknownOnly"></span>, p = <span data-value="rq4.p"></span>; on the 8-qubit 1 × 2 circuit at batch size two, the extra failures were stuck</li><li>Training, step 0 vs <span data-value="rq5.steps"></span>: <span data-value="rq5.before"></span> vs <span data-value="rq5.after"></span>, p = <span data-value="rq5.p"></span></li><li>Low-frequency curves: a lead only (backup)</li></ul></aside>
 </section>
 
 <section data-conclusion>
   <h2>Repetitions slowed the attack; <span data-value="rq2.lowShots"></span> shots at 8 qubits and large batches stopped it</h2>
   <div class="recap">
     <div class="tile"><p class="num"><span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span></p><p>seeds leaked (untrained, exact gradients, one input, label known) on every circuit with one encoding layer and two or more trainable layers</p></div>
-    <div class="tile"><p class="num"><span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span></p><p>restarts that hit, of <span data-value="rq1.tries"></span>, at 8 qubits, from 1 to 8 repetitions; <span data-value="budget.large"></span> restarts recovered most stuck seeds</p></div>
+    <div class="tile"><p class="num"><span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span></p><p>restarts that hit, of <span data-value="rq1.tries"></span>, at 8 qubits and <span data-value="rq1.params"></span> effective parameters, from 1 to 8 repetitions; <span data-value="budget.large"></span> restarts recovered most stuck seeds</p></div>
     <div class="tile"><p class="num">≤ <span data-value="rq2.within8Max"></span></p><p>seed of <span data-value="paper.seeds"></span> within <span data-value="paper.closeRad"></span> rad at 8 qubits and <span data-value="rq2.lowShots"></span> shots; no batch recovered from <span data-value="rq3.heldMin"></span> unknowns per effective parameter up</p></div>
   </div>
   <div class="open">
@@ -658,7 +658,7 @@
       <li>Does the attacker's cost grow exponentially with the number of qubits?</li>
     </ul>
   </div>
-  <aside class="notes"><ul><li>One encoding layer with two or more trainable layers leaked (untrained, exact); repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li>Noise at 8 qubits and big batches actually hid the input</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
+  <aside class="notes"><ul><li>One encoding layer with two or more trainable layers leaked (untrained, exact); repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li><span data-value="rq2.lowShots"></span> shots at 8 qubits and big batches actually hid the input</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
 </section>
 
 <section class="closing">
@@ -703,7 +703,7 @@
       <tr><td>Outcomes</td><td data-label="Live toy" colspan="2">the same rule and thresholds: <span data-value="paper.recoveredRad"></span> and <span data-value="paper.closeRad"></span> rad</td></tr>
     </tbody>
   </table>
-  <p class="lead">One input against many gradient entries is the easy end: noise averages out, and a few restarts usually win. The paper's larger circuits are where the attack fails.</p>
+  <p class="lead">One input against many gradient entries is the easy end: noise averages out, and a few restarts usually win. In the paper, the attack failed on 8-qubit circuits with many repetitions, heavy shot noise or large batches.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">The toy is a teaching instrument; it runs the same circuit family at one qubit, and it says so on screen.</aside>
 </section>
@@ -712,7 +712,7 @@
   <h2>With as many effective parameters as inputs, other inputs often fit exactly</h2>
   <p class="lead">With one repetition and one trainable block, the best restart matched the gradient exactly on every seed, but on a different input for <span data-value="rq1.squareWrongSmall"></span> of <span data-value="paper.seeds"></span> seeds at 4 qubits and <span data-value="rq1.squareWrongLarge"></span> of <span data-value="paper.seeds"></span> at 8 qubits. Another restart sometimes found the true input, but both fit exactly, so the attacker could not tell them apart.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
-  <aside class="notes">Equal counts of equations and unknowns already allow a second exact solution.</aside>
+  <aside class="notes">With equal counts of equations and unknowns, these circuits already had a second exact solution.</aside>
 </section>
 
 <section id="faq-effective" class="backup">
@@ -723,7 +723,7 @@
 </section>
 
 <section id="faq-noise" class="backup">
-  <h2>At 8 qubits the shot noise was as large as the gradient itself</h2>
+  <h2>At 8 qubits and <span data-value="rq2.lowShots"></span> shots the noise was as large as the gradient itself</h2>
   <table class="data small-table">
     <thead><tr><th><span data-value="rq2.lowShots"></span> shots</th><th>Noise, squared norm</th><th>Gradient, squared norm</th></tr></thead>
     <tbody>

@@ -112,7 +112,8 @@ def test_the_page_opens_on_input_1_and_picks_no_seed() -> None:
 def test_the_worker_runs_the_decks_simulator() -> None:
     assert 'importScripts("../lab-sim.js")' in (LAB / "worker.js").read_text()
     page = (LAB / "index.html").read_text()
-    assert page.index('src="../lab-sim.js"') < page.index('src="data/runs.js"') < page.index('src="app.js"')
+    order = ['src="../lab-sim.js"', 'src="data/runs.js"', 'src="jobs.js"', 'src="app.js"']
+    assert [page.index(s) for s in order] == sorted(page.index(s) for s in order)
 
 
 def test_each_lab_slide_frames_a_real_tab_and_keeps_the_paper_figure() -> None:
@@ -139,7 +140,13 @@ def test_only_the_decks_own_frames_steer_it() -> None:
     )
     got = json.loads(out.stdout)
     # Wrong origin, a stranger window, another tag, a prototype key and an absurd height do nothing.
-    assert got == {"calls": ["next"], "tooTall": "", "height": "513px"}
+    assert {k: got[k] for k in ("calls", "tooTall", "height")} == {"calls": ["next"], "tooTall": "", "height": "513px"}
+    # Forwarded keys move the deck as Reveal's own keyboard does (up, down, left, right, space):
+    # a flat deck steps in order, Shift jumps to an end, a deck with stacks moves in two axes.
+    assert got["flat"] == ["prev", "next", "prev", "next", "next"]
+    bottom = "slide undefined 1.7976931348623157e+308"
+    assert got["flatShift"] == ["slide undefined 0", bottom, "slide 0 undefined", "slide 11 undefined", "prev"]
+    assert got["stacked"] == ["up", "down", "left", "right", "next"]
 
 
 def test_the_embed_reuses_the_decks_phone_tests() -> None:
@@ -180,6 +187,10 @@ def test_the_many_draw_jobs_cancel_resume_and_rerun() -> None:
     assert mid["stale"] <= 1
     alone = got["alone"]
     assert alone["a"]["seeds"] == [1, 2] and alone["a"]["done"] == 0 and alone["stale"] <= 1
+    assert got["aloneThread"] == {"seeds": [1, 2], "done": 0, "right": True, "current": False}
+    # A cancelled job stays cancelled when its Worker then fails (twice): nothing resumes it.
+    fac = got["failAfterCancel"]
+    assert fac["a"]["seeds"] == [1, 2] and fac["a"]["done"] == 0 and fac["terminated"]
     # A Worker that fails mid-job is let go; the job ends here, every input once, scored alike.
     assert got["failure"] == {**full, "terminated": True, "inWorker": False}
     assert got["thread"] == {**full, "inWorker": False}

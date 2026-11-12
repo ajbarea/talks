@@ -27,10 +27,19 @@
   Reveal.on("ready", load);
   Reveal.on("slidechanged", load);
 
+  // The same moves Reveal's own keyboard makes: in a deck without vertical stacks every arrow
+  // steps through the slides in order, and Shift jumps to an end.
+  const linear = () =>
+    Reveal.getConfig().navigationMode === "linear" || !Reveal.hasHorizontalSlides() || !Reveal.hasVerticalSlides();
+  const last = () => Reveal.getHorizontalSlides().length - 1;
   const KEYS = {
-    PageDown: () => Reveal.next(), " ": () => Reveal.next(), n: () => Reveal.next(), ArrowRight: () => Reveal.right(),
-    ArrowDown: () => Reveal.down(), PageUp: () => Reveal.prev(), p: () => Reveal.prev(), ArrowLeft: () => Reveal.left(),
-    ArrowUp: () => Reveal.up(), b: () => Reveal.togglePause(), ".": () => Reveal.togglePause(),
+    PageDown: () => Reveal.next(), n: () => Reveal.next(), PageUp: () => Reveal.prev(), p: () => Reveal.prev(),
+    " ": (shift) => (shift ? Reveal.prev() : Reveal.next()),
+    ArrowRight: (shift) => (shift ? Reveal.slide(last()) : linear() ? Reveal.next() : Reveal.right()),
+    ArrowLeft: (shift) => (shift ? Reveal.slide(0) : linear() ? Reveal.prev() : Reveal.left()),
+    ArrowDown: (shift) => (shift ? Reveal.slide(undefined, Number.MAX_VALUE) : linear() ? Reveal.next() : Reveal.down()),
+    ArrowUp: (shift) => (shift ? Reveal.slide(undefined, 0) : linear() ? Reveal.prev() : Reveal.up()),
+    b: () => Reveal.togglePause(), ".": () => Reveal.togglePause(),
   };
   window.addEventListener("message", (e) => {
     // Only this deck's own lab frames, from its own origin, may steer it.
@@ -42,6 +51,6 @@
     if (d.focus || d.key) {
       if (document.activeElement === f) f.blur();
     }
-    if (typeof d.key === "string" && Object.hasOwn(KEYS, d.key)) KEYS[d.key]();
+    if (typeof d.key === "string" && Object.hasOwn(KEYS, d.key)) KEYS[d.key](d.shift === true);
   });
 })();

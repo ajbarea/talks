@@ -800,11 +800,17 @@
     const s = el("select", { id }, k);
     for (const v of values) el("option", { value: v }, s, text(v));
     s.value = String(value);
-    // In a slide, a value picked with the mouse hands the clicker's arrows back to the deck; a
-    // keyboard user keeps the list, so arrows go on changing it.
+    // In a slide, a list reached with the mouse hands the clicker's arrows back to the deck after
+    // one change; a list reached with Tab keeps them, so arrows go on changing it.
     let byPointer = false;
-    s.addEventListener("pointerdown", () => (byPointer = true));
-    s.addEventListener("keydown", () => (byPointer = false));
+    let pointing = false;
+    s.addEventListener("pointerdown", () => {
+      byPointer = pointing = true;
+      setTimeout(() => (pointing = false), 0);
+    });
+    s.addEventListener("focus", () => {
+      if (!pointing) byPointer = false;
+    });
     s.addEventListener("change", () => {
       onChange(Number(s.value));
       if (embed && byPointer) s.blur();

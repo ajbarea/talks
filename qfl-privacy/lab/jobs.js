@@ -29,10 +29,13 @@
       workerOk = false;
       return null;
     }
-    worker.addEventListener("error", (e) => {
+    const mine = worker;
+    mine.addEventListener("error", (e) => {
       if (e && e.preventDefault) e.preventDefault();
+      // A second queued error from the same Worker finds it already let go.
+      if (worker !== mine) return;
       workerOk = false;
-      worker.terminate();
+      mine.terminate();
       worker = null;
       const resume = onWorkerError;
       onWorkerError = null;

@@ -5,7 +5,7 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 
-const lab = process.argv[2];
+const lab = path.resolve(process.argv[2]);
 const Q = require(path.join(lab, "..", "lab-sim.js"));
 const makeJobs = require(path.join(lab, "jobs.js"));
 const TH = { recovered: 0.05, close: 0.2 };
@@ -26,8 +26,11 @@ function fakeWorker(failAt) {
   ctx.postMessage = (d) =>
     fake.sent.push(d) &&
     queue.push(() => {
-      if (fake.terminated) return;
-      if (failAt && d.seed === failAt) on.error.forEach((h) => h({}));
+      // A message the Worker posted before terminate may still arrive (the worst case).
+      if (fake.terminated && !d.beforeTerminate) return;
+      // An uncaught error leaves a Worker running, so its next input is posted before the page
+      // hears the error and lets it go.
+      if (failAt && d.seed === failAt && !fake.terminated) queue.push(() => on.error.forEach((h) => h({})));
       else on.message.forEach((h) => h({ data: d }));
     });
   vm.createContext(ctx);
@@ -39,7 +42,11 @@ function fakeWorker(failAt) {
       fake.log.push(d);
       queue.push(() => !fake.terminated && ctx.onmessage({ data: d }));
     },
-    terminate: () => (fake.terminated = true),
+    terminate: () => {
+      fake.terminated = true;
+      fake.sent.forEach((d) => (d.beforeTerminate = true));
+    },
+    fail: () => on.error.forEach((h) => h({})),
   });
   return fake;
 }
@@ -107,6 +114,29 @@ const out = {};
   jobs.cancel();
   pump();
   out.alone = { a: brief(a, jobs), stale: w.sent.slice(mark).length };
+}
+// Cancelled on the page's thread (a page opened from a file): it scores no more, never ends.
+{
+  queue = [];
+  const jobs = makeJobs(env(null));
+  const a = job(jobs, "reps");
+  pump(() => a.seeds.length >= 2);
+  jobs.cancel();
+  pump();
+  out.aloneThread = brief(a, jobs);
+}
+// The Worker fails after its job was cancelled: nothing resumes on this thread.
+{
+  queue = [];
+  const w = fakeWorker(0);
+  const jobs = makeJobs(env(w));
+  const a = job(jobs, "reps");
+  pump(() => a.seeds.length >= 2);
+  jobs.cancel();
+  w.fail();
+  w.fail();
+  pump();
+  out.failAfterCancel = { a: brief(a, jobs), terminated: w.terminated };
 }
 // The Worker fails at input 3: the job finishes on this thread, every input once, in order.
 {

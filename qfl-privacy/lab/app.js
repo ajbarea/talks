@@ -602,96 +602,17 @@
 
   // ---- many hidden inputs: the toy's own trend ------------------------------------------------
 
-  // Runs a step's tally over hidden inputs 1 to n in a Worker, or on this thread a frame's
-  // budget at a time where a Worker cannot start (a page opened from a file).
-  let worker = null;
-  let workerOk = location.protocol !== "file:";
-  let jobId = 0;
-  // One job runs at a time, for whichever view started it last; starting another cancels it.
-  let cancelCurrent = null;
-  // If the Worker fails mid-job, the job carries on here from the next hidden input.
-  let onWorkerError = null;
-  function startWorker() {
-    if (!workerOk || worker) return worker;
-    try {
-      worker = new Worker("worker.js");
-      worker.addEventListener("error", (e) => {
-        e.preventDefault();
-        workerOk = false;
-        worker.terminate();
-        worker = null;
-        const resume = onWorkerError;
-        onWorkerError = null;
-        if (resume) resume();
-      });
-    } catch {
-      workerOk = false;
-      worker = null;
-    }
-    return worker;
-  }
-  // Returns the job's cancel function; isCurrent(cancel) says whether that job is still running.
-  function tallyRun(step, n, onScore, onDone) {
-    if (cancelCurrent) cancelCurrent();
-    const id = ++jobId;
-    let seed = 1;
-    let raf = 0;
-    let handler = null;
-    const w = startWorker();
-    const cancel = () => {
-      cancelAnimationFrame(raf);
-      // The Worker stops this job too, rather than finishing it for nobody.
-      if (handler && w) {
-        w.removeEventListener("message", handler);
-        w.postMessage({ cancel: id });
-      }
-      handler = null;
-      if (onWorkerError === onThread) onWorkerError = null;
-      if (cancelCurrent === cancel) cancelCurrent = null;
-    };
-    const finish = () => {
-      cancel();
-      onDone();
-    };
-    function onThread() {
-      if (handler && w) w.removeEventListener("message", handler);
-      handler = null;
-      let jobs = seed <= n ? Q.tallyJobs(step, seed) : [];
-      const tick = () => {
-        if (id !== jobId) return;
-        const until = performance.now() + 8;
-        while (seed <= n && performance.now() < until) {
-          const j = jobs.find((x) => x.runs.length < x.n);
-          if (j) {
-            Q.addRestart(j.c, j.runs, undefined, TH);
-            continue;
-          }
-          onScore(seed, Q.tallyScore(step, jobs, TH));
-          seed += 1;
-          if (seed <= n) jobs = Q.tallyJobs(step, seed);
-        }
-        if (seed > n) finish();
-        else raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-    }
-    cancelCurrent = cancel;
-    if (w) {
-      handler = (e) => {
-        if (e.data.id !== id) return;
-        if (e.data.done) finish();
-        else {
-          onScore(e.data.seed, e.data.scores);
-          seed = e.data.seed + 1;
-        }
-      };
-      w.addEventListener("message", handler);
-      onWorkerError = onThread;
-      w.postMessage({ id, step, from: 1, to: n, th: TH });
-    } else onThread();
-    return cancel;
-  }
-  const isCurrent = (cancel) => cancel !== null && cancelCurrent === cancel;
+  // The many-draw jobs (jobs.js): in a Worker, or on this thread from a file.
+  const JOBS = window.QLabJobs({
+    Q,
+    th: TH,
+    makeWorker: () => (location.protocol === "file:" ? null : new Worker("worker.js")),
+    raf: (f) => requestAnimationFrame(f),
+    caf: (h) => cancelAnimationFrame(h),
+    now: () => performance.now(),
+  });
+  const tallyRun = JOBS.run;
+  const isCurrent = JOBS.isCurrent;
 
   // The rows: one per value of the step's control, one mark per hidden input, a count on the
   // right, laid out like the paper's figure beside them.
@@ -762,7 +683,7 @@
           const secs = ((performance.now() - t0) / 1000).toFixed(1);
           const words = rows.map((r) => `${spec.label(r.v)}: ${r.total}`).join("; ");
           grid.setAttribute("aria-label", `The toy over hidden inputs 1 to ${n}, ${spec.head[1]}, of ${spec.of(n)}: ${words}`);
-          progress.textContent = `${n} hidden inputs in ${secs} s${worker ? ", in a background thread" : ""}.`;
+          progress.textContent = `${n} hidden inputs in ${secs} s${JOBS.inWorker ? ", in a background thread" : ""}.`;
           stop = null;
           complete = true;
         },
@@ -879,10 +800,14 @@
     const s = el("select", { id }, k);
     for (const v of values) el("option", { value: v }, s, text(v));
     s.value = String(value);
+    // In a slide, a value picked with the mouse hands the clicker's arrows back to the deck; a
+    // keyboard user keeps the list, so arrows go on changing it.
+    let byPointer = false;
+    s.addEventListener("pointerdown", () => (byPointer = true));
+    s.addEventListener("keydown", () => (byPointer = false));
     s.addEventListener("change", () => {
       onChange(Number(s.value));
-      // In a slide, the clicker's arrows go back to the deck once a value is picked.
-      if (embed) s.blur();
+      if (embed && byPointer) s.blur();
     });
     // Tabs share the state, so a view shown again first shows the current value.
     s.sync = (v) => (s.value = String(v));
@@ -1073,7 +998,7 @@
       ensure() {
         const want = embed ? Q.TOY.draws : state.n;
         if (nK) nK.sync(state.n);
-        if (!d.settled() || d.count() !== want) d.run(want);
+        if (JOBS.shouldRun(d.settled(), d.count(), want)) d.run(want);
       },
       here: (v, input) => d.here(v, input),
     };
@@ -1286,7 +1211,7 @@
   function reroute() {
     readHash();
     if (current) built[current]?.hide();
-    if (cancelCurrent) cancelCurrent();
+    JOBS.cancel();
     for (const [id] of TABS) {
       if (id === "intro" || !built[id]) continue;
       built[id].hide();
@@ -1327,7 +1252,7 @@
       }
     }, true);
     // After a click on a button or the scrubber, the keyboard goes back to the deck. A number
-    // box or a list keeps it, so it can be typed into.
+    // box keeps it, so it can be typed into; a list keeps it until a value is picked.
     document.addEventListener("pointerup", (e) => {
       const c = e.target.closest?.('button, input[type="range"]');
       if (!c) return;

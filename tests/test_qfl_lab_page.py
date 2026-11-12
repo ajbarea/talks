@@ -158,3 +158,29 @@ def test_each_still_link_opens_its_own_slides_tab() -> None:
     assert len(pairs) == 3
     for frame, link in pairs:
         assert frame.replace("&amp;embed=1", "") == link
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="needs node")
+def test_the_many_draw_jobs_cancel_resume_and_rerun() -> None:
+    out = subprocess.run(
+        ["node", str(ROOT / "tests" / "qfl_jobs_harness.js"), str(LAB)],
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=60,
+    )
+    got = json.loads(out.stdout)
+    full = {"seeds": [1, 2, 3, 4, 5, 6], "done": 1, "right": True, "current": False}
+    # A newer job cancels the last: the Worker hears the cancel first, the old job never ends.
+    assert got["supersede"]["log"][:3] == ["job 1", "cancel 1", "job 2"]
+    assert got["supersede"]["a"]["done"] == 0 and got["supersede"]["b"] == full
+    mid = got["midway"]
+    assert mid["a"]["seeds"] == [1, 2] and mid["a"]["done"] == 0 and mid["b"] == full
+    # The Worker itself stops the cancelled job: at most the input already under way.
+    assert mid["stale"] <= 1
+    alone = got["alone"]
+    assert alone["a"]["seeds"] == [1, 2] and alone["a"]["done"] == 0 and alone["stale"] <= 1
+    # A Worker that fails mid-job is let go; the job ends here, every input once, scored alike.
+    assert got["failure"] == {**full, "terminated": True, "inWorker": False}
+    assert got["thread"] == {**full, "inWorker": False}
+    assert got["shouldRun"] == [False, True, True]

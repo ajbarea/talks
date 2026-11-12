@@ -343,11 +343,13 @@ def test_a_changed_macro_is_caught(tmp_path: pathlib.Path, macro: str) -> None:
 
 @needs_node
 def test_the_lab_pages_toy_note_matches_the_simulator() -> None:
-    got = js(
-        "console.log(JSON.stringify([1, 2, 4, 8].map((r) => { let n = 0;"
-        " for (let s = 1; s <= 200; s++) n += Q.attack(Q.client(s, r, 8 / r, 0), 10).outcome === 'recovered';"
-        " return n; })))"
-    )
     note = (TALK / "lab" / "index.html").read_text()
-    m = re.search(r"\((\d+) to (\d+) of 200 at every repetition count\)", note)
-    assert m and (int(m.group(1)), int(m.group(2))) == (min(got), max(got))
+    m = re.search(r"\((\d+) to (\d+) of (\d+) at every repetition count\)", note)
+    assert m
+    n = int(m.group(3))
+    got = js(
+        f"const R = Q.TOY.steps.reps; console.log(JSON.stringify(R.reps.map((r) => {{ let k = 0;"
+        f" for (let s = 1; s <= {n}; s++) k += Q.attack(Q.client(s, r, Q.TOY.blocks / r, 0), R.restarts).outcome"
+        f" === 'recovered'; return k; }})))"
+    )
+    assert (int(m.group(1)), int(m.group(2))) == (min(got), max(got))

@@ -5,6 +5,11 @@ importScripts("../lab-sim.js");
 
 let current = 0;
 self.onmessage = (e) => {
+  // The page no longer wants this job (its view was rebuilt, or the job finished).
+  if (e.data.cancel !== undefined) {
+    if (current === e.data.cancel) current = 0;
+    return;
+  }
   const { id, step, from, to, th } = e.data;
   current = id;
   let seed = from;

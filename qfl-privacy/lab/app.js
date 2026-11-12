@@ -618,6 +618,7 @@
       worker.addEventListener("error", (e) => {
         e.preventDefault();
         workerOk = false;
+        worker.terminate();
         worker = null;
         const resume = onWorkerError;
         onWorkerError = null;
@@ -639,7 +640,11 @@
     const w = startWorker();
     const cancel = () => {
       cancelAnimationFrame(raf);
-      if (handler && w) w.removeEventListener("message", handler);
+      // The Worker stops this job too, rather than finishing it for nobody.
+      if (handler && w) {
+        w.removeEventListener("message", handler);
+        w.postMessage({ cancel: id });
+      }
       handler = null;
       if (onWorkerError === onThread) onWorkerError = null;
       if (cancelCurrent === cancel) cancelCurrent = null;
@@ -776,6 +781,7 @@
       here,
       // Finished, or still running: another view's job cancels this one, and showing it again reruns it.
       settled: () => complete || isCurrent(stop),
+      count: () => n,
       csv() {
         const header = ["input", ...spec.values.map((v) => `${spec.head[0]} ${spec.label(v)}`)].join(",");
         return [header, ...csv.sort((a, b) => a[0] - b[0]).map((r) => r.join(","))].join("\n");
@@ -873,7 +879,13 @@
     const s = el("select", { id }, k);
     for (const v of values) el("option", { value: v }, s, text(v));
     s.value = String(value);
-    s.addEventListener("change", () => onChange(Number(s.value)));
+    s.addEventListener("change", () => {
+      onChange(Number(s.value));
+      // In a slide, the clicker's arrows go back to the deck once a value is picked.
+      if (embed) s.blur();
+    });
+    // Tabs share the state, so a view shown again first shows the current value.
+    s.sync = (v) => (s.value = String(v));
     return s;
   }
   function rangeKnob(box, label, min, max, value, text, onChange) {
@@ -889,6 +901,11 @@
       r.setAttribute("aria-valuetext", out.textContent);
       onChange(Number(r.value));
     });
+    r.sync = (v) => {
+      r.value = String(v);
+      out.textContent = text(v);
+      r.setAttribute("aria-valuetext", out.textContent);
+    };
     return r;
   }
   function segKnob(box, label, values, value, text, onChange) {
@@ -903,6 +920,7 @@
       });
       return [v, b];
     });
+    return { sync: (v) => bs.forEach(([x, bb]) => bb.setAttribute("aria-pressed", String(x === v))) };
   }
 
   // ---- views -----------------------------------------------------------------------------------
@@ -927,15 +945,18 @@
     intro(box, "Pick a hidden input and a circuit. The attacker starts restarts from different guesses and lets each roll downhill on the matching loss. Pause on a wrong dip, step it forward, then add restarts until one reaches the input.");
     const knobs = el("div", { class: "knobs" }, box);
     const picker = inputPicker(knobs, () => update(true));
-    selectKnob(knobs, "Circuit, r × ℓ", REPS, state.reps, (r) => `${circuit(r)}${r === 1 ? " (1 repetition)" : ` (${r} repetitions)`}`, (v) => ((state.reps = v), update(true)));
-    selectKnob(knobs, "Shots per expectation value", SHOTS, state.shots, shotsWord, (v) => ((state.shots = v), update(true)));
-    rangeKnob(knobs, "Restarts", 1, 20, state.restarts, (v) => `${v} restart${v === 1 ? "" : "s"}`, (v) => ((state.restarts = v), later()));
+    const repsK = selectKnob(knobs, "Circuit, r × ℓ", REPS, state.reps, (r) => `${circuit(r)}${r === 1 ? " (1 repetition)" : ` (${r} repetitions)`}`, (v) => ((state.reps = v), update(true)));
+    const shotsK = selectKnob(knobs, "Shots per expectation value", SHOTS, state.shots, shotsWord, (v) => ((state.shots = v), update(true)));
+    const restartsK = rangeKnob(knobs, "Restarts", 1, 20, state.restarts, (v) => `${v} restart${v === 1 ? "" : "s"}`, (v) => ((state.restarts = v), later()));
     const bench = el("div", { class: "bench" }, box);
     const scope = makeScope(bench, { title: "The toy circuit", onDone: announce, split: true });
     const tp = makeTransport(box, [scope], { keyScope: box });
     const later = debounced(() => update(false));
     function update(autoplay) {
       picker.sync();
+      repsK.sync(state.reps);
+      shotsK.sync(state.shots);
+      restartsK.sync(state.restarts);
       commit(false);
       scope.load(attackOf(state.input, state.reps, state.shots, state.restarts), `hidden input ${state.input}; ${circuit(state.reps)}; ${shotsWord(state.shots)}`);
       tp.restart(autoplay);
@@ -950,8 +971,8 @@
     const picker = inputPicker(knobs, () => update(true));
     if (embed) return repsEmbed(box, knobs, picker);
     const bench = el("div", { class: "bench" }, box);
-    const lo = makeScope(bench, { title: "1 repetition × 8 blocks", closedTable: true });
-    const hi = makeScope(bench, { title: "8 repetitions × 1 block", closedTable: true, onDone: (w) => announce(`8 × 1: ${w}`) });
+    const lo = makeScope(bench, { title: `1 repetition × ${BLOCKS} blocks`, closedTable: true });
+    const hi = makeScope(bench, { title: `${BLOCKS} repetitions × 1 block`, closedTable: true, onDone: (w) => announce(`${circuit(BLOCKS)}: ${w}`) });
     const tp = makeTransport(box, [lo, hi], { keyScope: box });
     const draws = drawsSection(box, "reps", `${TOY_R} restarts, exact gradients`, paperReps);
     function update(autoplay) {
@@ -967,13 +988,14 @@
 
   // Inside a slide there is room for one panel: the repetitions are its free control.
   function repsEmbed(box, knobs, picker) {
-    segKnob(knobs, "Circuit, r × ℓ", REPS, state.reps, circuit, (v) => ((state.reps = v), update(true)));
+    const repsK = segKnob(knobs, "Circuit, r × ℓ", REPS, state.reps, circuit, (v) => ((state.reps = v), update(true)));
     const bench = el("div", { class: "bench" }, box);
     const scope = makeScope(bench, { title: `1 qubit, ${TOY_R} restarts, exact gradients`, onDone: announce, noTable: true });
     const tp = makeTransport(box, [scope], { keyScope: box });
     const draws = drawsSection(box, "reps", `${TOY_R} restarts, exact gradients`, paperReps);
     function update(autoplay) {
       picker.sync();
+      repsK.sync(state.reps);
       commit(false);
       scope.load(attackOf(state.input, state.reps, 0, TOY_R), `hidden input ${state.input}; ${circuit(state.reps)}`);
       tp.restart(autoplay);
@@ -987,16 +1009,18 @@
     intro(box, "The attacker never sees the hidden input, but it can tell which restart fits best: the one with the lowest matching loss. So a stuck restart only costs time. Add restarts until one reaches the input.");
     const knobs = el("div", { class: "knobs" }, box);
     const picker = inputPicker(knobs, () => update(true));
-    rangeKnob(knobs, "Restarts", 1, 20, state.restarts, (v) => `${v} restart${v === 1 ? "" : "s"}`, (v) => ((state.restarts = v), later()));
+    const restartsK = rangeKnob(knobs, "Restarts", 1, 20, state.restarts, (v) => `${v} restart${v === 1 ? "" : "s"}`, (v) => ((state.restarts = v), later()));
     const bench = el("div", { class: "bench" }, box);
-    const scope = makeScope(bench, { title: "8 repetitions × 1 block, exact gradients", onDone: announce, split: !embed, noTable: embed });
+    const R = Q.TOY.steps.restarts.reps;
+    const scope = makeScope(bench, { title: `${R} repetitions × ${BLOCKS / R} block${BLOCKS / R === 1 ? "" : "s"}, exact gradients`, onDone: announce, split: !embed, noTable: embed });
     const tp = makeTransport(box, [scope], { keyScope: box });
-    const draws = drawsSection(box, "restarts", "8 × 1, exact gradients", paperBudget);
+    const draws = drawsSection(box, "restarts", `${circuit(R)}, exact gradients`, paperBudget);
     const later = debounced(() => update(false));
     function update(autoplay) {
       picker.sync();
+      restartsK.sync(state.restarts);
       commit(false);
-      scope.load(attackOf(state.input, Q.TOY.steps.restarts.reps, 0, state.restarts), `hidden input ${state.input}; ${state.restarts} restart${state.restarts === 1 ? "" : "s"}`);
+      scope.load(attackOf(state.input, R, 0, state.restarts), `hidden input ${state.input}; ${state.restarts} restart${state.restarts === 1 ? "" : "s"}`);
       tp.restart(autoplay);
       draws.here(Q.TOY.steps.restarts.restarts.includes(state.restarts) ? state.restarts : null, state.input);
     }
@@ -1008,13 +1032,14 @@
     intro(box, "On a device each expectation value is estimated from shots, so the client's gradient is noisy. The dashed curve is the loss with the exact gradient; the solid one is what the attacker matches against. Fewer shots lift and shift the dip.");
     const knobs = el("div", { class: "knobs" }, box);
     const picker = inputPicker(knobs, () => update(true));
-    selectKnob(knobs, "Shots per expectation value", SHOTS, state.shots, shotsWord, (v) => ((state.shots = v), update(true)));
+    const shotsK = selectKnob(knobs, "Shots per expectation value", SHOTS, state.shots, shotsWord, (v) => ((state.shots = v), update(true)));
     const bench = el("div", { class: "bench" }, box);
     const scope = makeScope(bench, { title: `${SHOT_STEP.reps} repetitions × ${BLOCKS / SHOT_STEP.reps} blocks, ${SHOT_STEP.restarts} restarts`, onDone: announce, split: !embed, noTable: embed });
     const tp = makeTransport(box, [scope], { keyScope: box });
     const draws = drawsSection(box, "shots", `${circuit(SHOT_STEP.reps)}, ${SHOT_STEP.restarts} restarts`, paperShots);
     function update(autoplay) {
       picker.sync();
+      shotsK.sync(state.shots);
       commit(false);
       scope.load(attackOf(state.input, SHOT_STEP.reps, state.shots, SHOT_STEP.restarts), `hidden input ${state.input}; ${shotsWord(state.shots)}`);
       tp.restart(autoplay);
@@ -1029,8 +1054,9 @@
     const head = el("div", { class: "draws-head" }, sec);
     el("h3", {}, head, "One input is a noisy sample; many show the trend");
     const tools = el("div", { class: "knobs" }, head);
+    let nK = null;
     if (!embed) {
-      segKnob(tools, "Hidden inputs", NS, state.n, String, (v) => {
+      nK = segKnob(tools, "Hidden inputs", NS, state.n, String, (v) => {
         state.n = v;
         commit(false);
         d.run(v);
@@ -1042,8 +1068,12 @@
     const d = makeDraws(pair, step, { fixed });
     if (!embed) paperFig(pair);
     return {
+      // Shown again: the rows match the shared count (another tab may have changed it), and a
+      // job another view cancelled runs again.
       ensure() {
-        if (!d.settled()) d.run(embed ? 20 : state.n);
+        const want = embed ? Q.TOY.draws : state.n;
+        if (nK) nK.sync(state.n);
+        if (!d.settled() || d.count() !== want) d.run(want);
       },
       here: (v, input) => d.here(v, input),
     };

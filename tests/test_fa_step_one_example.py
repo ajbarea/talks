@@ -118,4 +118,5 @@ def test_marks_add_no_spacing():
     decls = {k.strip(): v.strip() for k, v in decls.items()}
     for prop in ("padding", "margin"):
         assert decls.get(prop) == "0", prop
-    assert not {"letter-spacing", "word-spacing", "padding-left", "padding-right", "margin-left", "margin-right"} & decls.keys()
+    spacing = {"letter-spacing", "word-spacing", "padding-left", "padding-right", "margin-left", "margin-right"}
+    assert not spacing & decls.keys()

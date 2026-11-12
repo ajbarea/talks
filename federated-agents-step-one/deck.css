@@ -45,6 +45,9 @@
 .quote { margin: 18px 0 0; padding-left: 18px; border-left: 6px solid var(--ours-line); font-size: 25px; color: var(--ink); }
 .quote.small { margin-top: 0; font-size: 22px; }
 figure { margin: 0; }
+/* No one-word last lines; a link takes the plan's ink ring when reached by keyboard. */
+.reveal p, .reveal li, .reveal figcaption { text-wrap: pretty; }
+.reveal .slides a:focus-visible { outline: 3px solid var(--ours); outline-offset: 3px; border-radius: 2px; }
 .title-slide h1::after, .closing h2::after, .faq-index h2::after { display: none; }
 
 /* The content of a talk slide fills the canvas down to the footnote. The reserve is !important
@@ -117,6 +120,8 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .problem figcaption { margin-bottom: 14px; display: flex; justify-content: space-between; gap: 14px; align-items: baseline; color: var(--muted); }
 .problem figcaption b { font-family: var(--display); font-weight: 600; font-size: 31px; line-height: 1.1; color: var(--ink); }
 .problem figcaption span { flex: none; font-family: var(--mono); font-size: 19px; }
+.review-card figcaption { display: block; }
+.review-card figcaption span { display: block; margin-top: 4px; }
 .diff { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; gap: 16px; }
 .diff p { margin: 0; }
 .diff .old, .diff .new { padding: 16px 18px; font-size: 28px; border-radius: 3px; }
@@ -400,7 +405,7 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .plain.tight td { padding: 5px 12px; line-height: 1.16; }
 .reveal .plain + p { margin-top: 16px; }
 .gl-row small { display: block; margin-top: 4px; font-family: var(--mono); font-weight: 500; font-size: 19px; line-height: 1.2; color: var(--muted); }
-.sources { font-size: 28px; }
+.sources { font-size: 28px; margin-left: 0; padding-left: 1.1em; }
 .sources li { margin-bottom: 16px; }
 .reveal .faq-index h2 { color: var(--ink); font-size: 64px; }
 .reveal .faq-index .faq-sub { font-size: 30px; }
@@ -476,7 +481,8 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .phone .iv.supported { top: 112px; }
 .phone .iv.bounded { top: 196px; }
 .phone .iv.unsure { top: 280px; }
-.phone .tl-group li { grid-template-columns: 96px 1fr; font-size: 20px; padding-left: 20px; }
+.phone .tl-group li { grid-template-columns: 116px 1fr; font-size: 20px; padding-left: 20px; }
+.phone .tl-group li b { white-space: nowrap; }
 .phone .tl-group li b { font-size: 18px; }
 .phone .tl-head { font-size: 30px; }
 .phone .tl-after { font-size: 24px; }
@@ -485,7 +491,7 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .phone .road .step-no, .phone .road .tag { font-size: 17px; }
 .phone .under-road { font-size: 21px; }
 .phone .dotplot .tick { font-size: 32px; }
-.phone .dotplot .row-sub { font-size: 32px; }
+.phone .dotplot .row-sub { font-size: 28px; }
 .phone .dotplot .value { font-size: 32px; }
 .phone .dotplot .row-label { font-size: 34px; }
 .phone .planted-fig figcaption { display: block; }

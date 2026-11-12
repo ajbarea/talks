@@ -71,7 +71,7 @@ Next. The abstract is due today, and the report is due November 20. Reviews come
 
 ## 17. The lab's strengths apply most at the federated-learning stages
 
-Here's where your work connects. Aggregation and robustness: which robust or control-theoretic rule still holds when each update is a low-rank adapter? Attacks: can a server tell which organization an update came from, even under secure aggregation? Data quality and metadata: can a client's data-quality profile inform how its update is weighted, and what should a company declare as shareable? You can also help now: a second judge for 77 OpenStack examples I already labeled would show how often two people agree.
+Here's where your work connects. Aggregation and robustness: which robust or control-theoretic rule still holds when each update is a low-rank adapter? Attacks: can a server tell which organization an update came from, even under secure aggregation? Data quality and metadata: can a client's data-quality profile inform how its update is weighted, and what should a company declare as shareable? You can also help now: a second judge for {readings.audit_checked} OpenStack examples I already labeled would show how often two people agree.
 
 ## 18. Before federating agents, test that there is a house style to federate
 

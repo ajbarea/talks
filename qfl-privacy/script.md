@@ -14,11 +14,11 @@ Three parts. First, the attack, and why two papers disagree about it. Second, th
 
 Here's the setting. In federated learning, the client keeps its data at home and sends the server only a gradient: a list of numbers, one per trainable angle. That feels private. But the server knows the circuit, so it can play a guessing game: pick an input, compute that input's gradient, and adjust the guess until the two gradients match. If they match exactly, the guess is usually the input. That's the gradient-matching attack, and on classical networks it rebuilds images.
 
-What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would. That's {rq1.attacks} attacks with exact gradients, then more with shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With exact gradients, one input per update and a known label, every circuit with one encoding layer and two or more trainable layers gave its input away on every seed.
+What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would. That's {rq1.attacks} attacks with exact gradients, then more with shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With exact gradients, one input per update and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave its input away on every seed.
 
 ## Two papers from one group disagree on whether the attack works on quantum circuits
 
-So why isn't this settled? Two papers from the same group at JPMorgan disagree. Kumar and colleagues, in 2023, argue that expressive encodings make circuits private: many encoding frequencies give the matching loss many false dips, so any search gets lost. Papadopoulos and colleagues, in 2025, reconstruct inputs numerically once the circuit has enough parameters: more gradient equations than unknowns, and the search finds its way down.
+So why isn't this settled? Two papers from the same group at JPMorgan disagree. Kumar and colleagues, in 2023, argue that expressive encodings make circuits private: many encoding frequencies give the matching loss many false dips, so any search gets lost. Papadopoulos and colleagues, in 2025, reconstruct inputs numerically once the circuit has enough parameters: as many gradient equations as unknowns or more, and the search finds its way down.
 
 They use different circuits, different attacks and different definitions. So my question is narrow: on one family of circuits, with one attack, where does each claim hold?
 
@@ -64,7 +64,7 @@ And training the circuit first? Pooled over {rq5.tasks} tasks, {rq5.before} seed
 
 ## Repetitions slowed the attack; {rq2.lowShots} shots at 8 qubits and large batches stopped it
 
-So, to sum up. A shared gradient can rebuild the input. With exact gradients, one encoding layer and two or more trainable layers, it did on every seed. More encoding repetitions slowed the attack, and more restarts recovered most stuck seeds, though not on the eight-repetition circuit. What actually hid the input was {rq2.lowShots} shots per expectation value at 8 qubits, and batches with more unknowns than effective parameters.
+So, to sum up. A shared gradient can rebuild the input. With exact gradients, one input per update and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave it away on every seed. More encoding repetitions slowed the attack, and more restarts recovered most stuck seeds, though not on the eight-repetition circuit. What actually hid the input was {rq2.lowShots} shots per expectation value at 8 qubits, and batches with more unknowns than effective parameters.
 
 Two questions stay open. Can a client still train on gradients as noisy as {rq2.lowShots} shots? And does the attacker's cost grow exponentially with the number of qubits? Two circuit sizes can't tell us. That's my talk.
 

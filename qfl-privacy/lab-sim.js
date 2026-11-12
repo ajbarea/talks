@@ -1,5 +1,6 @@
 // The live lab's simulator: one qubit, a data re-uploading circuit, the client's gradient by the
-// parameter-shift rule (exact or from sampled shots), and a gradient-matching attack run with Adam.
+// parameter-shift rule (exact or from sampled shots), and a gradient-matching attack run with Adam
+// on the matching loss's exact Fourier form.
 // Plain functions, no DOM, so node runs the same file in tests/test_qfl_lab.py.
 (function (root, make) {
   if (typeof module === "object" && module.exports) module.exports = make();
@@ -156,29 +157,78 @@
     return c;
   }
 
-  // One restart: Adam on the guess, its slope a central difference of the matching loss. Returns
-  // the path and the loss at each of its points (for drawing), and the end point.
+  // For one client, each entry of the attacker's gradient is a trigonometric polynomial in the guess
+  // of degree 2r: the circuit's output has frequencies up to r (Schuld et al. 2021) and the entry
+  // is that output times its slope. Sampling the gradient at 4r + 1 even points therefore gives its
+  // exact Fourier form, from which the loss and its slope cost O(P r) each, with no circuit to run.
+  function fourier(c) {
+    if (c.series) return c.series;
+    const K = 2 * c.reps;
+    const M = 2 * K + 1;
+    const P = c.theta.length;
+    const A = Array.from({ length: P }, () => new Float64Array(K + 1));
+    const B = Array.from({ length: P }, () => new Float64Array(K + 1));
+    for (let m = 0; m < M; m++) {
+      const x = (TAU * m) / M;
+      const G = gradient(x, c.theta, c.reps, c.layers, c.y, 0);
+      for (let j = 0; j < P; j++) {
+        for (let k = 0; k <= K; k++) {
+          A[j][k] += (G[j] * Math.cos(k * x) * (k ? 2 : 1)) / M;
+          B[j][k] += (G[j] * Math.sin(k * x) * (k ? 2 : 1)) / M;
+        }
+      }
+    }
+    c.series = { K, P, A, B, cos: new Float64Array(K + 1), sin: new Float64Array(K + 1) };
+    return c.series;
+  }
+
+  // The matching loss at a guess, and its exact slope, from the Fourier form.
+  function lossAndSlope(c, x) {
+    const f = fourier(c);
+    for (let k = 0; k <= f.K; k++) {
+      f.cos[k] = Math.cos(k * x);
+      f.sin[k] = Math.sin(k * x);
+    }
+    let loss = 0;
+    let slope = 0;
+    for (let j = 0; j < f.P; j++) {
+      const a = f.A[j];
+      const b = f.B[j];
+      let g = a[0];
+      let d = 0;
+      for (let k = 1; k <= f.K; k++) {
+        g += a[k] * f.cos[k] + b[k] * f.sin[k];
+        d += k * (b[k] * f.cos[k] - a[k] * f.sin[k]);
+      }
+      const r = g - c.target[j];
+      loss += r * r;
+      slope += 2 * r * d;
+    }
+    return [loss, slope];
+  }
+
+  // One restart: Adam on the guess, with the loss's exact slope. Returns the path and the loss at
+  // each of its points (for drawing), and the end point.
   function descend(c, start, opts) {
-    const o = { steps: 150, lr: 0.05, b1: 0.9, b2: 0.999, eps: 1e-8, h: 1e-5, every: 3, ...opts };
-    const L = (v) => matchLoss(v, c.target, c.theta, c.reps, c.layers, c.y);
+    const o = { steps: 150, lr: 0.05, b1: 0.9, b2: 0.999, eps: 1e-8, every: 3, ...opts };
     let v = start;
     let m = 0;
     let s = 0;
+    let [loss, d] = lossAndSlope(c, v);
     const path = [v];
-    const losses = [L(v)];
+    const losses = [loss];
     for (let t = 1; t <= o.steps; t++) {
-      const d = (L(v + o.h) - L(v - o.h)) / (2 * o.h);
       m = o.b1 * m + (1 - o.b1) * d;
       s = o.b2 * s + (1 - o.b2) * d * d;
       const mh = m / (1 - o.b1 ** t);
       const sh = s / (1 - o.b2 ** t);
       v -= (o.lr * mh) / (Math.sqrt(sh) + o.eps);
+      [loss, d] = lossAndSlope(c, v);
       if (t % o.every === 0) {
         path.push(v);
-        losses.push(L(v));
+        losses.push(loss);
       }
     }
-    const loss = path[path.length - 1] === v ? losses[losses.length - 1] : L(v);
     return { start, end: v, loss, path, losses };
   }
 
@@ -221,12 +271,12 @@
   // The matching loss across one turn of guesses, for the landscape plot.
   function landscape(c, n) {
     const out = new Float64Array(n);
-    for (let i = 0; i < n; i++) out[i] = matchLoss((TAU * i) / n, c.target, c.theta, c.reps, c.layers, c.y);
+    for (let i = 0; i < n; i++) out[i] = lossAndSlope(c, (TAU * i) / n)[0];
     return out;
   }
 
   return {
     TAU, DEFAULTS, rng, gauss, ry, rz, state, expZ, bloch, sampleZ, gradient, matchLoss, angleError,
-    client, descend, outcome, addRestart, pickBest, attack, landscape,
+    client, fourier, lossAndSlope, descend, outcome, addRestart, pickBest, attack, landscape,
   };
 });

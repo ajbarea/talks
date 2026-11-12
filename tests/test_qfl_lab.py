@@ -93,6 +93,22 @@ def test_parameter_shift_gradient_matches_a_finite_difference(reps: int, layers:
 
 
 @needs_node
+@pytest.mark.parametrize(("reps", "layers", "shots"), [(1, 8, 0), (2, 4, 100), (4, 2, 0), (8, 1, 10)])
+def test_fourier_form_matches_the_direct_loss_and_its_slope(reps: int, layers: int, shots: int) -> None:
+    """The attack runs on the loss's Fourier form; it must equal the circuit simulated directly."""
+    got = js(
+        f"const c = Q.client(5, {reps}, {layers}, {shots});"
+        "const L = (x) => Q.matchLoss(x, c.target, c.theta, c.reps, c.layers, c.y);"
+        "const xs = [-7.1, -0.4, 0.3, 1.9, 3.3, 5.8, 12.4];"
+        "const fd = (x) => (L(x + 1e-6) - L(x - 1e-6)) / 2e-6;"
+        "console.log(JSON.stringify(xs.map((x) => [...Q.lossAndSlope(c, x), L(x), fd(x)])))"
+    )
+    for fast_loss, fast_slope, loss, slope in got:
+        assert fast_loss == pytest.approx(loss, abs=1e-11)
+        assert fast_slope == pytest.approx(slope, abs=1e-5)
+
+
+@needs_node
 def test_last_z_rotation_never_moves_the_output() -> None:
     """The effective-parameter count the slides use: the last R_Z has zero gradient."""
     got = js("console.log(JSON.stringify(Array.from(Q.gradient(0.7, [0.3,1.1,2.0,0.4,0.9,2.2], 1, 3, 1, 0))))")

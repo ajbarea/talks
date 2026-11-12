@@ -79,7 +79,7 @@ The circuit has P = 2rℓN angles: r repetitions, ℓ blocks, two rotations per 
 last block's Z rotations come just before a Z measurement, so they never change the output; their
 gradient is always zero. The other P − N angles each give one useful equation.
 
-### Unknowns per gradient entry, NB / P_eff (batch slide)
+### Unknowns per effective parameter, NB / P_eff (batch slide)
 
 A batch of B inputs on N qubits has NB unknown numbers. The gradient still gives only P_eff useful equations. Above
 1, there are more unknowns than equations, and many batches fit the same gradient. The paper's grid
@@ -119,7 +119,10 @@ print(binomtest(3, 14 + 3, 0.5).pvalue)  # 0.0127, the slide's 0.013
 ## The live lab, slide by slide
 
 The panel is a toy: one qubit, one input, 8 trainable blocks in all, simulated in the browser. The
-attack is Adam on the guess for 150 steps; the paper used L-BFGS-B for up to 500 iterations. The
+attack is Adam on the guess for 150 steps, with the loss's exact slope; the paper used L-BFGS-B for
+up to 500 iterations. The toy can be fast because each gradient entry is a Fourier series in the
+guess with frequencies up to 2r (re-uploading r times gives the output frequencies up to r), so a
+few samples per client give the whole loss curve. The
 outcome rule and thresholds are the paper's. Every number you quote comes from the right-hand
 panel, never from the toy.
 
@@ -138,8 +141,10 @@ turn the slide.
   the panel already hands the keyboard back, so this should not happen.)
 - **A result differs from what you meant to show:** press "Reset to preset". The presets are fixed
   seeds and replay the same run on any machine.
-- **"New hidden input" shows something odd** (say, recovered at 8 repetitions): "One qubit is the easy
-  case; that's why the paper's runs are on the right." Then Reset.
+- **"New hidden input" shows little effect:** at 8 repetitions the verdict usually stays Recovered, the
+  preset included (1 restart of 10 hits). The signal is the count of restarts that hit, not the
+  verdict. If it barely moves: "One qubit is the easy case; that's why the paper's runs are on the
+  right." Then Reset.
 - **The panel is blank or frozen:** carry on from the right-hand figure; it holds the slide's claim.
   The panel also does not appear in the PDF or PowerPoint copies, by design.
 - **No network:** the deck works offline once loaded, and from a downloaded copy opened as a file.

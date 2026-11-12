@@ -78,10 +78,10 @@
     </figure>
     <div class="claim fragment" data-fragment-index="1">
       <p><b>What I did:</b> attacked simulated 4- and 8-qubit re-uploading circuits as a curious server would: <span data-value="rq1.attacks"></span> attacks with exact gradients, then noise, batches, hidden labels and training.</p>
-      <p><b>Why you should care:</b> these are the gradients our parameter-shift code computes. With exact gradients, one input and a known label, every circuit with one encoding layer and two or more trainable layers leaked it on <span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span> seeds.</p>
+      <p><b>Why you should care:</b> these are the gradients our parameter-shift code computes. With exact gradients, one input and a known label, every untrained circuit with one encoding layer and two or more trainable layers leaked it on <span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span> seeds.</p>
     </div>
   </div>
-  <aside class="notes"><ul><li>Federated learning: data stays home, gradients travel; the server searches for an input with the same gradient</li><li>What I did: <span data-value="rq1.attacks"></span> exact-gradient attacks, then noise, batches, labels, training; <span data-value="paper.seeds"></span> seeds each</li><li>Why care: one encoding layer, two or more trainable layers, exact gradients: leaked on every seed</li></ul></aside>
+  <aside class="notes"><ul><li>Federated learning: data stays home, gradients travel; the server searches for an input with the same gradient</li><li>What I did: <span data-value="rq1.attacks"></span> exact-gradient attacks, then noise, batches, labels, training; <span data-value="paper.seeds"></span> seeds each</li><li>Why care: untrained, one encoding layer, two or more trainable layers, exact gradients: leaked on every seed</li></ul></aside>
 </section>
 
 <section data-chapter="1 · The attack">
@@ -647,7 +647,7 @@
 <section data-conclusion>
   <h2>Repetitions slowed the attack; <span data-value="rq2.lowShots"></span> shots at 8 qubits and large batches stopped it</h2>
   <div class="recap">
-    <div class="tile"><p class="num"><span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span></p><p>seeds leaked (exact gradients, one input, label known) on every circuit with one encoding layer and two or more trainable layers</p></div>
+    <div class="tile"><p class="num"><span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span></p><p>seeds leaked (untrained, exact gradients, one input, label known) on every circuit with one encoding layer and two or more trainable layers</p></div>
     <div class="tile"><p class="num"><span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span></p><p>restarts that hit, of <span data-value="rq1.tries"></span>, at 8 qubits, from 1 to 8 repetitions; <span data-value="budget.large"></span> restarts recovered most stuck seeds</p></div>
     <div class="tile"><p class="num">≤ <span data-value="rq2.within8Max"></span></p><p>seed of <span data-value="paper.seeds"></span> within <span data-value="paper.closeRad"></span> rad at 8 qubits and <span data-value="rq2.lowShots"></span> shots; no batch recovered from <span data-value="rq3.heldMin"></span> unknowns per effective parameter up</p></div>
   </div>
@@ -699,7 +699,7 @@
     <tbody>
       <tr><td>Circuit</td><td data-label="Live toy">1 qubit, 1 input, 8 trainable blocks in all</td><td data-label="Paper">4 and 8 qubits, CNOT chain, 1 to 8 blocks per repetition</td></tr>
       <tr><td>Client's gradient</td><td data-label="Live toy">parameter shift, exact or sampled shots</td><td data-label="Paper">parameter shift with shots; autodiff when exact (the values agree)</td></tr>
-      <tr><td>Attack</td><td data-label="Live toy">Adam, 150 steps, slope by finite difference</td><td data-label="Paper">L-BFGS-B, up to <span data-value="paper.maxIter"></span> iterations, slope by autodiff</td></tr>
+      <tr><td>Attack</td><td data-label="Live toy">Adam, 150 steps, exact slope from the loss's Fourier form</td><td data-label="Paper">L-BFGS-B, up to <span data-value="paper.maxIter"></span> iterations, slope by autodiff</td></tr>
       <tr><td>Outcomes</td><td data-label="Live toy" colspan="2">the same rule and thresholds: <span data-value="paper.recoveredRad"></span> and <span data-value="paper.closeRad"></span> rad</td></tr>
     </tbody>
   </table>
@@ -717,7 +717,7 @@
 
 <section id="faq-effective" class="backup">
   <h2>An effective parameter is one whose gradient can be nonzero</h2>
-  <p class="lead">The circuit has 2rℓN angles. The last block's Z rotations are followed only by CNOTs and a Z measurement, so they never change the output; the other P − N angles are the effective parameters. With one repetition and one trainable block (r = ℓ = 1) that leaves N equations for N inputs.</p>
+  <p class="lead">The circuit has P = 2rℓN angles. The last block's Z rotations are followed only by CNOTs and a Z measurement, so they never change the output; the other P − N angles are the effective parameters. With one repetition and one trainable block (r = ℓ = 1) that leaves N equations for N inputs.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">A test in the repository checks, on several shapes, that exactly these angles have nonzero gradient.</aside>
 </section>

@@ -200,7 +200,7 @@
 .phone .lab-fixed::before { content: "; "; }
 .lab-origin .short, .phone .lab-origin .long { display: none; }
 .phone .lab-origin .short { display: inline; }
-.bloch .unset { visibility: hidden; }
+.bloch .unset, .trace .unset { visibility: hidden; }
 .phone .lab-buttons { justify-content: flex-start; margin-top: 8px; }
 .phone .ctl, .phone .lab-head, .phone .lab-read p, .phone .lab button { font-size: 0.7em; }
 .phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.66em; }

@@ -165,7 +165,8 @@
       sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * f, y: PH - 14, class: "tick", "text-anchor": f === 0 ? "start" : f === 1 ? "end" : "middle" }, s, t);
     });
     sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * 0.25, y: PH - 14, class: "axis", "text-anchor": "middle" }, s, "guess \u2192");
-    const truth = sv("line", { class: "truth-mark", y1: PAD.t, y2: PH - PAD.b }, s);
+    // Hidden until the first result, like the sphere's arrows.
+    const truth = sv("line", { class: "truth-mark unset", y1: PAD.t, y2: PH - PAD.b }, s);
     const curve = sv("path", { class: "curve" }, s);
     const paths = sv("g", { class: "paths" }, s);
     const balls = sv("g", { class: "balls" }, s);
@@ -271,6 +272,7 @@
       plot.curve.setAttribute("d", `M${Array.from(curve, (L, i) => `${(PAD.l + (i / curve.length) * (PW - PAD.l - PAD.r)).toFixed(1)} ${Y(L).toFixed(1)}`).join("L")}`);
       plot.truth.setAttribute("x1", X(c.x));
       plot.truth.setAttribute("x2", X(c.x));
+      plot.truth.classList.remove("unset");
       plot.paths.textContent = "";
       plot.balls.textContent = "";
       // Each restart's search as a trail of points, its losses stored when it ran.

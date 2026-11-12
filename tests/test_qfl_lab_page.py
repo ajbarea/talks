@@ -219,5 +219,8 @@ def test_every_key_handler_leaves_browser_shortcuts_alone() -> None:
     bodies = [b for st in starts for b in _bodies(src, st)]
     taking = [b for b in bodies if "preventDefault" in b]
     assert len(taking) == 4  # the player, the runs grid, the tabs bar, the embed's forwarder
+    # A handler written in another shape would escape the search: every preventDefault is in one.
+    assert sum(b.count("preventDefault") for b in taking) == src.count("preventDefault")
     for b in taking:
         assert all(k in b for k in ("ctrlKey", "metaKey", "altKey")), b[:120]
+        assert b.index("altKey") < b.index("preventDefault"), b[:120]

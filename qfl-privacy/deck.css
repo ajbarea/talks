@@ -1,3 +1,5 @@
+@import url("palette.css");
+
 /* ------------------------------------------------------------- qfl privacy -- */
 /* A bench instrument in a lit room: a cool grey-green ground, white screens, ink. Two colours
    carry meaning everywhere, slides and live panel alike: vermilion is the attacker's guess and any
@@ -5,17 +7,6 @@
    ink and grey. Vermilion (CIELAB L 43) and cobalt (L 33) differ in hue and lightness, and every
    mark that carries state also differs in fill (solid, ringed, open), so states read in greyscale.
    Text colours clear 7:1 on the ground and on white. */
-
-:root {
-  --paper: #e9ece8; --card: #fbfcfa; --band: #dde2dd; --line: #b8bfb9;
-  --ink: #161b1f; --muted: #3c454d; --label: #263139;
-  --leak: #b3361b; --leak-ink: #8a2510; --leak-tint: #f6ddd5;
-  --held: #1d4e89; --held-ink: #183f6e; --held-tint: #e2eaf4;
-  --ours: #1d4e89; --ours-line: #183f6e; --ours-ink: #183f6e; --ours-tint: #e2eaf4;
-  --risk: #b3361b; --risk-line: #b3361b; --risk-ink: #8a2510; --risk-tint: #f6ddd5;
-  --fix: #2f6b4f; --fix-line: #2f6b4f; --fix-ink: #234f3b; --fix-tint: #e3efe8;
-  --neutral: #9aa3ab; --neutral-line: #4b555e; --neutral-ink: #3c454d; --neutral-tint: #f1f3f0;
-}
 
 .reveal h1, .reveal h2 { letter-spacing: -0.005em; }
 .reveal .slides b { font-weight: 700; }

@@ -157,7 +157,8 @@ def name_slide(slide):
         [
             [
                 (
-                    "Does learned house style in code review belong to the project group, the organization, or neither?",
+                    "Does learned house style in code review belong to the project group, "
+                    "the organization, or neither?",
                     False,
                     ACCENT,
                 )

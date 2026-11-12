@@ -793,6 +793,11 @@
     num.addEventListener("change", () => go(Number(num.value)));
     return { sync: () => (num.value = state.input) };
   }
+  // How the last control was reached. A tap focuses after its pointer events end, and a window
+  // coming back focuses the list again, so a list reads this on focus rather than timing events.
+  let lastInput = "keyboard";
+  document.addEventListener("pointerdown", () => (lastInput = "pointer"), true);
+  document.addEventListener("keydown", (e) => e.key === "Tab" && (lastInput = "keyboard"), true);
   function selectKnob(box, label, values, value, text, onChange, cls) {
     const k = el("div", { class: `knob${cls ? ` ${cls}` : ""}` }, box);
     const id = `sel-${Math.random().toString(36).slice(2, 8)}`;
@@ -800,17 +805,11 @@
     const s = el("select", { id }, k);
     for (const v of values) el("option", { value: v }, s, text(v));
     s.value = String(value);
-    // In a slide, a list reached with the mouse hands the clicker's arrows back to the deck after
-    // one change; a list reached with Tab keeps them, so arrows go on changing it.
+    // In a slide, a list reached by mouse, touch or its label hands the clicker's arrows back to
+    // the deck after one change; a list reached with Tab keeps them, so arrows go on changing it.
     let byPointer = false;
-    let pointing = false;
-    s.addEventListener("pointerdown", () => {
-      byPointer = pointing = true;
-      setTimeout(() => (pointing = false), 0);
-    });
-    s.addEventListener("focus", () => {
-      if (!pointing) byPointer = false;
-    });
+    s.addEventListener("pointerdown", () => (byPointer = true));
+    s.addEventListener("focus", () => (byPointer = lastInput === "pointer"));
     s.addEventListener("change", () => {
       onChange(Number(s.value));
       if (embed && byPointer) s.blur();
@@ -1245,7 +1244,11 @@
     // A presenter's clicker sends page or arrow keys. Keys a control does not use go to the deck,
     // and a click hands the keyboard back, so the next press turns the slide.
     const DECK = new Set(["PageDown", "PageUp", "ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", " ", "n", "p", "b", "."]);
+    // Reveal ignores a key with Ctrl or Meta, or with Shift other than on Space and the arrows;
+    // those stay with the browser (Ctrl+P prints, Ctrl+PageDown changes tab).
+    const SHIFTED = new Set([" ", "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"]);
     document.addEventListener("keydown", (e) => {
+      if (!((e.shiftKey && SHIFTED.has(e.key)) || e.altKey) && (e.shiftKey || e.ctrlKey || e.metaKey)) return;
       const tag = e.target.tagName;
       const arrow = e.key === "ArrowLeft" || e.key === "ArrowRight";
       const own =

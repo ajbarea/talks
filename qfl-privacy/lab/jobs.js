@@ -32,8 +32,6 @@
     const mine = worker;
     mine.addEventListener("error", (e) => {
       if (e && e.preventDefault) e.preventDefault();
-      // A second queued error from the same Worker finds it already let go.
-      if (worker !== mine) return;
       workerOk = false;
       mine.terminate();
       worker = null;

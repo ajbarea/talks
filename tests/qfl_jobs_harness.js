@@ -28,8 +28,8 @@ function fakeWorker(failAt) {
     queue.push(() => {
       // A message the Worker posted before terminate may still arrive (the worst case).
       if (fake.terminated && !d.beforeTerminate) return;
-      // An uncaught error leaves a Worker running, so its next input is posted before the page
-      // hears the error and lets it go.
+      // The error event and the Worker's messages come from different task sources, so a message
+      // may still arrive after the page has heard the error and let the Worker go.
       if (failAt && d.seed === failAt && !fake.terminated) queue.push(() => on.error.forEach((h) => h({})));
       else on.message.forEach((h) => h({ data: d }));
     });

@@ -62,6 +62,7 @@
 .fl-fig { margin: 6px 0 0; }
 .fl-fig svg { width: 100%; height: auto; max-height: 392px; display: block; }
 .phone .fl-fig svg { max-height: none; }
+.phone .fl-fig figcaption { font-size: 0.7em; }
 .fl-fig .box { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; }
 .fl-fig .box-title { font: 700 26px var(--sans); fill: var(--ink); }
 .fl-fig .box-text { font: 22px var(--sans); fill: var(--muted); }
@@ -250,8 +251,7 @@
 .phone .lab-read { flex-direction: column; align-items: flex-start; gap: 4px; margin: 4px 0; }
 .phone .lab-read p { white-space: normal; }
 .phone .lab-ctlrow { border-top: 0; padding-top: 0; }
-.lab-origin .short, .phone .lab-origin .long, .phone .rows-cap .long { display: none; }
-.phone .lab-origin .short { display: inline; }
+.phone .rows-cap .long { display: none; }
 .bloch .unset, .trace .unset { visibility: hidden; }
 .phone .ctl, .phone .lab-head, .phone .lab-read p, .phone .lab button, .phone .rows-cap { font-size: 0.7em; }
 .phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.66em; }

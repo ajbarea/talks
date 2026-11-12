@@ -203,7 +203,7 @@
   // filled when that input was recovered (best of the first n restarts) or came within the close
   // threshold, as the paper's figure beside it counts seeds.
   const ROW = {
-    reps: { head: ["r × ℓ", "restarts of 10 that found it, a pie per input", `of ${TOY.draws * TOY.steps.reps.restarts}`], label: (r) => `${r}×${TOY.blocks / r}` },
+    reps: { head: ["r × ℓ", "restarts of 10 that found it, per input", `of ${TOY.draws * TOY.steps.reps.restarts}`], label: (r) => `${r}×${TOY.blocks / r}` },
     restarts: { head: ["restarts", "inputs recovered by the best restart", `of ${TOY.draws}`], label: (n) => String(n) },
     shots: { head: ["shots", `inputs guessed within ${TH.close} rad`, `of ${TOY.draws}`], label: (v) => (v ? v.toLocaleString("en-US") : "exact") },
   };
@@ -227,7 +227,7 @@
       : { W: 640, x0: 86, dx: 25, r: 7.5, pitch: 20, top: 24 };
     const H = g.top + g.pitch * values.length;
     const cap = el("p", { class: "rows-cap" }, box);
-    el("b", {}, cap, "Many draws");
+    el("b", {}, cap, "Many draws:");
     cap.append(` inputs 1 to ${TOY.draws}, not picked`);
     el("span", { class: "long" }, cap, "; one qubit is the easy end");
     const s = sv("svg", { viewBox: `0 0 ${g.W} ${H}`, class: "toy-fig", role: "img", "aria-label": "The toy over hidden inputs 1 to 20: computing" }, box);
@@ -491,7 +491,9 @@
         // Screen readers hear the result once, when it is complete.
         read.setAttribute("aria-busy", "false");
         const words = `${hits} of ${n} restarts found the hidden input; the best guess is ${rad(b.error)} radians from it (${WORD[b.outcome]}).`;
-        status.textContent = words;
+        // Cleared first, so a Reset or a replay that ends on the same sentence is announced again.
+        status.textContent = "";
+        requestAnimationFrame(() => (status.textContent = words));
         bloch.label(words);
         plot.title.textContent = `Matching loss across every guess, lowest where a guess's gradient matches the client's. ${words}`;
         plot.s.setAttribute("aria-label", plot.title.textContent);

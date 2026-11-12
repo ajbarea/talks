@@ -135,8 +135,8 @@ attack is Adam on the guess for 150 steps, with the loss's exact slope; the pape
 up to 500 iterations. The toy can be fast because each gradient entry is a Fourier series in the
 guess with frequencies up to 2r (re-uploading r times gives the output frequencies up to r), so a
 few samples per client give the whole loss curve. The
-outcome rule and thresholds are the paper's. Every number you quote comes from the right-hand
-panel, never from the toy.
+outcome rule and thresholds are the paper's. Every number you quote about the paper comes from the
+right-hand figure; the counts at the panel's foot are the toy's own, and the panel labels them so.
 
 Each lab slide opens on hidden input 1. "Next input" steps through inputs 1 to 20, the
 simulator's first seeds, not picked. One input is a noisy sample, so the rows at the foot of the

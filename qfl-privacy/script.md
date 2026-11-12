@@ -12,7 +12,7 @@ Three parts. First, the attack, and why two papers disagree about it. Second, th
 
 ## In federated learning the data stays home; each client's update, here a gradient, travels
 
-A quick setup, in case federated learning is new. Several clients, say phones or hospitals, want to train one shared model without pooling their data. So each client keeps its data at home and trains the model on it locally. It sends the server only its update; in the setting I study, that update is a gradient. The server averages the updates and sends the new model back. The data stays home; the gradient travels. So, is the gradient private?
+A quick setup, in case federated learning is new. Several clients, say phones or hospitals, want to train one shared model without pooling their data. So each client keeps its data at home and trains the model on it locally. It sends the server only its update; in the setting I study, that update is one gradient computed on its data. The server averages the updates and sends the new model back. The data stays home; the gradient travels. So, is the gradient private?
 
 ## The gradient a client shares can rebuild the input it was computed from
 
@@ -36,7 +36,7 @@ Each attack ends one of four ways. Recovered: within {paper.recoveredRad} radian
 
 ## At a fixed parameter count, more encoding repetitions left the search stuck more often
 
-This is the live lab. It's a toy: one qubit, one hidden input, running in this browser. The curve is the matching loss for every possible guess, and the blue line marks the hidden input. Each restart is a ball released one after another to roll downhill. On the sphere, the blue ring is the input, the red dot is the attacker's best guess, and the ticks outside show where each restart ended. The number to watch is restarts that found the input.
+This is the live lab. It's a toy: one qubit, one hidden input, running in this browser. The curve is the matching loss for every possible guess, and the blue line marks the hidden input. Each restart is a ball released one after another to roll downhill. On the sphere, the blue ring is the input, the red dot is the attacker's best guess, and the small dots outside show where each restart ended. The number to watch is restarts that found the input.
 
 I'll drag the repetitions up, keeping the total number of trainable blocks fixed. Watch the curve: more repetitions mean more frequencies, so more dips for a restart to get trapped in. That's Kumar's mechanism. For this one input the count barely moves, because one input is a noisy sample. So at the foot of the panel the toy runs hidden inputs one to twenty, not picked. Each pie is one input's ten restarts, and the pies thin out as repetitions grow, the paper's direction, though one qubit is the easy end.
 

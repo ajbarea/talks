@@ -482,8 +482,7 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .phone .iv.bounded { top: 196px; }
 .phone .iv.unsure { top: 280px; }
 .phone .tl-group li { grid-template-columns: 116px 1fr; font-size: 20px; padding-left: 20px; }
-.phone .tl-group li b { white-space: nowrap; }
-.phone .tl-group li b { font-size: 18px; }
+.phone .tl-group li b { white-space: nowrap; font-size: 18px; }
 .phone .tl-head { font-size: 30px; }
 .phone .tl-after { font-size: 24px; }
 .phone .road p { font-size: 21px; }

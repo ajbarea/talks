@@ -75,7 +75,9 @@
     // The first reading's split, re-read on two of its seeds, is named as that split.
     el("text", { x: 30, y: y + 8, class: "row-sub" }, name === "registered" ? "that split" : `split ${i + 1}`);
     el("circle", { cx: x(v), cy: y, r: 14, class: "point" });
-    el("text", { x: x(v) + 24, y: y + 9, class: "value" }, v > 0 ? `+${v.toFixed(2)}` : v.toFixed(2));
+    // A negative value's label sits left of its dot, clear of the zero line.
+    const side = v < 0 ? { x: x(v) - 24, "text-anchor": "end" } : { x: x(v) + 24 };
+    el("text", { ...side, y: y + 9, class: "value" }, v > 0 ? `+${v.toFixed(2)}` : v.toFixed(2));
   });
 
   into = step(2);

@@ -140,87 +140,23 @@
 .limits li { margin: 0 0 12px; }
 
 /* ------------------------------------------------------------ the live lab -- */
-/* One grid whose columns share the slide by ratio, each with a floor, so nothing is sized to one
-   screen. In the panel: header (the fixed values in words); sphere beside the loss trace; the
-   readouts on their own row; the free control and the buttons in one wrapping row (flex items wrap
-   rather than overlap); the rows of hidden inputs across the foot. On a phone it stacks. */
+/* The lab page (lab/) in a frame beside the paper's figure, sized by ratio with a floor; the
+   frame takes the page's height when the page reports it (lab-embed.js). In print and the
+   exported files the frame is left out and the paper's figure takes the row. */
 .lab-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(300px, 2fr); gap: 30px; align-items: start; }
 .lab-slide h2 { margin-bottom: 12px; }
-.lab {
-  display: grid; grid-template-columns: minmax(120px, 1fr) minmax(0, 3fr); column-gap: 12px;
-  grid-template-areas: "head head" "bloch trace" "read read" "ctl ctl" "rows rows";
-  position: relative; padding: 10px 16px 12px; background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
+.lab-frame { display: block; width: 100%; height: 470px; border: 0; background: transparent; }
+.lab-link { display: none; margin: 14px 0 0; font-size: 0.64em; color: var(--muted); }
+.lab-link b { color: var(--ink); }
+/* Still: opened from a file (the exports) or printed, the paper's figure alone, with the lab's address. */
+html.lab-still .lab-frame, html.reveal-print .lab-frame, html.print-pdf .lab-frame { display: none; }
+html.lab-still .lab-row, html.reveal-print .lab-row, html.print-pdf .lab-row { grid-template-columns: minmax(0, 820px); justify-content: center; }
+html.lab-still .lab-link, html.reveal-print .lab-link, html.print-pdf .lab-link { display: block; }
+@media print {
+  .lab-frame { display: none; }
+  .lab-row { grid-template-columns: minmax(0, 820px); justify-content: center; }
+  .lab-link { display: block; }
 }
-.lab:empty { display: none; }
-.lab-head { grid-area: head; margin: 0 0 6px; font-size: 0.64em; color: var(--muted); }
-.lab-head b { margin-right: 12px; color: var(--ink); }
-.lab-bloch { grid-area: bloch; align-self: center; justify-self: center; width: 100%; max-width: 156px; }
-.lab-trace { grid-area: trace; }
-.lab-read { grid-area: read; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 36px; margin: 6px 0 4px; }
-.lab-ctlrow { grid-area: ctl; display: flex; flex-wrap: wrap; align-items: end; gap: 8px 16px; padding-top: 6px; border-top: 1px solid var(--line); }
-.lab-ctl { flex: 1 1 240px; }
-.lab-buttons { display: flex; flex-wrap: wrap; gap: 8px 10px; }
-.lab-rows { grid-area: rows; margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--line); }
-.bloch, .trace { display: block; width: 100%; height: auto; }
-.bloch .sphere { fill: #fff; stroke: var(--ink); stroke-width: 2; }
-.bloch .equator, .bloch .meridian { fill: none; stroke: var(--line); stroke-width: 1.5; }
-.bloch .pole { font: 31px var(--sans); fill: var(--muted); }
-.bloch .truth { stroke: var(--held); stroke-width: 3; stroke-dasharray: 6 5; }
-.bloch .truth-ring { fill: none; stroke: var(--held); stroke-width: 3.5; }
-.bloch .guess { stroke: var(--leak); stroke-width: 4; stroke-linecap: round; }
-.bloch .guess-dot { fill: var(--leak); stroke: #fff; stroke-width: 1.5; }
-.bloch .end { fill: #fff; stroke: var(--muted); stroke-width: 1.5; }
-.bloch .end.recovered { fill: var(--leak); stroke: var(--leak); }
-.bloch .end.close { fill: var(--leak-tint); stroke: var(--leak); }
-.bloch .end.ambiguous { fill: var(--held-tint); stroke: var(--held); }
-.bloch .hub { fill: var(--ink); }
-.trace { background: #fff; border: 1px solid var(--line); border-radius: 4px; }
-.trace .grid line { stroke: #e3e7e3; stroke-width: 1; }
-.trace .tick, .trace .axis { font: 22px var(--sans); fill: var(--muted); }
-.trace .tag { fill: var(--held-ink); font-weight: 700; }
-.trace .truth-mark { stroke: var(--held); stroke-width: 3; stroke-dasharray: 7 6; }
-.trace .curve { fill: none; stroke: var(--ink); stroke-width: 2.5; }
-.trace .paths path { fill: none; stroke: var(--leak); stroke-width: 1.5; stroke-opacity: 0.3; }
-.trace .trails line { stroke: var(--leak); stroke-width: 4; stroke-linecap: round; }
-.trace .ball { fill: #fff; stroke: var(--muted); stroke-width: 2; }
-.trace .ball.rolling { fill: #fff; stroke: var(--ink); stroke-width: 2.5; }
-.trace .ball.recovered { fill: var(--leak); stroke: var(--leak); }
-.trace .ball.close { fill: var(--leak-tint); stroke: var(--leak); stroke-width: 3; }
-.trace .ball.ambiguous { fill: var(--held-tint); stroke: var(--held); stroke-width: 3; }
-.trace .ball.best { stroke: var(--ink); stroke-width: 3; }
-.trace .plate { fill: #fff; fill-opacity: 0.92; }
-.lab-read p { margin: 0; font-size: 0.64em; line-height: 1.2; color: var(--muted); white-space: nowrap; }
-.lab-read p b { display: block; font-variant-numeric: tabular-nums; color: var(--ink); }
-.lab-read .main b { font-size: 1.4em; color: var(--leak-ink); }
-.lab-read .minor b { font-size: 1em; font-weight: 600; }
-.ctl { display: grid; grid-template-columns: 1fr auto; gap: 0 8px; align-items: baseline; font-size: 0.64em; }
-.ctl label { color: var(--ink); font-weight: 700; }
-.ctl output { grid-row: 1; grid-column: 2; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
-.ctl input { grid-column: 1 / -1; width: 100%; height: 28px; margin: 2px 0 0; accent-color: var(--leak); cursor: pointer; }
-.ctl.fixed { display: none; }
-.lab button { padding: 5px 12px; font: 600 0.64em var(--sans); color: var(--ink); background: var(--card); border: 2px solid var(--ink); border-radius: 6px; cursor: pointer; white-space: nowrap; }
-.lab button:hover { background: var(--band); }
-.lab :focus-visible { outline: 3px solid var(--held); outline-offset: 2px; }
-.lab-fixed::before { content: "; "; }
-.lab-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.lab, .lab-read, .lab-ctlrow, .lab-ctl, .lab-buttons, .lab-trace, .lab-bloch, .lab-rows { min-width: 0; }
-.lab-origin { color: var(--muted); }
-/* The toy's rows of hidden inputs, at the foot of the panel, laid out like the paper's figure. */
-.rows-cap { margin: 0 0 2px; font-size: 0.64em; color: var(--muted); }
-.rows-cap b { margin-right: 10px; color: var(--ink); }
-.toy-fig { display: block; width: 100%; height: auto; font-family: var(--sans); }
-.toy-fig .h { font-size: 20px; fill: var(--muted); }
-.toy-fig .l, .toy-fig .n { font-size: 21px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; }
-.toy-fig .l.on { fill: var(--leak-ink); }
-.toy-fig .band { fill: transparent; }
-.toy-fig .band.on { fill: var(--band); }
-/* Not yet run: a pale ring; run: white with a grey ring, filled (or a red pie slice) where it hit. */
-.toy-fig .dot { fill: #fff; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 2 2; }
-.toy-fig .dot.run { stroke: var(--muted); stroke-dasharray: none; }
-.toy-fig .dot.hit { fill: var(--leak); stroke: var(--leak); }
-.toy-fig .pie { fill: var(--leak); }
-.toy-fig .here-mark { fill: none; stroke: none; }
-.toy-fig .here-mark.on { stroke: var(--ink); stroke-width: 2.5; }
 
 /* -------------------------------------------------------------- conclusion -- */
 .recap .tile .num { color: var(--leak-ink); }
@@ -234,21 +170,9 @@
 .phone .flow-fig svg { min-width: 600px; }
 .phone .circuit-fig svg { min-width: 620px; }
 .phone .lab-row { grid-template-columns: 1fr; gap: 10px; }
-.phone .lab-head { margin-bottom: 4px; }
 .phone .paper figcaption { margin-bottom: 4px; }
 .phone .eq { white-space: normal; font-size: 0.8em; }
 .phone .eq sub { font-size: 0.86em; }
-.phone .lab { grid-template-columns: 100px minmax(0, 1fr); grid-template-areas: "head head" "trace trace" "bloch read" "ctl ctl" "rows rows"; padding: 10px 12px 12px; }
-.phone .lab-read { flex-direction: column; align-items: flex-start; gap: 4px; margin: 4px 0; }
-.phone .lab-read p { white-space: normal; }
-.phone .lab-ctlrow { border-top: 0; padding-top: 0; }
-.phone .rows-cap .long { display: none; }
-.bloch .unset, .trace .unset { visibility: hidden; }
-.phone .ctl, .phone .lab-head, .phone .lab-read p, .phone .lab button, .phone .rows-cap { font-size: 0.7em; }
 .phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.66em; }
 .phone .lab-slide h2 { font-size: 1.22em; }
-.phone .lab-bloch { width: 100px; }
-.phone .lab-rows { margin-top: 4px; }
-.phone .lab-read .minor b { display: inline; margin-left: 0.3em; }
-.phone .bloch .pole { font-size: 41px; }
 .phone .claim-card figcaption { flex-direction: column; }

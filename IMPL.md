@@ -42,12 +42,12 @@ Each talk gets its own strong identity on a light ground for lit rooms, and ever
 ### Now: the lab as its own page, issue #116, branch talk/qml-lab-app
 Spec: issue #116; Heph's addendum 2 (points 1-6) and fixes 1-5; bar: techne `plugins/graphe/_shared/exemplars.md`; model: Pharos explorer (`~/ajsoftworks/pharos/site/explorer/index.html`).
 Plan (✅ done / 📋 pending):
-- 📋 A. `figures.py` also writes `lab/data/runs.js` (window.PAPER_RUNS): every attack row of rq1, budget, rq2-rq5 with the paper's Rule per restart; `--check` covers it. Docstring: "every number on the slides and in the script".
-- 📋 B. `lab/index.html` + `lab/app.css` + `lab/app.js`: tabs (Federated learning, One attack, Repetitions, Restarts, Shots, The paper's runs), state in the hash (`#tab=attack&input=3&reps=2&shots=0&restarts=10`), input picker, downloads (paper bundle JSON/CSV, toy rows CSV).
-- 📋 C. One attack: timeline (play/pause Space, step arrows, scrub, speed), each restart's start/end/loss/outcome in a table, Bloch + loss plot (from lab.js).
-- 📋 D. Repetitions: 1x8 and 8x1 side by side on one transport; many-draw rows (20/100/200 inputs) in a Worker (`lab/worker.js`, importScripts ../lab-sim.js), main thread on file://. Restarts, Shots likewise. Paper rows from PAPER_RUNS.
-- 📋 E. Embed mode (`&embed=1`): the compact panel the deck uses; deck lab slides become an iframe at a fixed state + "Open full screen", still paper figure in print; keys forwarded to the deck by postMessage (deck checks event.source). Retire lab.js; port its tests.
-- 📋 F. Gates: make check; drive at 1920/1366/1280/390 (app + deck); Opus review rounds; merge; live check.
+- ✅ A. `figures.py` also writes `lab/data/runs.js` (window.PAPER_RUNS): every attack row of rq1, budget, rq2-rq5 with the paper's Rule per restart; `--check` covers it. Docstring: "every number on the slides and in the script".
+- ✅ B. `lab/index.html` + `lab/app.css` + `lab/app.js`: tabs (Federated learning, One attack, Repetitions, Restarts, Shots, The paper's runs), state in the hash (`#tab=attack&input=3&reps=2&shots=0&restarts=10`), input picker, downloads (paper bundle JSON/CSV, toy rows CSV).
+- ✅ C. One attack: timeline (play/pause Space, step arrows, scrub, speed), each restart's start/end/loss/outcome in a table, Bloch + loss plot (from lab.js).
+- ✅ D. Repetitions: 1x8 and 8x1 side by side on one transport; many-draw rows (20/100/200 inputs) in a Worker (`lab/worker.js`, importScripts ../lab-sim.js), main thread on file://. Restarts, Shots likewise. Paper rows from PAPER_RUNS.
+- ✅ E. Embed mode (`&embed=1`): the compact panel the deck uses; deck lab slides become an iframe at a fixed state + "Open full screen", still paper figure in print; keys forwarded to the deck by postMessage (deck checks event.source). Retire lab.js; port its tests. File:// and print (`html.lab-still`, `reveal-print`, `@media print`): no frame, the paper's figure at 820 px, "Try it live" with the address. Explainer's lab section describes the embedded page.
+- ▶ F. Gates: make check; drive at 1920/1366/1280/390 (app + deck); Opus review rounds; merge; live check.
 
 ### Verify
 - `QFL=<checkout> uv run pytest -q tests/test_qfl_lab.py`; `QFL=<checkout> python3 qfl-privacy/figures.py --check`; `python3 scripts/script_length.py qfl-privacy --check`.

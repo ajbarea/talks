@@ -109,3 +109,24 @@ def test_the_worker_runs_the_decks_simulator() -> None:
     assert 'importScripts("../lab-sim.js")' in (LAB / "worker.js").read_text()
     page = (LAB / "index.html").read_text()
     assert page.index('src="../lab-sim.js"') < page.index('src="data/runs.js"') < page.index('src="app.js"')
+
+
+def test_each_lab_slide_frames_a_real_tab_and_keeps_the_paper_figure() -> None:
+    deck = (TALK / "index.html").read_text()
+    tabs = set(re.findall(r'\["(\w+)", "[^"]+"\]', (LAB / "app.js").read_text()))
+    frames = re.findall(r'<iframe class="lab-frame web-only" data-src="lab/index\.html#([^"]+)"', deck)
+    assert len(frames) == 3
+    for frag in frames:
+        q = dict(kv.split("=") for kv in frag.replace("&amp;", "&").split("&"))
+        assert q["tab"] in tabs and q["embed"] == "1"
+    # The frame loads only on its slide (data-src), so print and file:// show the paper's figure.
+    assert not re.search(r'<iframe[^>]*\ssrc="lab/', deck)
+    assert deck.count("<!-- fig:") >= len(frames)
+    assert "lab.js" not in re.findall(r'<script src="([^"]+)"', deck)
+
+
+def test_only_the_decks_own_frames_steer_it() -> None:
+    src = (TALK / "lab-embed.js").read_text()
+    assert "x.contentWindow === e.source" in src
+    assert 'd.source !== "qfl-lab"' in src
+    assert "Object.hasOwn(KEYS, d.key)" in src

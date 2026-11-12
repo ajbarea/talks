@@ -256,19 +256,34 @@ table.runs td.o i { display: inline-block; width: 11px; height: 11px; margin-rig
 .fl .g-dot, .fl .m-dot { offset-distance: 100%; opacity: 0; }
 
 /* --------------------------------------------------------------- embedded -- */
-/* Inside a slide: no header, one panel and its rows, sized by the slide. */
-.embed body, body.embed { background: transparent; font-size: 16px; }
-body.embed main { max-width: none; padding: 0; }
-body.embed .top, body.embed footer, body.embed .view > h2, body.embed .lede, body.embed .knobs .fixed { display: none; }
-body.embed .knobs { margin: 8px 0 0; }
-body.embed .bench { grid-template-columns: 1fr; }
-body.embed .draws { margin-top: 10px; }
-body.embed .draws-head h3 { font-size: 0.98rem; }
-body.embed .pair { grid-template-columns: 1fr; }
-body.embed .strip-fig.paper { display: none; }
-body.embed .strip-fig { padding: 8px 10px; }
-body.embed details.table { display: none; }
+/* Inside a slide: the slide's own heading names the step, so the page shows one compact panel:
+   the free control, sphere | loss plot | readouts on one row, a one-line transport, the rows. */
+body.embed { background: transparent; font-size: 18px; }
+body.embed main { max-width: none; padding: 2px; }
+body.embed .top, body.embed footer, body.embed .view > h2, body.embed .lede, body.embed .panel-head,
+body.embed details.table, body.embed .strip-fig.paper, body.embed .draws-head h3, body.embed .rand { display: none; }
+body.embed .knobs { margin: 0 0 8px; gap: 8px 18px; }
+body.embed .bench { grid-template-columns: minmax(0, 1fr); }
+body.embed .panel { padding: 8px 12px 10px; }
+body.embed .scope { grid-template-columns: minmax(90px, 0.8fr) minmax(0, 3fr) minmax(150px, 1.2fr); grid-template-areas: "bloch plot read"; }
+body.embed .readouts { flex-direction: column; gap: 8px; }
+body.embed .transport { grid-template-columns: auto minmax(0, 1fr) auto; margin-top: 8px; }
+body.embed .clock { grid-column: auto; font-size: 0.82rem; }
+body.embed .clock > span:first-child { display: none; }
+body.embed .draws { margin-top: 8px; }
+body.embed .draws-head { margin-bottom: 4px; justify-content: flex-end; }
+body.embed .pair { grid-template-columns: minmax(0, 1fr); }
+body.embed .strip-fig { padding: 6px 10px; }
+body.embed .strip-fig figcaption { margin-bottom: 4px; font-size: 0.85rem; }
+body.embed .strips { gap: 3px 10px; }
+body.embed .progress { display: none; }
 .open-full { font-size: 0.88rem; font-weight: 600; }
+/* A phone's slide is narrow: the plot on its own row, the sphere beside the readouts. */
+@media (max-width: 560px) {
+  body.embed .scope { grid-template-columns: 90px minmax(0, 1fr); grid-template-areas: "plot plot" "bloch read"; }
+  body.embed .transport { grid-template-columns: auto minmax(0, 1fr); }
+  body.embed .clock { display: none; }
+}
 
 /* ------------------------------------------------------------------ narrow -- */
 @media (max-width: 760px) {

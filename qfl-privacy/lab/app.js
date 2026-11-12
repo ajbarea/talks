@@ -771,7 +771,7 @@
     const prev = el("button", { class: "btn icon", type: "button", "aria-label": "Previous hidden input" }, row, "−");
     const num = el("input", { id, type: "number", min: 1, max: 9999, step: 1, value: state.input, inputmode: "numeric" }, row);
     const next = el("button", { class: "btn icon", type: "button", "aria-label": "Next hidden input" }, row, "+");
-    const rnd = el("button", { class: "btn", type: "button" }, row, "Random");
+    const rnd = el("button", { class: "btn rand", type: "button" }, row, "Random");
     const go = (v) => {
       state.input = Math.min(9999, Math.max(1, v | 0 || 1));
       num.value = state.input;
@@ -1165,9 +1165,13 @@
     const DECK = new Set(["PageDown", "PageUp", "ArrowRight", "ArrowLeft", "ArrowDown", "ArrowUp", " ", "n", "p", "b", "."]);
     document.addEventListener("keydown", (e) => {
       const tag = e.target.tagName;
-      const own = tag === "INPUT" || tag === "SELECT" || (tag === "BUTTON" && (e.key === " " || e.key === "Enter"));
+      const arrow = e.key === "ArrowLeft" || e.key === "ArrowRight";
+      const own =
+        tag === "INPUT" || tag === "SELECT" || (tag === "BUTTON" && (e.key === " " || e.key === "Enter")) || (arrow && e.target.closest?.(".keys"));
       if (e.key === "PageDown" || e.key === "PageUp" || (!own && DECK.has(e.key))) {
+        // The deck acts on it, so the page does not too (Space would also play the search).
         e.preventDefault();
+        e.stopPropagation();
         post({ key: e.key, shift: e.shiftKey });
       }
     }, true);

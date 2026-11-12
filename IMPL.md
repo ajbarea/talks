@@ -36,22 +36,22 @@ Each talk gets its own strong identity on a light ground for lit rooms, and ever
 - Read every edit back after a reload; skip Save when nothing changed, so reruns are safe.
 - `videos/channel/refresh.py extract META PLAYLISTS` rebuilds the tables from a fresh `yt-dlp` pull (`uvx yt-dlp --js-runtimes node ...`); it refuses an upload that fits no tier.
 
-## QFL privacy talk (qfl-privacy/), CSCI-739 QML, branch talk/qml-live-lab, issue #109, PR #110 (open, CI green)
-⏸ Paused 11-12 for makesense. Talks from Tue Dec 1, 13 to 15 minutes. Source: ajbarea/csci739-qfl-privacy (`report/`, `results/`); set `QFL` to a checkout (one at `~/ajsoftworks/csci739-qfl-privacy/.claude/worktrees/qml-src`, detached at origin/main).
+## QFL privacy talk (qfl-privacy/), CSCI-739 QML, issue #109, PR #110
+Resumed 11-12 after makesense; merging. Talks from Tue Dec 1, 13 to 15 minutes. Source: ajbarea/csci739-qfl-privacy (`report/`, `results/`); set `QFL` to a checkout (one at `~/ajsoftworks/csci739-qfl-privacy/.claude/worktrees/qml-src`, detached at origin/main).
 
 ### Done
 - ✅ csci739#28 (qiskit-aer 0.18.2) merged e4d6c61: no module imports qiskit; tables and `numbers.tex` regenerate byte-identical; 53 tests pass.
 - ✅ Deck: 12 talk slides, backup divider + 8 backup. `figures.py` recomputes every published value from `results/` (outcome rule, exact McNemar) and stops on any disagreement with `numbers.tex` or the table rows; slopes, test accuracy and seconds per client come from the macros. Paper figures drawn as SVG into `index.html` (`<!-- fig:NAME -->`).
 - ✅ Live lab: `lab-sim.js` (1-qubit statevector, parameter shift, binomial/normal/Poisson shots, attack on the loss's exact Fourier form: degree 2r, 4r+1 samples per client, ~0.3 ms per restart), `lab.js` (Bloch sphere, loss trace, one free control per slide, one redraw per frame, 10 ms compute slices, 24-client cache, aria-busy readout; Escape and pointer release hand keys back to the deck). Presets: seeds 121 / 15 / 17, labelled on screen as picked.
 - ✅ `tests/test_qfl_lab.py`: 49 pass (independent statevector, Fourier form vs direct, shot statistics, presets pinned to the explainer, 12 macro mutants).
-- ✅ `script.md` 1,349 words, 9.6 min (cap 15) plus 2 to 3 min of live dragging. `explainer.md` (every equation with a Python check, presets, panel trouble, questions to expect); PDF on the Desktop: `CSCI-739 talk/qfl-privacy-explainer.pdf`.
+- ✅ `script.md` 1,341 words, 9.6 min (cap 15) plus 2 to 3 min of live dragging. `explainer.md` (every equation with a Python check, presets, panel trouble, questions to expect); PDF on the Desktop: `CSCI-739 talk/qfl-privacy-explainer.pdf`.
 - ✅ Gates: `slides.py check` 0 blockers, 0 warnings, 18 REVIEW (numbers and density on slides for a technical room, kept). Presenter drive (Playwright, 1920 and phone, reduced motion on/off): arrow keys in sliders never turn slides, Space on buttons keeps the slide, clicker PageDown after a drag turns it, no console errors, zero long tasks at 4x CPU throttle.
 - ✅ Reviews: agy + Copilot lanes; Opus readers rounds 1 to 5 (findings and dispositions in the session scratchpad round1- to round5-findings.md; last fix commit b181173, then 2cd1a95 title length). Shots for AJ: fleet-briefing/shots/2026-11-12/talks-109-*.png.
+- ✅ Final verify (11-12): fresh Opus reader on the round-5 fixes found faq-toy scoping every failure to 8 qubits (rq3: large batches failed at 4 qubits too) and a script "exact fit" line; fixed (343e2e6), one more read clean, two nits taken (83a8474). `make check` green on 83a8474.
 
 ### Next
-- 📋 Final verify read of the round-5 fixes (the reader was cut off by the 5-hour limit). Give a fresh Opus reader: round-5 items = slide-10 note scoped to the 8-qubit 1x2 circuit at B=2; conclusion note names 100 shots; Papadopoulos card "as many equations ... or more"; faq-toy names 8-qubit failures; faq-noise title names 100 shots; tile 2 names 120 effective parameters; "every feature within 0.05 rad"; notes 8/9/14 reworded; typed 20/0.2 in notes bound. Ask it to check every instance of each claim (notes, backup, explainer, figure labels), the recurring miss.
-- 📋 If clean: merge #110 (squash, after re-reading PR comments), check the Pages deploy and the live URL https://ajbarea.github.io/talks/qfl-privacy/, close #109, re-render the explainer PDF only if the explainer changed.
-- 📋 Report to Heph: PR + merge SHA, 12 slides, 9.6 min script, live URL, agy/Copilot contributions (Copilot: effective-parameter wording, 1x1 terminology, limits backup; agy: 2^B rendering (I first wrongly rejected it), exact-gradient scope, task trend, noise-vs-signal observation), #28 merged e4d6c61. Then queue line ✅ and `fleet done`.
+- 📋 After merge: check https://ajbarea.github.io/talks/qfl-privacy/ at 1920 and phone (drag every lab control by keyboard and mouse, console clean) and the landing card; Desktop `CSCI-739 talk/` gets the deck PDF and `live-url.txt`.
+- 📋 Present Tue Dec 1 (13 to 15 min). Before then, recheck `figures-check` if csci739-qfl-privacy `results/` changes.
 
 ### Verify
 - `QFL=<checkout> uv run pytest -q tests/test_qfl_lab.py`; `QFL=<checkout> python3 qfl-privacy/figures.py --check`; `python3 scripts/script_length.py qfl-privacy --check`.

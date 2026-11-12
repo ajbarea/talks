@@ -19,6 +19,10 @@
 
 .reveal h1, .reveal h2 { letter-spacing: -0.005em; }
 .reveal .slides b { font-weight: 700; }
+/* reveal's reset.css sets sub and sup on the baseline at full size; math needs them back. */
+.reveal sub, .reveal sup { position: relative; font-size: 0.75em; line-height: 0; vertical-align: baseline; }
+.reveal sup { top: -0.5em; }
+.reveal sub { bottom: -0.25em; }
 .title-slide h1, .closing h2 { color: var(--ink); }
 .title-slide h1::after, .closing h2::after { background: var(--leak); }
 .lead { margin: 22px 0 0; font-size: 0.86em; max-width: 70ch; }
@@ -86,7 +90,7 @@
 .circuit-fig .meter text { font: 700 21px var(--sans); fill: var(--ink); }
 .eq-box { padding-top: 4px; }
 .eq { margin: 0 0 6px; font: 0.86em var(--sans); white-space: nowrap; }
-.eq sub { font-size: 0.75em; }
+
 .eq-gloss { margin: 0 0 18px; font-size: 0.68em; color: var(--muted); }
 .outcomes { margin: 0; padding: 0; list-style: none; font-size: 0.66em; }
 .outcomes li { position: relative; margin: 0 0 8px; padding-left: 30px; color: var(--muted); }
@@ -128,7 +132,7 @@
 }
 .lab:empty { display: none; }
 .lab-head { grid-area: head; margin: 0 0 6px; font-size: 0.64em; color: var(--muted); }
-.lab-head b { margin-right: 10px; color: var(--ink); }
+.lab-head b { margin-right: 12px; color: var(--ink); }
 .lab-bloch { grid-area: bloch; align-self: center; }
 .lab-trace { grid-area: trace; }
 .lab-read { grid-area: read; display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 26px; align-items: center; min-height: 52px; margin: 8px 0 4px; }
@@ -146,7 +150,7 @@
 .bloch .hub { fill: var(--ink); }
 .trace { background: #fff; border: 1px solid var(--line); border-radius: 4px; }
 .trace .grid line { stroke: #e3e7e3; stroke-width: 1; }
-.trace .tick, .trace .axis { font: 20px var(--sans); fill: var(--muted); }
+.trace .tick, .trace .axis { font: 22px var(--sans); fill: var(--muted); }
 .trace .truth-mark { stroke: var(--held); stroke-width: 3; stroke-dasharray: 7 6; }
 .trace .curve { fill: none; stroke: var(--ink); stroke-width: 2.5; }
 .trace .paths path { fill: none; stroke: var(--leak); stroke-width: 1.5; stroke-opacity: 0.45; }
@@ -169,6 +173,8 @@
 .lab button:hover { background: var(--band); }
 .lab :focus-visible { outline: 3px solid var(--held); outline-offset: 2px; }
 .lab-fixed { display: none; }
+.lab-origin { color: var(--muted); }
+.trace .halo { paint-order: stroke; stroke: #fff; stroke-width: 6px; stroke-linejoin: round; }
 
 /* -------------------------------------------------------------- conclusion -- */
 .recap .tile .num { color: var(--leak-ink); }
@@ -177,6 +183,10 @@
 /* ------------------------------------------------------------------ phone -- */
 .phone .title-art { position: relative; right: auto; top: auto; width: 240px; margin: 24px 0 30px; }
 .phone .point, .phone .claims, .phone .setup, .phone .batch-row { grid-template-columns: 1fr; gap: 22px; }
+/* The two diagrams keep a readable size on a phone and pan sideways. */
+.phone .flow-fig, .phone .circuit-fig { overflow-x: auto; }
+.phone .flow-fig svg { min-width: 600px; }
+.phone .circuit-fig svg { min-width: 620px; }
 .phone .lab-row { grid-template-columns: 1fr; gap: 10px; }
 .phone .lab-head { margin-bottom: 4px; }
 .phone .paper figcaption { margin-bottom: 4px; }
@@ -185,12 +195,13 @@
 .phone .lab-read { grid-template-columns: 1fr; gap: 4px; margin: 6px 0; }
 .phone .lab-ctl { grid-template-columns: 1fr; border-top: 0; padding-top: 0; }
 .phone .ctl.fixed { display: none; }
-.phone .lab-fixed { display: block; }
+.phone .lab-fixed { display: inline; }
+.phone .lab-fixed::before { content: "; "; }
+.phone .lab-origin .long { display: none; }
 .phone .lab-buttons { justify-content: flex-start; margin-top: 8px; }
 .phone .ctl, .phone .lab-head, .phone .lab-read p, .phone .lab button { font-size: 0.7em; }
 .phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.66em; }
 .phone .lab-slide h2 { font-size: 1.3em; }
 .phone .lab-bloch { width: 136px; }
-.phone .circuit-fig .sub { font-size: 21px; }
 .phone .bloch .pole { font-size: 34px; }
 .phone .claim-card figcaption { flex-direction: column; }

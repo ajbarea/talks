@@ -53,28 +53,29 @@
   const shotsWord = (s) => (s ? `${s.toLocaleString("en-US")} shots` : "exact gradient");
   const rad = (v) => (v < 0.001 ? "< 0.001" : v.toFixed(3));
 
-  // Attacks already run, by client: the restarts slider only reads more of a stored run.
+  // Attacks already run, by client: the restarts slider only reads more of a stored run. Kept to
+  // the most recent CLIENTS entries, so clicking "New hidden input" all talk long stays bounded.
+  const CLIENTS = 24;
   const cache = new Map();
-  function run(seed, reps, shots, restarts) {
+  function entry(seed, reps, shots) {
     const key = `${seed}/${reps}/${shots}`;
     let hit = cache.get(key);
-    if (!hit) {
+    if (hit) {
+      cache.delete(key);
+    } else {
       const c = Q.client(seed, reps, BLOCKS / reps, shots);
       hit = { c, runs: [], curve: Q.landscape(c, 240) };
-      cache.set(key, hit);
+      if (cache.size >= CLIENTS) cache.delete(cache.keys().next().value);
     }
-    while (hit.runs.length < restarts) {
-      const r = Q.descend(hit.c, hit.c.starts[hit.runs.length]);
-      r.outcome = Q.outcome(hit.c, r.end, r.loss, TH);
-      r.error = Q.angleError(r.end, hit.c.x);
-      hit.runs.push(r);
-    }
-    const runs = hit.runs.slice(0, restarts);
-    let best = 0;
-    runs.forEach((r, i) => {
-      if (r.loss < runs[best].loss) best = i;
-    });
-    return { c: hit.c, curve: hit.curve, runs, best };
+    cache.set(key, hit);
+    return hit;
+  }
+  // Run restarts until `n` are stored or the frame's time budget is spent; true when done.
+  const BUDGET_MS = 10;
+  function extend(hit, n) {
+    const until = performance.now() + BUDGET_MS;
+    while (hit.runs.length < n && performance.now() < until) Q.addRestart(hit.c, hit.runs, undefined, TH);
+    return hit.runs.length >= n;
   }
 
   // ---- drawing -------------------------------------------------------------------------------
@@ -161,7 +162,7 @@
       sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * f, y: PH - 14, class: "tick", "text-anchor": f === 0 ? "start" : f === 1 ? "end" : "middle" }, s, t);
     });
     sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * 0.25, y: PH - 14, class: "axis", "text-anchor": "middle" }, s, "guess \u2192");
-    sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * 0.75, y: PH - 14, class: "axis", "text-anchor": "middle" }, s, "\u2191 matching loss");
+    sv("text", { x: PAD.l + 8, y: PAD.t + 20, class: "axis halo" }, s, "\u2191 matching loss");
     const truth = sv("line", { class: "truth-mark", y1: PAD.t, y2: PH - PAD.b }, s);
     const curve = sv("path", { class: "curve" }, s);
     const paths = sv("g", { class: "paths" }, s);
@@ -192,6 +193,7 @@
     // One grid: deck.css places these areas side by side on a slide and stacks them on a phone.
     const head = el("p", { class: "lab-head" }, box);
     el("b", {}, head, "Toy circuit, live in this browser");
+    const origin = el("span", { class: "lab-origin" }, head);
     const fixedNote = el("span", { class: "lab-fixed" }, head);
     const bloch = buildBloch(el("div", { class: "lab-bloch" }, box));
     const plot = buildPlot(el("div", { class: "lab-trace" }, box));
@@ -217,6 +219,7 @@
         c.out.textContent = c.text(i);
         c.input.setAttribute("aria-valuetext", name === "reps" ? `${c.text(i)}: repetitions times trainable blocks` : c.text(i));
       }
+      origin.innerHTML = state.seed === step.seed ? 'preset input<span class="long">, picked to show the effect</span>' : "random input";
       // The fixed values, once more in the header: a phone hides the fixed controls.
       fixedNote.textContent = `fixed here: ${Object.values(ctl)
         .filter((c) => !c.free)
@@ -224,11 +227,40 @@
         .join(", ")}`;
     }
 
+    // One redraw per animation frame however many input events a drag fires, and the restarts it
+    // needs computed a frame's budget at a time, so the slide never freezes.
+    let queued = 0;
+    function request() {
+      if (!queued) queued = requestAnimationFrame(draw);
+    }
+
     function draw() {
+      queued = 0;
       cancelAnimationFrame(frame);
       sync();
-      const res = run(state.seed, state.reps, state.shots, state.restarts);
-      const { c, curve, runs, best } = res;
+      const hit = entry(state.seed, state.reps, state.shots);
+      if (!extend(hit, state.restarts)) {
+        searching();
+        const more = () => {
+          if (extend(hit, state.restarts)) render(hit);
+          else frame = requestAnimationFrame(more);
+        };
+        frame = requestAnimationFrame(more);
+        return;
+      }
+      render(hit);
+    }
+
+    function searching() {
+      box.classList.remove("done");
+      read.setAttribute("aria-busy", "true");
+      read.innerHTML = '<p class="verdict searching"><b>Searching</b><span>restarts rolling downhill</span></p>';
+    }
+
+    function render(hit) {
+      const { c, curve } = hit;
+      const runs = hit.runs.slice(0, state.restarts);
+      const best = Q.pickBest(runs, runs.length);
       const top = Math.max(...curve) || 1;
       const X = (v) => PAD.l + ((((v % Q.TAU) + Q.TAU) % Q.TAU) / Q.TAU) * (PW - PAD.l - PAD.r);
       const Y = (L) => PH - PAD.b - (Math.min(L, top) / top) * (PH - PAD.t - PAD.b);
@@ -237,27 +269,28 @@
       plot.truth.setAttribute("x2", X(c.x));
       plot.paths.textContent = "";
       plot.balls.textContent = "";
-      const L = (v) => Q.matchLoss(v, c.target, c.theta, c.reps, c.layers, c.y);
-      // Each restart's search as a trail of points; long trails are thinned to keep the DOM small.
-      const trails = runs.map((r) => r.path.map((v) => [X(v), Y(L(v))]));
-      const lines = trails.map((t) => sv("path", { d: "" }, plot.paths));
+      // Each restart's search as a trail of points, its losses stored when it ran.
+      const trails = runs.map((r) => r.path.map((v, j) => [X(v), Y(r.losses[j])]));
+      const lines = trails.map(() => sv("path", { d: "" }, plot.paths));
       const dots = runs.map((r, i) => sv("circle", { r: i === best ? 9 : 6, class: `ball ${r.outcome}${i === best ? " best" : ""}` }, plot.balls));
       const hits = runs.filter((r) => r.outcome === "recovered").length;
       const b = runs[best];
       const n = trails[0].length;
-      const steps = reduce ? 1 : n;
-      const t0 = performance.now();
       const DUR = 1400;
+      const half = (PW - PAD.l - PAD.r) / 2;
       const paint = (k) => {
         trails.forEach((t, i) => {
           const upto = Math.min(t.length - 1, k);
-          const pts = t.slice(0, upto + 1).filter((_, j) => j % 2 === 0 || j === upto);
-          // A search that crosses 0 or 2pi reappears at the other edge: start a new stroke there.
+          // Every second point is enough for the line. A search that crosses 0 or 2pi reappears
+          // at the other edge, so the stroke starts again there.
           let d = "";
-          pts.forEach((p, j) => {
-            const jump = j === 0 || Math.abs(p[0] - pts[j - 1][0]) > (PW - PAD.l - PAD.r) / 2;
-            d += `${jump ? "M" : "L"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
-          });
+          let last = null;
+          for (let j = 0; j <= upto; j++) {
+            if (j % 2 && j !== upto) continue;
+            const p = t[j];
+            d += `${last === null || Math.abs(p[0] - last) > half ? "M" : "L"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
+            last = p[0];
+          }
           lines[i].setAttribute("d", d);
           dots[i].setAttribute("cx", t[upto][0]);
           dots[i].setAttribute("cy", t[upto][1]);
@@ -278,17 +311,19 @@
         const h = el("p", { class: "meter" }, read);
         el("span", {}, h, "Restarts that hit");
         el("b", {}, h, `${hits} of ${runs.length}`);
+        // Screen readers hear the result once, when it is complete.
+        read.setAttribute("aria-busy", "false");
         const words = `${WORDS[b.outcome]}: the best guess is ${err} radians from the hidden input; ${hits} of ${runs.length} restarts found it.`;
         bloch.label(`Bloch sphere: the hidden input and the attacker's best guess. ${words}`);
         plot.title.textContent = `Matching loss across every guess, lowest where a guess's gradient matches the client's. ${words}`;
         plot.s.setAttribute("aria-label", plot.title.textContent);
       };
-      box.classList.remove("done");
-      if (steps === 1) {
+      if (reduce) {
         finish();
         return;
       }
-      read.innerHTML = '<p class="verdict searching"><b>Searching</b><span>restarts rolling downhill</span></p>';
+      searching();
+      const t0 = performance.now();
       const tick = (now) => {
         // A frame's timestamp can precede t0 (it marks the frame's start), so clamp at the first point.
         const k = Math.max(0, Math.floor(((now - t0) / DUR) * (n - 1)));
@@ -308,16 +343,16 @@
         if (name === "reps") state.reps = REPS[i];
         else if (name === "shots") state.shots = SHOTS[i];
         else state.restarts = i;
-        draw();
+        request();
       });
     }
     fresh.addEventListener("click", () => {
       state.seed = 1000 + Math.floor(Math.random() * 1e6);
-      draw();
+      request();
     });
     reset.addEventListener("click", () => {
       Object.assign(state, step);
-      draw();
+      request();
     });
 
     // Keys pressed in the panel stay in the panel: Space on a button would otherwise also turn
@@ -332,7 +367,7 @@
     // After a drag or a click, give the keyboard back too, so a presenter's clicker (which sends
     // arrow or page keys) turns the slide instead of moving the control it last touched.
     box.addEventListener("pointerup", (e) => {
-      if (e.pointerType !== "") setTimeout(() => e.target.closest("input, button")?.blur(), 0);
+      setTimeout(() => e.target.closest("input, button")?.blur(), 0);
     });
 
     sync();
@@ -340,7 +375,7 @@
       show() {
         if (!shown) {
           shown = true;
-          draw();
+          request();
         }
       },
     };

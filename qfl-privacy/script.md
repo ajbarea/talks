@@ -14,7 +14,7 @@ Three parts. First, the attack, and why two papers disagree about it. Second, th
 
 Here's the setting. In federated learning, the client keeps its data at home and sends the server only a gradient: a list of numbers, one per trainable angle. That feels private. But the server knows the circuit, so it can play a guessing game: pick an input, compute that input's gradient, and adjust the guess until the two gradients match. If they match exactly, the guess is usually the input. That's the gradient-matching attack, and on classical networks it rebuilds images.
 
-What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would. That's {rq1.attacks} attacks with exact gradients, then more with shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With exact gradients, one encoding layer and two or more trainable layers, every circuit gave its input away on every seed.
+What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would. That's {rq1.attacks} attacks with exact gradients, then more with shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With exact gradients, one input per update and a known label, every circuit with one encoding layer and two or more trainable layers gave its input away on every seed.
 
 ## Two papers from one group disagree on whether the attack works on quantum circuits
 
@@ -32,7 +32,7 @@ Each attack ends one of four ways. Recovered: within {paper.recoveredRad} radian
 
 ## At a fixed parameter count, more encoding repetitions left the search stuck more often
 
-This is the live lab. It's a toy: one qubit, one hidden input, running in this browser. The blue arrow on the Bloch sphere is the client's input; the red one is the attacker's best guess. The curve is the matching loss for every possible guess, and the blue line marks the truth. Each red dot is one restart rolling downhill.
+This is the live lab. It's a toy: one qubit, one hidden input, running in this browser. The blue arrow on the Bloch sphere is the client's input; the red one is the attacker's best guess. The curve is the matching loss for every possible guess, and the blue line marks the truth. Each red dot is one restart rolling downhill. The starting input is a preset, picked to show the effect clearly; a random one shows it more weakly.
 
 With one repetition the curve has a few wide dips, and nearly every restart lands on the input. Now I'll drag the repetitions up, keeping the total number of trainable blocks fixed. Watch the curve. More repetitions mean more frequencies, so more dips, and more restarts get trapped in the wrong one. That's Kumar's mechanism, live.
 
@@ -42,13 +42,13 @@ On the right is what the paper measured, at 8 qubits and {rq1.params} effective 
 
 But stuck only means the search gave up. So, restarts. The toy is now at eight repetitions with one restart, and it's stuck. I'll add restarts. One more, another... and there: a restart lands in the right dip, and since it has the lowest loss, the attacker keeps it. It needs no knowledge of the truth to pick it.
 
-The paper did the same thing at scale. I reran the {budget.circuits} hardest 8-qubit circuits with {budget.large} restarts instead of {budget.small}. On {budget.othersCount} of them, recovery jumped to {budget.othersMin} or {budget.othersMax} of {paper.seeds} seeds. The {budget.hardest} circuit stayed hard: only {budget.hardestRate} percent of its restarts found the input, and {budget.hardestHeld} seeds held. That cost is unknown, not infinite. So encoding repetitions act like a work factor for the attacker, not a wall.
+The paper did the same thing at scale. I reran the {budget.circuits} hardest 8-qubit circuits with {budget.large} restarts instead of {budget.small}. On {budget.othersCount} of them, recovery jumped to {budget.othersMin} or {budget.othersMax} of {paper.seeds} seeds. The {budget.hardest} circuit stayed hard: only {budget.hardestRate} percent of its restarts found the input, and {budget.hardestHeld} seeds held. That cost is unknown, not infinite. So on three of the four circuits, encoding repetitions acted like a work factor for the attacker, not a wall; on the eight-repetition circuit, we don't know the price.
 
-## At 8 qubits, {rq2.lowShots} shots per measurement hid the input on almost every seed
+## At 8 qubits, {rq2.lowShots} shots per expectation value hid almost every input
 
-On a real device, the client doesn't get exact gradients. Every expectation value is estimated from shots. The toy now computes the gradient with the parameter-shift rule, from sampled measurements. I'll drag the shots down. The curve's dip blurs and lifts off zero, and the guess slides away. At ten shots it misses.
+On a real device, the client doesn't get exact gradients. Every expectation value is estimated from shots. The toy now computes the gradient with the parameter-shift rule, from sampled measurements. I'll drag the shots down. The dip lifts off zero and shifts, and the guess slides away with it. At ten shots it misses.
 
-The toy is the easy end: one input against many gradient entries, so the noise mostly averages out. The paper's 8-qubit circuits are where noise wins. At {rq2.lowShots} shots, at most {rq2.within8Max} seed in {paper.seeds} came within {paper.closeRad} radians, on each of the three circuits tested. At 4 qubits, it was {rq2.within4Min} to {rq2.within4Max}. The reason is size: at 8 qubits the noise in the gradient was as large as the gradient itself.
+The toy is the easy end: one input against many gradient entries, so the noise mostly averages out. The paper's 8-qubit circuits are where noise wins. At {rq2.lowShots} shots, at most {rq2.within8Max} seed in {paper.seeds} came within {paper.closeRad} radians, on each of the three circuits tested. At 4 qubits, it was {rq2.within4Min} to {rq2.within4Max}. Alongside that: at 8 qubits the noise in the gradient was as large as the gradient itself.
 
 ## Every batch we tried with more unknowns than effective parameters was ambiguous
 
@@ -56,15 +56,15 @@ Next, batches. If the client averages its gradient over several examples, the at
 
 Up to {rq3.leakMax} unknowns per effective parameter, every circuit leaked on at least {rq3.fewestBelow} of {paper.seeds} seeds. From {rq3.heldMin} up, none did. And these weren't stuck searches: the attacker always found a different batch that fit the gradient just as well. With more unknowns than equations, many batches are expected to fit the same gradient exactly, and the attack found one every time.
 
-## Hiding the label helped a little; training the circuit made no detectable difference
+## Hiding the label helped a little; training the circuit made no detectable net change
 
-Two more defenses, briefly. If the server doesn't know the labels, it can still fit each input's weight in closed form. That recovered fewer seeds: {rq4.knownOnly} were recovered only with the labels and {rq4.unknownOnly} only without, a p-value of {rq4.p}. Most of that was batches of two, and the extra failures were stuck, so it made the search harder rather than hiding the input.
+Two more defenses, briefly. If the server doesn't know the labels, it can still fit each input's weight in closed form. That recovered fewer seeds: {rq4.knownOnly} were recovered only with the labels and {rq4.unknownOnly} only without, a p-value of {rq4.p}. Most of that was batches of two, on one circuit, where the extra failures were stuck: hiding the label made the search harder rather than hiding the input.
 
 And training the circuit first? Pooled over {rq5.tasks} tasks, {rq5.before} seeds were recovered only before training and {rq5.after} only after, p of {rq5.p}. No detectable net change, though the tasks leaned opposite ways; one of them, low-frequency curves, is a lead I keep in the backup slides.
 
-## Encoding repetitions slowed the attack; heavy shot noise and large batches stopped it
+## Repetitions slowed the attack; shot noise at 8 qubits and large batches stopped it
 
-So, to sum up. A shared gradient can rebuild the input. With exact gradients, one encoding layer and two or more trainable layers, it did on every seed. More encoding repetitions slowed the attack, but more restarts got most of the way back. What actually hid the input was heavy shot noise at 8 qubits and batches with more unknowns than gradient entries.
+So, to sum up. A shared gradient can rebuild the input. With exact gradients and one encoding layer, it did on every seed. More encoding repetitions slowed the attack, and more restarts recovered most stuck seeds, though not on the eight-repetition circuit. What actually hid the input was shot noise at 8 qubits and batches with more unknowns than gradient entries.
 
 Two questions stay open. Can a client still train on gradients as noisy as {rq2.lowShots} shots? And does the attacker's cost grow exponentially with the number of qubits? Two circuit sizes can't tell us. That's my talk.
 

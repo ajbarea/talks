@@ -8,8 +8,9 @@
   "use strict";
 
   const TAU = 2 * Math.PI;
-  // The paper's outcome thresholds (qflp: RECOVERED_RAD, CLOSE_RAD, EXPLAINS_SLACK); the deck binds
-  // the same values from data/readings.js and lab.js passes them in, so a change there reaches here.
+  // The paper's outcome thresholds (qflp: RECOVERED_RAD, CLOSE_RAD, EXPLAINS_SLACK). lab.js passes
+  // the first two from data/readings.js, so a change in the paper reaches the panel; the slack is
+  // fixed here.
   const DEFAULTS = { recovered: 0.05, close: 0.2, slack: 1e-6 };
 
   // mulberry32: a small seeded generator, so a preset replays the same run on every machine.
@@ -148,11 +149,15 @@
     const theta = Array.from({ length: 2 * reps * layers }, () => TAU * rand());
     const starts = Array.from({ length: 64 }, () => Math.PI * rand());
     const target = gradient(x, theta, reps, layers, 1, shots, rng(seed ^ 0x9e3779b9));
-    return { seed, x, theta, reps, layers, shots, y: 1, starts, target };
+    const c = { seed, x, theta, reps, layers, shots, y: 1, starts, target };
+    // Fixed per client, so the outcome rule reads them instead of recomputing them per restart.
+    c.truthLoss = matchLoss(x, target, theta, reps, layers, 1);
+    c.norm2 = target.reduce((a, g) => a + g * g, 0);
+    return c;
   }
 
   // One restart: Adam on the guess, its slope a central difference of the matching loss. Returns
-  // the path (for drawing) and the end point.
+  // the path and the loss at each of its points (for drawing), and the end point.
   function descend(c, start, opts) {
     const o = { steps: 150, lr: 0.05, b1: 0.9, b2: 0.999, eps: 1e-8, h: 1e-5, every: 3, ...opts };
     const L = (v) => matchLoss(v, c.target, c.theta, c.reps, c.layers, c.y);
@@ -160,6 +165,7 @@
     let m = 0;
     let s = 0;
     const path = [v];
+    const losses = [L(v)];
     for (let t = 1; t <= o.steps; t++) {
       const d = (L(v + o.h) - L(v - o.h)) / (2 * o.h);
       m = o.b1 * m + (1 - o.b1) * d;
@@ -167,9 +173,13 @@
       const mh = m / (1 - o.b1 ** t);
       const sh = s / (1 - o.b2 ** t);
       v -= (o.lr * mh) / (Math.sqrt(sh) + o.eps);
-      if (t % o.every === 0) path.push(v);
+      if (t % o.every === 0) {
+        path.push(v);
+        losses.push(L(v));
+      }
     }
-    return { start, end: v, loss: L(v), path };
+    const loss = path[path.length - 1] === v ? losses[losses.length - 1] : L(v);
+    return { start, end: v, loss, path, losses };
   }
 
   // The paper's four outcomes for one end point.
@@ -178,24 +188,33 @@
     const err = angleError(end, c.x);
     if (err <= t.recovered) return "recovered";
     if (err <= t.close) return "close";
-    const truth = matchLoss(c.x, c.target, c.theta, c.reps, c.layers, c.y);
-    const norm = c.target.reduce((a, g) => a + g * g, 0);
-    if (loss <= truth + t.slack * norm) return "ambiguous";
+    if (loss <= c.truthLoss + t.slack * c.norm2) return "ambiguous";
     return "stuck";
   }
 
-  // The whole attack: `restarts` descents from the client's first starting points; the attacker
-  // keeps the lowest loss, which needs no knowledge of the true input.
+  // The next restart, from the client's next starting point, scored by the paper's rule. The
+  // panel calls this one restart at a time, so a long attack can be spread across frames.
+  function addRestart(c, runs, opts, th) {
+    const run = descend(c, c.starts[runs.length], opts);
+    run.outcome = outcome(c, run.end, run.loss, th);
+    run.error = angleError(run.end, c.x);
+    runs.push(run);
+    return run;
+  }
+
+  // The attacker keeps the restart with the lowest loss among the first n, which needs no
+  // knowledge of the true input.
+  function pickBest(runs, n) {
+    let best = 0;
+    for (let i = 1; i < n; i++) if (runs[i].loss < runs[best].loss) best = i;
+    return best;
+  }
+
+  // The whole attack: `restarts` descents from the client's first starting points.
   function attack(c, restarts, opts, th) {
     const runs = [];
-    for (let i = 0; i < restarts; i++) {
-      const run = descend(c, c.starts[i], opts);
-      run.outcome = outcome(c, run.end, run.loss, th);
-      run.error = angleError(run.end, c.x);
-      runs.push(run);
-    }
-    let best = 0;
-    for (let i = 1; i < runs.length; i++) if (runs[i].loss < runs[best].loss) best = i;
+    while (runs.length < restarts) addRestart(c, runs, opts, th);
+    const best = pickBest(runs, runs.length);
     return { runs, best, outcome: runs[best].outcome, error: runs[best].error };
   }
 
@@ -206,5 +225,8 @@
     return out;
   }
 
-  return { TAU, DEFAULTS, rng, gauss, ry, rz, state, expZ, bloch, sampleZ, gradient, matchLoss, angleError, client, descend, outcome, attack, landscape };
+  return {
+    TAU, DEFAULTS, rng, gauss, ry, rz, state, expZ, bloch, sampleZ, gradient, matchLoss, angleError,
+    client, descend, outcome, addRestart, pickBest, attack, landscape,
+  };
 });

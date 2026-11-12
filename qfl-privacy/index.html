@@ -60,16 +60,16 @@
         <text class="box-text" x="108" y="112" text-anchor="middle">keeps its input</text>
         <circle class="held-dot" cx="108" cy="160" r="30"/>
         <text class="held-x" x="108" y="170" text-anchor="middle">x</text>
-        <path class="wire" d="M208 135H420" data-motion="draw" data-dur="700"/>
+        <path class="wire" d="M212 135H420" data-motion="draw" data-dur="700"/>
         <path class="head" d="M420 135l-16 -9v18z"/>
-        <text class="wire-label" x="314" y="116" text-anchor="middle">sends its gradient g</text>
+        <text class="wire-label" x="319" y="116" text-anchor="middle">sends gradient g</text>
         <text class="wire-sub" x="314" y="168" text-anchor="middle">one number per</text>
         <text class="wire-sub" x="314" y="196" text-anchor="middle">trainable angle</text>
         <rect class="box server" x="430" y="40" width="200" height="190" rx="10"/>
         <text class="box-title" x="530" y="78" text-anchor="middle">Server</text>
-        <text class="box-text" x="530" y="110" text-anchor="middle">knows the circuit;</text>
-        <text class="box-text" x="530" y="138" text-anchor="middle">looks for an x̂ whose</text>
-        <text class="box-text" x="530" y="166" text-anchor="middle">gradient is g</text>
+        <text class="box-text" x="530" y="110" text-anchor="middle">knows the circuit,</text>
+        <text class="box-text" x="530" y="138" text-anchor="middle">looks for an x̂</text>
+        <text class="box-text" x="530" y="166" text-anchor="middle">whose gradient is g</text>
         <g class="fragment" data-fragment-index="0">
           <rect class="found" x="440" y="262" width="180" height="56" rx="28"/>
           <text class="found-text" x="530" y="298" text-anchor="middle">x̂ = x: leaked</text>
@@ -78,7 +78,7 @@
     </figure>
     <div class="claim fragment" data-fragment-index="1">
       <p><b>What I did:</b> attacked simulated 4- and 8-qubit re-uploading circuits as a curious server would: <span data-value="rq1.attacks"></span> attacks with exact gradients, then noise, batches, hidden labels and training.</p>
-      <p><b>Why you should care:</b> these are the gradients our parameter-shift code computes. With one encoding layer and two or more trainable layers, every circuit leaked its input on <span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span> seeds.</p>
+      <p><b>Why you should care:</b> these are the gradients our parameter-shift code computes. With exact gradients, one input and a known label, every circuit with one encoding layer and two or more trainable layers leaked it on <span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span> seeds.</p>
     </div>
   </div>
   <aside class="notes"><ul><li>Federated learning: data stays home, gradients travel; the server searches for an input with the same gradient</li><li>What I did: <span data-value="rq1.attacks"></span> exact-gradient attacks, then noise, batches, labels, training; <span data-value="paper.seeds"></span> seeds each</li><li>Why care: shallow-encoding circuits leaked on every seed</li></ul></aside>
@@ -391,11 +391,11 @@
 
 <section class="lab-slide" data-chapter="2 · Live lab">
   <span class="kicker">2 · Live lab</span>
-  <h2>At 8 qubits, <span data-value="rq2.lowShots"></span> shots per measurement hid the input on almost every seed</h2>
+  <h2>At 8 qubits, <span data-value="rq2.lowShots"></span> shots per expectation value hid almost every input</h2>
   <div class="lab-row">
     <div class="lab web-only" data-lab="shots"></div>
     <figure class="paper">
-      <figcaption><b>The paper</b> <span data-value="rq2.lowShots"></span> shots per measurement, <span data-value="paper.seeds"></span> seeds</figcaption>
+      <figcaption><b>The paper</b> <span data-value="rq2.lowShots"></span> shots per expectation value, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:shots -->
 <svg class="paper-fig" viewBox="0 0 480 288" role="img" aria-label="Seeds guessed within 0.2 radians at 100 shots, of 20: 4 qubits 1×4: 10; 4 qubits 2×2: 17; 4 qubits 4×1: 14; 8 qubits 1×4: 0; 8 qubits 2×2: 1; 8 qubits 4×1: 0">
 <text x="0" y="20" font-size="20" fill="#47505a" text-anchor="start" font-weight="400">circuit</text>
@@ -536,7 +536,7 @@
 </svg>
 <!-- /fig -->
       <p class="key"><span><i class="k-leak"></i>guessed within <span data-value="paper.closeRad"></span> rad</span><span><i class="k-open"></i>not</span></p>
-      <p class="paper-note">At 8 qubits the noise matched the gradient: <span data-value="rq2.noise8"></span> against <span data-value="rq2.signal8"></span>.</p>
+      <p class="paper-note">At 8 qubits the noise was as large as the gradient (median squared norms): <span data-value="rq2.noise8"></span> against <span data-value="rq2.signal8"></span>.</p>
     </figure>
   </div>
   <aside class="notes"><ul><li>Toy: drag shots down; the dip blurs and the guess slides off, worst at 10 shots</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of 20 seeds within 0.2 rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li></ul></aside>
@@ -559,8 +559,8 @@
 <path d="M250.0 42.0l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
 <text x="268" y="59" font-size="19" fill="#1a1f24" text-anchor="start" font-weight="400">8 qubits, 1×4</text>
 <rect x="299.6" y="112" width="170.4" height="240" fill="#e6ecf4"/>
-<text x="464" y="138" font-size="19" fill="#1d4e89" text-anchor="end" font-weight="700">more unknowns</text>
-<text x="464" y="162" font-size="19" fill="#1d4e89" text-anchor="end" font-weight="700">than parameters</text>
+<text x="464" y="220" font-size="19" fill="#1d4e89" text-anchor="end" font-weight="700">every seed</text>
+<text x="464" y="244" font-size="19" fill="#1d4e89" text-anchor="end" font-weight="700">ambiguous</text>
 <line x1="44" x2="470" y1="352" y2="352" stroke="#bcc2c8" stroke-width="1"/>
 <text x="34" y="359" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">0</text>
 <line x1="44" x2="470" y1="232" y2="232" stroke="#bcc2c8" stroke-width="1"/>
@@ -610,13 +610,14 @@
 
 <section data-chapter="3 · What else hides it">
   <span class="kicker">3 · What else hides it</span>
-  <h2>Hiding the label helped a little; training the circuit made no detectable difference</h2>
+  <h2>Hiding the label helped a little; training the circuit made no detectable net change</h2>
   <div class="batch-row">
     <figure class="paper wide">
       <figcaption><b>The paper</b> seeds recovered under one condition only</figcaption>
       <!-- fig:pairs -->
 <svg class="paper-fig" viewBox="0 0 480 270" role="img" aria-label="Seeds recovered under one condition only. Labels: 14 only when known, 3 only when hidden. Training: 21 only before, 17 only after.">
 <text x="0" y="22" font-size="21" fill="#1d4e89" text-anchor="start" font-weight="700">Label</text>
+<text x="480" y="22" font-size="21" fill="#1a1f24" text-anchor="end" font-weight="400">p = 0.013</text>
 <text x="0" y="68" font-size="21" fill="#1a1f24" text-anchor="start" font-weight="400">only if known</text>
 <rect x="210" y="47" width="133.3" height="26" fill="#b3361b"/>
 <text x="353.333" y="68" font-size="23" fill="#1a1f24" text-anchor="start" font-weight="700">14</text>
@@ -624,6 +625,7 @@
 <rect x="210" y="85" width="28.6" height="26" fill="#47505a"/>
 <text x="248.571" y="106" font-size="23" fill="#1a1f24" text-anchor="start" font-weight="700">3</text>
 <text x="0" y="160" font-size="21" fill="#1d4e89" text-anchor="start" font-weight="700">Training</text>
+<text x="480" y="160" font-size="21" fill="#1a1f24" text-anchor="end" font-weight="400">p = 0.627</text>
 <text x="0" y="206" font-size="21" fill="#1a1f24" text-anchor="start" font-weight="400">only before</text>
 <rect x="210" y="185" width="200.0" height="26" fill="#b3361b"/>
 <text x="420" y="206" font-size="23" fill="#1a1f24" text-anchor="start" font-weight="700">21</text>
@@ -643,11 +645,11 @@
 </section>
 
 <section data-conclusion>
-  <h2>Encoding repetitions slowed the attack; heavy shot noise and large batches stopped it</h2>
+  <h2>Repetitions slowed the attack; shot noise at 8 qubits and large batches stopped it</h2>
   <div class="recap">
-    <div class="tile"><p class="num"><span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span></p><p>seeds leaked with exact gradients, on every circuit with one encoding layer and two or more trainable layers</p></div>
+    <div class="tile"><p class="num"><span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span></p><p>seeds leaked (exact gradients, one input, label known) on every circuit with one encoding layer and two or more trainable layers</p></div>
     <div class="tile"><p class="num"><span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span></p><p>restarts that hit, of <span data-value="rq1.tries"></span>, from 1 to 8 repetitions; <span data-value="budget.large"></span> restarts recovered most stuck seeds</p></div>
-    <div class="tile"><p class="num">≤ <span data-value="rq2.within8Max"></span></p><p>seed of <span data-value="paper.seeds"></span> within <span data-value="paper.closeRad"></span> rad at 8 qubits and <span data-value="rq2.lowShots"></span> shots; no batch recovered from <span data-value="rq3.heldMin"></span> unknowns per parameter up</p></div>
+    <div class="tile"><p class="num">≤ <span data-value="rq2.within8Max"></span></p><p>seed of <span data-value="paper.seeds"></span> within <span data-value="paper.closeRad"></span> rad at 8 qubits and <span data-value="rq2.lowShots"></span> shots; no batch recovered from <span data-value="rq3.heldMin"></span> unknowns per effective parameter up</p></div>
   </div>
   <div class="open">
     <p class="open-h">Open</p>
@@ -656,7 +658,7 @@
       <li>Does the attacker's cost grow exponentially with the number of qubits?</li>
     </ul>
   </div>
-  <aside class="notes"><ul><li>Shallow encodings leak; repetitions are a work factor, not a wall</li><li>Noise at 8 qubits and big batches actually hid the input</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
+  <aside class="notes"><ul><li>Shallow encodings leak; repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li>Noise at 8 qubits and big batches actually hid the input</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
 </section>
 
 <section class="closing">
@@ -696,7 +698,7 @@
     <thead><tr><th></th><th>Live toy</th><th>Paper</th></tr></thead>
     <tbody>
       <tr><td>Circuit</td><td data-label="Live toy">1 qubit, 1 input, 8 trainable blocks in all</td><td data-label="Paper">4 and 8 qubits, CNOT chain, 1 to 8 blocks per repetition</td></tr>
-      <tr><td>Client's gradient</td><td data-label="Live toy">parameter shift, exact or sampled shots</td><td data-label="Paper">the same rule</td></tr>
+      <tr><td>Client's gradient</td><td data-label="Live toy">parameter shift, exact or sampled shots</td><td data-label="Paper">parameter shift with shots; autodiff when exact (the values agree)</td></tr>
       <tr><td>Attack</td><td data-label="Live toy">Adam, 150 steps, slope by finite difference</td><td data-label="Paper">L-BFGS-B, up to <span data-value="paper.maxIter"></span> iterations, slope by autodiff</td></tr>
       <tr><td>Outcomes</td><td data-label="Live toy" colspan="2">the same rule and thresholds: <span data-value="paper.recoveredRad"></span> and <span data-value="paper.closeRad"></span> rad</td></tr>
     </tbody>
@@ -743,7 +745,7 @@
 
 <section id="faq-trained" class="backup">
   <h2>Training: no net change, and one lead on low-frequency curves</h2>
-  <p class="lead">Pooled over <span data-value="rq5.tasks"></span> tasks and <span data-value="rq5.attacks"></span> attacks, <span data-value="rq5.before"></span> seeds were recovered only before training and <span data-value="rq5.after"></span> only after (p = <span data-value="rq5.p"></span>). On low-frequency curves the counts were <span data-value="rq5.leadBefore"></span> and <span data-value="rq5.leadAfter"></span>, but that is also the task every circuit fit best (test accuracy <span data-value="rq5.leadAcc"></span> or more), so a better fit may explain it. One dataset, one example per seed: a lead to test.</p>
+  <p class="lead">Pooled over the <span data-value="rq5.tasks"></span> tasks, <span data-value="rq5.before"></span> seeds were recovered only before training and <span data-value="rq5.after"></span> only after (p = <span data-value="rq5.p"></span>). On low-frequency curves the counts were <span data-value="rq5.leadBefore"></span> and <span data-value="rq5.leadAfter"></span>, but that is also the task every circuit fit best (test accuracy <span data-value="rq5.leadAcc"></span> or more), so a better fit may explain it. One dataset, one example per seed: a lead to test.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Kumar et al. saw a low-frequency target make privacy worse; this lead points the other way, with a different setup.</aside>
 </section>

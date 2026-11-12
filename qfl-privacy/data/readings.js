@@ -63,7 +63,6 @@ window.DECK_DATA = {
     "p": "0.627",
     "tasks": 3,
     "steps": 300,
-    "attacks": 720,
     "leadBefore": 12,
     "leadAfter": 0,
     "leadAcc": "0.98"

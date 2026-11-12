@@ -1,4 +1,4 @@
-<!-- budget: 1500 words -->
+<!-- budget: 1900 words -->
 # QFL privacy talk: explainer sheet
 
 For AJ, before the CSCI-739 talk. Each equation on the slides, in plain words, with a few lines of
@@ -145,3 +145,13 @@ turn the slide.
 - **No network:** the deck works offline once loaded, and from a downloaded copy opened as a file.
 - **Someone asks why the toy is so easy at 100 shots:** one input against 15 gradient entries, so
   noise averages out. At 8 qubits the noise was as large as the gradient (0.16 against 0.14).
+
+## Questions to expect
+
+- **"R_Y(x) then R_Y(θ) is one rotation. Is the attacker really solving for x + θ?"** Yes. The paper says so: the encoding gate and the first trainable R_Y act as R_Y(x + θ), and since the attacker knows θ, solving for that angle is solving for x.
+- **"Why did the gradient shrink from 0.72 to 0.14 between 4 and 8 qubits?"** The paper reports it, but does not test why. Whether it is the start of a barren plateau is open. Say so.
+- **"Would an attacker that keeps its guesses inside [0, π) avoid the ambiguous answers?"** Some, possibly. The results did not store the guesses, so we cannot count how many fell outside. It is on the backup limits slide.
+- **"Does Heredge et al.'s Lie-algebra attack apply here?"** Not computed. We did not work out these circuits' Lie algebras.
+- **"Is the toy cherry-picked?"** The presets are seeds picked to show each effect clearly, and the panel says so. Over 60 random inputs the toy shows the same direction, but weaker: restarts that hit fall from about 85% at one repetition to about 55% at eight. The numbers on the slides all come from the paper.
+- **"How many inputs of an ambiguous batch still leaked?"** Not measured: a batch is scored by its worst-matched input.
+

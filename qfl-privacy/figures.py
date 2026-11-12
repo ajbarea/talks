@@ -4,9 +4,11 @@
 Writes `data/readings.js` (the values the slides and `script.md` bind to) and draws the paper's
 20-seed results as SVG into `index.html`, between `<!-- fig:NAME -->` and `<!-- /fig -->`, so they
 show in the exports and with scripts off, and their text alternative comes from the same data.
-Each value is computed from `results/*.jsonl` with the paper's own outcome rule, then checked
-against the paper's generated macros (`report/tables/numbers.tex`) and table rows: a value that
-disagrees with the paper stops the build. `--check` fails when the committed files are stale.
+Each value is computed from `results/*.jsonl` with the paper's own outcome rule (and its exact
+McNemar test), then checked against the paper's generated macros (`report/tables/numbers.tex`) and
+table rows: a value that disagrees with the paper stops the build. The few values the attack rows
+cannot give (the shot-noise slopes, test accuracy, seconds per client) are read from the macros,
+which the paper's own tests regenerate from its results. `--check` fails when the committed files are stale.
 
     python figures.py            # write data/readings.js and the figures in index.html
     python figures.py --check    # are they current?
@@ -151,6 +153,11 @@ def rq1(m: dict, rule: Rule, values: dict) -> dict:
     shallow = [rs for (_, reps, layers), rs in by.items() if reps == 1 and layers >= 2]
     if not all(sum(rule.best(r) == "recovered" for r in rs) == seeds for rs in shallow):
         raise SystemExit("rq1: a 1 x l >= 2 circuit missed a seed; the contribution slide says none did")
+    for n, name in ((4, "Small"), (8, "Large")):
+        square = by[(n, 1, 1)]
+        agree(
+            f"SquareWrong{name}", str(seeds - sum(rule.best(r) == "recovered" for r in square)), m[f"SquareWrong{name}"]
+        )
     agree("RqOneAttacks", str(len(rows)), m["RqOneAttacks"])
     agree("RqOneShapes", str(len(by)), m["RqOneShapes"])
     # Only the values a slide or the script shows; the deck publishes this file.
@@ -187,6 +194,14 @@ def budget(m: dict, rule: Rule, values: dict) -> dict:
     agree("budget.tex", "\n".join(lines), "\n".join(table_rows("budget")))
     hardest = min(out, key=lambda c: c["rate"])
     agree("BudgetHardestCircuit", tex_circuit(*map(int, hardest["name"].split("\u00d7"))), m["BudgetHardestCircuit"])
+    others = [c for c in out if c is not hardest]
+    seeds = int(m["Seeds"])
+    agree("BudgetOthersCount", str(len(others)), m["BudgetOthersCount"])
+    agree("BudgetOthersMin", str(min(c["after"] for c in others)), m["BudgetOthersMin"])
+    agree("BudgetOthersMax", str(max(c["after"] for c in others)), m["BudgetOthersMax"])
+    agree("BudgetHardestHeld", str(seeds - hardest["after"]), m["BudgetHardestHeld"])
+    agree("BudgetHardestRate", f"{hardest['rate']:.1f}", m["BudgetHardestRate"])
+    agree("BudgetCircuits", str(len(out)), m["BudgetCircuits"])
     values["budget"] = {
         "small": small,
         "large": large,
@@ -224,6 +239,22 @@ def rq2(m: dict, rule: Rule, values: dict) -> dict:
     agree("ShotLowWithinLargeMax", str(max(w for n, *_, w in rows_at if n == 8)), m["ShotLowWithinLargeMax"])
     agree("ShotLowWithinSmallMin", str(min(w for n, *_, w in rows_at if n == 4)), m["ShotLowWithinSmallMin"])
     agree("ShotLowWithinSmallMax", str(max(w for n, *_, w in rows_at if n == 4)), m["ShotLowWithinSmallMax"])
+    rq1_rows = [r for r in load("rq1") if r["shots"] == 0 and r["batch"] == 1]
+    for n, name in ((4, "Small"), (8, "Large")):
+        shapes = {(r["n_qubits"], r["reps"], r["layers"]) for r in rows if r["n_qubits"] == n}
+        signal = statistics.median(
+            r["grad_norm2"] for r in rq1_rows if (r["n_qubits"], r["reps"], r["layers"]) in shapes
+        )
+        noise = statistics.median(r["true_match"] for r in rows if r["n_qubits"] == n and r["shots"] == low)
+        agree(f"ShotSignal{name}", f"{signal:.2f}", m[f"ShotSignal{name}"])
+        agree(f"ShotNoise{name}", f"{noise:.2f}", m[f"ShotNoise{name}"])
+    ambiguous = [
+        sum(rule.best(r) == "ambiguous" for r in rs)
+        for (n, _, _, s), rs in group(rows, "n_qubits", "reps", "layers", "shots").items()
+        if n == 8 and s == low
+    ]
+    agree("ShotLowAmbigLargeMin", str(min(ambiguous)), m["ShotLowAmbigLargeMin"])
+    agree("ShotLowAmbigLargeMax", str(max(ambiguous)), m["ShotLowAmbigLargeMax"])
     values["rq2"] = {
         "lowShots": low,
         "within8Max": int(m["ShotLowWithinLargeMax"]),
@@ -260,6 +291,14 @@ def rq3(m: dict, rule: Rule, values: dict) -> dict:
         )
         series[(n, reps, layers)].append((n * b / p, counts["recovered"]))
     agree("rq3.tex", "\n".join(lines), "\n".join(table_rows("rq3")))
+    points = [pt for pts in series.values() for pt in pts]
+    leak = max(v for v, k in points if k > 0)
+    held = min(v for v, k in points if v > leak)
+    if any(k > 0 for v, k in points if v >= held):
+        raise SystemExit("rq3: a batch past the crossover was recovered; the batch slide says none was")
+    agree("BatchLeakMaxRatio", f"{leak:.2f}", m["BatchLeakMaxRatio"])
+    agree("BatchHeldMinRatio", f"{held:.2f}", m["BatchHeldMinRatio"])
+    agree("BatchFewestRecoveredBelow", str(min(k for v, k in points if v <= leak)), m["BatchFewestRecoveredBelow"])
     values["rq3"] = {
         "leakMax": m["BatchLeakMaxRatio"],
         "heldMin": m["BatchHeldMinRatio"],
@@ -279,29 +318,97 @@ def tex_number(macro: str) -> str:
     return (inner.group(1) if inner else macro).replace("-", "\u2212")
 
 
-def rq4_rq5(m: dict, values: dict) -> dict:
+def mcnemar(only_a: int, only_b: int) -> float:
+    """Two-sided exact McNemar p-value from the two discordant counts."""
+    n = only_a + only_b
+    if n == 0:
+        return 1.0
+    return min(1.0, 2 * sum(math.comb(n, i) for i in range(min(only_a, only_b) + 1)) / 2**n)
+
+
+def p_text(p: float) -> str:
+    """The paper's way of printing a p-value after "p": "= 0.627", "= 0.0015", "< 0.001"."""
+    if p < 0.0005:
+        return "< 0.001"
+    if p < 0.01:
+        return f"= {p:.2g}"
+    if p < 0.05 <= round(p, 3):
+        return "< 0.05"
+    return f"= {p:.3f}"
+
+
+def discordant(rule: Rule, rows: list[dict], setting: tuple, arm: str, a, b) -> dict[tuple, tuple[int, int]]:
+    """Per setting, the seeds recovered only when `arm` is `a`, and only when it is `b`."""
+    rec = {(*(r[k] for k in setting), r[arm], r["seed"]): rule.best(r) == "recovered" for r in rows}
+    out = {}
+    for key in sorted({k[:-2] for k in rec}):
+        seeds = sorted({k[-1] for k in rec if k[:-2] == key})
+        pairs = [(rec[(*key, a, i)], rec[(*key, b, i)]) for i in seeds]
+        out[key] = (sum(x and not y for x, y in pairs), sum(y and not x for x, y in pairs))
+    return out
+
+
+def rq4_rq5(m: dict, rule: Rule, values: dict) -> dict:
+    labels = [r for r in load("rq4") if r["shots"] == 0]
+    only = discordant(rule, labels, ("n_qubits", "reps", "layers", "batch"), "label", "known", "unknown")
+    known = sum(k for k, _ in only.values())
+    unknown = sum(u for _, u in only.values())
+    agree("LabelKnownOnlyAll", str(known), m["LabelKnownOnlyAll"])
+    agree("LabelUnknownOnlyAll", str(unknown), m["LabelUnknownOnlyAll"])
+    agree("LabelPooledPAll", p_text(mcnemar(known, unknown)), m["LabelPooledPAll"])
+    agree("LabelSettings", str(len(only)), m["LabelSettings"])
+    agree("LabelKnownOnlyTwo", str(sum(k for key, (k, _) in only.items() if key[3] == 2)), m["LabelKnownOnlyTwo"])
+    top = max((key for key in only if key[3] == 2), key=lambda key: only[key][0])
+    stuck = {
+        lab: sum(
+            rule.best(r) == "stuck"
+            for r in labels
+            if (r["n_qubits"], r["reps"], r["layers"], r["batch"], r["label"]) == (*top, lab)
+        )
+        for lab in ("known", "unknown")
+    }
+    agree("LabelTopStuckKnown", str(stuck["known"]), m["LabelTopStuckKnown"])
+    agree("LabelTopStuckUnknown", str(stuck["unknown"]), m["LabelTopStuckUnknown"])
     values["rq4"] = {
-        "knownOnly": int(m["LabelKnownOnlyAll"]),
-        "unknownOnly": int(m["LabelUnknownOnlyAll"]),
+        "knownOnly": known,
+        "unknownOnly": unknown,
         "p": p_value(m["LabelPooledPAll"]),
         "knownOnlyTwo": int(m["LabelKnownOnlyTwo"]),
-        "stuckKnown": int(m["LabelTopStuckKnown"]),
-        "stuckUnknown": int(m["LabelTopStuckUnknown"]),
+        "stuckKnown": stuck["known"],
+        "stuckUnknown": stuck["unknown"],
     }
+
+    trained = load("rq5")
+    last = max(r["step"] for r in trained)
+    agree("TrainedFinalStep", str(last), m["TrainedFinalStep"])
+    ends = [r for r in trained if r["step"] in (0, last)]
+    by_task = discordant(rule, ends, ("task", "n_qubits", "reps", "layers"), "step", 0, last)
+    before = sum(k for k, _ in by_task.values())
+    after = sum(u for _, u in by_task.values())
+    agree("TrainedOnlyBeforeAll", str(before), m["TrainedOnlyBeforeAll"])
+    agree("TrainedOnlyAfterAll", str(after), m["TrainedOnlyAfterAll"])
+    agree("TrainedPooledPAll", p_text(mcnemar(before, after)), m["TrainedPooledPAll"])
+    tasks = sorted({key[0] for key in by_task})
+    agree("TrainedTasks", str(len(tasks)), m["TrainedTasks"])
+    lead = [only for key, only in by_task.items() if key[0] == "curves2"]
+    lead_before, lead_after = sum(k for k, _ in lead), sum(u for _, u in lead)
+    agree("TrainedOnlyBeforeCurvesTwo", str(lead_before), m["TrainedOnlyBeforeCurvesTwo"])
+    agree("TrainedOnlyAfterCurvesTwo", str(lead_after), m["TrainedOnlyAfterCurvesTwo"])
     values["rq5"] = {
-        "before": int(m["TrainedOnlyBeforeAll"]),
-        "after": int(m["TrainedOnlyAfterAll"]),
+        "before": before,
+        "after": after,
         "p": p_value(m["TrainedPooledPAll"]),
-        "tasks": int(m["TrainedTasks"]),
-        "steps": int(m["TrainedFinalStep"]),
-        "attacks": int(m["TrainedAttacks"]),
-        "leadBefore": int(m["TrainedOnlyBeforeCurvesTwo"]),
-        "leadAfter": int(m["TrainedOnlyAfterCurvesTwo"]),
+        "tasks": len(tasks),
+        "steps": last,
+        "leadBefore": lead_before,
+        "leadAfter": lead_after,
+        # Test accuracy comes from training logs, not the attack rows; the paper's own tests check it.
         "leadAcc": m["TrainedLeadAccLow"],
     }
     return {
-        "labels": (values["rq4"]["knownOnly"], values["rq4"]["unknownOnly"]),
-        "training": (values["rq5"]["before"], values["rq5"]["after"]),
+        "labels": (known, unknown),
+        "training": (before, after),
+        "p": (values["rq4"]["p"], values["rq5"]["p"]),
     }
 
 
@@ -427,8 +534,9 @@ def fig_batch(d: dict, seeds: int) -> str:
         out.append(mark(marks[i], lx, ly))
         out.append(text(lx + 18, ly + 7, name, 19, INK))
     out.append(f'<rect x="{x(1):g}" y="{top}" width="{right - x(1):g}" height="{bottom - top}" fill="#e6ecf4"/>')
-    out.append(text(right - 6, top + 26, "more unknowns", 19, HELD, "end", 700))
-    out.append(text(right - 6, top + 50, "than parameters", 19, HELD, "end", 700))
+    # In the shaded region's empty middle, clear of the lines that fall into it at its left edge.
+    out.append(text(right - 6, y(11), "every seed", 19, HELD, "end", 700))
+    out.append(text(right - 6, y(11) + 24, "ambiguous", 19, HELD, "end", 700))
     for k in (0, 10, 20):
         out.append(f'<line x1="{left}" x2="{right}" y1="{y(k):g}" y2="{y(k):g}" stroke="{RULE}" stroke-width="1"/>')
         out.append(text(left - 10, y(k) + 7, str(k), 19, MUTED, "end"))
@@ -464,9 +572,11 @@ def fig_pairs(d: dict) -> str:
         out.append(text(220 + k * scale, y + 8, str(k), 23, INK, weight=700))
 
     out.append(text(0, 22, "Label", 21, HELD, weight=700))
+    out.append(text(W, 22, f"p = {d['p'][0]}", 21, INK, "end"))
     bar(60, "only if known", k_only, LEAK)
     bar(98, "only if hidden", u_only, MUTED)
     out.append(text(0, 160, "Training", 21, HELD, weight=700))
+    out.append(text(W, 160, f"p = {d['p'][1]}", 21, INK, "end"))
     bar(198, "only before", before, LEAK)
     bar(236, "only after", after, MUTED)
     return "\n".join([*out, "</svg>"])
@@ -482,7 +592,7 @@ def build() -> dict[pathlib.Path, str]:
     bud = budget(m, rule, values)
     shots = rq2(m, rule, values)
     batch = rq3(m, rule, values)
-    pairs = rq4_rq5(m, values)
+    pairs = rq4_rq5(m, rule, values)
     body = json.dumps(values, indent=2, ensure_ascii=False)
     figs = {
         "reps": fig_reps(reps, seeds, values["rq1"]["tries"]),

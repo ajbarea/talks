@@ -190,9 +190,8 @@ def test_repetitions_preset_shows_fewer_restarts_finding_the_input() -> None:
         f"console.log(JSON.stringify([[1,8],[2,4],[4,2],[8,1]].map(([r, l]) =>"
         f" Q.attack(Q.client({seed}, r, l, 0), 10).runs.filter((u) => u.outcome === 'recovered').length)))"
     )
-    assert hits[0] == 10
-    assert all(a >= b for a, b in zip(hits, hits[1:], strict=False))
-    assert hits[-1] < hits[0] / 2
+    # explainer.md quotes these four counts
+    assert hits == [10, 8, 6, 1]
 
 
 @needs_node
@@ -204,21 +203,25 @@ def test_restarts_preset_is_stuck_alone_and_found_with_more() -> None:
         " const b = a.runs.slice(0, n).reduce((x, u) => (u.loss < x.loss ? u : x)); out.push(b.outcome); }"
         "console.log(JSON.stringify(out))"
     )
+    # explainer.md: stuck with 1 to 5 restarts, the 6th finds the input
     assert p["restarts"] == 1
-    assert seq[0] == "stuck"
-    assert "recovered" in seq[:8]
+    assert seq[:5] == ["stuck"] * 5
+    assert seq[5:] == ["recovered"] * 15
 
 
 @needs_node
-def test_shots_preset_recovers_exactly_and_misses_at_ten_shots() -> None:
+def test_shots_preset_matches_the_explainer() -> None:
     p = presets()["shots"]
     layers = 8 // p["reps"]
-    errs = js(
+    got = js(
         f"const c = (s) => Q.client({p['seed']}, {p['reps']}, {layers}, s);"
-        "console.log(JSON.stringify([0, 10].map((s) => Q.attack(c(s), 10).error)))"
+        "const run = (s) => { const a = Q.attack(c(s), 10); return [a.outcome, a.error]; };"
+        "console.log(JSON.stringify([0, 1000, 100, 10].map(run)))"
     )
-    assert errs[0] < 0.05
-    assert errs[1] > 0.2
+    # explainer.md: recovered when exact and at 1,000 shots (0.028 rad), close at 100 (0.148),
+    # ambiguous at 10 (1.087)
+    assert [o for o, _ in got] == ["recovered", "recovered", "close", "ambiguous"]
+    assert [round(e, 3) for _, e in got[1:]] == [0.028, 0.148, 1.087]
 
 
 def figures_module():
@@ -257,9 +260,26 @@ def test_figures_agree_with_the_papers_tables_and_are_current() -> None:
     assert run.returncode == 0, run.stderr
 
 
+MUTANTS = [
+    "RecByRepsLarge",
+    "SquareWrongSmall",
+    "BudgetOthersMin",
+    "BudgetHardestHeld",
+    "ShotNoiseLarge",
+    "ShotLowAmbigLargeMin",
+    "BatchHeldMinRatio",
+    "BatchFewestRecoveredBelow",
+    "LabelKnownOnlyAll",
+    "LabelTopStuckUnknown",
+    "TrainedOnlyBeforeAll",
+    "TrainedOnlyAfterCurvesTwo",
+]
+
+
 @pytest.mark.skipif(not (QFL / "results").is_dir(), reason="needs a csci739-qfl-privacy checkout (set QFL)")
-def test_a_changed_macro_is_caught(tmp_path: pathlib.Path) -> None:
-    """Mutation check: the paper's macros drive the agreement guard."""
+@pytest.mark.parametrize("macro", MUTANTS)
+def test_a_changed_macro_is_caught(tmp_path: pathlib.Path, macro: str) -> None:
+    """Mutation check: change one digit of one macro the deck shows; the build must stop on it."""
     fake = tmp_path / "qfl"
     (fake / "report" / "tables").mkdir(parents=True)
     (fake / "results").symlink_to(QFL / "results")
@@ -267,8 +287,9 @@ def test_a_changed_macro_is_caught(tmp_path: pathlib.Path) -> None:
         (fake / "report" / "tables" / t.name).write_text(t.read_text())
     numbers = fake / "report" / "tables" / "numbers.tex"
     before = numbers.read_text()
-    after = re.sub(r"(\\newcommand\{\\RecByRepsLarge\}\{\d+, \d+, )(\d+)", lambda m: m[1] + str(int(m[2]) + 1), before)
-    assert after != before, "the mutant must change the macro"
+    line = re.compile(r"(\\newcommand\{\\" + macro + r"\}\{[^0-9]*)(\d)")
+    after = line.sub(lambda m: m[1] + str((int(m[2]) + 1) % 10), before, count=1)
+    assert after != before, f"the mutant must change {macro}"
     numbers.write_text(after)
     run = subprocess.run(
         ["python3", str(TALK / "figures.py"), "--check"],
@@ -277,4 +298,4 @@ def test_a_changed_macro_is_caught(tmp_path: pathlib.Path) -> None:
         env={**os.environ, "QFL": str(fake)},
     )
     assert run.returncode != 0
-    assert "RecByRepsLarge" in (run.stderr + run.stdout)
+    assert macro in (run.stderr + run.stdout), run.stderr + run.stdout

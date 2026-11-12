@@ -106,6 +106,38 @@
   <aside class="notes"><ul><li>What I did: <span data-value="readings.examples_total"></span> examples, <span data-value="readings.orgs_count"></span> organizations, a pass rule written first</li><li>Why you care: client, personalization and attack questions rest on link one</li><li>Not tested before, to my knowledge: other projects against a foreign organization</li></ul></aside>
 </section>
 
+<section id="what-sphragis-builds" data-chapter="1 · The bigger problem">
+  <span class="kicker">1 · The bigger problem</span>
+  <h2>Sphragis pairs reviewed code with the developer's next version, so no label is guessed</h2>
+  <div class="builds">
+    <figure class="example-card">
+      <figcaption><b>One real example</b><span><span data-value="readings.example_org"></span>, <span data-value="readings.example_month"></span></span></figcaption>
+      <ol class="ex-steps">
+        <li class="ex-before"><i>Code under review</i><code data-example="before"></code></li>
+        <li class="ex-said"><i>Reviewer comment on this line</i><span>not shown: the study publishes no review text</span></li>
+        <li class="ex-after"><i>Developer's next version: the label</i><code data-example="after"></code></li>
+      </ol>
+      <p class="fig-note">Boxed: what the developer changed. From <span data-value="readings.example_project"></span>, <span data-value="readings.example_window"></span> data.</p>
+    </figure>
+    <div class="builds-side">
+      <figure class="org-bars">
+        <figcaption><b>Examples per organization</b></figcaption>
+        <div class="bar-row"><span>OpenStack</span><i class="bar" data-bar="readings.examples_openstack" aria-hidden="true"></i><b data-value="readings.examples_openstack"></b></div>
+        <div class="bar-row"><span>Wikimedia</span><i class="bar" data-bar="readings.examples_wikimedia" aria-hidden="true"></i><b data-value="readings.examples_wikimedia"></b></div>
+        <div class="bar-row"><span>Qt</span><i class="bar" data-bar="readings.examples_qt" aria-hidden="true"></i><b data-value="readings.examples_qt"></b></div>
+      </figure>
+      <figure class="org-bars audit">
+        <figcaption><b>Label audit</b><span class="cap-sub">valid, of <span data-value="readings.audit_checked"></span> checked by hand</span></figcaption>
+        <div class="bar-row"><span>Me</span><i class="track" aria-hidden="true"><i class="bar" data-bar="readings.audit_valid_human" data-of="readings.audit_checked"></i></i><b data-value="readings.audit_valid_human"></b></div>
+        <div class="bar-row"><span>Model A</span><i class="track" aria-hidden="true"><i class="bar" data-bar="readings.audit_valid_a" data-of="readings.audit_checked"></i></i><b data-value="readings.audit_valid_a"></b></div>
+        <div class="bar-row"><span>Model B</span><i class="track" aria-hidden="true"><i class="bar" data-bar="readings.audit_valid_b" data-of="readings.audit_checked"></i></i><b data-value="readings.audit_valid_b"></b></div>
+        <p class="fig-note">Valid: the comment asks for a change and the next version makes it.</p>
+      </figure>
+    </div>
+  </div>
+  <aside class="notes"><ul><li>One example: code under review, the comment, the developer's next version</li><li>The next version is the label; the comment stays off the slide</li><li>Audit: <span data-value="readings.audit_valid_human"></span> of <span data-value="readings.audit_checked"></span> valid by me, <span data-value="readings.audit_valid_a"></span> and <span data-value="readings.audit_valid_b"></span> by the model raters</li></ul></aside>
+</section>
+
 <section data-chapter="2 · The arc">
   <span class="kicker">2 · The arc</span>
   <h2>In federated terms, the first question is who the client should be</h2>
@@ -267,7 +299,7 @@
         <li>Open pipeline: review history to frozen examples</li>
         <li>Three frozen datasets; GitHub candidates frozen</li>
         <li>Simulations that set each test's runs</li>
-        <li>Label audit, with a human check</li>
+        <li><a href="#/what-sphragis-builds">Label audit, with a human check</a></li>
       </ul>
     </div>
     <div class="open-col">

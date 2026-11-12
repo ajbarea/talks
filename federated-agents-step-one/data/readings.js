@@ -37,7 +37,15 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "planted_runs_qt": 10,
   "planted_found_qt": 10,
   "planted_total": 30,
-  "planted_found": 30
+  "planted_found": 30,
+  "example_org": "OpenStack",
+  "example_project": "starlingx/config",
+  "example_month": "Mar 2025",
+  "example_window": "training",
+  "audit_checked": 152,
+  "audit_valid_human": 123,
+  "audit_valid_a": 124,
+  "audit_valid_b": 124
 } });
 window.DECK_FIGURE = {
   "split_first_low": "+0.28",
@@ -49,5 +57,39 @@ window.DECK_FIGURE = {
     "p13": 1.29,
     "p29": 0.71
   },
-  "split_count": 5
+  "split_count": 5,
+  "example": {
+    "id": "openstack:I7584e060b9fe3a1d81f98be624eab6176b92354b:controllerconfig/controllerconfig/upgrade-scripts/200-cis-benchmark-support.sh:1:8",
+    "window": "train",
+    "month": "Mar 2025",
+    "project": "starlingx/config",
+    "before": [
+      [
+        "NAME=$(basename $0)",
+        false
+      ]
+    ],
+    "after": [
+      [
+        "NAME=$(basename ",
+        false
+      ],
+      [
+        "\"",
+        true
+      ],
+      [
+        "$0",
+        false
+      ],
+      [
+        "\"",
+        true
+      ],
+      [
+        ")",
+        false
+      ]
+    ]
+  }
 };

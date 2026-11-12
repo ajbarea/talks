@@ -109,3 +109,33 @@
     win.style.setProperty("--w", ((to + 1 - from) / (end - start)) * 100);
   });
 })();
+
+// The "what Sphragis builds" slide: the example's code with the developer's change marked, and the
+// examples-per-organization bars, each as its share of the largest, and the audit's valid shares.
+(function () {
+  "use strict";
+  const drawn = window.DECK_FIGURE.example;
+  for (const node of document.querySelectorAll("[data-example]")) {
+    const runs = drawn && drawn[node.dataset.example];
+    if (!runs) throw new Error(`example figure: no "${node.dataset.example}" side`);
+    for (const [text, changed] of runs) {
+      node.appendChild(changed ? Object.assign(document.createElement("mark"), { textContent: text }) : document.createTextNode(text));
+    }
+  }
+  const data = window.DECK_DATA.readings;
+  const read = (path) => {
+    const n = Number(String(data[path.split(".")[1]]).replace(/,/g, ""));
+    if (!Number.isFinite(n)) throw new Error(`bar figure: cannot read ${path}`);
+    return n;
+  };
+  // A bar with data-of is a share of that count; the others in a figure share its largest bar.
+  for (const fig of document.querySelectorAll("figure:has([data-bar])")) {
+    const bars = [...fig.querySelectorAll("[data-bar]")];
+    const counts = bars.map((bar) => read(bar.dataset.bar));
+    const most = Math.max(...counts);
+    bars.forEach((bar, i) => {
+      const of = bar.dataset.of ? read(bar.dataset.of) : most;
+      bar.style.setProperty("--share", (counts[i] / of) * 100);
+    });
+  }
+})();

@@ -15,6 +15,8 @@ SPHRAGIS points at a sphragis checkout; the default is a sibling of this reposit
 from __future__ import annotations
 
 import argparse
+import datetime as dt
+import difflib
 import importlib.util
 import json
 import math
@@ -26,6 +28,8 @@ HERE = pathlib.Path(__file__).resolve().parent
 SPHRAGIS = pathlib.Path(os.environ.get("SPHRAGIS") or HERE.parents[1] / "sphragis")
 RESULTS = SPHRAGIS / "datasets" / "results"
 READINGS = HERE / "data" / "readings.js"
+#: The corpus itself is not in git; CI reuses the committed example (see `example`).
+CORPUS = pathlib.Path(os.environ.get("SPHRAGIS_CORPUS") or SPHRAGIS / "datasets" / "gerrit")
 
 #: The Gerrit organizations of the confirmatory design, in the order the slides name them.
 ORGS = {"openstack": "OpenStack", "wikimedia": "Wikimedia", "qt": "Qt"}
@@ -170,6 +174,100 @@ def planted(values: dict, fa) -> None:
     values["planted_found"] = every.count("pass")
 
 
+#: The one corpus example the "what Sphragis builds" slide shows: an OpenStack train-window hunk
+#: that the human checker and both model raters labeled valid. Only its code is read; the
+#: protocol publishes no review text, so its comments never leave the corpus.
+EXAMPLE = (
+    "openstack:I7584e060b9fe3a1d81f98be624eab6176b92354b:"
+    "controllerconfig/controllerconfig/upgrade-scripts/200-cis-benchmark-support.sh:1:8"
+)
+#: Windows an example on a slide may come from: frozen and public, never the sealed test window.
+SHOWABLE = ("train", "dev")
+AUDIT = "label-audit-v2.json"
+AUDIT_RATERS = ("human", "A", "B")
+
+
+def marked(old: str, new: str) -> tuple[list, list]:
+    """Each side as [text, changed] runs, so the slide can mark what the fix changed."""
+    a: list = []
+    b: list = []
+
+    def add(runs: list, text: str, changed: bool) -> None:
+        if runs and runs[-1][1] == changed:
+            runs[-1][0] += text
+        elif text:
+            runs.append([text, changed])
+
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, old, new, autojunk=False).get_opcodes():
+        add(a, old[i1:i2], tag != "equal")
+        add(b, new[j1:j2], tag != "equal")
+    return a, b
+
+
+def committed_figure() -> dict:
+    """DECK_FIGURE as committed, for the example when the corpus is not on this machine."""
+    if not READINGS.is_file():
+        return {}
+    _, _, tail = READINGS.read_text().partition("window.DECK_FIGURE = ")
+    return json.loads(tail.rstrip().removesuffix(";")) if tail else {}
+
+
+def example(values: dict, figure: dict, fa) -> None:
+    """The slide's example: its code before and after review, where and when it was written, and
+    its audit labels, which must all be valid since the slide says so."""
+    labels = load(AUDIT)["labels"].get(EXAMPLE)
+    if not labels or any(labels.get(r, {}).get("label") != "valid" for r in AUDIT_RATERS):
+        raise SystemExit(f"{EXAMPLE} is not labeled valid by {', '.join(AUDIT_RATERS)}")
+    org = EXAMPLE.split(":", 1)[0]
+    found = None
+    for path in sorted((CORPUS / org / "examples").glob("*.jsonl")):
+        with path.open() as rows:
+            for line in rows:
+                if EXAMPLE in line:
+                    row = json.loads(line)
+                    if row["id"] == EXAMPLE:
+                        found = row
+                        break
+        if found:
+            break
+    if found is None:
+        drawn = committed_figure().get("example")
+        if not drawn or drawn.get("id") != EXAMPLE:
+            raise SystemExit(f"no corpus at {CORPUS} and no committed copy of {EXAMPLE}")
+        print(f"no corpus at {CORPUS}; the example's code is the committed copy", file=sys.stderr)
+        figure["example"] = drawn
+    else:
+        day = found["created"][:10]
+        window = next((w for w, (start, end) in fa.windows().items() if start <= day < end), None)
+        if window not in SHOWABLE:
+            raise SystemExit(f"{EXAMPLE} falls in the {window} window, not in {SHOWABLE}")
+        before, after = marked(found["before"], found["after"])
+        figure["example"] = {
+            "id": EXAMPLE,
+            "window": window,
+            "month": f"{dt.date.fromisoformat(day):%b %Y}",
+            "project": found["project"],
+            "before": before,
+            "after": after,
+        }
+    drawn = figure["example"]
+    values["example_org"] = ORGS[org]
+    values["example_project"] = drawn["project"]
+    values["example_month"] = drawn["month"]
+    values["example_window"] = {"train": "training", "dev": "development"}[drawn["window"]]
+
+
+def label_audit(values: dict) -> None:
+    """How many of the examples a person checked each reader called valid."""
+    audit = load(AUDIT)
+    if "valid" not in audit["rubric"]:
+        raise SystemExit(f"{AUDIT}: no 'valid' label in the rubric {audit['rubric']}")
+    checked = [v for v in audit["labels"].values() if "human" in v]
+    values["audit_checked"] = len(checked)
+    for rater in AUDIT_RATERS:
+        values[f"audit_valid_{rater.lower()}"] = sum(v[rater]["label"] == "valid" for v in checked)
+
+
 def readings() -> tuple[dict, dict]:
     fa = federated_agents()
     values: dict = {}
@@ -180,6 +278,8 @@ def readings() -> tuple[dict, dict]:
     sizing(values)
     split_example(values, figure)
     planted(values, fa)
+    example(values, figure, fa)
+    label_audit(values)
     return values, figure
 
 

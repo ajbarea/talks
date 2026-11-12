@@ -37,25 +37,22 @@ Each talk gets its own strong identity on a light ground for lit rooms, and ever
 - `videos/channel/refresh.py extract META PLAYLISTS` rebuilds the tables from a fresh `yt-dlp` pull (`uvx yt-dlp --js-runtimes node ...`); it refuses an upload that fits no tier.
 
 ## QFL privacy talk (qfl-privacy/), CSCI-739 QML
-#110 merged a5b7cfe, live at https://ajbarea.github.io/talks/qfl-privacy/. Round 2 (Heph + AJ 11-12): issue #112, PR #113, branch talk/qml-lab-honest. Talks from Tue Dec 1, 13 to 15 minutes. Source: ajbarea/csci739-qfl-privacy; set `QFL` to a checkout (`~/ajsoftworks/csci739-qfl-privacy/.claude/worktrees/qml-src`, detached at origin/main).
+#110 (a5b7cfe) and round 2 #113 (4544e62) merged; live at https://ajbarea.github.io/talks/qfl-privacy/ (checked 11-12 at 1920/1366/1280/390: zero overlap, console clean). Desktop `CSCI-739 talk/`: deck PDF, explainer PDF (rebuilt after #113), `live-url.txt`. Talks Tue Dec 1, 13 to 15 min. `QFL` = `~/ajsoftworks/csci739-qfl-privacy/.claude/worktrees/qml-src` (detached at origin/main).
 
-### Done (round 2, PR #113)
-- ✅ Slide 3: federated learning in one animated picture (wide SVG on a slide, tall one on a phone via the shared `data-only`), script and explainer gloss.
-- ✅ Lab pace: a search over about 5 s, restarts released one after another with fading trails, "Replay slowly" (2.5x); reduced motion jumps to the end.
-- ✅ Honest toy: the main readout is restarts that found the input; each lab panel ends in rows of hidden inputs 1 to 20 (not picked) per value of its control, beside the paper's rows. Measured: reps 175, 161, 133, 120 of 200; restarts 9, 15, 19, 20, 20 of 20; shots 15, 19, 20, 20 of 20 (tests pin them).
-- ✅ Layout: one fluid grid (`.lab-row` 3fr / minmax(300px, 2fr)); readouts, control-plus-buttons (flex wrap) and rows on separate rows; fixed controls named in the header. Gates: 0 blockers, 0 warnings.
-- ✅ Bloch sphere: hidden input a ring, best guess a dot, each restart's end a small dot outside.
-- ✅ Wording (addendum 2 point 7): slide 9 "With 100 shots at 8 qubits, this attack almost always failed"; script, notes and explainer say it blocked this attack, not a privacy guarantee (Sedrakyan, Grosshans, Kashefi, arXiv:2606.29293, checked on arXiv); added to References.
-
-### Next
-- 📋 PR #113: full `make check`, push, one fresh Opus reader, fix, merge; then check the live page at 1920 and phone, drag every control, console clean.
-- 📋 PR 2 (addendum 2 point 6): the lab as its own web app at `qfl-privacy/lab/` (Pharos explorer pattern: tabs, state in the URL, seed picker, downloads; Worker; replay timeline with play/pause/step/scrub; paper tab from figures.py, never recomputed). Deck lab slides then embed it at a fixed URL state, still figure for file:// and PDF. Bar: techne `plugins/graphe/_shared/exemplars.md`.
-- 📋 Desktop `CSCI-739 talk/`: deck PDF + `live-url.txt` after the merge.
-- 📋 Present Tue Dec 1. Recheck `figures-check` if csci739 `results/` changes.
+### Now: the lab as its own page, issue #116, branch talk/qml-lab-app
+Spec: issue #116; Heph's addendum 2 (points 1-6) and fixes 1-5; bar: techne `plugins/graphe/_shared/exemplars.md`; model: Pharos explorer (`~/ajsoftworks/pharos/site/explorer/index.html`).
+Plan (✅ done / 📋 pending):
+- 📋 A. `figures.py` also writes `lab/data/runs.js` (window.PAPER_RUNS): every attack row of rq1, budget, rq2-rq5 with the paper's Rule per restart; `--check` covers it. Docstring: "every number on the slides and in the script".
+- 📋 B. `lab/index.html` + `lab/app.css` + `lab/app.js`: tabs (Federated learning, One attack, Repetitions, Restarts, Shots, The paper's runs), state in the hash (`#tab=attack&input=3&reps=2&shots=0&restarts=10`), input picker, downloads (paper bundle JSON/CSV, toy rows CSV).
+- 📋 C. One attack: timeline (play/pause Space, step arrows, scrub, speed), each restart's start/end/loss/outcome in a table, Bloch + loss plot (from lab.js).
+- 📋 D. Repetitions: 1x8 and 8x1 side by side on one transport; many-draw rows (20/100/200 inputs) in a Worker (`lab/worker.js`, importScripts ../lab-sim.js), main thread on file://. Restarts, Shots likewise. Paper rows from PAPER_RUNS.
+- 📋 E. Embed mode (`&embed=1`): the compact panel the deck uses; deck lab slides become an iframe at a fixed state + "Open full screen", still paper figure in print; keys forwarded to the deck by postMessage (deck checks event.source). Retire lab.js; port its tests.
+- 📋 F. Gates: make check; drive at 1920/1366/1280/390 (app + deck); Opus review rounds; merge; live check.
 
 ### Verify
 - `QFL=<checkout> uv run pytest -q tests/test_qfl_lab.py`; `QFL=<checkout> python3 qfl-privacy/figures.py --check`; `python3 scripts/script_length.py qfl-privacy --check`.
 - Gates as CI runs them: techne pinned in `.github/workflows/site.yml` (`git archive <pin> plugins/graphe`), then under `flock -o /tmp/fleet-heavy.lock`: `make check SLIDES=<that slides.py> SPHRAGIS=<sphragis> QFL=<checkout>`.
+- Drive scripts (session scratchpad, recreate if lost): open each lab slide, drag the free control to both ends by mouse and keys, measure pairwise overlap of lab parts, time the search, check console.
 
 ## Checking the Checker talk (checking-the-checker/), CISC-810 Group 1
 - ✅ #82: 8 main slides + 12 backup, from the revised manuscript and its evidence/ only (every value in `data/deck-data.js` with its source); `figs.js` draws the charts and recounts the counts the titles state. Script 966 words, cap 7 minutes.

@@ -30,10 +30,10 @@
   };
   const WORDS = { recovered: "Recovered", close: "Close", ambiguous: "Ambiguous", stuck: "Stuck" };
   const MEANING = {
-    recovered: "the input, found",
+    recovered: "found the input",
     close: "near the input",
-    ambiguous: "another input fits as well",
-    stuck: "a worse fit, search gave up",
+    ambiguous: "another input fits",
+    stuck: "worse fit, gave up",
   };
 
   const el = (tag, attrs, parent, text) => {
@@ -51,7 +51,7 @@
     return n;
   };
   const shotsWord = (s) => (s ? `${s.toLocaleString("en-US")} shots` : "exact gradient");
-  const rad = (v) => (v < 0.001 ? "under 0.001" : v.toFixed(3));
+  const rad = (v) => (v < 0.001 ? "< 0.001" : v.toFixed(3));
 
   // Attacks already run, by client: the restarts slider only reads more of a stored run.
   const cache = new Map();
@@ -161,7 +161,7 @@
       sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * f, y: PH - 14, class: "tick", "text-anchor": f === 0 ? "start" : f === 1 ? "end" : "middle" }, s, t);
     });
     sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * 0.25, y: PH - 14, class: "axis", "text-anchor": "middle" }, s, "guess \u2192");
-    sv("text", { x: PAD.l + 8, y: PAD.t + 20, class: "axis" }, s, "matching loss");
+    sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * 0.75, y: PH - 14, class: "axis", "text-anchor": "middle" }, s, "\u2191 matching loss");
     const truth = sv("line", { class: "truth-mark", y1: PAD.t, y2: PH - PAD.b }, s);
     const curve = sv("path", { class: "curve" }, s);
     const paths = sv("g", { class: "paths" }, s);
@@ -174,7 +174,7 @@
   function control(form, step, name, label, max, value, free, text) {
     const id = `lab-${step}-${name}`;
     const row = el("div", { class: `ctl${free ? " free" : " fixed"}` }, form);
-    el("label", { for: id }, row, free ? label : `${label} (fixed)`);
+    el("label", { for: id }, row, free ? label : `${label}, fixed`);
     const input = el("input", { id, type: "range", min: name === "restarts" ? 1 : 0, max, step: 1, value }, row);
     const out = el("output", { for: id }, row);
     if (!free) input.disabled = true;
@@ -199,8 +199,8 @@
     const form = el("div", { class: "lab-ctl", role: "group", "aria-label": "Lab controls" }, box);
     const name = box.dataset.lab;
     const ctl = {
-      reps: control(form, name, "reps", "Encoding repetitions", REPS.length - 1, REPS.indexOf(state.reps), step.free === "reps", (i) => `${REPS[i]} \u00d7 ${BLOCKS / REPS[i]} blocks`),
-      shots: control(form, name, "shots", "Shots per measurement", SHOTS.length - 1, SHOTS.indexOf(state.shots), step.free === "shots", (i) => shotsWord(SHOTS[i])),
+      reps: control(form, name, "reps", "Repetitions", REPS.length - 1, REPS.indexOf(state.reps), step.free === "reps", (i) => `${REPS[i]} \u00d7 ${BLOCKS / REPS[i]}`),
+      shots: control(form, name, "shots", "Shots", SHOTS.length - 1, SHOTS.indexOf(state.shots), step.free === "shots", (i) => shotsWord(SHOTS[i])),
       restarts: control(form, name, "restarts", "Restarts", MAX_RESTARTS, state.restarts, step.free === "restarts", (i) => `${i} restart${i === 1 ? "" : "s"}`),
     };
     const buttons = el("div", { class: "lab-buttons" }, box);
@@ -215,7 +215,7 @@
         const i = name === "reps" ? REPS.indexOf(state.reps) : name === "shots" ? SHOTS.indexOf(state.shots) : state.restarts;
         c.input.value = String(i);
         c.out.textContent = c.text(i);
-        c.input.setAttribute("aria-valuetext", c.text(i));
+        c.input.setAttribute("aria-valuetext", name === "reps" ? `${c.text(i)}: repetitions times trainable blocks` : c.text(i));
       }
       // The fixed values, once more in the header: a phone hides the fixed controls.
       fixedNote.textContent = `fixed here: ${Object.values(ctl)
@@ -252,7 +252,13 @@
         trails.forEach((t, i) => {
           const upto = Math.min(t.length - 1, k);
           const pts = t.slice(0, upto + 1).filter((_, j) => j % 2 === 0 || j === upto);
-          lines[i].setAttribute("d", `M${pts.map((p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join("L")}`);
+          // A search that crosses 0 or 2pi reappears at the other edge: start a new stroke there.
+          let d = "";
+          pts.forEach((p, j) => {
+            const jump = j === 0 || Math.abs(p[0] - pts[j - 1][0]) > (PW - PAD.l - PAD.r) / 2;
+            d += `${jump ? "M" : "L"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
+          });
+          lines[i].setAttribute("d", d);
           dots[i].setAttribute("cx", t[upto][0]);
           dots[i].setAttribute("cy", t[upto][1]);
         });
@@ -267,10 +273,10 @@
         el("b", {}, o, WORDS[b.outcome]);
         el("span", {}, o, MEANING[b.outcome]);
         const e = el("p", { class: "meter" }, read);
-        el("span", {}, e, "Best guess is off by");
+        el("span", {}, e, "Error");
         el("b", {}, e, `${err} rad`);
         const h = el("p", { class: "meter" }, read);
-        el("span", {}, h, "Restarts that found it");
+        el("span", {}, h, "Restarts that hit");
         el("b", {}, h, `${hits} of ${runs.length}`);
         const words = `${WORDS[b.outcome]}: the best guess is ${err} radians from the hidden input; ${hits} of ${runs.length} restarts found it.`;
         bloch.label(`Bloch sphere: the hidden input and the attacker's best guess. ${words}`);

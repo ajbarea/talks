@@ -18,6 +18,7 @@
 }
 
 .reveal h1, .reveal h2 { letter-spacing: -0.005em; }
+.reveal .slides b { font-weight: 700; }
 .title-slide h1, .closing h2 { color: var(--ink); }
 .title-slide h1::after, .closing h2::after { background: var(--leak); }
 .lead { margin: 22px 0 0; font-size: 0.86em; max-width: 70ch; }
@@ -40,13 +41,13 @@
 .flow-fig svg { width: 100%; height: auto; display: block; }
 .flow-fig .box { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; }
 .flow-fig .box-title { font: 700 26px var(--sans); fill: var(--ink); }
-.flow-fig .box-text { font: 21px var(--sans); fill: var(--muted); }
+.flow-fig .box-text { font: 22px var(--sans); fill: var(--muted); }
 .flow-fig .held-dot { fill: var(--held-tint); stroke: var(--held); stroke-width: 4; }
 .flow-fig .held-x { font: italic 700 30px var(--sans); fill: var(--held-ink); }
 .flow-fig .wire { fill: none; stroke: var(--ink); stroke-width: 4; }
 .flow-fig .head { fill: var(--ink); }
-.flow-fig .wire-label { font: 700 21px var(--sans); fill: var(--ink); }
-.flow-fig .wire-sub { font: 19px var(--sans); fill: var(--muted); }
+.flow-fig .wire-label { font: 700 22px var(--sans); fill: var(--ink); }
+.flow-fig .wire-sub { font: 22px var(--sans); fill: var(--muted); }
 .flow-fig .found { fill: var(--leak); }
 .flow-fig .found-text { font: 700 23px var(--sans); fill: #fff; }
 .claim p { margin: 0 0 18px; font-size: 0.82em; }
@@ -70,14 +71,14 @@
 .circuit-fig .wires path { stroke: var(--ink); stroke-width: 2; }
 .circuit-fig .labels text { font: 20px var(--sans); fill: var(--muted); }
 .circuit-fig .repeat { fill: none; stroke: var(--held); stroke-width: 2.5; stroke-dasharray: 8 6; }
-.circuit-fig .repeat-label, .circuit-fig .block-label { font: 700 19px var(--sans); fill: var(--held-ink); }
+.circuit-fig .repeat-label, .circuit-fig .block-label { font: 700 22px var(--sans); fill: var(--held-ink); }
 .circuit-fig .block-label { fill: var(--ink); }
 .circuit-fig .enc rect { fill: var(--held-tint); stroke: var(--held); stroke-width: 2; }
-.circuit-fig .enc text { font: 700 20px var(--sans); fill: var(--held-ink); }
+.circuit-fig .enc text { font: 700 22px var(--sans); fill: var(--held-ink); }
 .circuit-fig .block { fill: var(--card); fill-opacity: 0.5; stroke: var(--line); stroke-width: 2; }
 .circuit-fig .train rect { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
-.circuit-fig .train text { font: 20px var(--sans); fill: var(--ink); }
-.circuit-fig .sub { font-size: 15px; }
+.circuit-fig .train text { font: 21px var(--sans); fill: var(--ink); }
+.circuit-fig .sub { font-size: 19px; }
 .circuit-fig .cnot path { stroke: var(--ink); stroke-width: 2; fill: none; }
 .circuit-fig .cnot circle { fill: var(--ink); }
 .circuit-fig .cnot .tgt { fill: var(--card); stroke: var(--ink); stroke-width: 2; }
@@ -85,7 +86,7 @@
 .circuit-fig .meter text { font: 700 21px var(--sans); fill: var(--ink); }
 .eq-box { padding-top: 4px; }
 .eq { margin: 0 0 6px; font: 0.86em var(--sans); white-space: nowrap; }
-.eq sub { font-size: 0.65em; }
+.eq sub { font-size: 0.75em; }
 .eq-gloss { margin: 0 0 18px; font-size: 0.68em; color: var(--muted); }
 .outcomes { margin: 0; padding: 0; list-style: none; font-size: 0.66em; }
 .outcomes li { position: relative; margin: 0 0 8px; padding-left: 30px; color: var(--muted); }
@@ -101,16 +102,19 @@
 .paper figcaption { margin-bottom: 10px; font-size: 0.64em; color: var(--muted); }
 .paper figcaption b { display: block; font-size: 1.12em; color: var(--ink); }
 .paper-fig { display: block; width: 100%; height: auto; font-family: var(--sans); }
-.paper .key { margin: 10px 0 0; font-size: 0.62em; color: var(--muted); }
+.paper .key { margin: 8px 0 0; font-size: 0.64em; color: var(--muted); }
 .paper .key i { display: inline-block; width: 13px; height: 13px; margin: 0 6px 0 0; border-radius: 50%; vertical-align: -1px; font-style: normal; }
 .paper .key .k-leak { background: var(--leak); }
 .paper .key .k-ring { background: var(--leak-tint); box-shadow: inset 0 0 0 2.5px var(--leak); }
 .paper .key .k-open { background: #fff; box-shadow: inset 0 0 0 1.5px var(--muted); }
 .paper .key > span { margin-right: 14px; white-space: nowrap; }
-.paper-note { margin: 10px 0 0; font-size: 0.66em; color: var(--ink); }
-.batch-row { display: grid; grid-template-columns: 560px 1fr; gap: 50px; align-items: start; margin-top: 10px; }
+.paper-note { margin: 8px 0 0; font-size: 0.66em; color: var(--ink); }
+.batch-row { display: grid; grid-template-columns: 500px 1fr; gap: 50px; align-items: start; margin-top: 10px; }
 .batch-text p { margin: 8px 0 22px; font-size: 0.86em; }
 .batch-text b { color: var(--leak-ink); }
+.batch-text .def { font-size: 0.66em; color: var(--muted); }
+.limits { margin: 10px 0 0; padding-left: 26px; font-size: 0.78em; }
+.limits li { margin: 0 0 12px; }
 
 /* ------------------------------------------------------------ the live lab -- */
 /* One grid. On a slide: header; sphere beside the loss trace; readout beside the buttons; the
@@ -127,7 +131,7 @@
 .lab-head b { margin-right: 10px; color: var(--ink); }
 .lab-bloch { grid-area: bloch; align-self: center; }
 .lab-trace { grid-area: trace; }
-.lab-read { grid-area: read; display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 12px; align-items: center; min-height: 52px; margin: 8px 0 4px; }
+.lab-read { grid-area: read; display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 26px; align-items: center; min-height: 52px; margin: 8px 0 4px; }
 .lab-buttons { grid-area: buttons; display: flex; gap: 10px; align-items: center; margin: 8px 0 4px; }
 .lab-ctl { grid-area: ctl; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 20px; padding-top: 6px; border-top: 1px solid var(--line); }
 .bloch, .trace { display: block; width: 100%; height: auto; }
@@ -152,16 +156,16 @@
 .trace .ball.ambiguous { fill: var(--held-tint); stroke: var(--held); stroke-width: 3; }
 .trace .ball.best { stroke: var(--ink); stroke-width: 3; }
 .lab-read p { margin: 0; font-size: 0.64em; line-height: 1.2; color: var(--muted); }
-.lab-read p b { display: block; font-size: 1.25em; font-variant-numeric: tabular-nums; color: var(--ink); }
+.lab-read p b { display: block; white-space: nowrap; font-size: 1.25em; font-variant-numeric: tabular-nums; color: var(--ink); }
 .lab-read .verdict.recovered b, .lab-read .verdict.close b { color: var(--leak-ink); }
 .lab-read .verdict.ambiguous b { color: var(--held-ink); }
-.ctl { display: grid; grid-template-columns: 1fr auto; gap: 0 8px; align-items: baseline; font-size: 0.62em; }
+.ctl { display: grid; grid-template-columns: 1fr auto; gap: 0 8px; align-items: baseline; font-size: 0.64em; }
 .ctl label { color: var(--ink); font-weight: 700; }
-.ctl output { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+.ctl output { grid-row: 1; grid-column: 2; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
 .ctl input { grid-column: 1 / -1; width: 100%; height: 28px; margin: 2px 0 0; accent-color: var(--leak); cursor: pointer; }
 .ctl.fixed label, .ctl.fixed output { color: var(--muted); font-weight: 400; }
 .ctl.fixed input { accent-color: var(--muted); cursor: not-allowed; }
-.lab button { padding: 6px 12px; font: 600 0.58em var(--sans); color: var(--ink); background: var(--card); border: 2px solid var(--ink); border-radius: 6px; cursor: pointer; white-space: nowrap; }
+.lab button { padding: 5px 12px; font: 600 0.64em var(--sans); color: var(--ink); background: var(--card); border: 2px solid var(--ink); border-radius: 6px; cursor: pointer; white-space: nowrap; }
 .lab button:hover { background: var(--band); }
 .lab :focus-visible { outline: 3px solid var(--held); outline-offset: 2px; }
 .lab-fixed { display: none; }
@@ -172,14 +176,20 @@
 
 /* ------------------------------------------------------------------ phone -- */
 .phone .title-art { position: relative; right: auto; top: auto; width: 240px; margin: 24px 0 30px; }
-.phone .point, .phone .claims, .phone .setup, .phone .lab-row, .phone .batch-row { grid-template-columns: 1fr; gap: 22px; }
+.phone .point, .phone .claims, .phone .setup, .phone .batch-row { grid-template-columns: 1fr; gap: 22px; }
+.phone .lab-row { grid-template-columns: 1fr; gap: 10px; }
+.phone .lab-head { margin-bottom: 4px; }
+.phone .paper figcaption { margin-bottom: 4px; }
 .phone .eq { white-space: normal; font-size: 0.8em; }
-.phone .lab { grid-template-columns: 128px 1fr; grid-template-areas: "head head" "trace trace" "bloch read" "ctl ctl" "buttons buttons"; padding: 10px 12px 12px; }
+.phone .lab { grid-template-columns: 136px 1fr; grid-template-areas: "head head" "trace trace" "bloch read" "ctl ctl" "buttons buttons"; padding: 10px 12px 12px; }
 .phone .lab-read { grid-template-columns: 1fr; gap: 4px; margin: 6px 0; }
 .phone .lab-ctl { grid-template-columns: 1fr; border-top: 0; padding-top: 0; }
 .phone .ctl.fixed { display: none; }
 .phone .lab-fixed { display: block; }
 .phone .lab-buttons { justify-content: flex-start; margin-top: 8px; }
 .phone .ctl, .phone .lab-head, .phone .lab-read p, .phone .lab button { font-size: 0.7em; }
-.phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.7em; }
+.phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.66em; }
+.phone .lab-slide h2 { font-size: 1.3em; }
+.phone .lab-bloch { width: 136px; }
+.phone .circuit-fig .sub { font-size: 21px; }
 .phone .claim-card figcaption { flex-direction: column; }

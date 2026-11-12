@@ -354,13 +354,13 @@ def dot_row(
 
 def dot_table(rows: list[tuple[str, int, int, str]], seeds: int, head: tuple[str, str, str], label: str) -> str:
     """Rows of (name, filled, ringed, value at the right), one dot per seed between."""
-    h = 44 + 52 * len(rows)
+    h = 36 + 42 * len(rows)
     out = svg_open(W, h, label)
-    out.append(text(0, 20, head[0], 19, MUTED))
-    out.append(text(96, 20, head[1], 19, MUTED))
-    out.append(text(W, 20, head[2], 19, MUTED, "end"))
+    out.append(text(0, 20, head[0], 20, MUTED))
+    out.append(text(96, 20, head[1], 20, MUTED))
+    out.append(text(W, 20, head[2], 20, MUTED, "end"))
     for i, (name, filled, extra, value) in enumerate(rows):
-        y = 64 + 52 * i
+        y = 54 + 42 * i
         out.append(text(0, y + 8, name, 24, INK, weight=700))
         out += dot_row(102, y, filled, seeds, extra)
         out.append(text(W, y + 8, value, 24, INK, "end", 700))
@@ -406,8 +406,8 @@ def mark(shape: str, cx: float, cy: float) -> str:
 
 
 def fig_batch(d: dict, seeds: int) -> str:
-    h = 470
-    left, right, top, bottom = 44, W - 10, 118, 414
+    h = 426
+    left, right, top, bottom = 44, W - 10, 112, 352
     lo, hi = math.log2(1 / 8), math.log2(4)
 
     def x(v: float) -> float:
@@ -417,7 +417,7 @@ def fig_batch(d: dict, seeds: int) -> str:
         return bottom - k / seeds * (bottom - top)
 
     series = d["series"]
-    label = f"Seeds recovered, of {seeds}, against unknown inputs per gradient entry: " + "; ".join(
+    label = f"Seeds recovered, of {seeds}, against unknown inputs per effective parameter: " + "; ".join(
         f"{name}: " + ", ".join(f"{v:.2f} gives {k}" for v, k in pts) for name, pts in series.items()
     )
     out = svg_open(W, h, label)
@@ -428,7 +428,7 @@ def fig_batch(d: dict, seeds: int) -> str:
         out.append(text(lx + 18, ly + 7, name, 19, INK))
     out.append(f'<rect x="{x(1):g}" y="{top}" width="{right - x(1):g}" height="{bottom - top}" fill="#e6ecf4"/>')
     out.append(text(right - 6, top + 26, "more unknowns", 19, HELD, "end", 700))
-    out.append(text(right - 6, top + 50, "than entries", 19, HELD, "end", 700))
+    out.append(text(right - 6, top + 50, "than parameters", 19, HELD, "end", 700))
     for k in (0, 10, 20):
         out.append(f'<line x1="{left}" x2="{right}" y1="{y(k):g}" y2="{y(k):g}" stroke="{RULE}" stroke-width="1"/>')
         out.append(text(left - 10, y(k) + 7, str(k), 19, MUTED, "end"))
@@ -437,6 +437,7 @@ def fig_batch(d: dict, seeds: int) -> str:
     dash = f'stroke="{HELD}" stroke-width="2" stroke-dasharray="6 5"'
     out.append(f'<line x1="{x(1):g}" x2="{x(1):g}" y1="{top}" y2="{bottom}" {dash}/>')
     out.append(text(0, top - 14, "seeds recovered", 19, MUTED))
+    out.append(text((left + right) / 2, h - 8, "unknowns per effective parameter (log scale)", 19, MUTED, "middle"))
     for i, (_name, pts) in enumerate(series.items()):
         pts = sorted(pts)
         path = " ".join(f"{'M' if j == 0 else 'L'}{x(v):.1f} {y(k):.1f}" for j, (v, k) in enumerate(pts))

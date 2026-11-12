@@ -63,13 +63,13 @@
         <path class="wire" d="M208 135H420" data-motion="draw" data-dur="700"/>
         <path class="head" d="M420 135l-16 -9v18z"/>
         <text class="wire-label" x="314" y="116" text-anchor="middle">sends its gradient g</text>
-        <text class="wire-sub" x="314" y="168" text-anchor="middle">a list of numbers,</text>
-        <text class="wire-sub" x="314" y="194" text-anchor="middle">one per trainable angle</text>
+        <text class="wire-sub" x="314" y="168" text-anchor="middle">one number per</text>
+        <text class="wire-sub" x="314" y="196" text-anchor="middle">trainable angle</text>
         <rect class="box server" x="430" y="40" width="200" height="190" rx="10"/>
         <text class="box-title" x="530" y="78" text-anchor="middle">Server</text>
-        <text class="box-text" x="530" y="112" text-anchor="middle">knows the circuit,</text>
-        <text class="box-text" x="530" y="138" text-anchor="middle">searches for x̂ whose</text>
-        <text class="box-text" x="530" y="164" text-anchor="middle">gradient matches g</text>
+        <text class="box-text" x="530" y="110" text-anchor="middle">knows the circuit;</text>
+        <text class="box-text" x="530" y="138" text-anchor="middle">looks for an x̂ whose</text>
+        <text class="box-text" x="530" y="166" text-anchor="middle">gradient is g</text>
         <g class="fragment" data-fragment-index="0">
           <rect class="found" x="440" y="262" width="180" height="56" rx="28"/>
           <text class="found-text" x="530" y="298" text-anchor="middle">x̂ = x: leaked</text>
@@ -77,8 +77,8 @@
       </svg>
     </figure>
     <div class="claim fragment" data-fragment-index="1">
-      <p><b>What I did:</b> attacked simulated 4- and 8-qubit re-uploading circuits the way a curious server would: <span data-value="rq1.attacks"></span> attacks with exact gradients, then shot noise, batches, hidden labels and trained circuits, <span data-value="paper.seeds"></span> seeds each.</p>
-      <p><b>Why you should care:</b> a quantum model in federated learning sends exactly the gradients our parameter-shift code computes. With one encoding layer and two or more trainable layers, they gave the input away on <span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span> seeds, on every circuit.</p>
+      <p><b>What I did:</b> attacked simulated 4- and 8-qubit re-uploading circuits as a curious server would: <span data-value="rq1.attacks"></span> attacks with exact gradients, then noise, batches, hidden labels and training.</p>
+      <p><b>Why you should care:</b> these are the gradients our parameter-shift code computes. With one encoding layer and two or more trainable layers, every circuit leaked its input on <span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span> seeds.</p>
     </div>
   </div>
   <aside class="notes"><ul><li>Federated learning: data stays home, gradients travel; the server searches for an input with the same gradient</li><li>What I did: <span data-value="rq1.attacks"></span> exact-gradient attacks, then noise, batches, labels, training; <span data-value="paper.seeds"></span> seeds each</li><li>Why care: shallow-encoding circuits leaked on every seed</li></ul></aside>
@@ -180,98 +180,98 @@
     <figure class="paper">
       <figcaption><b>The paper</b> 8 qubits, <span data-value="rq1.params"></span> effective parameters, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:reps -->
-<svg class="paper-fig" viewBox="0 0 480 252" role="img" aria-label="Seeds whose input was recovered, of 20, by repetitions times layers: 1×8: 20 seeds, 122 of 200 restarts; 2×4: 18 seeds, 46 of 200 restarts; 4×2: 8 seeds, 15 of 200 restarts; 8×1: 2 seeds, 2 of 200 restarts">
-<text x="0" y="20" font-size="19" fill="#47505a" text-anchor="start" font-weight="400">r × ℓ</text>
-<text x="96" y="20" font-size="19" fill="#47505a" text-anchor="start" font-weight="400">seeds, of 20</text>
-<text x="480" y="20" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">hits</text>
-<text x="0" y="72" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">1×8</text>
-<circle cx="102" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="226" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="241.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="257" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="272.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="288" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="303.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="319" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="334.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="350" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="365.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="381" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="396.5" cy="64" r="6.5" fill="#b3361b"/>
-<text x="480" y="72" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">122</text>
-<text x="0" y="124" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">2×4</text>
-<circle cx="102" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="226" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="241.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="257" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="272.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="288" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="303.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="319" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="334.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="350" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="365.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="381" cy="116" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="116" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="124" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">46</text>
-<text x="0" y="176" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4×2</text>
-<circle cx="102" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="226" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="241.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="257" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="272.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="288" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="303.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="319" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="334.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="350" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="365.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="176" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">15</text>
-<text x="0" y="228" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8×1</text>
-<circle cx="102" cy="220" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="220" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="148.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="164" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="179.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="195" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="210.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="226" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="241.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="257" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="272.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="288" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="303.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="319" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="334.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="350" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="365.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="228" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">2</text>
+<svg class="paper-fig" viewBox="0 0 480 204" role="img" aria-label="Seeds whose input was recovered, of 20, by repetitions times layers: 1×8: 20 seeds, 122 of 200 restarts; 2×4: 18 seeds, 46 of 200 restarts; 4×2: 8 seeds, 15 of 200 restarts; 8×1: 2 seeds, 2 of 200 restarts">
+<text x="0" y="20" font-size="20" fill="#47505a" text-anchor="start" font-weight="400">r × ℓ</text>
+<text x="96" y="20" font-size="20" fill="#47505a" text-anchor="start" font-weight="400">seeds, of 20</text>
+<text x="480" y="20" font-size="20" fill="#47505a" text-anchor="end" font-weight="400">hits</text>
+<text x="0" y="62" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">1×8</text>
+<circle cx="102" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="226" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="241.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="257" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="272.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="288" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="303.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="319" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="334.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="350" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="365.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="381" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="396.5" cy="54" r="6.5" fill="#b3361b"/>
+<text x="480" y="62" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">122</text>
+<text x="0" y="104" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">2×4</text>
+<circle cx="102" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="226" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="241.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="257" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="272.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="288" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="303.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="319" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="334.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="350" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="365.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="381" cy="96" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="96" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="104" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">46</text>
+<text x="0" y="146" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4×2</text>
+<circle cx="102" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="226" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="241.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="257" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="272.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="288" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="303.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="319" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="334.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="350" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="365.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="146" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">15</text>
+<text x="0" y="188" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8×1</text>
+<circle cx="102" cy="180" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="180" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="148.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="164" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="179.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="195" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="210.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="226" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="241.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="257" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="272.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="288" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="303.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="319" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="334.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="350" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="365.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="188" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">2</text>
 </svg>
 <!-- /fig -->
       <p class="key"><span><i class="k-leak"></i>recovered, best of <span data-value="paper.restarts"></span> restarts</span><span><i class="k-open"></i>not</span><br>hits: restarts of <span data-value="rq1.tries"></span> that found the input</p>
@@ -288,98 +288,98 @@
     <figure class="paper">
       <figcaption><b>The paper</b> 8 qubits, <span data-value="budget.small"></span> then <span data-value="budget.large"></span> restarts, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:restarts -->
-<svg class="paper-fig" viewBox="0 0 480 252" role="img" aria-label="Seeds recovered with 10 and with 50 restarts, of 20: 2×1: 7 then 18; 4×1: 8 then 17; 4×2: 8 then 18; 8×1: 2 then 5">
-<text x="0" y="20" font-size="19" fill="#47505a" text-anchor="start" font-weight="400">r × ℓ</text>
-<text x="96" y="20" font-size="19" fill="#47505a" text-anchor="start" font-weight="400">seeds, of 20</text>
-<text x="480" y="20" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">10→50</text>
-<text x="0" y="72" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">2×1</text>
-<circle cx="102" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="226" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="241.5" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="257" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="272.5" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="288" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="303.5" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="319" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="334.5" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="350" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="365.5" cy="64" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="381" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="72" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">7→18</text>
-<text x="0" y="124" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4×1</text>
-<circle cx="102" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="226" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="241.5" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="257" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="272.5" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="288" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="303.5" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="319" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="334.5" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="350" cy="116" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="365.5" cy="116" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="116" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="116" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="124" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">8→17</text>
-<text x="0" y="176" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4×2</text>
-<circle cx="102" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="226" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="241.5" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="257" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="272.5" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="288" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="303.5" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="319" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="334.5" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="350" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="365.5" cy="168" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="381" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="176" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">8→18</text>
-<text x="0" y="228" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8×1</text>
-<circle cx="102" cy="220" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="220" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="220" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="148.5" cy="220" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="164" cy="220" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
-<circle cx="179.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="195" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="210.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="226" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="241.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="257" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="272.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="288" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="303.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="319" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="334.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="350" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="365.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="228" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">2→5</text>
+<svg class="paper-fig" viewBox="0 0 480 204" role="img" aria-label="Seeds recovered with 10 and with 50 restarts, of 20: 2×1: 7 then 18; 4×1: 8 then 17; 4×2: 8 then 18; 8×1: 2 then 5">
+<text x="0" y="20" font-size="20" fill="#47505a" text-anchor="start" font-weight="400">r × ℓ</text>
+<text x="96" y="20" font-size="20" fill="#47505a" text-anchor="start" font-weight="400">seeds, of 20</text>
+<text x="480" y="20" font-size="20" fill="#47505a" text-anchor="end" font-weight="400">10→50</text>
+<text x="0" y="62" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">2×1</text>
+<circle cx="102" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="226" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="241.5" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="257" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="272.5" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="288" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="303.5" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="319" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="334.5" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="350" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="365.5" cy="54" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="381" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="62" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">7→18</text>
+<text x="0" y="104" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4×1</text>
+<circle cx="102" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="226" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="241.5" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="257" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="272.5" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="288" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="303.5" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="319" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="334.5" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="350" cy="96" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="365.5" cy="96" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="96" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="96" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="104" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">8→17</text>
+<text x="0" y="146" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4×2</text>
+<circle cx="102" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="226" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="241.5" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="257" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="272.5" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="288" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="303.5" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="319" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="334.5" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="350" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="365.5" cy="138" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="381" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="146" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">8→18</text>
+<text x="0" y="188" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8×1</text>
+<circle cx="102" cy="180" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="180" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="180" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="148.5" cy="180" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="164" cy="180" r="6.0" fill="#f6ddd5" stroke="#b3361b" stroke-width="2.5"/>
+<circle cx="179.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="195" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="210.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="226" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="241.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="257" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="272.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="288" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="303.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="319" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="334.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="350" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="365.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="188" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">2→5</text>
 </svg>
 <!-- /fig -->
       <p class="key"><span><i class="k-leak"></i>with <span data-value="budget.small"></span> restarts</span><span><i class="k-ring"></i>only with <span data-value="budget.large"></span></span><span><i class="k-open"></i>neither</span></p>
@@ -397,146 +397,146 @@
     <figure class="paper">
       <figcaption><b>The paper</b> <span data-value="rq2.lowShots"></span> shots per measurement, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:shots -->
-<svg class="paper-fig" viewBox="0 0 480 356" role="img" aria-label="Seeds guessed within 0.2 radians at 100 shots, of 20: 4 qubits 1×4: 10; 4 qubits 2×2: 17; 4 qubits 4×1: 14; 8 qubits 1×4: 0; 8 qubits 2×2: 1; 8 qubits 4×1: 0">
-<text x="0" y="20" font-size="19" fill="#47505a" text-anchor="start" font-weight="400">circuit</text>
-<text x="96" y="20" font-size="19" fill="#47505a" text-anchor="start" font-weight="400">seeds within 0.2 rad</text>
-<text x="480" y="20" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">of 20</text>
-<text x="0" y="72" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4q 1×4</text>
-<circle cx="102" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="226" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="241.5" cy="64" r="6.5" fill="#b3361b"/>
-<circle cx="257" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="272.5" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="288" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="303.5" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="319" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="334.5" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="350" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="365.5" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="64" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="72" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">10</text>
-<text x="0" y="124" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4q 2×2</text>
-<circle cx="102" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="226" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="241.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="257" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="272.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="288" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="303.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="319" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="334.5" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="350" cy="116" r="6.5" fill="#b3361b"/>
-<circle cx="365.5" cy="116" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="116" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="116" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="124" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">17</text>
-<text x="0" y="176" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4q 4×1</text>
-<circle cx="102" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="133" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="148.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="164" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="179.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="195" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="210.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="226" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="241.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="257" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="272.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="288" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="303.5" cy="168" r="6.5" fill="#b3361b"/>
-<circle cx="319" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="334.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="350" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="365.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="168" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="176" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">14</text>
-<text x="0" y="228" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8q 1×4</text>
-<circle cx="102" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="117.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="133" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="148.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="164" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="179.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="195" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="210.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="226" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="241.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="257" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="272.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="288" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="303.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="319" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="334.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="350" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="365.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="220" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="228" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">0</text>
-<text x="0" y="280" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8q 2×2</text>
-<circle cx="102" cy="272" r="6.5" fill="#b3361b"/>
-<circle cx="117.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="133" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="148.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="164" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="179.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="195" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="210.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="226" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="241.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="257" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="272.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="288" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="303.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="319" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="334.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="350" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="365.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="272" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="280" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">1</text>
-<text x="0" y="332" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8q 4×1</text>
-<circle cx="102" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="117.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="133" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="148.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="164" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="179.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="195" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="210.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="226" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="241.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="257" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="272.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="288" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="303.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="319" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="334.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="350" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="365.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="381" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<circle cx="396.5" cy="324" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
-<text x="480" y="332" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">0</text>
+<svg class="paper-fig" viewBox="0 0 480 288" role="img" aria-label="Seeds guessed within 0.2 radians at 100 shots, of 20: 4 qubits 1×4: 10; 4 qubits 2×2: 17; 4 qubits 4×1: 14; 8 qubits 1×4: 0; 8 qubits 2×2: 1; 8 qubits 4×1: 0">
+<text x="0" y="20" font-size="20" fill="#47505a" text-anchor="start" font-weight="400">circuit</text>
+<text x="96" y="20" font-size="20" fill="#47505a" text-anchor="start" font-weight="400">seeds within 0.2 rad</text>
+<text x="480" y="20" font-size="20" fill="#47505a" text-anchor="end" font-weight="400">of 20</text>
+<text x="0" y="62" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4q 1×4</text>
+<circle cx="102" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="226" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="241.5" cy="54" r="6.5" fill="#b3361b"/>
+<circle cx="257" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="272.5" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="288" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="303.5" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="319" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="334.5" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="350" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="365.5" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="54" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="62" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">10</text>
+<text x="0" y="104" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4q 2×2</text>
+<circle cx="102" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="226" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="241.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="257" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="272.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="288" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="303.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="319" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="334.5" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="350" cy="96" r="6.5" fill="#b3361b"/>
+<circle cx="365.5" cy="96" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="96" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="96" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="104" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">17</text>
+<text x="0" y="146" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">4q 4×1</text>
+<circle cx="102" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="133" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="148.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="164" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="179.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="195" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="210.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="226" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="241.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="257" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="272.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="288" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="303.5" cy="138" r="6.5" fill="#b3361b"/>
+<circle cx="319" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="334.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="350" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="365.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="138" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="146" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">14</text>
+<text x="0" y="188" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8q 1×4</text>
+<circle cx="102" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="117.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="133" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="148.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="164" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="179.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="195" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="210.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="226" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="241.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="257" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="272.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="288" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="303.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="319" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="334.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="350" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="365.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="180" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="188" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">0</text>
+<text x="0" y="230" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8q 2×2</text>
+<circle cx="102" cy="222" r="6.5" fill="#b3361b"/>
+<circle cx="117.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="133" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="148.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="164" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="179.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="195" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="210.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="226" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="241.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="257" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="272.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="288" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="303.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="319" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="334.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="350" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="365.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="222" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="230" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">1</text>
+<text x="0" y="272" font-size="24" fill="#1a1f24" text-anchor="start" font-weight="700">8q 4×1</text>
+<circle cx="102" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="117.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="133" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="148.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="164" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="179.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="195" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="210.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="226" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="241.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="257" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="272.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="288" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="303.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="319" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="334.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="350" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="365.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="381" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<circle cx="396.5" cy="264" r="6.0" fill="#ffffff" stroke="#47505a" stroke-width="1.5"/>
+<text x="480" y="272" font-size="24" fill="#1a1f24" text-anchor="end" font-weight="700">0</text>
 </svg>
 <!-- /fig -->
       <p class="key"><span><i class="k-leak"></i>guessed within <span data-value="paper.closeRad"></span> rad</span><span><i class="k-open"></i>not</span></p>
-      <p class="paper-note">At 8 qubits the noise was as large as the gradient: <span data-value="rq2.noise8"></span> against <span data-value="rq2.signal8"></span>.</p>
+      <p class="paper-note">At 8 qubits the noise matched the gradient: <span data-value="rq2.noise8"></span> against <span data-value="rq2.signal8"></span>.</p>
     </figure>
   </div>
   <aside class="notes"><ul><li>Toy: drag shots down; the dip blurs and the guess slides off, worst at 10 shots</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of 20 seeds within 0.2 rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li></ul></aside>
@@ -544,12 +544,12 @@
 
 <section data-chapter="3 · What else hides it">
   <span class="kicker">3 · What else hides it</span>
-  <h2>A batch with more unknown inputs than gradient entries was never recovered</h2>
+  <h2>Every batch we tried with more unknowns than effective parameters was ambiguous</h2>
   <div class="batch-row">
     <figure class="paper wide">
       <figcaption><b>The paper</b> exact gradients, batches of 1 to 8, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:batch -->
-<svg class="paper-fig" viewBox="0 0 480 470" role="img" aria-label="Seeds recovered, of 20, against unknown inputs per gradient entry: 4 qubits, 1×2: 0.33 gives 20, 0.67 gives 20, 1.33 gives 0, 2.67 gives 0; 4 qubits, 1×4: 0.14 gives 20, 0.29 gives 20, 0.57 gives 20, 1.14 gives 0; 8 qubits, 1×2: 0.33 gives 20, 0.67 gives 14, 1.33 gives 0, 2.67 gives 0; 8 qubits, 1×4: 0.14 gives 20, 0.29 gives 19, 0.57 gives 12, 1.14 gives 0">
+<svg class="paper-fig" viewBox="0 0 480 426" role="img" aria-label="Seeds recovered, of 20, against unknown inputs per effective parameter: 4 qubits, 1×2: 0.33 gives 20, 0.67 gives 20, 1.33 gives 0, 2.67 gives 0; 4 qubits, 1×4: 0.14 gives 20, 0.29 gives 20, 0.57 gives 20, 1.14 gives 0; 8 qubits, 1×2: 0.33 gives 20, 0.67 gives 14, 1.33 gives 0, 2.67 gives 0; 8 qubits, 1×4: 0.14 gives 20, 0.29 gives 19, 0.57 gives 12, 1.14 gives 0">
 <circle cx="10.0" cy="18.0" r="8" fill="#b3361b"/>
 <text x="28" y="25" font-size="19" fill="#1a1f24" text-anchor="start" font-weight="400">4 qubits, 1×2</text>
 <rect x="243.0" y="11.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
@@ -558,52 +558,54 @@
 <text x="28" y="59" font-size="19" fill="#1a1f24" text-anchor="start" font-weight="400">8 qubits, 1×2</text>
 <path d="M250.0 42.0l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
 <text x="268" y="59" font-size="19" fill="#1a1f24" text-anchor="start" font-weight="400">8 qubits, 1×4</text>
-<rect x="299.6" y="118" width="170.4" height="296" fill="#e6ecf4"/>
-<text x="464" y="144" font-size="19" fill="#1d4e89" text-anchor="end" font-weight="700">more unknowns</text>
-<text x="464" y="168" font-size="19" fill="#1d4e89" text-anchor="end" font-weight="700">than entries</text>
-<line x1="44" x2="470" y1="414" y2="414" stroke="#bcc2c8" stroke-width="1"/>
-<text x="34" y="421" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">0</text>
-<line x1="44" x2="470" y1="266" y2="266" stroke="#bcc2c8" stroke-width="1"/>
-<text x="34" y="273" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">10</text>
-<line x1="44" x2="470" y1="118" y2="118" stroke="#bcc2c8" stroke-width="1"/>
-<text x="34" y="125" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">20</text>
-<text x="44" y="442" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">1/8</text>
-<text x="129.2" y="442" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">1/4</text>
-<text x="214.4" y="442" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">1/2</text>
-<text x="299.6" y="442" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">1</text>
-<text x="384.8" y="442" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">2</text>
-<text x="470" y="442" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">4</text>
-<line x1="299.6" x2="299.6" y1="118" y2="414" stroke="#1d4e89" stroke-width="2" stroke-dasharray="6 5"/>
-<text x="0" y="104" font-size="19" fill="#47505a" text-anchor="start" font-weight="400">seeds recovered</text>
-<path d="M164.6 118.0 L249.8 118.0 L335.0 414.0 L420.2 414.0" fill="none" stroke="#b3361b" stroke-width="2.5" stroke-opacity="0.5"/>
-<circle cx="164.6" cy="118.0" r="8" fill="#b3361b"/>
-<circle cx="249.8" cy="118.0" r="8" fill="#b3361b"/>
-<circle cx="335.0" cy="414.0" r="8" fill="#b3361b"/>
-<circle cx="420.2" cy="414.0" r="8" fill="#b3361b"/>
-<path d="M60.4 118.0 L145.6 118.0 L230.8 118.0 L316.0 414.0" fill="none" stroke="#b3361b" stroke-width="2.5" stroke-opacity="0.5"/>
-<rect x="53.4" y="111.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
-<rect x="138.6" y="111.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
-<rect x="223.8" y="111.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
-<rect x="309.0" y="407.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
-<path d="M164.6 118.0 L249.8 206.8 L335.0 414.0 L420.2 414.0" fill="none" stroke="#b3361b" stroke-width="2.5" stroke-opacity="0.5"/>
-<path d="M164.6 108.0l10 10l-10 10l-10 -10z" fill="#1a1f24"/>
-<path d="M249.8 196.8l10 10l-10 10l-10 -10z" fill="#1a1f24"/>
-<path d="M335.0 404.0l10 10l-10 10l-10 -10z" fill="#1a1f24"/>
-<path d="M420.2 404.0l10 10l-10 10l-10 -10z" fill="#1a1f24"/>
-<path d="M60.4 118.0 L145.6 132.8 L230.8 236.4 L316.0 414.0" fill="none" stroke="#b3361b" stroke-width="2.5" stroke-opacity="0.5"/>
-<path d="M60.4 108.0l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
-<path d="M145.6 122.8l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
-<path d="M230.8 226.4l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
-<path d="M316.0 404.0l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
+<rect x="299.6" y="112" width="170.4" height="240" fill="#e6ecf4"/>
+<text x="464" y="138" font-size="19" fill="#1d4e89" text-anchor="end" font-weight="700">more unknowns</text>
+<text x="464" y="162" font-size="19" fill="#1d4e89" text-anchor="end" font-weight="700">than parameters</text>
+<line x1="44" x2="470" y1="352" y2="352" stroke="#bcc2c8" stroke-width="1"/>
+<text x="34" y="359" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">0</text>
+<line x1="44" x2="470" y1="232" y2="232" stroke="#bcc2c8" stroke-width="1"/>
+<text x="34" y="239" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">10</text>
+<line x1="44" x2="470" y1="112" y2="112" stroke="#bcc2c8" stroke-width="1"/>
+<text x="34" y="119" font-size="19" fill="#47505a" text-anchor="end" font-weight="400">20</text>
+<text x="44" y="380" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">1/8</text>
+<text x="129.2" y="380" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">1/4</text>
+<text x="214.4" y="380" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">1/2</text>
+<text x="299.6" y="380" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">1</text>
+<text x="384.8" y="380" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">2</text>
+<text x="470" y="380" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">4</text>
+<line x1="299.6" x2="299.6" y1="112" y2="352" stroke="#1d4e89" stroke-width="2" stroke-dasharray="6 5"/>
+<text x="0" y="98" font-size="19" fill="#47505a" text-anchor="start" font-weight="400">seeds recovered</text>
+<text x="257" y="418" font-size="19" fill="#47505a" text-anchor="middle" font-weight="400">unknowns per effective parameter (log scale)</text>
+<path d="M164.6 112.0 L249.8 112.0 L335.0 352.0 L420.2 352.0" fill="none" stroke="#b3361b" stroke-width="2.5" stroke-opacity="0.5"/>
+<circle cx="164.6" cy="112.0" r="8" fill="#b3361b"/>
+<circle cx="249.8" cy="112.0" r="8" fill="#b3361b"/>
+<circle cx="335.0" cy="352.0" r="8" fill="#b3361b"/>
+<circle cx="420.2" cy="352.0" r="8" fill="#b3361b"/>
+<path d="M60.4 112.0 L145.6 112.0 L230.8 112.0 L316.0 352.0" fill="none" stroke="#b3361b" stroke-width="2.5" stroke-opacity="0.5"/>
+<rect x="53.4" y="105.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
+<rect x="138.6" y="105.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
+<rect x="223.8" y="105.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
+<rect x="309.0" y="345.0" width="14" height="14" fill="#ffffff" stroke="#b3361b" stroke-width="3"/>
+<path d="M164.6 112.0 L249.8 184.0 L335.0 352.0 L420.2 352.0" fill="none" stroke="#b3361b" stroke-width="2.5" stroke-opacity="0.5"/>
+<path d="M164.6 102.0l10 10l-10 10l-10 -10z" fill="#1a1f24"/>
+<path d="M249.8 174.0l10 10l-10 10l-10 -10z" fill="#1a1f24"/>
+<path d="M335.0 342.0l10 10l-10 10l-10 -10z" fill="#1a1f24"/>
+<path d="M420.2 342.0l10 10l-10 10l-10 -10z" fill="#1a1f24"/>
+<path d="M60.4 112.0 L145.6 124.0 L230.8 208.0 L316.0 352.0" fill="none" stroke="#b3361b" stroke-width="2.5" stroke-opacity="0.5"/>
+<path d="M60.4 102.0l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
+<path d="M145.6 114.0l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
+<path d="M230.8 198.0l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
+<path d="M316.0 342.0l10 17h-20z" fill="#ffffff" stroke="#1a1f24" stroke-width="3"/>
 </svg>
 <!-- /fig -->
     </figure>
     <div class="batch-text">
-      <p>Up to <b data-value="rq3.leakMax"></b> unknowns per entry, every circuit leaked on at least <b data-value="rq3.fewestBelow"></b> of <span data-value="paper.seeds"></span> seeds.</p>
+      <p>Up to <b data-value="rq3.leakMax"></b> unknowns per effective parameter, every circuit leaked on at least <b data-value="rq3.fewestBelow"></b> of <span data-value="paper.seeds"></span> seeds.</p>
       <p class="fragment">From <b data-value="rq3.heldMin"></b> up, on none: the attack always found a different batch that fit the gradient as well.</p>
+      <p class="def">Effective parameter: a trainable angle whose gradient can be nonzero. The last Z rotations never are.</p>
     </div>
   </div>
-  <aside class="notes"><ul><li>Batch of B inputs: N times B unknowns, same number of gradient entries</li><li>Leaked up to <span data-value="rq3.leakMax"></span> unknowns per entry, never from <span data-value="rq3.heldMin"></span>; the crossover sits between</li><li>Past it: ambiguous, another batch fits exactly</li></ul></aside>
+  <aside class="notes"><ul><li>Batch of B inputs: N times B unknowns, same effective parameters</li><li>Leaked up to <span data-value="rq3.leakMax"></span> unknowns per effective parameter, never from <span data-value="rq3.heldMin"></span>; the crossover sits between</li><li>Past it: ambiguous, another batch fits exactly</li></ul></aside>
 </section>
 
 <section data-chapter="3 · What else hides it">
@@ -643,9 +645,9 @@
 <section data-conclusion>
   <h2>Encoding repetitions slowed the attack; heavy shot noise and large batches stopped it</h2>
   <div class="recap">
-    <div class="tile"><p class="num"><span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span></p><p>seeds leaked on every circuit with one encoding layer and two or more trainable layers</p></div>
+    <div class="tile"><p class="num"><span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span></p><p>seeds leaked with exact gradients, on every circuit with one encoding layer and two or more trainable layers</p></div>
     <div class="tile"><p class="num"><span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span></p><p>restarts that hit, of <span data-value="rq1.tries"></span>, from 1 to 8 repetitions; <span data-value="budget.large"></span> restarts recovered most stuck seeds</p></div>
-    <div class="tile"><p class="num">≤ <span data-value="rq2.within8Max"></span></p><p>seed of <span data-value="paper.seeds"></span> close at 8 qubits and <span data-value="rq2.lowShots"></span> shots; no batch past one unknown per entry recovered</p></div>
+    <div class="tile"><p class="num">≤ <span data-value="rq2.within8Max"></span></p><p>seed of <span data-value="paper.seeds"></span> within <span data-value="paper.closeRad"></span> rad at 8 qubits and <span data-value="rq2.lowShots"></span> shots; no batch recovered from <span data-value="rq3.heldMin"></span> unknowns per parameter up</p></div>
   </div>
   <div class="open">
     <p class="open-h">Open</p>
@@ -683,6 +685,7 @@
     <li><a href="#/faq-noise">Why did shot noise matter at 8 qubits and not at 4?</a></li>
     <li><a href="#/faq-labels">How does the attack work without the label?</a></li>
     <li><a href="#/faq-trained">Did training change anything at all?</a></li>
+    <li><a href="#/faq-limits">What do these results not show?</a></li>
     <li><a href="#/faq-references">Where are the references?</a></li>
   </ol>
 </section>
@@ -712,7 +715,7 @@
 
 <section id="faq-effective" class="backup">
   <h2>An effective parameter is one whose gradient can be nonzero</h2>
-  <p class="lead">The circuit has 2rℓN angles. The last block's Z rotations are followed only by CNOTs and a Z measurement, so they never change the output; the other P − N angles are the effective parameters. With one block per qubit (r = ℓ = 1) that leaves N equations for N inputs.</p>
+  <p class="lead">The circuit has 2rℓN angles. The last block's Z rotations are followed only by CNOTs and a Z measurement, so they never change the output; the other P − N angles are the effective parameters. With one repetition and one trainable block (r = ℓ = 1) that leaves N equations for N inputs.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">A test in the repository checks, on several shapes, that exactly these angles have nonzero gradient.</aside>
 </section>
@@ -726,7 +729,7 @@
       <tr><td>8 qubits</td><td data-label="Noise" data-value="rq2.noise8"></td><td data-label="Gradient" data-value="rq2.signal8"></td></tr>
     </tbody>
   </table>
-  <p class="lead">At 8 qubits most failures were ambiguous (<span data-value="rq2.ambig8Min"></span> to <span data-value="rq2.ambig8Max"></span> of <span data-value="paper.seeds"></span> seeds): another input fit the noisy gradient as well. Below <span data-value="paper.closeRad"></span> rad the error fell like the shot noise itself, slopes <span data-value="rq2.slopeMin"></span> to <span data-value="rq2.slopeMax"></span> on a log-log plot, against −1/2 for sampling error.</p>
+  <p class="lead">The noise barely changed with size (<span data-value="rq2.noise4"></span> to <span data-value="rq2.noise8"></span>); the gradient shrank (<span data-value="rq2.signal4"></span> to <span data-value="rq2.signal8"></span>). At 8 qubits most failures were ambiguous (<span data-value="rq2.ambig8Min"></span> to <span data-value="rq2.ambig8Max"></span> of <span data-value="paper.seeds"></span> seeds): another input fit the noisy gradient as well. Below <span data-value="paper.closeRad"></span> rad the error fell like the shot noise itself, slopes <span data-value="rq2.slopeMin"></span> to <span data-value="rq2.slopeMax"></span> on a log-log plot, against −1/2 for sampling error.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Medians over seeds of the squared norm of the noise and of the exact gradient.</aside>
 </section>
@@ -743,6 +746,19 @@
   <p class="lead">Pooled over <span data-value="rq5.tasks"></span> tasks and <span data-value="rq5.attacks"></span> attacks, <span data-value="rq5.before"></span> seeds were recovered only before training and <span data-value="rq5.after"></span> only after (p = <span data-value="rq5.p"></span>). On low-frequency curves the counts were <span data-value="rq5.leadBefore"></span> and <span data-value="rq5.leadAfter"></span>, but that is also the task every circuit fit best (test accuracy <span data-value="rq5.leadAcc"></span> or more), so a better fit may explain it. One dataset, one example per seed: a lead to test.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">Kumar et al. saw a low-frequency target make privacy worse; this lead points the other way, with a different setup.</aside>
+</section>
+
+<section id="faq-limits" class="backup">
+  <h2>What these results do not show</h2>
+  <ul class="limits">
+    <li><b>Scale.</b> Simulated circuits of 4 and 8 qubits: where each claim holds at this size, not how it grows.</li>
+    <li><b>Device noise.</b> Shot noise only; gate and readout noise are future work.</li>
+    <li><b>The input range.</b> The attacker starts inside [0, π) but does not restrict its search to it, so a domain-aware attacker could reject some ambiguous answers.</li>
+    <li><b>Partial leaks.</b> An ambiguous batch is scored by its worst-matched input; how many of its inputs were still recovered was not measured.</li>
+    <li><b>Training.</b> One optimizer, <span data-value="rq5.tasks"></span> small tasks, one training example's gradient per seed.</li>
+  </ul>
+  <p class="back"><a href="#/faq">Back to the questions</a></p>
+  <aside class="notes">All five are in the paper's limitations section.</aside>
 </section>
 
 <section id="faq-references" class="backup">

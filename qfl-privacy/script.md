@@ -14,7 +14,7 @@ Three parts. First, the attack, and why two papers disagree about it. Second, th
 
 Here's the setting. In federated learning, the client keeps its data at home and sends the server only a gradient: a list of numbers, one per trainable angle. That feels private. But the server knows the circuit, so it can play a guessing game: pick an input, compute that input's gradient, and adjust the guess until the two gradients match. If they match exactly, the guess is usually the input. That's the gradient-matching attack, and on classical networks it rebuilds images.
 
-What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would. That's {rq1.attacks} attacks with exact gradients, then more with shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With one encoding layer and two or more trainable layers, every circuit gave its input away on every seed.
+What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would. That's {rq1.attacks} attacks with exact gradients, then more with shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With exact gradients, one encoding layer and two or more trainable layers, every circuit gave its input away on every seed.
 
 ## Two papers from one group disagree on whether the attack works on quantum circuits
 
@@ -48,23 +48,23 @@ The paper did the same thing at scale. I reran the {budget.circuits} hardest 8-q
 
 On a real device, the client doesn't get exact gradients. Every expectation value is estimated from shots. The toy now computes the gradient with the parameter-shift rule, from sampled measurements. I'll drag the shots down. The curve's dip blurs and lifts off zero, and the guess slides away. At ten shots it misses.
 
-The toy is the easy end: one input against many gradient entries, so the noise mostly averages out. The paper's 8-qubit circuits are where noise wins. At {rq2.lowShots} shots, at most {rq2.within8Max} seed in {paper.seeds} came within {paper.closeRad} radians, on every circuit. At 4 qubits, it was {rq2.within4Min} to {rq2.within4Max}. The reason is size: at 8 qubits the noise in the gradient was as large as the gradient itself.
+The toy is the easy end: one input against many gradient entries, so the noise mostly averages out. The paper's 8-qubit circuits are where noise wins. At {rq2.lowShots} shots, at most {rq2.within8Max} seed in {paper.seeds} came within {paper.closeRad} radians, on each of the three circuits tested. At 4 qubits, it was {rq2.within4Min} to {rq2.within4Max}. The reason is size: at 8 qubits the noise in the gradient was as large as the gradient itself.
 
-## A batch with more unknown inputs than gradient entries was never recovered
+## Every batch we tried with more unknowns than effective parameters was ambiguous
 
-Next, batches. If the client averages its gradient over several examples, the attacker has to solve for all of them at once: more unknowns, same number of gradient entries.
+Next, batches. If the client averages its gradient over several examples, the attacker has to solve for all of them at once: more unknowns, but the same number of effective parameters, the angles whose gradient can be nonzero.
 
-Up to {rq3.leakMax} unknowns per gradient entry, every circuit leaked on at least {rq3.fewestBelow} of {paper.seeds} seeds. From {rq3.heldMin} up, none did. And these weren't stuck searches: the attacker always found a different batch that fit the gradient just as well. Once there are more unknowns than equations, the gradient really can't say which batch it came from.
+Up to {rq3.leakMax} unknowns per effective parameter, every circuit leaked on at least {rq3.fewestBelow} of {paper.seeds} seeds. From {rq3.heldMin} up, none did. And these weren't stuck searches: the attacker always found a different batch that fit the gradient just as well. With more unknowns than equations, many batches are expected to fit the same gradient exactly, and the attack found one every time.
 
 ## Hiding the label helped a little; training the circuit made no detectable difference
 
 Two more defenses, briefly. If the server doesn't know the labels, it can still fit each input's weight in closed form. That recovered fewer seeds: {rq4.knownOnly} were recovered only with the labels and {rq4.unknownOnly} only without, a p-value of {rq4.p}. Most of that was batches of two, and the extra failures were stuck, so it made the search harder rather than hiding the input.
 
-And training the circuit first? Pooled over {rq5.tasks} tasks, {rq5.before} seeds were recovered only before training and {rq5.after} only after, p of {rq5.p}. No detectable change.
+And training the circuit first? Pooled over {rq5.tasks} tasks, {rq5.before} seeds were recovered only before training and {rq5.after} only after, p of {rq5.p}. No detectable net change, though the tasks leaned opposite ways; one of them, low-frequency curves, is a lead I keep in the backup slides.
 
 ## Encoding repetitions slowed the attack; heavy shot noise and large batches stopped it
 
-So, to sum up. A shared gradient can rebuild the input. With one encoding layer and two or more trainable layers, it did on every seed. More encoding repetitions slowed the attack, but more restarts got most of the way back. What actually hid the input was heavy shot noise at 8 qubits and batches with more unknowns than gradient entries.
+So, to sum up. A shared gradient can rebuild the input. With exact gradients, one encoding layer and two or more trainable layers, it did on every seed. More encoding repetitions slowed the attack, but more restarts got most of the way back. What actually hid the input was heavy shot noise at 8 qubits and batches with more unknowns than gradient entries.
 
 Two questions stay open. Can a client still train on gradients as noisy as {rq2.lowShots} shots? And does the attacker's cost grow exponentially with the number of qubits? Two circuit sizes can't tell us. That's my talk.
 

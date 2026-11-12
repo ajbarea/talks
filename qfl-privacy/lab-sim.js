@@ -275,8 +275,48 @@
     return out;
   }
 
+  // The toy's design, as on the paper's fixed-parameter lines: `blocks` trainable blocks in all,
+  // r repetitions of blocks / r each. Each lab step frees one control, fixes the others, and has a
+  // row of hidden inputs 1 to `draws` (the first seeds, not picked) per value of its control.
+  const TOY = {
+    blocks: 8,
+    draws: 20,
+    steps: {
+      reps: { reps: [1, 2, 4, 8], restarts: 10, shots: 0 },
+      restarts: { reps: 8, restarts: [1, 2, 5, 10, 20], shots: 0 },
+      shots: { reps: 2, restarts: 10, shots: [10, 100, 1000, 0] },
+    },
+  };
+
+  // One hidden input's entry in a step's rows, scored as the paper scores the figure beside it:
+  // repetitions, restarts of 10 that found the input; restarts, whether the best of the first n
+  // found it; shots, whether the best of 10 came within the close threshold.
+  // The work is split into jobs (a client and how many restarts it needs) so the panel can run
+  // them a restart at a time across frames; tally() runs them all at once.
+  function tallyJobs(step, seed) {
+    const s = TOY.steps[step];
+    const job = (reps, shots, n) => ({ c: client(seed, reps, TOY.blocks / reps, shots), n, runs: [] });
+    if (step === "reps") return s.reps.map((r) => job(r, s.shots, s.restarts));
+    if (step === "restarts") return [job(s.reps, s.shots, Math.max(...s.restarts))];
+    return s.shots.map((sh) => job(s.reps, sh, s.restarts));
+  }
+
+  function tallyScore(step, jobs, th) {
+    const t = { ...DEFAULTS, ...th };
+    if (step === "reps") return jobs.map((j) => j.runs.filter((u) => u.outcome === "recovered").length);
+    if (step === "restarts") return TOY.steps.restarts.restarts.map((n) => jobs[0].runs[pickBest(jobs[0].runs, n)].outcome === "recovered");
+    return jobs.map((j) => j.runs[pickBest(j.runs, j.runs.length)].error <= t.close);
+  }
+
+  function tally(step, seed, th) {
+    const jobs = tallyJobs(step, seed);
+    for (const j of jobs) while (j.runs.length < j.n) addRestart(j.c, j.runs, undefined, th);
+    return tallyScore(step, jobs, th);
+  }
+
   return {
-    TAU, DEFAULTS, rng, gauss, ry, rz, state, expZ, bloch, sampleZ, gradient, matchLoss, angleError,
+    TAU, DEFAULTS, TOY, rng, gauss, ry, rz, state, expZ, bloch, sampleZ, gradient, matchLoss, angleError,
     client, fourier, lossAndSlope, descend, outcome, addRestart, pickBest, attack, landscape,
+    tallyJobs, tallyScore, tally,
   };
 });

@@ -10,9 +10,13 @@ Hi, I'm AJ, a first-year PhD student. My final project asks one question: when a
 
 Three parts. First, the attack, and why two papers disagree about it. Second, the live lab, where we change one thing at a time: encoding repetitions, restarts, then shot noise. Third, two more things that might hide the input, batches and labels, plus what happens after training. Then a short summary.
 
+## In federated learning the data stays home; each client's update, here a gradient, travels
+
+A quick setup, in case federated learning is new. Several clients, say phones or hospitals, want to train one shared model without pooling their data. So each client keeps its data at home and trains the model on it locally. It sends the server only its update; in the setting I study, that update is one gradient computed on its data. The server averages the updates and sends the new model back. The data stays home; the gradient travels. So, is the gradient private?
+
 ## The gradient a client shares can rebuild the input it was computed from
 
-Here's the setting. In federated learning, the client keeps its data at home and sends the server only a gradient: a list of numbers, one per trainable angle. That feels private. But the server knows the circuit, so it can play a guessing game: pick an input, compute that input's gradient, and adjust the guess until the two gradients match. If they match exactly, the guess is usually the input. That's the gradient-matching attack, and on classical networks it rebuilds images.
+A gradient is just a list of numbers, one per trainable angle, and that feels private. But the server knows the circuit, so it can play a guessing game: pick an input, compute that input's gradient, and adjust the guess until the two gradients match. If they match exactly, the guess is usually the input. That's the gradient-matching attack, and on classical networks it rebuilds images.
 
 What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would. That's {rq1.attacks} attacks with exact gradients, then more with shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With exact gradients, one input per update and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave its input away on every seed.
 
@@ -32,23 +36,23 @@ Each attack ends one of four ways. Recovered: within {paper.recoveredRad} radian
 
 ## At a fixed parameter count, more encoding repetitions left the search stuck more often
 
-This is the live lab. It's a toy: one qubit, one hidden input, running in this browser. The blue arrow on the Bloch sphere is the client's input; the red one is the attacker's best guess. The curve is the matching loss for every possible guess, and the blue line marks the truth. Each red dot is one restart rolling downhill. The starting input is a preset, picked to show the effect clearly; a random one shows it more weakly.
+This is the live lab. It's a toy: one qubit, one hidden input, running in this browser. The curve is the matching loss for every possible guess, and the blue line marks the hidden input. Each restart is a ball released one after another to roll downhill. On the sphere, the blue ring is the input, the red dot is the attacker's best guess, and the small dots outside show where each restart ended. The number to watch is restarts that found the input.
 
-With one repetition the curve has a few wide dips, and nearly every restart lands on the input. Now I'll drag the repetitions up, keeping the total number of trainable blocks fixed. Watch the curve. More repetitions mean more frequencies, so more dips, and more restarts get trapped in the wrong one. That's Kumar's mechanism, live.
+I'll drag the repetitions up, keeping the total number of trainable blocks fixed. Watch the curve: more repetitions mean more frequencies, so more dips for a restart to get trapped in. That's Kumar's mechanism. For this one input the count barely moves, because one input is a noisy sample. So at the foot of the panel the toy runs hidden inputs one to twenty, not picked. Each pie is one input's ten restarts, and the pies thin out as repetitions grow, the paper's direction, though one qubit is the easy end.
 
 On the right is what the paper measured, at 8 qubits and {rq1.params} effective parameters. Recovered seeds went from {rq1.rec1} of {paper.seeds} at one repetition down to {rq1.rec8} at eight. Restarts that found the input fell from {rq1.hits1} to {rq1.hits8} of {rq1.tries}. And every one of those failures was stuck, not ambiguous.
 
 ## Stuck is not private: with {budget.large} restarts, most stuck seeds gave up their input
 
-But stuck only means the search gave up. So, restarts. The toy is now at eight repetitions with one restart, and it's stuck. I'll add restarts one at a time. Five miss, and on the sixth a restart lands in the right dip, and since it has the lowest loss, the attacker keeps it. It needs no knowledge of the truth to pick it.
+But stuck only means the search gave up. So, restarts. The toy is now at eight repetitions with one restart. I'll add restarts. The attacker keeps the restart with the lowest loss, so it needs no knowledge of the truth to pick the one that landed. In the toy's rows, one restart recovers about half of the twenty hidden inputs, and twenty restarts recover them all.
 
 The paper did the same thing at scale. I reran the {budget.circuits} hardest 8-qubit circuits with {budget.large} restarts instead of {budget.small}. On {budget.othersCount} of them, recovery jumped to {budget.othersMin} or {budget.othersMax} of {paper.seeds} seeds. The {budget.hardest} circuit stayed hard: only {budget.hardestRate} percent of its restarts found the input, and {budget.hardestHeld} seeds held. That cost is unknown, not infinite. So on three of the four circuits, encoding repetitions acted like a work factor for the attacker, not a wall; on the eight-repetition circuit, we don't know the price.
 
-## At 8 qubits, {rq2.lowShots} shots per expectation value hid almost every input
+## With {rq2.lowShots} shots at 8 qubits, this attack almost always failed
 
-On a real device, the client doesn't get exact gradients. Every expectation value is estimated from shots. The toy now computes the gradient with the parameter-shift rule, from sampled measurements. I'll drag the shots down. The dip lifts off zero and shifts, and the guess slides away with it. At ten shots it misses.
+On a real device, the client doesn't get exact gradients. Every expectation value is estimated from shots. The toy now computes the gradient with the parameter-shift rule, from sampled measurements. I'll drag the shots down. The dip lifts off zero and shifts, and the restarts' end points spread. In the toy's rows, the attack still finds nearly every input at a hundred shots; only at ten does the noise defeat it on several.
 
-The toy is the easy end: one input against many gradient entries, so the noise mostly averages out. The paper's 8-qubit circuits are where noise wins. At {rq2.lowShots} shots, at most {rq2.within8Max} seed in {paper.seeds} came within {paper.closeRad} radians, on each of the three circuits tested. At 4 qubits, it was {rq2.within4Min} to {rq2.within4Max}. Alongside that: at 8 qubits the noise in the gradient was as large as the gradient itself.
+The toy is the easy end: one qubit's gradient is far larger than its shot noise. The paper's 8-qubit circuits are where noise wins. At {rq2.lowShots} shots, at most {rq2.within8Max} seed in {paper.seeds} came within {paper.closeRad} radians, on each of the three circuits tested. At 4 qubits, it was {rq2.within4Min} to {rq2.within4Max}. Alongside that: at 8 qubits the noise in the gradient was as large as the gradient itself. One caution: that blocks this attack, and it is not a privacy guarantee. Sedrakyan, Grosshans and Kashefi show this year that quantum noise is no substitute for the calibrated noise of differentially private training.
 
 ## Every batch we tried with more unknowns than effective parameters was ambiguous
 
@@ -64,7 +68,7 @@ And training the circuit first? Pooled over {rq5.tasks} tasks, {rq5.before} seed
 
 ## Repetitions slowed the attack; {rq2.lowShots} shots at 8 qubits and large batches stopped it
 
-So, to sum up. A shared gradient can rebuild the input. With exact gradients, one input per update and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave it away on every seed. More encoding repetitions slowed the attack, and more restarts recovered most stuck seeds, though not on the eight-repetition circuit. What actually hid the input was {rq2.lowShots} shots per expectation value at 8 qubits, and batches with more unknowns than effective parameters.
+So, to sum up. A shared gradient can rebuild the input. With exact gradients, one input per update and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave it away on every seed. More encoding repetitions slowed the attack, and more restarts recovered most stuck seeds, though not on the eight-repetition circuit. What actually blocked the attack was {rq2.lowShots} shots per expectation value at 8 qubits, and batches with more unknowns than effective parameters.
 
 Two questions stay open. Can a client still train on gradients as noisy as {rq2.lowShots} shots? And does the attacker's cost grow exponentially with the number of qubits? Two circuit sizes can't tell us. That's my talk.
 

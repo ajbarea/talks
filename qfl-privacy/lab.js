@@ -1,7 +1,7 @@
-// The live lab: one instrument per lab slide, each with one control free and the others fixed.
-// It builds its markup when the page loads (so the slide gates measure it) and runs its attack
-// only when its slide is shown. Everything runs on the main thread: a deck opened from file://
-// cannot start a Web Worker, and one attack takes a fraction of a second.
+// The live lab: one instrument per lab slide, each with one control free and the others fixed, and
+// at its foot a row of hidden inputs 1 to 20 per value of that control. It builds its markup when
+// the page loads (so the slide gates measure it) and runs only when its slide is shown. Everything
+// runs on the main thread: a deck opened from file:// cannot start a Web Worker.
 (function () {
   "use strict";
 
@@ -9,32 +9,31 @@
   const DATA = window.DECK_DATA || {};
   const SVG = "http://www.w3.org/2000/svg";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // The trainable blocks stay at this total while repetitions change, as on the paper's
-  // fixed-parameter lines: r repetitions of 8 / r blocks each.
-  const BLOCKS = 8;
-  const REPS = [1, 2, 4, 8];
+  // The phone test deck.js makes (it runs after this file, so its class is not set yet).
+  const phone = matchMedia("(max-width: 600px)").matches && !/receiver/i.test(location.search);
+  const TOY = Q.TOY;
+  const REPS = TOY.steps.reps.reps;
   const SHOTS = [10, 100, 1000, 10000, 100000, 1000000, 0];
-  const MAX_RESTARTS = 20;
-  // The paper's thresholds, from data/readings.js.
+  const MAX_RESTARTS = Math.max(...TOY.steps.restarts.restarts);
+  // The paper's thresholds and the numbers the row notes compare with, from data/readings.js.
   const paper = DATA.paper || {};
   const TH = {
     recovered: Number(paper.recoveredRad) || Q.DEFAULTS.recovered,
     close: Number(paper.closeRad) || Q.DEFAULTS.close,
   };
-  // Each step's known-good preset: a seed whose run shows the step's point (found by search,
-  // tests/test_qfl_lab.py holds each one to it), and the values of the controls.
-  const STEPS = {
-    reps: { free: "reps", seed: 121, reps: 1, shots: 0, restarts: 10 },
-    restarts: { free: "restarts", seed: 15, reps: 8, shots: 0, restarts: 1 },
-    shots: { free: "shots", seed: 17, reps: 2, shots: 0, restarts: 10 },
-  };
-  const WORDS = { recovered: "Recovered", close: "Close", ambiguous: "Ambiguous", stuck: "Stuck" };
-  const MEANING = {
-    recovered: "found the input",
-    close: "near the input",
-    ambiguous: "another input fits",
-    stuck: "worse fit, gave up",
-  };
+  // Each step opens on hidden input 1 with its free control at the first value of its rows (shots
+  // at exact), the others fixed at the toy's values.
+  const STEPS = {};
+  for (const [name, s] of Object.entries(TOY.steps)) {
+    const first = (k) => (k === name ? (k === "shots" ? 0 : s[k][0]) : s[k]);
+    STEPS[name] = { free: name, reps: first("reps"), restarts: first("restarts"), shots: first("shots"), draw: 1 };
+  }
+  // A search's pace: each restart rolls for ROLL ms, released one after another so the last lands
+  // at TOTAL ms, and leaves a trail of TRAIL path points that fades for FADE ms once it lands. The
+  // whole search ends inside the five seconds after which motion that starts by itself needs a pause
+  // control (WCAG 2.2.2). Replay runs SLOW times slower, and only when asked for.
+  const PACE = { total: 4500, roll: 1800, fade: 400, trail: 8, slow: 2.5 };
+  const WORD = { recovered: "recovered", close: "close", ambiguous: "another input fits", stuck: "stuck" };
 
   const el = (tag, attrs, parent, text) => {
     const n = document.createElement(tag);
@@ -50,11 +49,14 @@
     if (parent) parent.appendChild(n);
     return n;
   };
+  const set = (n, attrs) => {
+    for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+  };
   const shotsWord = (s) => (s ? `${s.toLocaleString("en-US")} shots` : "exact gradient");
   const rad = (v) => (v < 0.001 ? "< 0.001" : v.toFixed(3));
 
   // Attacks already run, by client: the restarts slider only reads more of a stored run. Kept to
-  // the most recent CLIENTS entries, so clicking "New hidden input" all talk long stays bounded.
+  // the most recent CLIENTS entries, so stepping through hidden inputs all talk long stays bounded.
   const CLIENTS = 24;
   const cache = new Map();
   function entry(seed, reps, shots) {
@@ -63,35 +65,34 @@
     if (hit) {
       cache.delete(key);
     } else {
-      const c = Q.client(seed, reps, BLOCKS / reps, shots);
+      const c = Q.client(seed, reps, TOY.blocks / reps, shots);
       hit = { c, runs: [], curve: Q.landscape(c, 240) };
       if (cache.size >= CLIENTS) cache.delete(cache.keys().next().value);
     }
     cache.set(key, hit);
     return hit;
   }
-  // Run restarts until `n` are stored or the frame's time budget is spent; true when done.
-  const BUDGET_MS = 10;
-  function extend(hit, n) {
-    const until = performance.now() + BUDGET_MS;
+  // Main-thread work is done a frame's budget at a time, so a slide never freezes.
+  const BUDGET_MS = 8;
+  function extend(hit, n, until) {
     while (hit.runs.length < n && performance.now() < until) Q.addRestart(hit.c, hit.runs, undefined, TH);
     return hit.runs.length >= n;
   }
 
-  // ---- drawing -------------------------------------------------------------------------------
+  // ---- the Bloch sphere ----------------------------------------------------------------------
 
-  // The Bloch sphere in orthographic view: turned a little about its vertical axis, seen a little
-  // from above. An encoded input x sits on the x-z great circle at angle x from |0>.
+  // Orthographic view: turned a little about its vertical axis, seen a little from above. An encoded
+  // input x sits on the x-z great circle at angle x from |0>; points off the sphere at radius s.
   const AZ = -0.38;
   const EL = 0.24;
+  const R = 78;
+  const BINS = 52;
   function project([x, y, z]) {
     const across = x * Math.cos(AZ) + y * Math.sin(AZ);
     const depth = -x * Math.sin(AZ) + y * Math.cos(AZ);
-    return [120 + 92 * across, 120 - 92 * (z * Math.cos(EL) + depth * Math.sin(EL))];
+    return [120 + R * across, 120 - R * (z * Math.cos(EL) + depth * Math.sin(EL))];
   }
-  function blochPoint(angle) {
-    return project([Math.sin(angle), 0, Math.cos(angle)]);
-  }
+  const onCircle = (angle, s = 1) => project([s * Math.sin(angle), 0, s * Math.cos(angle)]);
   function ringPath(point) {
     const pts = [];
     for (let i = 0; i <= 72; i++) pts.push(point((Math.PI * 2 * i) / 72).map((v) => v.toFixed(1)).join(" "));
@@ -99,62 +100,77 @@
   }
 
   function buildBloch(box) {
-    const s = sv("svg", { viewBox: "0 0 240 240", class: "bloch", role: "img", "aria-label": "Bloch sphere: the hidden input and the attacker's best guess" }, box);
-    const title = sv("title", {}, s, "Bloch sphere: the hidden input and the attacker's best guess");
-    sv("circle", { cx: 120, cy: 120, r: 92, class: "sphere" }, s);
+    const blurb = "Bloch sphere: the hidden input (ring), the attacker's best guess (dot) and where each restart ended (small dots outside)";
+    const s = sv("svg", { viewBox: "0 0 240 240", class: "bloch", role: "img", "aria-label": blurb }, box);
+    const title = sv("title", {}, s, blurb);
+    sv("circle", { cx: 120, cy: 120, r: R, class: "sphere" }, s);
     sv("path", { d: ringPath((t) => project([Math.cos(t), Math.sin(t), 0])), class: "equator" }, s);
-    sv("path", { d: ringPath(blochPoint), class: "meridian" }, s);
-    const [tx, ty] = blochPoint(0);
-    const [bx, by] = blochPoint(Math.PI);
-    sv("text", { x: tx, y: ty - 10, class: "pole", "text-anchor": "middle" }, s, "|0⟩");
-    sv("text", { x: bx, y: by + 24, class: "pole", "text-anchor": "middle" }, s, "|1⟩");
-    // Hidden until the first result, so the first frame shows no arrow to the drawing's corner.
-    const arrows = sv("g", { class: "unset" }, s);
-    const arc = sv("path", { class: "gap" }, arrows);
-    const truth = sv("line", { x1: 120, y1: 120, x2: 120, y2: 120, class: "truth" }, arrows);
-    const truthTip = sv("circle", { r: 7, cx: 120, cy: 120, class: "truth-tip" }, arrows);
-    const guess = sv("line", { x1: 120, y1: 120, x2: 120, y2: 120, class: "guess" }, arrows);
-    const guessTip = sv("circle", { r: 7, cx: 120, cy: 120, class: "guess-tip" }, arrows);
+    sv("path", { d: ringPath((t) => onCircle(t)), class: "meridian" }, s);
+    const [tx, ty] = onCircle(0);
+    const [bx, by] = onCircle(Math.PI);
+    sv("text", { x: tx - 12, y: ty - 4, class: "pole", "text-anchor": "end" }, s, "|0⟩");
+    sv("text", { x: bx - 12, y: by + 20, class: "pole", "text-anchor": "end" }, s, "|1⟩");
+    const ends = sv("g", { class: "ends" }, s);
+    // Hidden until the first result, so the first frame shows no marker at the drawing's centre.
+    const marks = sv("g", { class: "unset" }, s);
+    const truthSpoke = sv("line", { x1: 120, y1: 120, x2: 120, y2: 120, class: "truth" }, marks);
+    const guessSpoke = sv("line", { x1: 120, y1: 120, x2: 120, y2: 120, class: "guess unset" }, marks);
+    const truth = sv("circle", { r: 10, cx: 120, cy: 120, class: "truth-ring" }, marks);
+    const guess = sv("circle", { r: 5.5, cx: 120, cy: 120, class: "guess-dot unset" }, marks);
     sv("circle", { cx: 120, cy: 120, r: 3.5, class: "hub" }, s);
+    const stacks = new Map();
     return {
-      set(x, g) {
-        arrows.removeAttribute("class");
-        const [px, py] = blochPoint(x);
-        truth.setAttribute("x2", px);
-        truth.setAttribute("y2", py);
-        truthTip.setAttribute("cx", px);
-        truthTip.setAttribute("cy", py);
-        const [gx, gy] = blochPoint(g);
-        guess.setAttribute("x2", gx);
-        guess.setAttribute("y2", gy);
-        guessTip.setAttribute("cx", gx);
-        guessTip.setAttribute("cy", gy);
-        // the arc between them, the error the paper measures (modulo a full turn)
-        let d = (((g - x) % Q.TAU) + Q.TAU) % Q.TAU;
-        if (d > Math.PI) d -= Q.TAU;
-        const pts = [];
-        for (let i = 0; i <= 24; i++) pts.push(project([0.55 * Math.sin(x + (d * i) / 24), 0, 0.55 * Math.cos(x + (d * i) / 24)]));
-        arc.setAttribute("d", `M${pts.map((p) => p.map((v) => v.toFixed(1)).join(" ")).join("L")}`);
+      reset(x) {
+        marks.removeAttribute("class");
+        ends.textContent = "";
+        stacks.clear();
+        const [px, py] = onCircle(x);
+        set(truthSpoke, { x2: px, y2: py });
+        set(truth, { cx: px, cy: py });
+        guessSpoke.classList.add("unset");
+        guess.classList.add("unset");
+      },
+      // A restart's end point: a small dot just outside the sphere, stacked outward when several
+      // end within a few degrees of each other (bins taken round the full turn, so 0 and 2pi
+      // share one), so a crowd of landings reads as a taller stack.
+      end(angle, outcome) {
+        const a = ((angle % Q.TAU) + Q.TAU) % Q.TAU;
+        const bin = Math.round((a / Q.TAU) * BINS) % BINS;
+        const k = stacks.get(bin) || 0;
+        stacks.set(bin, k + 1);
+        const [ex, ey] = onCircle(a, 1.16 + 0.1 * Math.min(k, 3));
+        sv("circle", { cx: ex.toFixed(1), cy: ey.toFixed(1), r: 4, class: `end ${outcome}` }, ends);
+      },
+      guess(g) {
+        const [gx, gy] = onCircle(g);
+        set(guessSpoke, { x2: gx, y2: gy });
+        set(guess, { cx: gx, cy: gy });
+        guessSpoke.classList.remove("unset");
+        guess.classList.remove("unset");
       },
       label(text) {
-        title.textContent = text;
-        s.setAttribute("aria-label", text);
+        title.textContent = `${blurb}. ${text}`;
+        s.setAttribute("aria-label", title.textContent);
       },
     };
   }
 
-  // The matching loss across one turn of guesses, with the hidden input marked and each
-  // restart's search drawn on it.
+  // ---- the loss plot ---------------------------------------------------------------------------
+
+  // The matching loss across one turn of guesses, with the hidden input marked and each restart's
+  // search rolled down it.
   const PW = 560;
-  const PH = 230;
+  // Squatter on a phone, at the same width, so the panel and the paper's figure fit one page.
+  const PH = phone ? 128 : 156;
   const PAD = { l: 14, r: 14, t: 14, b: 40 };
+  const SPAN = PW - PAD.l - PAD.r;
   function buildPlot(box) {
     const blurb = "Matching loss across every guess, lowest where a guess's gradient matches the client's";
     const s = sv("svg", { viewBox: `0 0 ${PW} ${PH}`, class: "trace", role: "img", "aria-label": blurb }, box);
     const title = sv("title", {}, s, blurb);
     const grid = sv("g", { class: "grid" }, s);
     for (let i = 0; i <= 8; i++) {
-      const x = PAD.l + ((PW - PAD.l - PAD.r) * i) / 8;
+      const x = PAD.l + (SPAN * i) / 8;
       sv("line", { x1: x, x2: x, y1: PAD.t, y2: PH - PAD.b }, grid);
     }
     for (let i = 0; i <= 4; i++) {
@@ -162,18 +178,137 @@
       sv("line", { x1: PAD.l, x2: PW - PAD.r, y1: y, y2: y }, grid);
     }
     [["0", 0], ["π", 0.5], ["2π", 1]].forEach(([t, f]) => {
-      sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * f, y: PH - 14, class: "tick", "text-anchor": f === 0 ? "start" : f === 1 ? "end" : "middle" }, s, t);
+      sv("text", { x: PAD.l + SPAN * f, y: PH - 14, class: "tick", "text-anchor": f === 0 ? "start" : f === 1 ? "end" : "middle" }, s, t);
     });
-    sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * 0.25, y: PH - 14, class: "axis", "text-anchor": "middle" }, s, "guess \u2192");
-    // Hidden until the first result, like the sphere's arrows.
+    sv("text", { x: PAD.l + SPAN * 0.25, y: PH - 14, class: "axis", "text-anchor": "middle" }, s, "guess →");
+    // Hidden until the first result, like the sphere's markers.
     const truth = sv("line", { class: "truth-mark unset", y1: PAD.t, y2: PH - PAD.b }, s);
     const curve = sv("path", { class: "curve" }, s);
     const paths = sv("g", { class: "paths" }, s);
+    const trails = sv("g", { class: "trails" }, s);
     const balls = sv("g", { class: "balls" }, s);
-    // Drawn last, on a white plate, so neither the curve nor a ball crosses it.
+    // Drawn last, on white plates, so neither the curve nor a ball crosses them.
     sv("rect", { x: PAD.l + 2, y: PAD.t + 1, width: 170, height: 28, rx: 4, class: "plate" }, s);
-    sv("text", { x: PAD.l + 8, y: PAD.t + 22, class: "axis" }, s, "\u2191 matching loss");
-    return { s, title, truth, curve, paths, balls };
+    sv("text", { x: PAD.l + 8, y: PAD.t + 22, class: "axis" }, s, "↑ matching loss");
+    const tagPlate = sv("rect", { y: PH - PAD.b - 31, width: 132, height: 28, rx: 4, class: "plate unset" }, s);
+    const tag = sv("text", { y: PH - PAD.b - 10, class: "axis tag unset" }, s, "hidden input");
+    return { s, title, truth, curve, paths, trails, balls, tag, tagPlate };
+  }
+
+  // ---- the rows of hidden inputs, at the foot of the panel ------------------------------------
+
+  // One row per value of the slide's control, one mark per hidden input, a count on the right, so
+  // the toy's trend is read from many draws, beside the paper's rows on the slide. Repetitions: a
+  // pie filled to the share of its 10 restarts that found the input. Restarts and shots: a dot,
+  // filled when that input was recovered (best of the first n restarts) or came within the close
+  // threshold, as the paper's figure beside it counts seeds.
+  const ROW = {
+    reps: { head: ["r × ℓ", "restarts of 10 that found it, per input", `of ${TOY.draws * TOY.steps.reps.restarts}`], label: (r) => `${r}×${TOY.blocks / r}` },
+    restarts: { head: ["restarts", "inputs recovered by the best restart", `of ${TOY.draws}`], label: (n) => String(n) },
+    shots: { head: ["shots", `inputs guessed within ${TH.close} rad`, `of ${TOY.draws}`], label: (v) => (v ? v.toLocaleString("en-US") : "exact") },
+  };
+  const CELLS = TOY.steps.reps.restarts;
+
+  function pie(cx, cy, r, f) {
+    if (f <= 0) return "";
+    if (f >= 1) return `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0Z`;
+    const a = f * Q.TAU;
+    const x = cx + r * Math.sin(a);
+    const y = cy - r * Math.cos(a);
+    return `M${cx} ${cy}L${cx} ${cy - r}A${r} ${r} 0 ${a > Math.PI ? 1 : 0} 1 ${x.toFixed(2)} ${y.toFixed(2)}Z`;
+  }
+
+  function buildRows(box, step) {
+    const spec = ROW[step];
+    const values = TOY.steps[step][step];
+    // A phone gets a narrower drawing, so its text stays readable at the phone's width.
+    const g = phone
+      ? { W: 480, x0: 84, dx: 18, r: 6, pitch: 17, top: 23 }
+      : { W: 640, x0: 86, dx: 25, r: 7.5, pitch: 20, top: 24 };
+    const H = g.top + g.pitch * values.length;
+    const cap = el("p", { class: "rows-cap" }, box);
+    el("b", {}, cap, "Many draws:");
+    cap.append(` inputs 1 to ${TOY.draws}, not picked`);
+    el("span", { class: "long" }, cap, "; one qubit is the easy end");
+    const s = sv("svg", { viewBox: `0 0 ${g.W} ${H}`, class: "toy-fig", role: "img", "aria-label": "The toy over hidden inputs 1 to 20: computing" }, box);
+    sv("text", { x: 0, y: 18, class: "h" }, s, spec.head[0]);
+    sv("text", { x: g.x0 - g.r, y: 18, class: "h" }, s, spec.head[1]);
+    sv("text", { x: g.W, y: 18, class: "h", "text-anchor": "end" }, s, spec.head[2]);
+    const rows = values.map((v, i) => {
+      const y = g.top + g.pitch * i;
+      const cy = y + g.pitch / 2;
+      const band = sv("rect", { x: 0, y: y + 1, width: g.W, height: g.pitch - 2, rx: 4, class: "band" }, s);
+      const label = sv("text", { x: 4, y: cy + 7, class: "l" }, s, spec.label(v));
+      const marks = [];
+      for (let d = 0; d < TOY.draws; d++) {
+        const cx = g.x0 + g.dx * d;
+        const dot = sv("circle", { cx, cy, r: g.r, class: "dot" }, s);
+        const wedge = step === "reps" ? sv("path", { class: "pie" }, s) : null;
+        const frame = sv("circle", { cx, cy, r: g.r + 3, class: "here-mark" }, s);
+        marks.push({ cx, cy, dot, wedge, frame });
+      }
+      const count = sv("text", { x: g.W - 4, y: cy + 7, class: "n", "text-anchor": "end" }, s, "");
+      return { band, label, marks, count, total: 0 };
+    });
+    return {
+      // One hidden input's scores, one per row.
+      add(draw, scores) {
+        scores.forEach((v, i) => {
+          const row = rows[i];
+          const m = row.marks[draw - 1];
+          if (m.wedge) m.wedge.setAttribute("d", pie(m.cx, m.cy, g.r, v / CELLS));
+          else m.dot.classList.toggle("hit", v);
+          m.dot.classList.add("run");
+          row.total += Number(v);
+          row.count.textContent = String(row.total);
+        });
+      },
+      complete() {
+        const words = values.map((v, i) => `${spec.label(v)}: ${rows[i].total}`).join("; ");
+        s.setAttribute("aria-label", `The toy over hidden inputs 1 to ${TOY.draws}, ${spec.head[1]}, ${spec.head[2]}: ${words}`);
+      },
+      // Mark the row of the free control's value and, in it, the hidden input on show.
+      here(value, draw) {
+        rows.forEach((row, i) => {
+          const on = values[i] === value;
+          row.band.classList.toggle("on", on);
+          row.label.classList.toggle("on", on);
+          row.marks.forEach((m, d) => m.frame.classList.toggle("on", on && d === draw - 1));
+        });
+      },
+    };
+  }
+
+  // Runs hidden inputs 1 to 20 for a step, a frame's budget at a time, and shows each as it is
+  // scored, no faster than one every STEP_MS so the rows fill at a pace the room can follow.
+  const STEP_MS = reduce ? 0 : 60;
+  function fillRows(rows, step) {
+    let draw = 1;
+    let jobs = Q.tallyJobs(step, draw);
+    let shownAt = 0;
+    const ready = [];
+    const tick = (now) => {
+      const until = performance.now() + BUDGET_MS;
+      while (draw <= TOY.draws && performance.now() < until) {
+        const j = jobs.find((x) => x.runs.length < x.n);
+        if (j) {
+          Q.addRestart(j.c, j.runs, undefined, TH);
+          continue;
+        }
+        ready.push([draw, Q.tallyScore(step, jobs, TH)]);
+        draw += 1;
+        if (draw <= TOY.draws) jobs = Q.tallyJobs(step, draw);
+      }
+      if (reduce) {
+        if (draw > TOY.draws) ready.splice(0).forEach(([d, s]) => rows.add(d, s));
+      } else if (ready.length && now - shownAt >= STEP_MS) {
+        rows.add(...ready.shift());
+        shownAt = now;
+      }
+      if (draw > TOY.draws && !ready.length) rows.complete();
+      else requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   }
 
   // ---- one instrument ------------------------------------------------------------------------
@@ -189,54 +324,72 @@
   }
 
   function instrument(box) {
-    const step = STEPS[box.dataset.lab];
+    const name = box.dataset.lab;
+    const step = STEPS[name];
     if (!step) {
-      console.error(`lab: no step ${box.dataset.lab}`);
+      console.error(`lab: no step ${name}`);
       return;
     }
     const state = { ...step };
     box.textContent = "";
-    // One grid: deck.css places these areas side by side on a slide and stacks them on a phone.
+    // One grid: deck.css places these areas on a slide and stacks them on a phone.
     const head = el("p", { class: "lab-head" }, box);
     el("b", {}, head, "Toy circuit, live in this browser");
     const origin = el("span", { class: "lab-origin" }, head);
     const fixedNote = el("span", { class: "lab-fixed" }, head);
     const bloch = buildBloch(el("div", { class: "lab-bloch" }, box));
     const plot = buildPlot(el("div", { class: "lab-trace" }, box));
-    const read = el("div", { class: "lab-read", "aria-live": "polite" }, box);
-    const form = el("div", { class: "lab-ctl", role: "group", "aria-label": "Lab controls" }, box);
-    const name = box.dataset.lab;
+    const read = el("div", { class: "lab-read" }, box);
+    // Screen readers hear one sentence per search, when it ends, not each landing.
+    const status = el("p", { class: "lab-status", role: "status" }, box);
+    const main = el("p", { class: "meter main" }, read);
+    const mainLabel = el("span", {}, main, "Restarts that found the input");
+    const mainValue = el("b", {}, main, "–");
+    const minor = el("p", { class: "meter minor" }, read);
+    el("span", {}, minor, "Best guess");
+    const minorValue = el("b", {}, minor, "–");
+    // The free control and the buttons share one row that wraps, so they can never overlap; the
+    // fixed controls stay in the markup but only the header names their values.
+    const ctlRow = el("div", { class: "lab-ctlrow" }, box);
+    const form = el("div", { class: "lab-ctl", role: "group", "aria-label": "Lab controls" }, ctlRow);
     const ctl = {
-      reps: control(form, name, "reps", "Repetitions", REPS.length - 1, REPS.indexOf(state.reps), step.free === "reps", (i) => `${REPS[i]} \u00d7 ${BLOCKS / REPS[i]}`),
+      reps: control(form, name, "reps", "Repetitions", REPS.length - 1, REPS.indexOf(state.reps), step.free === "reps", (i) => `${REPS[i]} × ${TOY.blocks / REPS[i]}`),
       shots: control(form, name, "shots", "Shots", SHOTS.length - 1, SHOTS.indexOf(state.shots), step.free === "shots", (i) => shotsWord(SHOTS[i])),
       restarts: control(form, name, "restarts", "Restarts", MAX_RESTARTS, state.restarts, step.free === "restarts", (i) => `${i} restart${i === 1 ? "" : "s"}`),
     };
-    const buttons = el("div", { class: "lab-buttons" }, box);
-    const fresh = el("button", { type: "button" }, buttons, "New hidden input");
-    const reset = el("button", { type: "button" }, buttons, "Reset to preset");
+    const buttons = el("div", { class: "lab-buttons" }, ctlRow);
+    const next = el("button", { type: "button", "aria-label": "Next hidden input" }, buttons, "Next input");
+    const reset = el("button", { type: "button" }, buttons, "Reset");
+    const replay = el("button", { type: "button" }, buttons, "Replay slowly");
+    // With reduced motion every search shows its end at once, so there is nothing to replay.
+    if (reduce) replay.hidden = true;
+    const rows = buildRows(el("div", { class: "lab-rows" }, box), name);
 
     let frame = 0;
     let shown = false;
 
     function sync() {
-      for (const [name, c] of Object.entries(ctl)) {
-        const i = name === "reps" ? REPS.indexOf(state.reps) : name === "shots" ? SHOTS.indexOf(state.shots) : state.restarts;
+      for (const [k, c] of Object.entries(ctl)) {
+        const i = k === "reps" ? REPS.indexOf(state.reps) : k === "shots" ? SHOTS.indexOf(state.shots) : state.restarts;
         c.input.value = String(i);
         c.out.textContent = c.text(i);
-        c.input.setAttribute("aria-valuetext", name === "reps" ? `${c.text(i)}: repetitions times trainable blocks` : c.text(i));
+        c.input.setAttribute("aria-valuetext", k === "reps" ? `${c.text(i)}: repetitions times trainable blocks` : c.text(i));
       }
-      origin.innerHTML = state.seed === step.seed ? '<span class="long">preset input, picked to show the effect</span><span class="short">picked input</span>' : "random input";
+      origin.textContent = `hidden input ${state.draw} of ${TOY.draws}`;
       // The fixed values, once more in the header: a phone hides the fixed controls.
-      fixedNote.textContent = `fixed here: ${Object.values(ctl)
+      fixedNote.textContent = `fixed: ${Object.values(ctl)
         .filter((c) => !c.free)
         .map((c) => c.out.textContent)
         .join(", ")}`;
+      rows.here(state[name], state.draw);
     }
 
     // One redraw per animation frame however many input events a drag fires, and the restarts it
-    // needs computed a frame's budget at a time, so the slide never freezes.
+    // needs computed a frame's budget at a time.
     let queued = 0;
-    function request() {
+    let speed = 1;
+    function request(slow) {
+      speed = slow ? PACE.slow : 1;
       if (!queued) queued = requestAnimationFrame(draw);
     }
 
@@ -244,123 +397,166 @@
       queued = 0;
       cancelAnimationFrame(frame);
       sync();
-      const hit = entry(state.seed, state.reps, state.shots);
-      if (!extend(hit, state.restarts)) {
-        searching();
-        const more = () => {
-          if (extend(hit, state.restarts)) render(hit);
-          else frame = requestAnimationFrame(more);
-        };
+      const hit = entry(state.draw, state.reps, state.shots);
+      const more = () => {
+        if (extend(hit, state.restarts, performance.now() + BUDGET_MS)) render(hit);
+        else frame = requestAnimationFrame(more);
+      };
+      if (!extend(hit, state.restarts, performance.now() + BUDGET_MS)) {
+        busy();
         frame = requestAnimationFrame(more);
         return;
       }
       render(hit);
     }
 
-    function searching() {
+    function busy() {
       box.classList.remove("done");
       read.setAttribute("aria-busy", "true");
-      read.innerHTML = '<p class="verdict searching"><b>Searching</b><span>restarts rolling downhill</span></p>';
     }
 
     function render(hit) {
       const { c, curve } = hit;
       const runs = hit.runs.slice(0, state.restarts);
-      const best = Q.pickBest(runs, runs.length);
-      const top = Math.max(...curve) || 1;
-      const X = (v) => PAD.l + ((((v % Q.TAU) + Q.TAU) % Q.TAU) / Q.TAU) * (PW - PAD.l - PAD.r);
-      const Y = (L) => PH - PAD.b - (Math.min(L, top) / top) * (PH - PAD.t - PAD.b);
-      plot.curve.setAttribute("d", `M${Array.from(curve, (L, i) => `${(PAD.l + (i / curve.length) * (PW - PAD.l - PAD.r)).toFixed(1)} ${Y(L).toFixed(1)}`).join("L")}`);
-      plot.truth.setAttribute("x1", X(c.x));
-      plot.truth.setAttribute("x2", X(c.x));
-      plot.truth.classList.remove("unset");
-      plot.paths.textContent = "";
-      plot.balls.textContent = "";
-      // Each restart's search as a trail of points, its losses stored when it ran.
-      const trails = runs.map((r) => r.path.map((v, j) => [X(v), Y(r.losses[j])]));
-      const lines = trails.map(() => sv("path", { d: "" }, plot.paths));
-      const dots = runs.map((r, i) => sv("circle", { r: i === best ? 9 : 6, class: `ball ${r.outcome}${i === best ? " best" : ""}` }, plot.balls));
-      const hits = runs.filter((r) => r.outcome === "recovered").length;
+      const n = runs.length;
+      const best = Q.pickBest(runs, n);
       const b = runs[best];
-      const n = trails[0].length;
-      const DUR = 1400;
-      const half = (PW - PAD.l - PAD.r) / 2;
-      const paint = (k) => {
-        trails.forEach((t, i) => {
-          const upto = Math.min(t.length - 1, k);
-          // Every second point is enough for the line. A search that crosses 0 or 2pi reappears
-          // at the other edge, so the stroke starts again there.
-          let d = "";
-          let last = null;
-          for (let j = 0; j <= upto; j++) {
-            if (j % 2 && j !== upto) continue;
-            const p = t[j];
-            d += `${last === null || Math.abs(p[0] - last) > half ? "M" : "L"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
-            last = p[0];
-          }
-          lines[i].setAttribute("d", d);
-          dots[i].setAttribute("cx", t[upto][0]);
-          dots[i].setAttribute("cy", t[upto][1]);
+      const top = Math.max(...curve) || 1;
+      const X = (v) => PAD.l + ((((v % Q.TAU) + Q.TAU) % Q.TAU) / Q.TAU) * SPAN;
+      const Y = (L) => PH - PAD.b - (Math.min(L, top) / top) * (PH - PAD.t - PAD.b);
+      plot.curve.setAttribute("d", `M${Array.from(curve, (L, i) => `${(PAD.l + (i / curve.length) * SPAN).toFixed(1)} ${Y(L).toFixed(1)}`).join("L")}`);
+      const tx = X(c.x);
+      set(plot.truth, { x1: tx, x2: tx });
+      // The label sits on the side of the mark with more room.
+      const right = tx < PW / 2;
+      set(plot.tag, { x: right ? tx + 8 : tx - 8, "text-anchor": right ? "start" : "end" });
+      set(plot.tagPlate, { x: right ? tx + 3 : tx - 135 });
+      for (const n2 of [plot.truth, plot.tag, plot.tagPlate]) n2.classList.remove("unset");
+      plot.paths.textContent = "";
+      plot.trails.textContent = "";
+      plot.balls.textContent = "";
+      bloch.reset(c.x);
+      const half = SPAN / 2;
+      const pts = runs.map((r) => r.path.map((v, j) => [X(v), Y(r.losses[j])]));
+      const full = runs.map(() => sv("path", { d: "" }, plot.paths));
+      const segs = runs.map(() => Array.from({ length: PACE.trail }, () => sv("line", { "stroke-opacity": 0 }, plot.trails)));
+      const balls = runs.map(() => sv("circle", { r: 6, class: "ball rolling" }, plot.balls));
+      const landed = new Array(n).fill(false);
+      let hits = 0;
+      let count = 0;
+      const gap = n > 1 ? Math.min(600, (PACE.total - PACE.roll) / (n - 1)) : 0;
+      const wrapped = (a, b2) => Math.abs(a[0] - b2[0]) > half;
+      const at = (t, f) => {
+        const i = Math.min(t.length - 1, Math.floor(f));
+        const j = Math.min(t.length - 1, i + 1);
+        const u = f - i;
+        if (wrapped(t[i], t[j])) return t[u < 0.5 ? i : j];
+        return [t[i][0] + (t[j][0] - t[i][0]) * u, t[i][1] + (t[j][1] - t[i][1]) * u];
+      };
+      const fullPath = (t) => {
+        let d = "";
+        let last = null;
+        t.forEach((p, j) => {
+          if (j % 2 && j !== t.length - 1) return;
+          d += `${last === null || Math.abs(p[0] - last) > half ? "M" : "L"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
+          last = p[0];
         });
-        bloch.set(c.x, b.path[Math.min(b.path.length - 1, k)]);
+        return d;
+      };
+      const meter = (final) => {
+        mainLabel.textContent = final ? "Restarts that found the input" : "Restarts that found the input, so far";
+        mainValue.textContent = `${hits} of ${final ? n : count}`;
+      };
+      const land = (i) => {
+        landed[i] = true;
+        count += 1;
+        if (runs[i].outcome === "recovered") hits += 1;
+        balls[i].setAttribute("class", `ball ${runs[i].outcome}`);
+        bloch.end(runs[i].end, runs[i].outcome);
+        meter(false);
       };
       const finish = () => {
-        paint(n - 1);
+        runs.forEach((r, i) => {
+          if (!landed[i]) land(i);
+          const end = pts[i][pts[i].length - 1];
+          set(balls[i], { cx: end[0], cy: end[1], r: i === best ? 9 : 6 });
+          segs[i].forEach((s) => s.setAttribute("stroke-opacity", 0));
+          full[i].setAttribute("d", fullPath(pts[i]));
+        });
+        balls[best].classList.add("best");
+        bloch.guess(b.end);
+        meter(true);
+        minorValue.textContent = `${WORD[b.outcome]}, ${rad(b.error)} rad`;
         box.classList.add("done");
-        const err = rad(b.error);
-        read.innerHTML = "";
-        const o = el("p", { class: `verdict ${b.outcome}` }, read);
-        el("b", {}, o, WORDS[b.outcome]);
-        el("span", {}, o, MEANING[b.outcome]);
-        const e = el("p", { class: "meter" }, read);
-        el("span", {}, e, "Error");
-        el("b", {}, e, `${err} rad`);
-        const h = el("p", { class: "meter" }, read);
-        el("span", {}, h, "Restarts that hit");
-        el("b", {}, h, `${hits} of ${runs.length}`);
         // Screen readers hear the result once, when it is complete.
         read.setAttribute("aria-busy", "false");
-        const words = `${WORDS[b.outcome]}: the best guess is ${err} radians from the hidden input; ${hits} of ${runs.length} restarts found it.`;
-        bloch.label(`Bloch sphere: the hidden input and the attacker's best guess. ${words}`);
+        const words = `${hits} of ${n} restarts found the hidden input; the best guess is ${rad(b.error)} radians from it (${WORD[b.outcome]}).`;
+        // Cleared first, so a Reset or a replay that ends on the same sentence is announced again.
+        status.textContent = "";
+        requestAnimationFrame(() => (status.textContent = words));
+        bloch.label(words);
         plot.title.textContent = `Matching loss across every guess, lowest where a guess's gradient matches the client's. ${words}`;
         plot.s.setAttribute("aria-label", plot.title.textContent);
       };
+      busy();
+      minorValue.textContent = "–";
+      meter(false);
       if (reduce) {
         finish();
         return;
       }
-      searching();
+      const stretch = speed;
       const t0 = performance.now();
+      const span = (n - 1) * gap + PACE.roll + PACE.fade;
       const tick = (now) => {
-        // A frame's timestamp can precede t0 (it marks the frame's start), so clamp at the first point.
-        const k = Math.max(0, Math.floor(((now - t0) / DUR) * (n - 1)));
-        if (k >= n - 1) {
+        // A frame's timestamp can precede t0 (it marks the frame's start), so clamp at zero.
+        const t = Math.max(0, now - t0) / stretch;
+        if (t >= span) {
           finish();
           return;
         }
-        paint(k);
+        runs.forEach((r, i) => {
+          const local = (t - i * gap) / PACE.roll;
+          const tr = pts[i];
+          if (local < 0) {
+            balls[i].setAttribute("r", 0);
+            return;
+          }
+          const f = Math.min(1, local) * (tr.length - 1);
+          const p = at(tr, f);
+          set(balls[i], { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 6 });
+          if (local >= 1 && !landed[i]) land(i);
+          const fade = local < 1 ? 1 : Math.max(0, 1 - ((local - 1) * PACE.roll) / PACE.fade);
+          segs[i].forEach((s, k) => {
+            const a = at(tr, Math.max(0, f - k - 1));
+            const z = at(tr, Math.max(0, f - k));
+            const gone = wrapped(a, z) || f - k <= 0;
+            set(s, { x1: a[0].toFixed(1), y1: a[1].toFixed(1), x2: z[0].toFixed(1), y2: z[1].toFixed(1), "stroke-opacity": gone ? 0 : ((0.75 * (PACE.trail - k)) / PACE.trail) * fade });
+          });
+        });
         frame = requestAnimationFrame(tick);
       };
       frame = requestAnimationFrame(tick);
     }
 
-    for (const [name, c] of Object.entries(ctl)) {
+    for (const [k, c] of Object.entries(ctl)) {
       c.input.addEventListener("input", () => {
         const i = Number(c.input.value);
-        if (name === "reps") state.reps = REPS[i];
-        else if (name === "shots") state.shots = SHOTS[i];
+        if (k === "reps") state.reps = REPS[i];
+        else if (k === "shots") state.shots = SHOTS[i];
         else state.restarts = i;
         request();
       });
     }
-    fresh.addEventListener("click", () => {
-      state.seed = 1000 + Math.floor(Math.random() * 1e6);
+    next.addEventListener("click", () => {
+      state.draw = (state.draw % TOY.draws) + 1;
       request();
     });
     reset.addEventListener("click", () => {
       Object.assign(state, step);
       request();
     });
+    replay.addEventListener("click", () => request(true));
 
     // Keys pressed in the panel stay in the panel: Space on a button would otherwise also turn
     // the slide. Escape hands the keyboard back to the slides.
@@ -380,10 +576,10 @@
     sync();
     return {
       show() {
-        if (!shown) {
-          shown = true;
-          request();
-        }
+        if (shown) return;
+        shown = true;
+        request();
+        fillRows(rows, name);
       },
     };
   }

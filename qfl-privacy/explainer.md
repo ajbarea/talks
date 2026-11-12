@@ -4,6 +4,15 @@
 For AJ, before the CSCI-739 talk. Each equation on the slides, in plain words, with a few lines of
 Python you can run. Then what the live lab does on each slide, and what to say when it misbehaves.
 
+## Federated learning, in one picture (slide 3)
+
+Several clients train one shared model without pooling their data (McMahan et al., 2017). Each
+round, every client trains the current model on its own data and sends back only its update (here
+the gradient g; FedAvg sends weights after a few local steps); the server averages the updates into
+the next model. The data never leaves the client, so FL sounds private; the talk asks whether g
+gives it away anyway. The diagram plays one round: red dots are gradients going up, Σ the average,
+grey dots the new model coming back. In one line: "the data stays home, the gradient travels."
+
 ## The equations
 
 ### The circuit's output, f(x; θ)
@@ -89,6 +98,9 @@ recovered inputs up to 0.67 and never from 1.14, so the crossover lies between.
 
 With S shots, k of them read 0, and 2k/S − 1 estimates ⟨Z⟩. Its standard error falls like 1/√S, a
 slope of −1/2 on a log-log plot. The paper's errors fell with slopes −0.54 to −0.49, the same rate.
+Shot noise blocked this attack at 8 qubits; that is not a privacy guarantee. Sedrakyan, Grosshans
+and Kashefi (arXiv:2606.29293, 2026) show quantum noise "does not provide a satisfactory
+replacement" for the calibrated noise of DP-SGD.
 
 ```python
 rng = np.random.default_rng(0)
@@ -123,33 +135,38 @@ attack is Adam on the guess for 150 steps, with the loss's exact slope; the pape
 up to 500 iterations. The toy can be fast because each gradient entry is a Fourier series in the
 guess with frequencies up to 2r (re-uploading r times gives the output frequencies up to r), so a
 few samples per client give the whole loss curve. The
-outcome rule and thresholds are the paper's. Every number you quote comes from the right-hand
-panel, never from the toy.
+outcome rule and thresholds are the paper's. Every number you quote about the paper comes from the
+right-hand figure; the counts at the panel's foot are the toy's own, and the panel labels them so.
 
-| Slide | Control | What the preset shows |
-|---|---|---|
-| Repetitions | Encoding repetitions; 10 restarts, exact | Restarts that found the input: 10, 8, 6 and 1 of 10 at 1, 2, 4 and 8 repetitions. The curve gains dips as you go. |
-| Restarts | Restarts; 8 × 1, exact | Stuck with 1 to 5 restarts; the 6th finds the input and the verdict turns to Recovered. |
-| Shots | Shots; 2 × 4, 10 restarts | Recovered from exact down to 1,000 shots (error 0.028 rad); Close at 100 (0.148); Ambiguous at 10 (1.087). |
+Each lab slide opens on hidden input 1. "Next input" steps through inputs 1 to 20, the
+simulator's first seeds, not picked. One input is a noisy sample, so the rows at the foot of the
+panel run all twenty for each value of the control, scored like the paper's figure beside them. A search
+takes about 5 seconds: restarts are released one after another, each rolling for 1.8 s with a short
+trail. "Replay slowly" plays it 2.5 times slower. Reduced motion shows each end at once.
+
+| Slide | Control | Hidden input 1 | The rows (inputs 1 to 20) |
+|---|---|---|---|
+| Repetitions | Encoding repetitions; 10 restarts, exact | 8, 10, 10, 8 of 10 restarts hit at 1, 2, 4, 8 repetitions: no trend | Restarts that hit, of 200: 175, 161, 133, 120 |
+| Restarts | Restarts; 8 × 1, exact | Stuck with 1 restart, recovered from 2 on | Inputs recovered, of 20, with 1, 2, 5, 10, 20 restarts: 9, 15, 19, 20, 20 |
+| Shots | Shots; 2 × 4, 10 restarts | Recovered from exact down to 1,000 shots (0.035 rad); close at 100 (0.054) and 10 (0.162) | Within 0.2 rad, of 20, at 10, 100, 1,000 shots and exact: 15, 19, 20, 20 |
 
 Sliders: drag with the mouse, or Tab to one and use the arrow keys. Arrow keys inside a slider never
 turn the slide.
 
 ## If the live panel misbehaves
 
-- **The clicker moved a slider instead of the slide:** press Esc, then advance. (Any mouse release on
-  the panel already hands the keyboard back, so this should not happen.)
-- **A result differs from what you meant to show:** press "Reset to preset". The presets are fixed
-  seeds and replay the same run on any machine.
-- **"New hidden input" shows little effect:** at 8 repetitions the verdict usually stays Recovered, the
-  preset included (1 restart of 10 hits). The signal is the count of restarts that hit, not the
-  verdict. If it barely moves: "One qubit is the easy case; that's why the paper's runs are on the
-  right." Then Reset.
-- **The panel is blank or frozen:** carry on from the right-hand figure; it holds the slide's claim.
-  The panel also does not appear in the PDF or PowerPoint copies, by design.
+- **The clicker moved a slider instead of the slide:** press Esc, then advance.
+- **A result differs from what you meant to show:** press "Reset"; every input replays identically.
+- **One input goes against the slide:** expected; say "one input is a noisy sample" and point at the
+  rows, which carry the trend. Never step through inputs hunting for one that agrees.
+- **The animation is too quick to talk over:** press "Replay slowly".
+- **The panel is blank or frozen:** carry on from the paper's figure; it holds the slide's claim.
+  The PDF and PowerPoint copies leave the panel out by design.
 - **No network:** the deck works offline once loaded, and from a downloaded copy opened as a file.
-- **Someone asks why the toy is so easy at 100 shots:** one input against 15 gradient entries, so
-  noise averages out. At 8 qubits the noise was as large as the gradient (0.16 against 0.14).
+- **Someone asks why the toy is so easy at 100 shots:** its gradient is about 50 times its shot
+  noise there (median squared norms, inputs 1 to 200, 2 × 4). At 8 qubits the paper's noise was as
+  large as the gradient (0.16 against 0.14). Entries per input match (15 each), so it is the
+  signal's size, not the count.
 
 ## Questions to expect
 
@@ -157,6 +174,6 @@ turn the slide.
 - **"Why did the gradient shrink from 0.72 to 0.14 between 4 and 8 qubits?"** The paper reports it, but does not test why. Whether it is the start of a barren plateau is open. Say so.
 - **"Would an attacker that keeps its guesses inside [0, π) avoid the ambiguous answers?"** Some, possibly. The results did not store the guesses, so we cannot count how many fell outside. It is on the backup limits slide.
 - **"Does Heredge et al.'s Lie-algebra attack apply here?"** Not computed. We did not work out these circuits' Lie algebras.
-- **"Is the toy cherry-picked?"** The presets are seeds picked to show each effect clearly, and the panel says so. Over 60 random inputs the toy shows the same direction, but weaker: restarts that hit fall from about four in five at one repetition to about one in two at eight, and with 10 restarts a random input almost never ends stuck. The toy shows fewer restarts landing, not more stuck seeds. The numbers on the slides all come from the paper.
+- **"Is the toy cherry-picked?"** No. Every slide opens on hidden input 1, and the rows run inputs 1 to 20, the simulator's first seeds. Over 200 inputs its restarts that hit fall from 82% at one repetition to 55% at eight, but with 10 restarts an input almost never ends stuck: one qubit is the easy end. Every number in the paper's figures, on the right of each lab slide, comes from the paper.
 - **"How many inputs of an ambiguous batch still leaked?"** Not measured: a batch is scored by its worst-matched input.
 

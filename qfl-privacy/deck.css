@@ -150,11 +150,11 @@
 .lab-link b { color: var(--ink); }
 /* Still: opened from a file (the exports) or printed, the paper's figure alone, with the lab's address. */
 html.lab-still .lab-frame, html.reveal-print .lab-frame, html.print-pdf .lab-frame { display: none; }
-html.lab-still .lab-row, html.reveal-print .lab-row, html.print-pdf .lab-row { grid-template-columns: minmax(0, 820px); justify-content: center; }
+html.lab-still .lab-row, html.reveal-print .lab-row, html.print-pdf .lab-row { grid-template-columns: minmax(0, 600px); justify-content: center; }
 html.lab-still .lab-link, html.reveal-print .lab-link, html.print-pdf .lab-link { display: block; }
 @media print {
   .lab-frame { display: none; }
-  .lab-row { grid-template-columns: minmax(0, 820px); justify-content: center; }
+  .lab-row { grid-template-columns: minmax(0, 600px); justify-content: center; }
   .lab-link { display: block; }
 }
 
@@ -174,5 +174,6 @@ html.lab-still .lab-link, html.reveal-print .lab-link, html.print-pdf .lab-link 
 .phone .eq { white-space: normal; font-size: 0.8em; }
 .phone .eq sub { font-size: 0.86em; }
 .phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.66em; }
+.phone .lab-link { font-size: 0.7em; }
 .phone .lab-slide h2 { font-size: 1.22em; }
 .phone .claim-card figcaption { flex-direction: column; }

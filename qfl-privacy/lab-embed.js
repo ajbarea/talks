@@ -1,23 +1,28 @@
 // The live lab on the lab slides: the lab page (lab/index.html) in a frame, at the slide's tab.
-// From a file, and in print (deck.css), the slide shows the paper's figure and the lab's address.
-// A frame loads the first time its slide is shown, never in the speaker view's slide previews.
+// From a file, on a phone and in print (deck.css), the slide shows the paper's figure and a link.
+// A frame loads the first time its slide is shown; the speaker view's previews show the still.
 // The page reports its height, so the frame fits it, and hands back the keys a presenter's
 // clicker sends, so the next press turns the slide even after a click inside the lab.
 (function () {
   "use strict";
 
   const receiver = /receiver/i.test(location.search);
-  const frames = [...document.querySelectorAll("iframe.lab-frame[data-src]")];
+  const frames = [...document.querySelectorAll("iframe.lab-frame[data-lab-src]")];
   if (!frames.length || !window.Reveal) return;
-  // Opened from a file (the exported PDF and slides): the paper's figure alone, no frame.
-  if (location.protocol === "file:") {
+  // Opened from a file (the exported PDF and slides), or on a phone, where the scaled slide would
+  // draw the panel's small text under 10px: the paper's figure and a link to the lab page, which
+  // has its own phone layout. The phone and sideways tests are deck.js's own.
+  const phone = matchMedia("(max-width: 600px)").matches && !receiver;
+  const short = matchMedia("(max-height: 500px) and (pointer: coarse) and (orientation: landscape)");
+  const sideways = short.matches && !phone && !receiver && innerWidth / innerHeight > 1.9;
+  if (location.protocol === "file:" || receiver || phone || sideways) {
     document.documentElement.classList.add("lab-still");
     return;
   }
 
   const load = () => {
     const slide = Reveal.getCurrentSlide();
-    for (const f of frames) if (!receiver && !f.src && slide && slide.contains(f)) f.src = f.dataset.src;
+    for (const f of frames) if (!f.src && slide && slide.contains(f)) f.src = f.dataset.labSrc;
   };
   Reveal.on("ready", load);
   Reveal.on("slidechanged", load);

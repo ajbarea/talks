@@ -85,7 +85,7 @@ footer { max-width: 1280px; margin: 0 auto; padding: 0 24px 32px; color: var(--m
 /* ----------------------------------------------------------- controls row -- */
 .knobs { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 22px; margin: 14px 0 16px; }
 .knob { display: grid; gap: 4px; min-width: 0; }
-.knob > label, .knob > span { font-size: 0.85rem; font-weight: 700; color: var(--label); }
+.knob > label, .knob > span, .knob .row > label, .knob .row > output { font-size: 0.85rem; font-weight: 700; color: var(--label); }
 .knob output { font-weight: 700; }
 .knob.range { flex: 1 1 220px; max-width: 360px; }
 .knob.range .row { display: flex; justify-content: space-between; gap: 10px; }
@@ -207,8 +207,8 @@ table.runs td.o i { display: inline-block; width: 11px; height: 11px; margin-rig
 .progress { font-size: 0.88rem; color: var(--muted); }
 
 /* --------------------------------------------------------- the paper's runs -- */
-.exp-list { display: grid; gap: 22px; margin-top: 16px; }
-.exp { padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+.exp-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin-top: 16px; }
+.exp { min-width: 0; padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
 .exp h3 { font-size: 1.1rem; }
 .exp .sub { margin: 2px 0 10px; color: var(--muted); font-size: 0.92rem; }
 .exp .strips { grid-template-columns: max-content minmax(0, 1fr) max-content; }

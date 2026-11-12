@@ -114,12 +114,12 @@ def test_the_worker_runs_the_decks_simulator() -> None:
 def test_each_lab_slide_frames_a_real_tab_and_keeps_the_paper_figure() -> None:
     deck = (TALK / "index.html").read_text()
     tabs = set(re.findall(r'\["(\w+)", "[^"]+"\]', (LAB / "app.js").read_text()))
-    frames = re.findall(r'<iframe class="lab-frame web-only" data-src="lab/index\.html#([^"]+)"', deck)
+    frames = re.findall(r'<iframe class="lab-frame" data-lab-src="lab/index\.html#([^"]+)"', deck)
     assert len(frames) == 3
     for frag in frames:
         q = dict(kv.split("=") for kv in frag.replace("&amp;", "&").split("&"))
         assert q["tab"] in tabs and q["embed"] == "1"
-    # The frame loads only on its slide (data-src), so print and file:// show the paper's figure.
+    # Only lab-embed.js loads a frame (not Reveal, which lazy-loads any data-src near the slide).
     assert not re.search(r'<iframe[^>]*\ssrc="lab/', deck)
     assert deck.count("<!-- fig:") >= len(frames)
     assert "lab.js" not in re.findall(r'<script src="([^"]+)"', deck)
@@ -130,3 +130,12 @@ def test_only_the_decks_own_frames_steer_it() -> None:
     assert "x.contentWindow === e.source" in src
     assert 'd.source !== "qfl-lab"' in src
     assert "Object.hasOwn(KEYS, d.key)" in src
+
+
+def test_each_still_link_opens_its_own_slides_tab() -> None:
+    deck = (TALK / "index.html").read_text()
+    still = r'data-lab-src="lab/index\.html#([^"]+)".*?<p class="lab-link">.*?href="lab/index\.html#([^"]+)"'
+    pairs = re.findall(still, deck, re.S)
+    assert len(pairs) == 3
+    for frame, link in pairs:
+        assert frame.replace("&amp;embed=1", "") == link

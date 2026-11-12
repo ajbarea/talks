@@ -145,8 +145,8 @@ scored like the paper's figure beside them. A search takes about 5 seconds: rest
 after another, each rolling for 1.8 s with a short fading trail. The bar under the panel is its
 timeline: Play or Pause, step one point back or forward (Shift jumps to the next landing), drag to
 scrub, and ½× or ¼× to slow it. Reduced motion opens on the end; step through it instead. "Open the
-full lab" opens the page with every tab, including every run the paper made. The PDF and a
-downloaded copy show the paper's figure and the lab's address in place of the panel.
+full lab" opens the page with every tab, including every run the paper made. On a phone, in the
+PDF and in a downloaded copy, the slide shows the paper's figure and a link to the lab page instead.
 
 | Slide | Control | Hidden input 1 | The rows (inputs 1 to 20) |
 |---|---|---|---|

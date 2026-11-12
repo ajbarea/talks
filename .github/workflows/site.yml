@@ -1,8 +1,8 @@
 # Checks every talk and publishes them all as one GitHub Pages site, each at /<folder>/.
 #
-# A talk's figures come from another repository (sphragis, for Federated Agents), so a change
-# that makes them stale produces no event here: the daily run is what catches it. A failed run
-# publishes nothing, and the site keeps its last good version.
+# A talk's figures come from another repository (sphragis for Federated Agents, csci739-qfl-privacy
+# for the QFL privacy talk), so a change that makes them stale produces no event here: the daily
+# run is what catches it. A failed run publishes nothing, and the site keeps its last good version.
 name: Site
 
 on:
@@ -30,6 +30,7 @@ jobs:
       # same command locally.
       RUFF_OUTPUT_FORMAT: github
       SPHRAGIS: ${{ github.workspace }}/.deps/sphragis
+      QFL: ${{ github.workspace }}/.deps/csci739-qfl-privacy
     steps:
       - name: Check out the talks
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -41,6 +42,13 @@ jobs:
         with:
           repository: ajbarea/sphragis
           path: .deps/sphragis
+          persist-credentials: false
+
+      - name: Check out csci739-qfl-privacy, where the QFL privacy talk's figures come from
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ajbarea/csci739-qfl-privacy
+          path: .deps/csci739-qfl-privacy
           persist-credentials: false
 
       - name: Check out techne, for the graphe:slides gates

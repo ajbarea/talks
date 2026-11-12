@@ -36,6 +36,14 @@ Each talk gets its own strong identity on a light ground for lit rooms, and ever
 - Read every edit back after a reload; skip Save when nothing changed, so reruns are safe.
 - `videos/channel/refresh.py extract META PLAYLISTS` rebuilds the tables from a fresh `yt-dlp` pull (`uvx yt-dlp --js-runtimes node ...`); it refuses an upload that fits no tier.
 
+## QFL privacy talk (qfl-privacy/), CSCI-739 QML, branch talk/qml-live-lab, issue #109
+Talks from Tue Dec 1, 13 to 15 minutes. Source: ajbarea/csci739-qfl-privacy (paper `report/`, `results/`); set `QFL` to a checkout.
+- ✅ Deck: 12 talk slides + 7 backup; `figures.py` computes every value from `results/` with the paper's outcome rule, stops on any disagreement with `numbers.tex` or the table rows, writes `data/readings.js` and draws the paper figures as SVG into `index.html` (`<!-- fig:NAME -->`).
+- ✅ Live lab: `lab-sim.js` (1-qubit statevector, parameter shift, binomial/normal/Poisson shots, Adam with a finite-difference slope), `lab.js` (Bloch sphere, loss trace, one free control per slide, presets: seeds 121 / 15 / 17). `tests/test_qfl_lab.py` checks it against an independent statevector and holds each preset to the script.
+- ✅ `script.md` (1,232 words, cap 15), `explainer.md` (every equation, a Python check each, what to do if the panel misbehaves).
+- 📋 Gates (`slides check`, render at 1920 and phone), agy + Copilot review, Opus readers, PR, merge, publish.
+- Verify: `QFL=<checkout> uv run pytest -q tests/test_qfl_lab.py`; `QFL=<checkout> python3 qfl-privacy/figures.py --check`; `python3 scripts/script_length.py qfl-privacy --check`.
+
 ## Checking the Checker talk (checking-the-checker/), CISC-810 Group 1
 - ✅ #82: 8 main slides + 12 backup, from the revised manuscript and its evidence/ only (every value in `data/deck-data.js` with its source); `figs.js` draws the charts and recounts the counts the titles state. Script 966 words, cap 7 minutes.
 - ✅ Five rounds of independent Opus review against the rubric and the manuscript; round 5 clean.

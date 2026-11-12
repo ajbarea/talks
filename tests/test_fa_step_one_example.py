@@ -95,28 +95,50 @@ def test_audit_is_the_reports_organization(monkeypatch):
     assert values["audit_org"] == "OpenStack"
 
 
-def test_audit_mismatch_with_report_fails(monkeypatch):
+@pytest.mark.parametrize("rater", ["human", "A", "B"])
+def test_audit_mismatch_with_report_fails(monkeypatch, rater):
     fig = figures_module(monkeypatch)
     real = fig.load
 
     def load(name):
         data = real(name)
         if name == fig.AUDIT_BY_ORG:
-            data["valid_shares"]["human"]["valid"] += 1
+            if rater == "human":
+                data["valid_shares"]["human"]["valid"] += 1
+            else:
+                data["pairs"][f"human~{rater} valid_vs_rest"]["confusion"]["False"]["True"] += 1
         return data
 
     monkeypatch.setattr(fig, "load", load)
-    with pytest.raises(SystemExit, match="differs from"):
+    with pytest.raises(SystemExit, match=f"{rater}'s .* differs from"):
+        fig.label_audit({})
+
+
+def test_audit_missing_rater_label_is_named(monkeypatch):
+    fig = figures_module(monkeypatch)
+    real = fig.load
+
+    def load(name):
+        data = real(name)
+        if name == fig.AUDIT:
+            key = next(k for k, v in data["labels"].items() if k.startswith("openstack:") and "human" in v)
+            del data["labels"][key]["B"]
+        return data
+
+    monkeypatch.setattr(fig, "load", load)
+    with pytest.raises(SystemExit, match="lacks a label from B"):
         fig.label_audit({})
 
 
 def test_marks_add_no_spacing():
     # Spacing on the boxed characters reaches the PDF's text layer: copied code would gain spaces.
-    rule = re.search(r"^\.ex-steps mark \{([^}]*)\}", (DECK / "deck.css").read_text(), re.M)
-    assert rule, "no .ex-steps mark rule"
-    decls = dict(d.split(":", 1) for d in (x.strip() for x in rule.group(1).split(";")) if d)
-    decls = {k.strip(): v.strip() for k, v in decls.items()}
-    for prop in ("padding", "margin"):
-        assert decls.get(prop) == "0", prop
-    spacing = {"letter-spacing", "word-spacing", "padding-left", "padding-right", "margin-left", "margin-right"}
-    assert not spacing & decls.keys()
+    # Every rule that styles the marks (phone overrides included) may set box spacing only to 0.
+    css = re.sub(r"/\*.*?\*/", "", (DECK / "deck.css").read_text(), flags=re.S)
+    rules = [body for sel, body in re.findall(r"([^{}]+)\{([^{}]*)\}", css) if ".ex-steps mark" in sel]
+    assert rules, "no .ex-steps mark rule"
+    spacing = re.compile(r"^(padding|margin|border(?!-radius)|letter-spacing|word-spacing)")
+    for body in rules:
+        for decl in filter(None, (d.strip() for d in body.split(";"))):
+            prop, value = (x.strip() for x in decl.split(":", 1))
+            if spacing.match(prop):
+                assert value in ("0", "none"), decl

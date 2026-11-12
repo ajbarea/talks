@@ -16,13 +16,13 @@
   const low = Number(drawn.split_first_low);
   const high = Number(drawn.split_first_high);
   const W = 720;
-  const LEFT = 168;
+  const LEFT = 270;
   const RIGHT = 700;
   const AXIS_MIN = -3;
   const AXIS_MAX = 6;
   const x = (v) => LEFT + ((v - AXIS_MIN) / (AXIS_MAX - AXIS_MIN)) * (RIGHT - LEFT);
-  const ROW = 50;
-  const ROWS_TOP = 158;
+  const ROW = 46;
+  const ROWS_TOP = 176;
   // Below the rows: the axis ticks, then the average's label under them.
   const GRID_END = ROWS_TOP + ROW * names.length + 24;
   const TICK_Y = GRID_END + 24;
@@ -67,14 +67,17 @@
   el("text", { x: x(first), y: 50, class: "value first", "text-anchor": "middle" }, data.split_first);
 
   into = step(1);
-  el("text", { x: 4, y: ROWS_TOP - 6, class: "row-label" }, "5 splits, 2 seeds each");
+  el("text", { x: 4, y: ROWS_TOP - 32, class: "row-label" }, "5 splits");
+  el("text", { x: 4, y: ROWS_TOP - 6, class: "row-sub" }, "2 seeds each");
   names.forEach((name, i) => {
     const y = ROWS_TOP + ROW * i + 26;
     const v = means[name];
     // The first reading's split, re-read on two of its seeds, is named as that split.
     el("text", { x: 30, y: y + 8, class: "row-sub" }, name === "registered" ? "that split" : `split ${i + 1}`);
     el("circle", { cx: x(v), cy: y, r: 14, class: "point" });
-    el("text", { x: x(v) + 24, y: y + 9, class: "value" }, v > 0 ? `+${v.toFixed(2)}` : v.toFixed(2));
+    // A negative value's label sits left of its dot, clear of the zero line.
+    const side = v < 0 ? { x: x(v) - 24, "text-anchor": "end" } : { x: x(v) + 24 };
+    el("text", { ...side, y: y + 9, class: "value" }, v > 0 ? `+${v.toFixed(2)}` : v.toFixed(2));
   });
 
   into = step(2);

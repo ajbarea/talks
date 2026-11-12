@@ -155,7 +155,13 @@ def name_slide(slide):
         9.32,
         1.35,
         [
-            [("Do organizations leave a learnable house style in code review?", False, ACCENT)],
+            [
+                (
+                    "Does learned house style in code review belong to the project group, the organization, or neither?",
+                    False,
+                    ACCENT,
+                )
+            ],
             [("PhD student, Computing and Information Sciences · AI Software track", False, MUTED)],
             [("Advisor: Dr. Leon Reznik", False, MUTED)],
         ],
@@ -383,7 +389,7 @@ SLIDES = (
         None,
         [
             "Name, PhD in Computing and Information Sciences, AI Software track, Dr. Reznik",
-            "One question: do organizations leave a learnable house style in code review?",
+            "One question: does learned house style belong to a project group, the organization, or neither?",
             "Roadmap: problem, study, the rest of the year, where it stands",
         ],
     ),
@@ -424,7 +430,7 @@ SLIDES = (
         ],
     ),
     (
-        "Next, reviewers judge the plan; then the sealed months answer whether house style is learnable",
+        "Next, reviewers judge the plan; then the sealed months answer where house style belongs",
         timeline,
         [
             "MSR 2027 registered report: response Jan 15, decision Feb 4",

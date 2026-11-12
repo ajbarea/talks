@@ -251,29 +251,39 @@ def example(values: dict, figure: dict, fa) -> None:
         if found:
             break
     if found is None:
-        drawn = committed_figure().get("example")
-        if not drawn or drawn.get("id") != EXAMPLE:
+        committed = committed_figure().get("example")
+        if not committed or committed.get("id") != EXAMPLE:
             raise SystemExit(f"no corpus at {CORPUS} and no committed copy of {EXAMPLE}")
+        missing = [k for k in ("before", "after", "day", "project") if k not in committed]
+        if missing:
+            raise SystemExit(f"the committed copy of {EXAMPLE} lacks {', '.join(missing)}; run with the corpus")
         print(f"no corpus at {CORPUS}; the example's code is the committed copy", file=sys.stderr)
-    else:
-        day = found["created"][:10]
-        window = next((w for w, (start, end) in fa.windows().items() if start <= day < end), None)
-        before, after = marked(found["before"], found["after"])
-        drawn = {
-            "id": EXAMPLE,
-            "window": window,
-            "day": day,
-            "month": f"{dt.date.fromisoformat(day):%b %Y}",
-            "project": found["project"],
-            "before": before,
-            "after": after,
+        # Rebuilt from the committed text, so the digest covers everything the slide shows.
+        row = {
+            "before": "".join(text for text, _ in committed["before"]),
+            "after": "".join(text for text, _ in committed["after"]),
+            "created": committed["day"],
+            "project": committed["project"],
         }
-    if drawn.get("window") not in SHOWABLE:
-        raise SystemExit(f"{EXAMPLE} falls in the {drawn.get('window')} window, not in {SHOWABLE}")
-    code = ["".join(text for text, _ in drawn[side]) for side in ("before", "after")]
-    if example_digest(*code, drawn["day"], drawn["project"]) != EXAMPLE_DIGEST:
+    else:
+        row = found
+    day = row["created"][:10]
+    window = next((w for w, (start, end) in fa.windows().items() if start <= day < end), None)
+    before, after = marked(row["before"], row["after"])
+    drawn = {
+        "id": EXAMPLE,
+        "window": window,
+        "day": day,
+        "month": f"{dt.date.fromisoformat(day):%b %Y}",
+        "project": row["project"],
+        "before": before,
+        "after": after,
+    }
+    if window not in SHOWABLE:
+        raise SystemExit(f"{EXAMPLE} falls in the {window} window, not in {SHOWABLE}")
+    if example_digest(row["before"], row["after"], day, row["project"]) != EXAMPLE_DIGEST:
         raise SystemExit(f"{EXAMPLE}: the example's code or date no longer matches EXAMPLE_DIGEST")
-    found_addresses = addresses()("\n".join(code))
+    found_addresses = addresses()("\n".join((row["before"], row["after"])))
     if found_addresses:
         raise SystemExit(f"{EXAMPLE}: its code holds {len(found_addresses)} email address(es)")
     figure["example"] = drawn

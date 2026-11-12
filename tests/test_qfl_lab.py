@@ -2,8 +2,8 @@
 
 The simulator is checked against an independent statevector written here with complex 2x2
 matrices, its parameter-shift gradient against a finite difference, and its shot sampler's mean
-and spread against the binomial law. Each lab step's preset is held to the story the script
-tells. figures.py is checked to refuse a value the paper does not print.
+and spread against the binomial law. The toy's rows over hidden inputs 1 to 20, and hidden input 1,
+are held to what the script and explainer say. figures.py is checked to refuse a value the paper does not print.
 """
 
 from __future__ import annotations
@@ -189,55 +189,68 @@ def test_the_same_seed_replays_the_same_attack() -> None:
     assert js(body) == js(body)
 
 
-def presets() -> dict[str, dict[str, int]]:
-    src = (TALK / "lab.js").read_text()
-    found = {
-        name: {k: int(v) for k, v in re.findall(r"(\w+): (\d+)", body)}
-        for name, body in re.findall(r"^\s+(\w+): \{ free: \"\w+\", ([^}]*)\}", src, re.M)
-    }
-    assert set(found) == {"reps", "restarts", "shots"}
-    return found
-
-
-@needs_node
-def test_repetitions_preset_shows_fewer_restarts_finding_the_input() -> None:
-    seed = presets()["reps"]["seed"]
-    hits = js(
-        f"console.log(JSON.stringify([[1,8],[2,4],[4,2],[8,1]].map(([r, l]) =>"
-        f" Q.attack(Q.client({seed}, r, l, 0), 10).runs.filter((u) => u.outcome === 'recovered').length)))"
+def rows(step: str) -> list[int]:
+    """The toy's row totals over hidden inputs 1 to 20, as the panel computes them."""
+    return js(
+        f"const v = Q.TOY.steps.{step}.{step}.map(() => 0);"
+        f" for (let s = 1; s <= Q.TOY.draws; s++) Q.tally('{step}', s).forEach((x, i) => (v[i] += Number(x)));"
+        " console.log(JSON.stringify(v))"
     )
-    # explainer.md quotes these four counts
-    assert hits == [10, 8, 6, 1]
 
 
 @needs_node
-def test_restarts_preset_is_stuck_alone_and_found_with_more() -> None:
-    p = presets()["restarts"]
-    seq = js(
-        f"const a = Q.attack(Q.client({p['seed']}, {p['reps']}, {8 // p['reps']}, 0), 20);"
-        "const out = []; for (let n = 1; n <= 20; n++) {"
-        " const b = a.runs.slice(0, n).reduce((x, u) => (u.loss < x.loss ? u : x)); out.push(b.outcome); }"
-        "console.log(JSON.stringify(out))"
-    )
-    # explainer.md: stuck with 1 to 5 restarts, the 6th finds the input
-    assert p["restarts"] == 1
-    assert seq[:5] == ["stuck"] * 5
-    assert seq[5:] == ["recovered"] * 15
+def test_toy_rows_match_the_explainer_and_the_script() -> None:
+    reps, restarts, shots = rows("reps"), rows("restarts"), rows("shots")
+    # explainer.md quotes these totals
+    assert reps == [175, 161, 133, 120]
+    assert restarts == [9, 15, 19, 20, 20]
+    assert shots == [15, 19, 20, 20]
+    # script.md: the columns empty out as repetitions grow
+    assert reps == sorted(reps, reverse=True) and len(set(reps)) == len(reps)
+    # script.md: one restart recovers about half of the twenty, twenty restarts recover them all
+    assert 8 <= restarts[0] <= 12 and restarts[-1] == 20
+    # script.md: one qubit holds out down to a hundred shots; only at ten does noise hide several
+    assert shots[1] >= 18 and shots[0] <= 17
 
 
 @needs_node
-def test_shots_preset_matches_the_explainer() -> None:
-    p = presets()["shots"]
-    layers = 8 // p["reps"]
+def test_hidden_input_1_matches_the_explainer() -> None:
     got = js(
-        f"const c = (s) => Q.client({p['seed']}, {p['reps']}, {layers}, s);"
-        "const run = (s) => { const a = Q.attack(c(s), 10); return [a.outcome, a.error]; };"
-        "console.log(JSON.stringify([0, 1000, 100, 10].map(run)))"
+        "const h = (a) => a.runs.filter((u) => u.outcome === 'recovered').length;"
+        "const reps = [1, 2, 4, 8].map((r) => h(Q.attack(Q.client(1, r, 8 / r, 0), 10)));"
+        "const a = Q.attack(Q.client(1, 8, 1, 0), 20);"
+        "const best = Array.from({ length: 20 }, (_, n) => a.runs[Q.pickBest(a.runs, n + 1)].outcome);"
+        "const shots = [0, 1000, 100, 10].map((s) => {"
+        " const x = Q.attack(Q.client(1, 2, 4, s), 10); return [x.outcome, x.error]; });"
+        "console.log(JSON.stringify({ reps, best, shots }))"
     )
-    # explainer.md: recovered when exact and at 1,000 shots (0.028 rad), close at 100 (0.148),
-    # ambiguous at 10 (1.087)
-    assert [o for o, _ in got] == ["recovered", "recovered", "close", "ambiguous"]
-    assert [round(e, 3) for _, e in got[1:]] == [0.028, 0.148, 1.087]
+    assert got["reps"] == [8, 10, 10, 8]
+    assert got["best"][0] == "stuck" and got["best"][1:] == ["recovered"] * 19
+    assert [o for o, _ in got["shots"]] == ["recovered", "recovered", "close", "close"]
+    assert [round(e, 3) for _, e in got["shots"][1:]] == [0.035, 0.054, 0.162]
+
+
+@needs_node
+def test_two_hundred_inputs_match_the_explainer() -> None:
+    got = js(
+        "const run = (r) => { let hit = 0, stuck = 0; for (let s = 1; s <= 200; s++) {"
+        " const a = Q.attack(Q.client(s, r, 8 / r, 0), 10);"
+        " hit += a.runs.filter((u) => u.outcome === 'recovered').length;"
+        " stuck += a.outcome === 'stuck'; } return [hit, stuck]; };"
+        "console.log(JSON.stringify([run(1), run(8)]))"
+    )
+    (hit1, _), (hit8, stuck8) = got
+    # explainer.md: 82% at one repetition, 55% at eight, almost never stuck with 10 restarts
+    assert round(100 * hit1 / 2000) == 82 and round(100 * hit8 / 2000) == 55
+    assert stuck8 <= 5
+
+
+def test_the_lab_picks_no_seed_and_keeps_motion_under_five_seconds() -> None:
+    src = (TALK / "lab.js").read_text()
+    assert not re.search(r"\bseed:\s*\d", src), "a lab step names a seed; every step opens on hidden input 1"
+    total = int(re.search(r"PACE = \{ total: (\d+)", src).group(1))
+    # WCAG 2.2.2: motion that starts by itself and lasts over five seconds needs a pause control
+    assert total + int(re.search(r"fade: (\d+)", src).group(1)) <= 5000
 
 
 def figures_module():

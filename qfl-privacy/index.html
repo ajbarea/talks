@@ -49,6 +49,64 @@
   <aside class="notes"><ul><li>The attack and the disagreement it settles</li><li>A live lab on a toy circuit, beside the paper's numbers</li><li>Batches, hidden labels, training; then the summary</li></ul></aside>
 </section>
 
+<section data-chapter="1 · The attack">
+  <span class="kicker">1 · The attack</span>
+  <h2>Federated learning keeps each client's data at home; only its gradient travels to the server</h2>
+  <figure class="fl-fig">
+    <svg viewBox="0 0 1180 452" role="img" aria-label="Diagram of one round of federated learning: three clients each keep their own data and train on it; each sends only its gradient update up to the server; the server averages the updates and sends the new model back down to every client.">
+      <defs>
+        <marker id="fl-up" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="up-head" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="fl-down" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="down-head" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="box server" x="420" y="8" width="340" height="118" rx="12"/>
+      <text class="box-title" x="590" y="52" text-anchor="middle">Server</text>
+      <text class="box-text" x="590" y="90" text-anchor="middle">averages the updates</text>
+      <g class="avg" data-motion="pop" data-delay="1900" data-dur="500"><circle cx="722" cy="44" r="22"/><text x="722" y="53" text-anchor="middle">Σ</text></g>
+      <path class="up" d="M196,270 L520,132" marker-end="url(#fl-up)"/>
+      <path class="down" d="M556,132 L232,270" marker-end="url(#fl-down)"/>
+      <path class="up" d="M574,270 L574,132" marker-end="url(#fl-up)"/>
+      <path class="down" d="M606,132 L606,270" marker-end="url(#fl-down)"/>
+      <path class="up" d="M984,270 L660,132" marker-end="url(#fl-up)"/>
+      <path class="down" d="M624,132 L948,270" marker-end="url(#fl-down)"/>
+      <circle class="g-dot" r="11" data-motion="flow" data-path="M196,270 L520,132" data-delay="300" data-dur="1400"/>
+      <circle class="g-dot" r="11" data-motion="flow" data-path="M574,270 L574,132" data-delay="500" data-dur="1400"/>
+      <circle class="g-dot" r="11" data-motion="flow" data-path="M984,270 L660,132" data-delay="700" data-dur="1400"/>
+      <circle class="m-dot" r="9" data-motion="flow" data-path="M556,132 L232,270" data-delay="2500" data-dur="1400"/>
+      <circle class="m-dot" r="9" data-motion="flow" data-path="M606,132 L606,270" data-delay="2500" data-dur="1400"/>
+      <circle class="m-dot" r="9" data-motion="flow" data-path="M624,132 L948,270" data-delay="2500" data-dur="1400"/>
+      <rect class="chip" x="248" y="168" width="200" height="34" rx="17"/>
+      <text class="chip-text" x="348" y="192" text-anchor="middle">gradient travels</text>
+      <rect class="chip model" x="742" y="168" width="200" height="34" rx="17"/>
+      <text class="chip-text model" x="842" y="192" text-anchor="middle">new model back</text>
+      <g class="client">
+        <rect class="box" x="40" y="276" width="310" height="132" rx="12"/>
+        <text class="box-title" x="195" y="312" text-anchor="middle">Client 1</text>
+        <rect class="data" x="62" y="330" width="64" height="16" rx="5"/><rect class="data" x="62" y="350" width="64" height="16" rx="5"/><rect class="data" x="62" y="370" width="64" height="16" rx="5"/>
+        <text class="box-text" x="142" y="352">its own data</text>
+        <text class="box-text" x="142" y="382">trains on it</text>
+      </g>
+      <g class="client">
+        <rect class="box" x="435" y="276" width="310" height="132" rx="12"/>
+        <text class="box-title" x="590" y="312" text-anchor="middle">Client 2</text>
+        <rect class="data" x="457" y="330" width="64" height="16" rx="5"/><rect class="data" x="457" y="350" width="64" height="16" rx="5"/><rect class="data" x="457" y="370" width="64" height="16" rx="5"/>
+        <text class="box-text" x="537" y="352">its own data</text>
+        <text class="box-text" x="537" y="382">trains on it</text>
+      </g>
+      <g class="client">
+        <rect class="box" x="830" y="276" width="310" height="132" rx="12"/>
+        <text class="box-title" x="985" y="312" text-anchor="middle">Client 3</text>
+        <rect class="data" x="852" y="330" width="64" height="16" rx="5"/><rect class="data" x="852" y="350" width="64" height="16" rx="5"/><rect class="data" x="852" y="370" width="64" height="16" rx="5"/>
+        <text class="box-text" x="932" y="352">its own data</text>
+        <text class="box-text" x="932" y="382">trains on it</text>
+      </g>
+      <path class="home" d="M40,424 L40,434 L1140,434 L1140,424"/>
+      <text class="home-text" x="590" y="452" text-anchor="middle">the data stays home</text>
+    </svg>
+    <figcaption>One round: each client trains the shared model on its own data and sends back only its update; the server averages the updates into the next model (McMahan et al., 2017).</figcaption>
+  </figure>
+  <aside class="notes"><ul><li>Clients keep their data; each trains the shared model locally</li><li>Only the update (a gradient) goes up; the server averages and sends the new model back</li><li>Data stays home, the gradient travels: is the gradient private?</li></ul></aside>
+</section>
+
 <section data-contribution data-chapter="1 · The attack">
   <span class="kicker">1 · The attack</span>
   <h2>The gradient a client shares can rebuild the input it was computed from</h2>
@@ -177,6 +235,7 @@
   <h2>At a fixed parameter count, more encoding repetitions left the search stuck more often</h2>
   <div class="lab-row">
     <div class="lab web-only" data-lab="reps"></div>
+    <div class="side">
     <figure class="paper">
       <figcaption><b>The paper</b> 8 qubits, <span data-value="rq1.params"></span> effective parameters, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:reps -->
@@ -276,8 +335,10 @@
 <!-- /fig -->
       <p class="key"><span class="item"><i class="k-leak"></i>recovered, best of <span data-value="paper.restarts"></span> restarts</span><span class="item"><i class="k-open"></i>not</span><br>hits: restarts of <span data-value="rq1.tries"></span> that found the input</p>
     </figure>
+      <figure class="toy-rows web-only" data-rows="reps"></figure>
+    </div>
   </div>
-  <aside class="notes"><ul><li>Drag repetitions 1 to 8: the dips multiply, fewer restarts land on the input</li><li>Paper: <span data-value="rq1.rec1"></span> to <span data-value="rq1.rec8"></span> of <span data-value="paper.seeds"></span> seeds; restarts that hit <span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span> of <span data-value="rq1.tries"></span></li><li>Every failure here was stuck, not ambiguous</li></ul></aside>
+  <aside class="notes"><ul><li>Drag repetitions 1 to 8: the dips multiply, fewer restarts find the input; rows: hidden inputs 1 to 20, columns empty out</li><li>Paper: <span data-value="rq1.rec1"></span> to <span data-value="rq1.rec8"></span> of <span data-value="paper.seeds"></span> seeds; restarts that hit <span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span> of <span data-value="rq1.tries"></span></li><li>Every failure here was stuck, not ambiguous</li></ul></aside>
 </section>
 
 <section class="lab-slide" data-chapter="2 · Live lab">
@@ -285,6 +346,7 @@
   <h2>Stuck is not private: with <span data-value="budget.large"></span> restarts, most stuck seeds gave up their input</h2>
   <div class="lab-row">
     <div class="lab web-only" data-lab="restarts"></div>
+    <div class="side">
     <figure class="paper">
       <figcaption><b>The paper</b> 8 qubits, <span data-value="budget.small"></span> then <span data-value="budget.large"></span> restarts, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:restarts -->
@@ -385,8 +447,10 @@
       <p class="key"><span class="item"><i class="k-leak"></i>with <span data-value="budget.small"></span> restarts</span><span class="item"><i class="k-ring"></i>only with <span data-value="budget.large"></span></span><span class="item"><i class="k-open"></i>neither</span></p>
       <p class="paper-note"><span data-value="budget.hardest"></span>: <span data-value="budget.hardestRate"></span>% of restarts found the input; <span data-value="budget.hardestHeld"></span> seeds held.</p>
     </figure>
+      <figure class="toy-rows web-only" data-rows="restarts"></figure>
+    </div>
   </div>
-  <aside class="notes"><ul><li>Toy at 8 × 1: one restart is stuck; add restarts until one lands. Paper: <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits</li><li>Paper: <span data-value="budget.othersMin"></span> to <span data-value="budget.othersMax"></span> of <span data-value="paper.seeds"></span> recovered with <span data-value="budget.large"></span> restarts; about <span data-value="budget.secondsPerClient"></span> s per client</li><li><span data-value="budget.hardest"></span> held <span data-value="budget.hardestHeld"></span> seeds: its cost is unknown, not infinite</li></ul></aside>
+  <aside class="notes"><ul><li>Toy at 8 × 1: add restarts; the lowest loss wins, no truth needed. Rows: about half at 1 restart, all at 20</li><li>Paper: <span data-value="budget.othersMin"></span> to <span data-value="budget.othersMax"></span> of <span data-value="paper.seeds"></span> recovered with <span data-value="budget.large"></span> restarts; about <span data-value="budget.secondsPerClient"></span> s per client</li><li><span data-value="budget.hardest"></span> held <span data-value="budget.hardestHeld"></span> seeds: its cost is unknown, not infinite</li></ul></aside>
 </section>
 
 <section class="lab-slide" data-chapter="2 · Live lab">
@@ -394,6 +458,7 @@
   <h2>At 8 qubits, <span data-value="rq2.lowShots"></span> shots per expectation value hid almost every input</h2>
   <div class="lab-row">
     <div class="lab web-only" data-lab="shots"></div>
+    <div class="side">
     <figure class="paper">
       <figcaption><b>The paper</b> <span data-value="rq2.lowShots"></span> shots per expectation value, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:shots -->
@@ -538,8 +603,10 @@
       <p class="key"><span class="item"><i class="k-leak"></i>guessed within <span data-value="paper.closeRad"></span> rad</span><span class="item"><i class="k-open"></i>not</span></p>
       <p class="paper-note">At 8 qubits the noise was as large as the gradient (median squared norms): <span data-value="rq2.noise8"></span> against <span data-value="rq2.signal8"></span>.</p>
     </figure>
+      <figure class="toy-rows web-only" data-rows="shots"></figure>
+    </div>
   </div>
-  <aside class="notes"><ul><li>Toy: drag shots down; the dip lifts and shifts and the guess slides off, worst at 10 shots</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of <span data-value="paper.seeds"></span> seeds within <span data-value="paper.closeRad"></span> rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li></ul></aside>
+  <aside class="notes"><ul><li>Toy: drag shots down; the dip lifts and shifts, the end points spread; rows hold to 100 shots, lose several at 10</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of <span data-value="paper.seeds"></span> seeds within <span data-value="paper.closeRad"></span> rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li></ul></aside>
 </section>
 
 <section data-chapter="3 · What else hides it">
@@ -775,6 +842,7 @@
     <li>M. Schuld et al., Evaluating analytic gradients on quantum hardware, Physical Review A, 2019</li>
     <li>M. Schuld, R. Sweke, J. J. Meyer, Effect of data encoding on the expressive power of variational quantum-machine-learning models, Physical Review A, 2021</li>
     <li>D. P. Kingma, J. Ba, Adam: a method for stochastic optimization, ICLR 2015</li>
+    <li>B. McMahan et al., Communication-efficient learning of deep networks from decentralized data, AISTATS 2017</li>
     <li>Code and results: <a href="https://github.com/ajbarea/csci739-qfl-privacy">github.com/ajbarea/csci739-qfl-privacy</a></li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>

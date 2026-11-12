@@ -40,7 +40,7 @@ On the right is what the paper measured, at 8 qubits and {rq1.params} effective 
 
 ## Stuck is not private: with {budget.large} restarts, most stuck seeds gave up their input
 
-But stuck only means the search gave up. So, restarts. The toy is now at eight repetitions with one restart, and it's stuck. I'll add restarts. One more, another... and there: a restart lands in the right dip, and since it has the lowest loss, the attacker keeps it. It needs no knowledge of the truth to pick it.
+But stuck only means the search gave up. So, restarts. The toy is now at eight repetitions with one restart, and it's stuck. I'll add restarts one at a time. Five miss, and on the sixth a restart lands in the right dip, and since it has the lowest loss, the attacker keeps it. It needs no knowledge of the truth to pick it.
 
 The paper did the same thing at scale. I reran the {budget.circuits} hardest 8-qubit circuits with {budget.large} restarts instead of {budget.small}. On {budget.othersCount} of them, recovery jumped to {budget.othersMin} or {budget.othersMax} of {paper.seeds} seeds. The {budget.hardest} circuit stayed hard: only {budget.hardestRate} percent of its restarts found the input, and {budget.hardestHeld} seeds held. That cost is unknown, not infinite. So on three of the four circuits, encoding repetitions acted like a work factor for the attacker, not a wall; on the eight-repetition circuit, we don't know the price.
 
@@ -62,9 +62,9 @@ Two more defenses, briefly. If the server doesn't know the labels, it can still 
 
 And training the circuit first? Pooled over {rq5.tasks} tasks, {rq5.before} seeds were recovered only before training and {rq5.after} only after, p of {rq5.p}. No detectable net change, though the tasks leaned opposite ways; one of them, low-frequency curves, is a lead I keep in the backup slides.
 
-## Repetitions slowed the attack; shot noise at 8 qubits and large batches stopped it
+## Repetitions slowed the attack; {rq2.lowShots} shots at 8 qubits and large batches stopped it
 
-So, to sum up. A shared gradient can rebuild the input. With exact gradients and one encoding layer, it did on every seed. More encoding repetitions slowed the attack, and more restarts recovered most stuck seeds, though not on the eight-repetition circuit. What actually hid the input was shot noise at 8 qubits and batches with more unknowns than gradient entries.
+So, to sum up. A shared gradient can rebuild the input. With exact gradients, one encoding layer and two or more trainable layers, it did on every seed. More encoding repetitions slowed the attack, and more restarts recovered most stuck seeds, though not on the eight-repetition circuit. What actually hid the input was {rq2.lowShots} shots per expectation value at 8 qubits, and batches with more unknowns than effective parameters.
 
 Two questions stay open. Can a client still train on gradients as noisy as {rq2.lowShots} shots? And does the attacker's cost grow exponentially with the number of qubits? Two circuit sizes can't tell us. That's my talk.
 

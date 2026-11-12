@@ -108,14 +108,17 @@
     const [bx, by] = blochPoint(Math.PI);
     sv("text", { x: tx, y: ty - 10, class: "pole", "text-anchor": "middle" }, s, "|0⟩");
     sv("text", { x: bx, y: by + 24, class: "pole", "text-anchor": "middle" }, s, "|1⟩");
-    const arc = sv("path", { class: "gap" }, s);
-    const truth = sv("line", { x1: 120, y1: 120, class: "truth" }, s);
-    const truthTip = sv("circle", { r: 7, class: "truth-tip" }, s);
-    const guess = sv("line", { x1: 120, y1: 120, class: "guess" }, s);
-    const guessTip = sv("circle", { r: 7, class: "guess-tip" }, s);
+    // Hidden until the first result, so the first frame shows no arrow to the drawing's corner.
+    const arrows = sv("g", { class: "unset" }, s);
+    const arc = sv("path", { class: "gap" }, arrows);
+    const truth = sv("line", { x1: 120, y1: 120, x2: 120, y2: 120, class: "truth" }, arrows);
+    const truthTip = sv("circle", { r: 7, cx: 120, cy: 120, class: "truth-tip" }, arrows);
+    const guess = sv("line", { x1: 120, y1: 120, x2: 120, y2: 120, class: "guess" }, arrows);
+    const guessTip = sv("circle", { r: 7, cx: 120, cy: 120, class: "guess-tip" }, arrows);
     sv("circle", { cx: 120, cy: 120, r: 3.5, class: "hub" }, s);
     return {
       set(x, g) {
+        arrows.removeAttribute("class");
         const [px, py] = blochPoint(x);
         truth.setAttribute("x2", px);
         truth.setAttribute("y2", py);
@@ -162,11 +165,12 @@
       sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * f, y: PH - 14, class: "tick", "text-anchor": f === 0 ? "start" : f === 1 ? "end" : "middle" }, s, t);
     });
     sv("text", { x: PAD.l + (PW - PAD.l - PAD.r) * 0.25, y: PH - 14, class: "axis", "text-anchor": "middle" }, s, "guess \u2192");
-    sv("text", { x: PAD.l + 8, y: PAD.t + 20, class: "axis halo" }, s, "\u2191 matching loss");
     const truth = sv("line", { class: "truth-mark", y1: PAD.t, y2: PH - PAD.b }, s);
     const curve = sv("path", { class: "curve" }, s);
     const paths = sv("g", { class: "paths" }, s);
     const balls = sv("g", { class: "balls" }, s);
+    // Drawn last, over the curve, with a white halo.
+    sv("text", { x: PAD.l + 8, y: PAD.t + 20, class: "axis halo" }, s, "\u2191 matching loss");
     return { s, title, truth, curve, paths, balls };
   }
 
@@ -219,7 +223,7 @@
         c.out.textContent = c.text(i);
         c.input.setAttribute("aria-valuetext", name === "reps" ? `${c.text(i)}: repetitions times trainable blocks` : c.text(i));
       }
-      origin.innerHTML = state.seed === step.seed ? 'preset input<span class="long">, picked to show the effect</span>' : "random input";
+      origin.innerHTML = state.seed === step.seed ? '<span class="long">preset input, picked to show the effect</span><span class="short">picked input</span>' : "random input";
       // The fixed values, once more in the header: a phone hides the fixed controls.
       fixedNote.textContent = `fixed here: ${Object.values(ctl)
         .filter((c) => !c.free)

@@ -111,7 +111,7 @@
 .paper .key .k-leak { background: var(--leak); }
 .paper .key .k-ring { background: var(--leak-tint); box-shadow: inset 0 0 0 2.5px var(--leak); }
 .paper .key .k-open { background: #fff; box-shadow: inset 0 0 0 1.5px var(--muted); }
-.paper .key > span { margin-right: 14px; white-space: nowrap; }
+.paper .key .item { margin-right: 14px; white-space: nowrap; }
 .paper-note { margin: 8px 0 0; font-size: 0.66em; color: var(--ink); }
 .batch-row { display: grid; grid-template-columns: 500px 1fr; gap: 50px; align-items: start; margin-top: 10px; }
 .batch-text p { margin: 8px 0 22px; font-size: 0.86em; }
@@ -191,13 +191,16 @@
 .phone .lab-head { margin-bottom: 4px; }
 .phone .paper figcaption { margin-bottom: 4px; }
 .phone .eq { white-space: normal; font-size: 0.8em; }
+.phone .eq sub { font-size: 0.86em; }
 .phone .lab { grid-template-columns: 136px 1fr; grid-template-areas: "head head" "trace trace" "bloch read" "ctl ctl" "buttons buttons"; padding: 10px 12px 12px; }
 .phone .lab-read { grid-template-columns: 1fr; gap: 4px; margin: 6px 0; }
 .phone .lab-ctl { grid-template-columns: 1fr; border-top: 0; padding-top: 0; }
 .phone .ctl.fixed { display: none; }
 .phone .lab-fixed { display: inline; }
 .phone .lab-fixed::before { content: "; "; }
-.phone .lab-origin .long { display: none; }
+.lab-origin .short, .phone .lab-origin .long { display: none; }
+.phone .lab-origin .short { display: inline; }
+.bloch .unset { visibility: hidden; }
 .phone .lab-buttons { justify-content: flex-start; margin-top: 8px; }
 .phone .ctl, .phone .lab-head, .phone .lab-read p, .phone .lab button { font-size: 0.7em; }
 .phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.66em; }

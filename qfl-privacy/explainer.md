@@ -81,7 +81,7 @@ gradient is always zero. The other P − N angles each give one useful equation.
 
 ### Unknowns per gradient entry, NB / P_eff (batch slide)
 
-A batch of B inputs on N qubits has NB unknown numbers. The gradient still has P_eff entries. Above
+A batch of B inputs on N qubits has NB unknown numbers. The gradient still gives only P_eff useful equations. Above
 1, there are more unknowns than equations, and many batches fit the same gradient. The paper's grid
 recovered inputs up to 0.67 and never from 1.14, so the crossover lies between.
 
@@ -152,6 +152,6 @@ turn the slide.
 - **"Why did the gradient shrink from 0.72 to 0.14 between 4 and 8 qubits?"** The paper reports it, but does not test why. Whether it is the start of a barren plateau is open. Say so.
 - **"Would an attacker that keeps its guesses inside [0, π) avoid the ambiguous answers?"** Some, possibly. The results did not store the guesses, so we cannot count how many fell outside. It is on the backup limits slide.
 - **"Does Heredge et al.'s Lie-algebra attack apply here?"** Not computed. We did not work out these circuits' Lie algebras.
-- **"Is the toy cherry-picked?"** The presets are seeds picked to show each effect clearly, and the panel says so. Over 60 random inputs the toy shows the same direction, but weaker: restarts that hit fall from about 85% at one repetition to about 55% at eight. The numbers on the slides all come from the paper.
+- **"Is the toy cherry-picked?"** The presets are seeds picked to show each effect clearly, and the panel says so. Over 60 random inputs the toy shows the same direction, but weaker: restarts that hit fall from about four in five at one repetition to about one in two at eight, and with 10 restarts a random input almost never ends stuck. The toy shows fewer restarts landing, not more stuck seeds. The numbers on the slides all come from the paper.
 - **"How many inputs of an ambiguous batch still leaked?"** Not measured: a batch is scored by its worst-matched input.
 

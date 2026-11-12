@@ -9,7 +9,7 @@ The sources and how strong each one is are in [research-2026-11.md](research-202
 
 **Before writing**
 - Read the two or three closest posts in `posts/` and their Details.
-- Read the code or results behind every claim. Credit each person for what their commits show.
+- Read the code or results behind every claim.
 
 **The text**
 - The first line is the hook: concrete and specific, about 140 characters at most, with no blank line before the "see more" fold.
@@ -23,7 +23,8 @@ The sources and how strong each one is are in [research-2026-11.md](research-202
 
 **People**
 - Teammates who built it with you: add them as **collaborators** (up to 5; they accept, and the post shows on their profiles).
-- People you thank: tag them, few and only real participants. Check that each tag is the right person (affiliation, 1st-degree).
+- Thank the team as a team, by name. Never list who did what (AJ, 2026-11-12).
+- People you thank: tag them, few and only real participants. Check that each tag is the right person (affiliation, 1st-degree). Government and LAS staff: first names only, no tag; many prefer to stay private online (AJ, 2026-11-12).
 - Never credit someone who was not on the team.
 
 **Media**

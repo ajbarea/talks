@@ -73,3 +73,49 @@ def test_missing_day_is_named(tmp_path):
     result = check(tmp_path, tampered)
     assert result.returncode != 0
     assert "lacks day" in result.stderr
+
+
+def figures_module(monkeypatch):
+    import importlib.util
+
+    monkeypatch.setenv("SPHRAGIS", str(SPHRAGIS))
+    spec = importlib.util.spec_from_file_location("fa_step_one_figures", DECK / "figures.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_audit_is_the_reports_organization(monkeypatch):
+    # The report quotes the human check on OpenStack's items alone; the slide must too.
+    fig = figures_module(monkeypatch)
+    values: dict = {}
+    fig.label_audit(values)
+    human = fig.load(fig.AUDIT_BY_ORG)["valid_shares"]["human"]
+    assert (values["audit_checked"], values["audit_valid_human"]) == (human["n"], human["valid"])
+    assert values["audit_org"] == "OpenStack"
+
+
+def test_audit_mismatch_with_report_fails(monkeypatch):
+    fig = figures_module(monkeypatch)
+    real = fig.load
+
+    def load(name):
+        data = real(name)
+        if name == fig.AUDIT_BY_ORG:
+            data["valid_shares"]["human"]["valid"] += 1
+        return data
+
+    monkeypatch.setattr(fig, "load", load)
+    with pytest.raises(SystemExit, match="differs from"):
+        fig.label_audit({})
+
+
+def test_marks_add_no_spacing():
+    # Spacing on the boxed characters reaches the PDF's text layer: copied code would gain spaces.
+    rule = re.search(r"^\.ex-steps mark \{([^}]*)\}", (DECK / "deck.css").read_text(), re.M)
+    assert rule, "no .ex-steps mark rule"
+    decls = dict(d.split(":", 1) for d in (x.strip() for x in rule.group(1).split(";")) if d)
+    decls = {k.strip(): v.strip() for k, v in decls.items()}
+    for prop in ("padding", "margin"):
+        assert decls.get(prop) == "0", prop
+    assert not {"letter-spacing", "word-spacing", "padding-left", "padding-right", "margin-left", "margin-right"} & decls.keys()

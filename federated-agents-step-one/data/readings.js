@@ -42,10 +42,11 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "example_project": "starlingx/config",
   "example_month": "Mar 2025",
   "example_window": "training",
-  "audit_checked": 152,
-  "audit_valid_human": 123,
-  "audit_valid_a": 124,
-  "audit_valid_b": 124
+  "audit_org": "OpenStack",
+  "audit_checked": 77,
+  "audit_valid_human": 66,
+  "audit_valid_a": 66,
+  "audit_valid_b": 65
 } });
 window.DECK_FIGURE = {
   "split_first_low": "+0.28",

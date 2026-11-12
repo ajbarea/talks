@@ -189,6 +189,10 @@ EXAMPLE_DIGEST = "4c05d828aaa808d310fde1dd7f0ed7f2ef124a5484a2ada56ccacb8bf5ca9a
 SHOWABLE = ("train", "dev")
 AUDIT = "label-audit-v2.json"
 AUDIT_RATERS = ("human", "A", "B")
+#: The report quotes the label audit on OpenStack's items alone (sphragis research log,
+#: 2026-10-15): the pooled figure rested partly on Qt records fetched before Qt's permission.
+AUDIT_ORG = "openstack"
+AUDIT_BY_ORG = f"label-audit-v2-{AUDIT_ORG}.json"
 
 
 def marked(old: str, new: str) -> tuple[list, list]:
@@ -294,14 +298,26 @@ def example(values: dict, figure: dict, fa) -> None:
 
 
 def label_audit(values: dict) -> None:
-    """How many of the examples a person checked each reader called valid."""
+    """How many of AUDIT_ORG's examples a person checked each reader called valid.
+
+    The raters' counts are read on the human's items from the labels; the human's count must
+    equal the per-organization report's own figure, which the paper quotes.
+    """
     audit = load(AUDIT)
     if "valid" not in audit["rubric"]:
         raise SystemExit(f"{AUDIT}: no 'valid' label in the rubric {audit['rubric']}")
-    checked = [v for v in audit["labels"].values() if "human" in v]
+    checked = [v for k, v in audit["labels"].items() if k.startswith(f"{AUDIT_ORG}:") and "human" in v]
+    counts = {r: sum(v[r]["label"] == "valid" for v in checked) for r in AUDIT_RATERS}
+    human = load(AUDIT_BY_ORG)["valid_shares"]["human"]
+    if (human["n"], human["valid"]) != (len(checked), counts["human"]):
+        raise SystemExit(
+            f"{AUDIT_BY_ORG}: the human's {human['valid']} valid of {human['n']} differs from "
+            f"{counts['human']} of {len(checked)} read from {AUDIT}"
+        )
+    values["audit_org"] = ORGS[AUDIT_ORG]
     values["audit_checked"] = len(checked)
-    for rater in AUDIT_RATERS:
-        values[f"audit_valid_{rater.lower()}"] = sum(v[rater]["label"] == "valid" for v in checked)
+    for rater, n in counts.items():
+        values[f"audit_valid_{rater.lower()}"] = n
 
 
 def readings() -> tuple[dict, dict]:

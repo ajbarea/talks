@@ -7,12 +7,11 @@ Python you can run. Then what the live lab does on each slide, and what to say w
 ## Federated learning, in one picture (slide 3)
 
 Several clients train one shared model without pooling their data (McMahan et al., 2017). Each
-round, the server sends the current model; each client trains it on its own data and sends back
-only its update, the gradient g; the server averages the updates into the next model. The data
-never leaves the client, which is why FL sounds private. The talk's question is
-whether g gives the data away anyway. The diagram plays one round: red dots are gradients going up, Σ
-the average, grey dots the new model coming back. Say it in one line: "the data
-stays home, the gradient travels."
+round, every client trains the current model on its own data and sends back only its update (here
+the gradient g; FedAvg sends weights after a few local steps); the server averages the updates into
+the next model. The data never leaves the client, so FL sounds private; the talk asks whether g
+gives it away anyway. The diagram plays one round: red dots are gradients going up, Σ the average,
+grey dots the new model coming back. In one line: "the data stays home, the gradient travels."
 
 ## The equations
 
@@ -99,6 +98,9 @@ recovered inputs up to 0.67 and never from 1.14, so the crossover lies between.
 
 With S shots, k of them read 0, and 2k/S − 1 estimates ⟨Z⟩. Its standard error falls like 1/√S, a
 slope of −1/2 on a log-log plot. The paper's errors fell with slopes −0.54 to −0.49, the same rate.
+Shot noise blocked this attack at 8 qubits; that is not a privacy guarantee. Sedrakyan, Grosshans
+and Kashefi (arXiv:2606.29293, 2026) show quantum noise "does not provide a satisfactory
+replacement" for the calibrated noise of DP-SGD.
 
 ```python
 rng = np.random.default_rng(0)
@@ -136,9 +138,9 @@ few samples per client give the whole loss curve. The
 outcome rule and thresholds are the paper's. Every number you quote comes from the right-hand
 panel, never from the toy.
 
-Each lab slide opens on hidden input 1. "Next hidden input" steps through inputs 1 to 20, the
-simulator's first seeds, not picked. One input is a noisy sample, so the rows under the paper's
-figure run all twenty for each value of the control, scored like the figure above them. A search
+Each lab slide opens on hidden input 1. "Next input" steps through inputs 1 to 20, the
+simulator's first seeds, not picked. One input is a noisy sample, so the rows at the foot of the
+panel run all twenty for each value of the control, scored like the paper's figure beside them. A search
 takes about 5 seconds: restarts are released one after another, each rolling for 1.8 s with a short
 trail. "Replay slowly" plays it 2.5 times slower. Reduced motion shows each end at once.
 
@@ -153,18 +155,18 @@ turn the slide.
 
 ## If the live panel misbehaves
 
-- **The clicker moved a slider instead of the slide:** press Esc, then advance. (Any mouse release on
-  the panel already hands the keyboard back, so this should not happen.)
-- **A result differs from what you meant to show:** press "Reset". Every input replays the same run
-  on any machine.
+- **The clicker moved a slider instead of the slide:** press Esc, then advance.
+- **A result differs from what you meant to show:** press "Reset"; every input replays identically.
 - **One input goes against the slide:** expected; say "one input is a noisy sample" and point at the
   rows, which carry the trend. Never step through inputs hunting for one that agrees.
 - **The animation is too quick to talk over:** press "Replay slowly".
-- **The panel is blank or frozen:** carry on from the right-hand figure; it holds the slide's claim.
-  The panel also does not appear in the PDF or PowerPoint copies, by design.
+- **The panel is blank or frozen:** carry on from the paper's figure; it holds the slide's claim.
+  The PDF and PowerPoint copies leave the panel out by design.
 - **No network:** the deck works offline once loaded, and from a downloaded copy opened as a file.
-- **Someone asks why the toy is so easy at 100 shots:** one input against 15 gradient entries, so
-  noise averages out. At 8 qubits the noise was as large as the gradient (0.16 against 0.14).
+- **Someone asks why the toy is so easy at 100 shots:** its gradient is about 50 times its shot
+  noise there (median squared norms, inputs 1 to 200, 2 × 4). At 8 qubits the paper's noise was as
+  large as the gradient (0.16 against 0.14). Entries per input match (15 each), so it is the
+  signal's size, not the count.
 
 ## Questions to expect
 

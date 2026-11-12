@@ -205,11 +205,11 @@ def test_toy_rows_match_the_explainer_and_the_script() -> None:
     assert reps == [175, 161, 133, 120]
     assert restarts == [9, 15, 19, 20, 20]
     assert shots == [15, 19, 20, 20]
-    # script.md: the columns empty out as repetitions grow
+    # script.md: the pies thin out as repetitions grow
     assert reps == sorted(reps, reverse=True) and len(set(reps)) == len(reps)
     # script.md: one restart recovers about half of the twenty, twenty restarts recover them all
     assert 8 <= restarts[0] <= 12 and restarts[-1] == 20
-    # script.md: one qubit holds out down to a hundred shots; only at ten does noise hide several
+    # script.md: the attack still finds nearly every input at a hundred shots; only at ten does it miss several
     assert shots[1] >= 18 and shots[0] <= 17
 
 
@@ -243,6 +243,18 @@ def test_two_hundred_inputs_match_the_explainer() -> None:
     # explainer.md: 82% at one repetition, 55% at eight, almost never stuck with 10 restarts
     assert round(100 * hit1 / 2000) == 82 and round(100 * hit8 / 2000) == 55
     assert stuck8 <= 5
+
+
+@needs_node
+def test_the_toys_gradient_dwarfs_its_shot_noise_at_100_shots() -> None:
+    ratio = js(
+        "const med = (a) => a.sort((x, y) => x - y)[a.length >> 1]; const sig = [], noi = [];"
+        " for (let s = 1; s <= 200; s++) { const e = Q.client(s, 2, 4, 0).target, n = Q.client(s, 2, 4, 100).target;"
+        " sig.push(e.reduce((a, g) => a + g * g, 0)); noi.push(n.reduce((a, g, j) => a + (g - e[j]) ** 2, 0)); }"
+        " console.log(med(sig) / med(noi))"
+    )
+    # explainer.md: about 50 times (median squared norms, inputs 1 to 200, 2 x 4)
+    assert 45 <= ratio <= 55
 
 
 def test_the_lab_picks_no_seed_and_keeps_motion_under_five_seconds() -> None:

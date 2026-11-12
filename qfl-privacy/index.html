@@ -51,9 +51,9 @@
 
 <section data-chapter="1 · The attack">
   <span class="kicker">1 · The attack</span>
-  <h2>Federated learning keeps each client's data at home; only its gradient travels to the server</h2>
+  <h2>In federated learning the data stays home; each client's update, here a gradient, travels</h2>
   <figure class="fl-fig">
-    <svg viewBox="0 0 1180 452" role="img" aria-label="Diagram of one round of federated learning: three clients each keep their own data and train on it; each sends only its gradient update up to the server; the server averages the updates and sends the new model back down to every client.">
+    <svg data-only="desktop" viewBox="0 0 1180 452" role="img" aria-label="Diagram of one round of federated learning: three clients each keep their own data and train on it; each sends only its update, here a gradient, up to the server; the server averages the updates and sends the new model back down to every client.">
       <defs>
         <marker id="fl-up" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="up-head" d="M0,0 L10,5 L0,10 z"/></marker>
         <marker id="fl-down" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="down-head" d="M0,0 L10,5 L0,10 z"/></marker>
@@ -74,10 +74,10 @@
       <circle class="m-dot" r="9" data-motion="flow" data-path="M556,132 L232,270" data-delay="2500" data-dur="1400"/>
       <circle class="m-dot" r="9" data-motion="flow" data-path="M606,132 L606,270" data-delay="2500" data-dur="1400"/>
       <circle class="m-dot" r="9" data-motion="flow" data-path="M624,132 L948,270" data-delay="2500" data-dur="1400"/>
-      <rect class="chip" x="248" y="168" width="200" height="34" rx="17"/>
-      <text class="chip-text" x="348" y="192" text-anchor="middle">gradient travels</text>
-      <rect class="chip model" x="742" y="168" width="200" height="34" rx="17"/>
-      <text class="chip-text model" x="842" y="192" text-anchor="middle">new model back</text>
+      <rect class="chip" x="226" y="166" width="244" height="38" rx="19"/>
+      <text class="chip-text" x="348" y="193" text-anchor="middle">gradient travels</text>
+      <rect class="chip model" x="720" y="166" width="244" height="38" rx="19"/>
+      <text class="chip-text model" x="842" y="193" text-anchor="middle">new model back</text>
       <g class="client">
         <rect class="box" x="40" y="276" width="310" height="132" rx="12"/>
         <text class="box-title" x="195" y="312" text-anchor="middle">Client 1</text>
@@ -102,9 +102,52 @@
       <path class="home" d="M40,424 L40,434 L1140,434 L1140,424"/>
       <text class="home-text" x="590" y="452" text-anchor="middle">the data stays home</text>
     </svg>
-    <figcaption>One round: each client trains the shared model on its own data and sends back only its update; the server averages the updates into the next model (McMahan et al., 2017).</figcaption>
+    <svg data-only="phone" viewBox="0 0 480 596" role="img" aria-label="Diagram of one round of federated learning: three clients each keep their own data and train on it; each sends only its update, here a gradient, up to the server; the server averages the updates and sends the new model back down to every client.">
+      <defs>
+        <marker id="fl-up-t" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="up-head" d="M0,0 L10,5 L0,10 z"/></marker>
+        <marker id="fl-down-t" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path class="down-head" d="M0,0 L10,5 L0,10 z"/></marker>
+      </defs>
+      <rect class="box server" x="80" y="6" width="320" height="100" rx="12"/>
+      <text class="box-title" x="220" y="46" text-anchor="middle">Server</text>
+      <text class="box-text" x="220" y="84" text-anchor="middle">averages the updates</text>
+      <g class="avg" data-motion="pop" data-delay="1900" data-dur="500"><circle cx="362" cy="38" r="20"/><text x="362" y="47" text-anchor="middle">Σ</text></g>
+      <path class="up" d="M60,376 L170,112" marker-end="url(#fl-up-t)"/>
+      <path class="down" d="M194,112 L84,376" marker-end="url(#fl-down-t)"/>
+      <path class="up" d="M226,376 L226,112" marker-end="url(#fl-up-t)"/>
+      <path class="down" d="M254,112 L254,376" marker-end="url(#fl-down-t)"/>
+      <path class="up" d="M420,376 L310,112" marker-end="url(#fl-up-t)"/>
+      <path class="down" d="M286,112 L396,376" marker-end="url(#fl-down-t)"/>
+      <circle class="g-dot" r="10" data-motion="flow" data-path="M60,376 L170,112" data-delay="300" data-dur="1400"/>
+      <circle class="g-dot" r="10" data-motion="flow" data-path="M226,376 L226,112" data-delay="500" data-dur="1400"/>
+      <circle class="g-dot" r="10" data-motion="flow" data-path="M420,376 L310,112" data-delay="700" data-dur="1400"/>
+      <circle class="m-dot" r="8" data-motion="flow" data-path="M194,112 L84,376" data-delay="2500" data-dur="1400"/>
+      <circle class="m-dot" r="8" data-motion="flow" data-path="M254,112 L254,376" data-delay="2500" data-dur="1400"/>
+      <circle class="m-dot" r="8" data-motion="flow" data-path="M286,112 L396,376" data-delay="2500" data-dur="1400"/>
+      <rect class="chip" x="2" y="194" width="226" height="38" rx="19"/>
+      <text class="chip-text" x="115" y="221" text-anchor="middle">gradient travels</text>
+      <rect class="chip model" x="252" y="194" width="226" height="38" rx="19"/>
+      <text class="chip-text model" x="365" y="221" text-anchor="middle">new model back</text>
+      <rect class="box" x="6" y="380" width="148" height="150" rx="10"/>
+      <text class="box-title" x="80" y="412" text-anchor="middle">Client 1</text>
+      <rect class="data" x="52" y="426" width="56" height="14" rx="4"/><rect class="data" x="52" y="444" width="56" height="14" rx="4"/><rect class="data" x="52" y="462" width="56" height="14" rx="4"/>
+      <text class="box-text" x="80" y="500" text-anchor="middle">own data,</text>
+      <text class="box-text" x="80" y="522" text-anchor="middle">trains on it</text>
+      <rect class="box" x="166" y="380" width="148" height="150" rx="10"/>
+      <text class="box-title" x="240" y="412" text-anchor="middle">Client 2</text>
+      <rect class="data" x="212" y="426" width="56" height="14" rx="4"/><rect class="data" x="212" y="444" width="56" height="14" rx="4"/><rect class="data" x="212" y="462" width="56" height="14" rx="4"/>
+      <text class="box-text" x="240" y="500" text-anchor="middle">own data,</text>
+      <text class="box-text" x="240" y="522" text-anchor="middle">trains on it</text>
+      <rect class="box" x="326" y="380" width="148" height="150" rx="10"/>
+      <text class="box-title" x="400" y="412" text-anchor="middle">Client 3</text>
+      <rect class="data" x="372" y="426" width="56" height="14" rx="4"/><rect class="data" x="372" y="444" width="56" height="14" rx="4"/><rect class="data" x="372" y="462" width="56" height="14" rx="4"/>
+      <text class="box-text" x="400" y="500" text-anchor="middle">own data,</text>
+      <text class="box-text" x="400" y="522" text-anchor="middle">trains on it</text>
+      <path class="home" d="M6,546 L6,556 L474,556 L474,546"/>
+      <text class="home-text" x="240" y="588" text-anchor="middle">the data stays home</text>
+    </svg>
+    <figcaption>One round: clients train on their own data and send only their update; the server averages them (McMahan et al., 2017).</figcaption>
   </figure>
-  <aside class="notes"><ul><li>Clients keep their data; each trains the shared model locally</li><li>Only the update (a gradient) goes up; the server averages and sends the new model back</li><li>Data stays home, the gradient travels: is the gradient private?</li></ul></aside>
+  <aside class="notes"><ul><li>Clients keep their data; each trains the shared model locally</li><li>Only the update goes up (here a gradient; FedAvg sends weights after a few local steps); the server averages, sends the new model back</li><li>Data stays home, the gradient travels: is the gradient private?</li></ul></aside>
 </section>
 
 <section data-contribution data-chapter="1 · The attack">
@@ -235,7 +278,6 @@
   <h2>At a fixed parameter count, more encoding repetitions left the search stuck more often</h2>
   <div class="lab-row">
     <div class="lab web-only" data-lab="reps"></div>
-    <div class="side">
     <figure class="paper">
       <figcaption><b>The paper</b> 8 qubits, <span data-value="rq1.params"></span> effective parameters, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:reps -->
@@ -335,10 +377,8 @@
 <!-- /fig -->
       <p class="key"><span class="item"><i class="k-leak"></i>recovered, best of <span data-value="paper.restarts"></span> restarts</span><span class="item"><i class="k-open"></i>not</span><br>hits: restarts of <span data-value="rq1.tries"></span> that found the input</p>
     </figure>
-      <figure class="toy-rows web-only" data-rows="reps"></figure>
-    </div>
   </div>
-  <aside class="notes"><ul><li>Drag repetitions 1 to 8: the dips multiply, fewer restarts find the input; rows: hidden inputs 1 to 20, columns empty out</li><li>Paper: <span data-value="rq1.rec1"></span> to <span data-value="rq1.rec8"></span> of <span data-value="paper.seeds"></span> seeds; restarts that hit <span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span> of <span data-value="rq1.tries"></span></li><li>Every failure here was stuck, not ambiguous</li></ul></aside>
+  <aside class="notes"><ul><li>Drag repetitions 1 to 8: the dips multiply, fewer restarts find the input; rows: hidden inputs 1 to 20, the pies thin out</li><li>Paper: <span data-value="rq1.rec1"></span> to <span data-value="rq1.rec8"></span> of <span data-value="paper.seeds"></span> seeds; restarts that hit <span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span> of <span data-value="rq1.tries"></span></li><li>Every failure here was stuck, not ambiguous</li></ul></aside>
 </section>
 
 <section class="lab-slide" data-chapter="2 · Live lab">
@@ -346,7 +386,6 @@
   <h2>Stuck is not private: with <span data-value="budget.large"></span> restarts, most stuck seeds gave up their input</h2>
   <div class="lab-row">
     <div class="lab web-only" data-lab="restarts"></div>
-    <div class="side">
     <figure class="paper">
       <figcaption><b>The paper</b> 8 qubits, <span data-value="budget.small"></span> then <span data-value="budget.large"></span> restarts, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:restarts -->
@@ -447,18 +486,15 @@
       <p class="key"><span class="item"><i class="k-leak"></i>with <span data-value="budget.small"></span> restarts</span><span class="item"><i class="k-ring"></i>only with <span data-value="budget.large"></span></span><span class="item"><i class="k-open"></i>neither</span></p>
       <p class="paper-note"><span data-value="budget.hardest"></span>: <span data-value="budget.hardestRate"></span>% of restarts found the input; <span data-value="budget.hardestHeld"></span> seeds held.</p>
     </figure>
-      <figure class="toy-rows web-only" data-rows="restarts"></figure>
-    </div>
   </div>
   <aside class="notes"><ul><li>Toy at 8 × 1: add restarts; the lowest loss wins, no truth needed. Rows: about half at 1 restart, all at 20</li><li>Paper: <span data-value="budget.othersMin"></span> to <span data-value="budget.othersMax"></span> of <span data-value="paper.seeds"></span> recovered with <span data-value="budget.large"></span> restarts; about <span data-value="budget.secondsPerClient"></span> s per client</li><li><span data-value="budget.hardest"></span> held <span data-value="budget.hardestHeld"></span> seeds: its cost is unknown, not infinite</li></ul></aside>
 </section>
 
 <section class="lab-slide" data-chapter="2 · Live lab">
   <span class="kicker">2 · Live lab</span>
-  <h2>At 8 qubits, <span data-value="rq2.lowShots"></span> shots per expectation value hid almost every input</h2>
+  <h2>With <span data-value="rq2.lowShots"></span> shots at 8 qubits, this attack almost always failed</h2>
   <div class="lab-row">
     <div class="lab web-only" data-lab="shots"></div>
-    <div class="side">
     <figure class="paper">
       <figcaption><b>The paper</b> <span data-value="rq2.lowShots"></span> shots per expectation value, <span data-value="paper.seeds"></span> seeds</figcaption>
       <!-- fig:shots -->
@@ -603,10 +639,8 @@
       <p class="key"><span class="item"><i class="k-leak"></i>guessed within <span data-value="paper.closeRad"></span> rad</span><span class="item"><i class="k-open"></i>not</span></p>
       <p class="paper-note">At 8 qubits the noise was as large as the gradient (median squared norms): <span data-value="rq2.noise8"></span> against <span data-value="rq2.signal8"></span>.</p>
     </figure>
-      <figure class="toy-rows web-only" data-rows="shots"></figure>
-    </div>
   </div>
-  <aside class="notes"><ul><li>Toy: drag shots down; the dip lifts and shifts, the end points spread; rows hold to 100 shots, lose several at 10</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of <span data-value="paper.seeds"></span> seeds within <span data-value="paper.closeRad"></span> rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li></ul></aside>
+  <aside class="notes"><ul><li>Toy: drag shots down; the dip lifts and shifts, the end points spread; rows: the attack still finds nearly every input at 100 shots, misses several at 10</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of <span data-value="paper.seeds"></span> seeds within <span data-value="paper.closeRad"></span> rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li><li>Blocked this attack, not a guarantee: shot noise is no substitute for calibrated DP-SGD noise (Sedrakyan et al., 2026)</li></ul></aside>
 </section>
 
 <section data-chapter="3 · What else hides it">
@@ -725,7 +759,7 @@
       <li>Does the attacker's cost grow exponentially with the number of qubits?</li>
     </ul>
   </div>
-  <aside class="notes"><ul><li>One encoding layer with two or more trainable layers leaked (untrained, exact); repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li><span data-value="rq2.lowShots"></span> shots at 8 qubits and big batches actually hid the input</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
+  <aside class="notes"><ul><li>One encoding layer with two or more trainable layers leaked (untrained, exact); repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li><span data-value="rq2.lowShots"></span> shots at 8 qubits and big batches actually blocked this attack; not a privacy guarantee</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
 </section>
 
 <section class="closing">
@@ -770,7 +804,7 @@
       <tr><td>Outcomes</td><td data-label="Live toy" colspan="2">the same rule and thresholds: <span data-value="paper.recoveredRad"></span> and <span data-value="paper.closeRad"></span> rad</td></tr>
     </tbody>
   </table>
-  <p class="lead">One input against many gradient entries is the easy end: noise averages out, and a few restarts usually win. In the paper, heavy shot noise stopped the attack at 8 qubits, large batches stopped it at 4 and 8 qubits, and more repetitions left more searches stuck.</p>
+  <p class="lead">One qubit is the easy end: its gradient is far larger than its shot noise, and a few restarts usually win. In the paper, heavy shot noise stopped the attack at 8 qubits, large batches stopped it at 4 and 8 qubits, and more repetitions left more searches stuck.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
   <aside class="notes">The toy is a teaching instrument; it runs the same circuit family at one qubit, and it says so on screen.</aside>
 </section>
@@ -843,6 +877,7 @@
     <li>M. Schuld, R. Sweke, J. J. Meyer, Effect of data encoding on the expressive power of variational quantum-machine-learning models, Physical Review A, 2021</li>
     <li>D. P. Kingma, J. Ba, Adam: a method for stochastic optimization, ICLR 2015</li>
     <li>B. McMahan et al., Communication-efficient learning of deep networks from decentralized data, AISTATS 2017</li>
+    <li>T. Sedrakyan, F. Grosshans, E. Kashefi, Private training in quantum machine learning, arXiv:2606.29293, 2026</li>
     <li>Code and results: <a href="https://github.com/ajbarea/csci739-qfl-privacy">github.com/ajbarea/csci739-qfl-privacy</a></li>
   </ul>
   <p class="back"><a href="#/faq">Back to the questions</a></p>

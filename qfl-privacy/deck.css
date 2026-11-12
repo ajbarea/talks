@@ -60,7 +60,8 @@
 /* One round: the data (blue, as on the next slide) stays in each client; the gradient goes up,
    the averaged model comes back down. */
 .fl-fig { margin: 6px 0 0; }
-.fl-fig svg { width: 100%; height: auto; display: block; }
+.fl-fig svg { width: 100%; height: auto; max-height: 392px; display: block; }
+.phone .fl-fig svg { max-height: none; }
 .fl-fig .box { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; }
 .fl-fig .box-title { font: 700 26px var(--sans); fill: var(--ink); }
 .fl-fig .box-text { font: 22px var(--sans); fill: var(--muted); }
@@ -75,13 +76,11 @@
 .fl-fig .avg text { font: 700 26px var(--sans); fill: #fff; }
 .fl-fig .chip { fill: #fff; stroke: var(--ink); stroke-width: 2; }
 .fl-fig .chip.model { stroke: var(--muted); }
-.fl-fig .chip-text { font: 700 21px var(--sans); fill: var(--ink); }
+.fl-fig .chip-text { font: 700 24px var(--sans); fill: var(--ink); }
 .fl-fig .chip-text.model { fill: var(--muted); font-weight: 400; }
 .fl-fig .home { fill: none; stroke: var(--held); stroke-width: 3; }
 .fl-fig .home-text { font: 700 22px var(--sans); fill: var(--held-ink); }
 .fl-fig figcaption { margin-top: 10px; font-size: 0.64em; color: var(--muted); }
-.phone .fl-fig { overflow-x: auto; }
-.phone .fl-fig svg { min-width: 640px; }
 
 
 /* ------------------------------------------------------- the disagreement -- */
@@ -149,28 +148,31 @@
 .limits li { margin: 0 0 12px; }
 
 /* ------------------------------------------------------------ the live lab -- */
-/* One grid. On a slide: header; sphere beside the loss trace; the readouts on their own row; the
-   three controls in a row; the buttons on their own row, wrapping, so no readout and no button can
-   share a line and meet. On a phone it stacks, and only the free control shows. */
-.lab-row { display: grid; grid-template-columns: 770px 1fr; gap: 34px; align-items: start; }
+/* One grid whose columns share the slide by ratio, each with a floor, so nothing is sized to one
+   screen. In the panel: header (the fixed values in words); sphere beside the loss trace; the
+   readouts on their own row; the free control and the buttons in one wrapping row (flex items wrap
+   rather than overlap); the rows of hidden inputs across the foot. On a phone it stacks. */
+.lab-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(300px, 2fr); gap: 30px; align-items: start; }
 .lab-slide h2 { margin-bottom: 12px; }
 .lab {
-  display: grid; grid-template-columns: 176px 1fr; column-gap: 12px;
-  grid-template-areas: "head head" "bloch trace" "read read" "ctl ctl" "buttons buttons";
-  padding: 10px 16px 12px; background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
+  display: grid; grid-template-columns: minmax(120px, 1fr) minmax(0, 3fr); column-gap: 12px;
+  grid-template-areas: "head head" "bloch trace" "read read" "ctl ctl" "rows rows";
+  position: relative; padding: 10px 16px 12px; background: var(--card); border: 2px solid var(--ink); border-radius: 10px;
 }
-.lab:empty, .toy-rows:empty { display: none; }
+.lab:empty { display: none; }
 .lab-head { grid-area: head; margin: 0 0 6px; font-size: 0.64em; color: var(--muted); }
 .lab-head b { margin-right: 12px; color: var(--ink); }
-.lab-bloch { grid-area: bloch; align-self: center; }
+.lab-bloch { grid-area: bloch; align-self: center; justify-self: center; width: 100%; max-width: 156px; }
 .lab-trace { grid-area: trace; }
-.lab-read { grid-area: read; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 36px; margin: 8px 0 6px; }
-.lab-buttons { grid-area: buttons; display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 10px 0 0; }
-.lab-ctl { grid-area: ctl; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 20px; padding-top: 6px; border-top: 1px solid var(--line); }
+.lab-read { grid-area: read; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 36px; margin: 6px 0 4px; }
+.lab-ctlrow { grid-area: ctl; display: flex; flex-wrap: wrap; align-items: end; gap: 8px 16px; padding-top: 6px; border-top: 1px solid var(--line); }
+.lab-ctl { flex: 1 1 240px; }
+.lab-buttons { display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.lab-rows { grid-area: rows; margin-top: 8px; padding-top: 6px; border-top: 1px solid var(--line); }
 .bloch, .trace { display: block; width: 100%; height: auto; }
 .bloch .sphere { fill: #fff; stroke: var(--ink); stroke-width: 2; }
 .bloch .equator, .bloch .meridian { fill: none; stroke: var(--line); stroke-width: 1.5; }
-.bloch .pole { font: 24px var(--sans); fill: var(--muted); }
+.bloch .pole { font: 31px var(--sans); fill: var(--muted); }
 .bloch .truth { stroke: var(--held); stroke-width: 3; stroke-dasharray: 6 5; }
 .bloch .truth-ring { fill: none; stroke: var(--held); stroke-width: 3.5; }
 .bloch .guess { stroke: var(--leak); stroke-width: 4; stroke-linecap: round; }
@@ -203,31 +205,30 @@
 .ctl label { color: var(--ink); font-weight: 700; }
 .ctl output { grid-row: 1; grid-column: 2; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
 .ctl input { grid-column: 1 / -1; width: 100%; height: 28px; margin: 2px 0 0; accent-color: var(--leak); cursor: pointer; }
-.ctl.fixed label, .ctl.fixed output { color: var(--muted); font-weight: 400; }
-.ctl.fixed input { accent-color: var(--muted); cursor: not-allowed; }
+.ctl.fixed { display: none; }
 .lab button { padding: 5px 12px; font: 600 0.64em var(--sans); color: var(--ink); background: var(--card); border: 2px solid var(--ink); border-radius: 6px; cursor: pointer; white-space: nowrap; }
 .lab button:hover { background: var(--band); }
 .lab :focus-visible { outline: 3px solid var(--held); outline-offset: 2px; }
-.lab-fixed { display: none; }
+.lab-fixed::before { content: "; "; }
+.lab-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.lab, .lab-read, .lab-ctlrow, .lab-ctl, .lab-buttons, .lab-trace, .lab-bloch, .lab-rows { min-width: 0; }
 .lab-origin { color: var(--muted); }
-/* The toy's rows of hidden inputs, under the paper's figure and laid out like it. */
-.side { display: grid; gap: 14px; }
-.toy-rows { margin: 0; padding-top: 12px; border-top: 1px solid var(--line); }
-.toy-rows figcaption { margin-bottom: 8px; font-size: 0.64em; color: var(--muted); }
-.toy-rows figcaption b { display: block; font-size: 1.12em; color: var(--ink); }
+/* The toy's rows of hidden inputs, at the foot of the panel, laid out like the paper's figure. */
+.rows-cap { margin: 0 0 2px; font-size: 0.64em; color: var(--muted); }
+.rows-cap b { margin-right: 10px; color: var(--ink); }
 .toy-fig { display: block; width: 100%; height: auto; font-family: var(--sans); }
 .toy-fig .h { font-size: 20px; fill: var(--muted); }
-.toy-fig .l, .toy-fig .n { font-size: 24px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.toy-fig .l, .toy-fig .n { font-size: 21px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; }
 .toy-fig .l.on { fill: var(--leak-ink); }
 .toy-fig .band { fill: transparent; }
 .toy-fig .band.on { fill: var(--band); }
-.toy-fig .cell { fill: #fff; stroke: var(--line); stroke-width: 0.6; }
-.toy-fig .cell.hit { fill: var(--leak); stroke: var(--leak); }
-.toy-fig .dot { fill: #fff; stroke: var(--muted); stroke-width: 1.5; }
+/* Not yet run: a pale ring; run: white with a grey ring, filled (or a red pie slice) where it hit. */
+.toy-fig .dot { fill: #fff; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 2 2; }
+.toy-fig .dot.run { stroke: var(--muted); stroke-dasharray: none; }
 .toy-fig .dot.hit { fill: var(--leak); stroke: var(--leak); }
+.toy-fig .pie { fill: var(--leak); }
 .toy-fig .here-mark { fill: none; stroke: none; }
 .toy-fig .here-mark.on { stroke: var(--ink); stroke-width: 2.5; }
-.toy-note { margin: 6px 0 0; }
 
 /* -------------------------------------------------------------- conclusion -- */
 .recap .tile .num { color: var(--leak-ink); }
@@ -245,20 +246,18 @@
 .phone .paper figcaption { margin-bottom: 4px; }
 .phone .eq { white-space: normal; font-size: 0.8em; }
 .phone .eq sub { font-size: 0.86em; }
-.phone .lab { grid-template-columns: 136px 1fr; grid-template-areas: "head head" "trace trace" "bloch read" "ctl ctl" "buttons buttons"; padding: 10px 12px 12px; }
-.phone .lab-read { flex-direction: column; align-items: flex-start; gap: 6px; margin: 6px 0; }
+.phone .lab { grid-template-columns: 100px minmax(0, 1fr); grid-template-areas: "head head" "trace trace" "bloch read" "ctl ctl" "rows rows"; padding: 10px 12px 12px; }
+.phone .lab-read { flex-direction: column; align-items: flex-start; gap: 4px; margin: 4px 0; }
 .phone .lab-read p { white-space: normal; }
-.phone .lab-ctl { grid-template-columns: 1fr; border-top: 0; padding-top: 0; }
-.phone .ctl.fixed { display: none; }
-.phone .lab-fixed { display: inline; }
-.phone .lab-fixed::before { content: "; "; }
-.lab-origin .short, .phone .lab-origin .long { display: none; }
+.phone .lab-ctlrow { border-top: 0; padding-top: 0; }
+.lab-origin .short, .phone .lab-origin .long, .phone .rows-cap .long { display: none; }
 .phone .lab-origin .short { display: inline; }
 .bloch .unset, .trace .unset { visibility: hidden; }
-.phone .lab-buttons { justify-content: flex-start; margin-top: 8px; }
-.phone .ctl, .phone .lab-head, .phone .lab-read p, .phone .lab button { font-size: 0.7em; }
-.phone .paper figcaption, .phone .paper .key, .phone .paper-note, .phone .toy-rows figcaption { font-size: 0.66em; }
-.phone .lab-slide h2 { font-size: 1.3em; }
-.phone .lab-bloch { width: 136px; }
-.phone .bloch .pole { font-size: 34px; }
+.phone .ctl, .phone .lab-head, .phone .lab-read p, .phone .lab button, .phone .rows-cap { font-size: 0.7em; }
+.phone .paper figcaption, .phone .paper .key, .phone .paper-note { font-size: 0.66em; }
+.phone .lab-slide h2 { font-size: 1.22em; }
+.phone .lab-bloch { width: 100px; }
+.phone .lab-rows { margin-top: 4px; }
+.phone .lab-read .minor b { display: inline; margin-left: 0.3em; }
+.phone .bloch .pole { font-size: 41px; }
 .phone .claim-card figcaption { flex-direction: column; }

@@ -1,7 +1,7 @@
 // The live lab: one instrument per lab slide, each with one control free and the others fixed, and
-// beside the paper's figure a row of hidden inputs 1 to 20 per value of that control. It builds its
-// markup when the page loads (so the slide gates measure it) and runs only when its slide is shown.
-// Everything runs on the main thread: a deck opened from file:// cannot start a Web Worker.
+// at its foot a row of hidden inputs 1 to 20 per value of that control. It builds its markup when
+// the page loads (so the slide gates measure it) and runs only when its slide is shown. Everything
+// runs on the main thread: a deck opened from file:// cannot start a Web Worker.
 (function () {
   "use strict";
 
@@ -9,6 +9,8 @@
   const DATA = window.DECK_DATA || {};
   const SVG = "http://www.w3.org/2000/svg";
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // The phone test deck.js makes (it runs after this file, so its class is not set yet).
+  const phone = matchMedia("(max-width: 600px)").matches && !/receiver/i.test(location.search);
   const TOY = Q.TOY;
   const REPS = TOY.steps.reps.reps;
   const SHOTS = [10, 100, 1000, 10000, 100000, 1000000, 0];
@@ -84,6 +86,7 @@
   const AZ = -0.38;
   const EL = 0.24;
   const R = 78;
+  const BINS = 52;
   function project([x, y, z]) {
     const across = x * Math.cos(AZ) + y * Math.sin(AZ);
     const depth = -x * Math.sin(AZ) + y * Math.cos(AZ);
@@ -97,7 +100,7 @@
   }
 
   function buildBloch(box) {
-    const blurb = "Bloch sphere: the hidden input (ring), the attacker's best guess (dot) and where each restart ended (ticks outside)";
+    const blurb = "Bloch sphere: the hidden input (ring), the attacker's best guess (dot) and where each restart ended (small dots outside)";
     const s = sv("svg", { viewBox: "0 0 240 240", class: "bloch", role: "img", "aria-label": blurb }, box);
     const title = sv("title", {}, s, blurb);
     sv("circle", { cx: 120, cy: 120, r: R, class: "sphere" }, s);
@@ -127,11 +130,12 @@
         guessSpoke.classList.add("unset");
         guess.classList.add("unset");
       },
-      // A restart's end point: a tick just outside the sphere, stacked outward when several end
-      // within a few degrees of each other, so a crowd of landings reads as a taller stack.
+      // A restart's end point: a small dot just outside the sphere, stacked outward when several
+      // end within a few degrees of each other (bins taken round the full turn, so 0 and 2pi
+      // share one), so a crowd of landings reads as a taller stack.
       end(angle, outcome) {
         const a = ((angle % Q.TAU) + Q.TAU) % Q.TAU;
-        const bin = Math.round(a / 0.12);
+        const bin = Math.round((a / Q.TAU) * BINS) % BINS;
         const k = stacks.get(bin) || 0;
         stacks.set(bin, k + 1);
         const [ex, ey] = onCircle(a, 1.16 + 0.1 * Math.min(k, 3));
@@ -156,7 +160,8 @@
   // The matching loss across one turn of guesses, with the hidden input marked and each restart's
   // search rolled down it.
   const PW = 560;
-  const PH = 230;
+  // Squatter on a phone, at the same width, so the panel and the paper's figure fit one page.
+  const PH = phone ? 128 : 156;
   const PAD = { l: 14, r: 14, t: 14, b: 40 };
   const SPAN = PW - PAD.l - PAD.r;
   function buildPlot(box) {
@@ -190,89 +195,79 @@
     return { s, title, truth, curve, paths, trails, balls, tag, tagPlate };
   }
 
-  // ---- the rows of hidden inputs beside the paper's figure -------------------------------------
+  // ---- the rows of hidden inputs, at the foot of the panel ------------------------------------
 
-  // Laid out like the paper's figures beside them: a label column, one mark per hidden input, a
-  // count on the right.
+  // One row per value of the slide's control, one mark per hidden input, a count on the right, so
+  // the toy's trend is read from many draws, beside the paper's rows on the slide. Repetitions: a
+  // pie filled to the share of its 10 restarts that found the input. Restarts and shots: a dot,
+  // filled when that input was recovered (best of the first n restarts) or came within the close
+  // threshold, as the paper's figure beside it counts seeds.
   const ROW = {
-    reps: { head: ["r × ℓ", "restarts of 10 that hit, per input", `of ${TOY.draws * TOY.steps.reps.restarts}`], label: (r) => `${r}×${TOY.blocks / r}`, pitch: 40 },
-    restarts: { head: ["restarts", "hidden inputs recovered", `of ${TOY.draws}`], label: (n) => String(n), pitch: 32 },
-    shots: { head: ["shots", `hidden inputs within ${TH.close} rad`, `of ${TOY.draws}`], label: (s) => (s ? s.toLocaleString("en-US") : "exact"), pitch: 34 },
+    reps: { head: ["r × ℓ", "restarts of 10 that found it, a pie per input", `of ${TOY.draws * TOY.steps.reps.restarts}`], label: (r) => `${r}×${TOY.blocks / r}` },
+    restarts: { head: ["restarts", "inputs recovered by the best restart", `of ${TOY.draws}`], label: (n) => String(n) },
+    shots: { head: ["shots", `inputs guessed within ${TH.close} rad`, `of ${TOY.draws}`], label: (v) => (v ? v.toLocaleString("en-US") : "exact") },
   };
-  const X0 = 102;
-  const DX = 15.5;
   const CELLS = TOY.steps.reps.restarts;
+
+  function pie(cx, cy, r, f) {
+    if (f <= 0) return "";
+    if (f >= 1) return `M${cx - r} ${cy}a${r} ${r} 0 1 0 ${2 * r} 0a${r} ${r} 0 1 0 ${-2 * r} 0Z`;
+    const a = f * Q.TAU;
+    const x = cx + r * Math.sin(a);
+    const y = cy - r * Math.cos(a);
+    return `M${cx} ${cy}L${cx} ${cy - r}A${r} ${r} 0 ${a > Math.PI ? 1 : 0} 1 ${x.toFixed(2)} ${y.toFixed(2)}Z`;
+  }
 
   function buildRows(box, step) {
     const spec = ROW[step];
     const values = TOY.steps[step][step];
-    const H = 34 + spec.pitch * values.length;
-    const cap = el("figcaption", {}, box);
-    el("b", {}, cap, "The toy, in this browser");
-    cap.append(`1 qubit, hidden inputs 1 to ${TOY.draws}, not picked`);
-    const s = sv("svg", { viewBox: `0 0 480 ${H}`, class: "toy-fig", role: "img", "aria-label": "Toy results per hidden input: computing" }, box);
-    sv("text", { x: 0, y: 20, class: "h", "text-anchor": "start" }, s, spec.head[0]);
-    sv("text", { x: 96, y: 20, class: "h", "text-anchor": "start" }, s, spec.head[1]);
-    sv("text", { x: 480, y: 20, class: "h", "text-anchor": "end" }, s, spec.head[2]);
-    const note = el("p", { class: "paper-note toy-note", "aria-live": "polite" }, box, "Running hidden inputs 1 to 20…");
+    // A phone gets a narrower drawing, so its text stays readable at the phone's width.
+    const g = phone
+      ? { W: 480, x0: 84, dx: 18, r: 6, pitch: 17, top: 23 }
+      : { W: 640, x0: 86, dx: 25, r: 7.5, pitch: 20, top: 24 };
+    const H = g.top + g.pitch * values.length;
+    const cap = el("p", { class: "rows-cap" }, box);
+    el("b", {}, cap, "Many draws");
+    cap.append(` inputs 1 to ${TOY.draws}, not picked`);
+    el("span", { class: "long" }, cap, "; one qubit is the easy end");
+    const s = sv("svg", { viewBox: `0 0 ${g.W} ${H}`, class: "toy-fig", role: "img", "aria-label": "The toy over hidden inputs 1 to 20: computing" }, box);
+    sv("text", { x: 0, y: 18, class: "h" }, s, spec.head[0]);
+    sv("text", { x: g.x0 - g.r, y: 18, class: "h" }, s, spec.head[1]);
+    sv("text", { x: g.W, y: 18, class: "h", "text-anchor": "end" }, s, spec.head[2]);
     const rows = values.map((v, i) => {
-      const y = 34 + spec.pitch * i;
-      const band = sv("rect", { x: -4, y: y + 2, width: 488, height: spec.pitch - 4, rx: 4, class: "band" }, s);
-      const label = sv("text", { x: 0, y: y + spec.pitch / 2 + 8, class: "l" }, s, spec.label(v));
+      const y = g.top + g.pitch * i;
+      const cy = y + g.pitch / 2;
+      const band = sv("rect", { x: 0, y: y + 1, width: g.W, height: g.pitch - 2, rx: 4, class: "band" }, s);
+      const label = sv("text", { x: 4, y: cy + 7, class: "l" }, s, spec.label(v));
       const marks = [];
       for (let d = 0; d < TOY.draws; d++) {
-        const cx = X0 + DX * d;
-        if (step === "reps") {
-          // One column per hidden input: its 10 restarts, filled from the bottom when they hit.
-          const g = sv("g", {}, s);
-          const top = y + 4;
-          const cells = [];
-          for (let k = 0; k < CELLS; k++) {
-            cells.push(sv("rect", { x: cx - 5.5, y: (top + (CELLS - 1 - k) * 3.2).toFixed(1), width: 11, height: 2.6, class: "cell" }, g));
-          }
-          const frame = sv("rect", { x: cx - 7.5, y: top - 2, width: 15, height: CELLS * 3.2 + 3, rx: 2, class: "here-mark" }, g);
-          marks.push({ g, cells, frame });
-        } else {
-          const cy = y + spec.pitch / 2;
-          const dot = sv("circle", { cx, cy, r: 6, class: "dot" }, s);
-          const frame = sv("circle", { cx, cy, r: 9.5, class: "here-mark" }, s);
-          marks.push({ dot, frame });
-        }
+        const cx = g.x0 + g.dx * d;
+        const dot = sv("circle", { cx, cy, r: g.r, class: "dot" }, s);
+        const wedge = step === "reps" ? sv("path", { class: "pie" }, s) : null;
+        const frame = sv("circle", { cx, cy, r: g.r + 3, class: "here-mark" }, s);
+        marks.push({ cx, cy, dot, wedge, frame });
       }
-      const count = sv("text", { x: 480, y: y + spec.pitch / 2 + 8, class: "n", "text-anchor": "end" }, s, "");
-      return { band, label, marks, count, total: 0, done: 0 };
+      const count = sv("text", { x: g.W - 4, y: cy + 7, class: "n", "text-anchor": "end" }, s, "");
+      return { band, label, marks, count, total: 0 };
     });
-    const results = [];
     return {
       // One hidden input's scores, one per row.
       add(draw, scores) {
-        results[draw - 1] = scores;
         scores.forEach((v, i) => {
           const row = rows[i];
           const m = row.marks[draw - 1];
-          if (step === "reps") m.cells.forEach((c, k) => c.classList.toggle("hit", k < v));
+          if (m.wedge) m.wedge.setAttribute("d", pie(m.cx, m.cy, g.r, v / CELLS));
           else m.dot.classList.toggle("hit", v);
+          m.dot.classList.add("run");
           row.total += Number(v);
-          row.done += 1;
           row.count.textContent = String(row.total);
         });
       },
       complete() {
-        const t = rows.map((r) => r.total);
-        const last = t.length - 1;
-        const words = values.map((v, i) => `${spec.label(v)}: ${t[i]}`).join("; ");
-        s.setAttribute("aria-label", `Toy results over hidden inputs 1 to ${TOY.draws}, ${spec.head[1]}, ${spec.head[2]}: ${words}`);
-        const p = DATA.rq1 || {};
-        const r2 = DATA.rq2 || {};
-        if (step === "reps") {
-          note.textContent = `Restarts that hit ${t[0] > t[last] ? "fell" : "did not fall"} from ${t[0]} to ${t[last]} of ${TOY.draws * CELLS} as repetitions grew; the paper's went from ${p.hits1} to ${p.hits8} of ${p.tries}. One qubit is the easy end.`;
-        } else if (step === "restarts") {
-          note.textContent = `Hidden inputs recovered ${t[last] > t[0] ? "rose" : "did not rise"} from ${t[0]} with 1 restart to ${t[last]} with ${values[last]}, as stuck seeds did in the paper.`;
-        } else {
-          note.textContent = `Within ${TH.close} rad here: ${t[0]} of ${TOY.draws} at 10 shots, ${t[1]} at 100. One qubit is the easy end; the paper's 8-qubit circuits lost at ${r2.lowShots || 100}.`;
-        }
+        const words = values.map((v, i) => `${spec.label(v)}: ${rows[i].total}`).join("; ");
+        s.setAttribute("aria-label", `The toy over hidden inputs 1 to ${TOY.draws}, ${spec.head[1]}, ${spec.head[2]}: ${words}`);
       },
-      // Outline the row of the free control's value and the mark of the hidden input on show.
+      // Mark the row of the free control's value and, in it, the hidden input on show.
       here(value, draw) {
         rows.forEach((row, i) => {
           const on = values[i] === value;
@@ -344,27 +339,31 @@
     const fixedNote = el("span", { class: "lab-fixed" }, head);
     const bloch = buildBloch(el("div", { class: "lab-bloch" }, box));
     const plot = buildPlot(el("div", { class: "lab-trace" }, box));
-    const read = el("div", { class: "lab-read", "aria-live": "polite" }, box);
+    const read = el("div", { class: "lab-read" }, box);
+    // Screen readers hear one sentence per search, when it ends, not each landing.
+    const status = el("p", { class: "lab-status", role: "status" }, box);
     const main = el("p", { class: "meter main" }, read);
     const mainLabel = el("span", {}, main, "Restarts that found the input");
     const mainValue = el("b", {}, main, "–");
     const minor = el("p", { class: "meter minor" }, read);
     el("span", {}, minor, "Best guess");
     const minorValue = el("b", {}, minor, "–");
-    const form = el("div", { class: "lab-ctl", role: "group", "aria-label": "Lab controls" }, box);
+    // The free control and the buttons share one row that wraps, so they can never overlap; the
+    // fixed controls stay in the markup but only the header names their values.
+    const ctlRow = el("div", { class: "lab-ctlrow" }, box);
+    const form = el("div", { class: "lab-ctl", role: "group", "aria-label": "Lab controls" }, ctlRow);
     const ctl = {
       reps: control(form, name, "reps", "Repetitions", REPS.length - 1, REPS.indexOf(state.reps), step.free === "reps", (i) => `${REPS[i]} × ${TOY.blocks / REPS[i]}`),
       shots: control(form, name, "shots", "Shots", SHOTS.length - 1, SHOTS.indexOf(state.shots), step.free === "shots", (i) => shotsWord(SHOTS[i])),
       restarts: control(form, name, "restarts", "Restarts", MAX_RESTARTS, state.restarts, step.free === "restarts", (i) => `${i} restart${i === 1 ? "" : "s"}`),
     };
-    const buttons = el("div", { class: "lab-buttons" }, box);
-    const next = el("button", { type: "button" }, buttons, "Next hidden input");
+    const buttons = el("div", { class: "lab-buttons" }, ctlRow);
+    const next = el("button", { type: "button", "aria-label": "Next hidden input" }, buttons, "Next input");
     const reset = el("button", { type: "button" }, buttons, "Reset");
     const replay = el("button", { type: "button" }, buttons, "Replay slowly");
     // With reduced motion every search shows its end at once, so there is nothing to replay.
     if (reduce) replay.hidden = true;
-    const side = box.closest(".lab-row")?.querySelector(`[data-rows="${name}"]`);
-    const rows = side ? buildRows(side, name) : null;
+    const rows = buildRows(el("div", { class: "lab-rows" }, box), name);
 
     let frame = 0;
     let shown = false;
@@ -382,7 +381,7 @@
         .filter((c) => !c.free)
         .map((c) => c.out.textContent)
         .join(", ")}`;
-      rows?.here(state[name], state.draw);
+      rows.here(state[name], state.draw);
     }
 
     // One redraw per animation frame however many input events a drag fires, and the restarts it
@@ -492,17 +491,18 @@
         // Screen readers hear the result once, when it is complete.
         read.setAttribute("aria-busy", "false");
         const words = `${hits} of ${n} restarts found the hidden input; the best guess is ${rad(b.error)} radians from it (${WORD[b.outcome]}).`;
+        status.textContent = words;
         bloch.label(words);
         plot.title.textContent = `Matching loss across every guess, lowest where a guess's gradient matches the client's. ${words}`;
         plot.s.setAttribute("aria-label", plot.title.textContent);
       };
+      busy();
       minorValue.textContent = "–";
       meter(false);
       if (reduce) {
         finish();
         return;
       }
-      busy();
       const stretch = speed;
       const t0 = performance.now();
       const span = (n - 1) * gap + PACE.roll + PACE.fade;
@@ -577,7 +577,7 @@
         if (shown) return;
         shown = true;
         request();
-        if (rows) fillRows(rows, name);
+        fillRows(rows, name);
       },
     };
   }

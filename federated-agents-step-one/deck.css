@@ -184,7 +184,7 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 .bar-row .bar { display: block; height: 30px; width: calc(var(--share, 0) * 1%); min-width: 4px; background: var(--ours); border-radius: 2px; }
 .bar-row b { font-family: var(--display); font-weight: 600; font-size: 30px; color: var(--ours-ink); text-align: right; }
 .audit figcaption { display: block; }
-.org-bars .cap-sub { display: block; margin-top: 4px; font-family: var(--mono); font-size: 20px; color: var(--muted); }
+.org-bars .cap-sub { display: block; margin-top: 4px; font-family: var(--mono); font-size: 20px; line-height: 1.3; color: var(--muted); }
 .audit .bar-row i.bar { background: var(--fix); box-shadow: inset 0 0 0 2px var(--fix-line); }
 .audit .track { display: block; padding: 2px; border: 2px solid var(--neutral-line); border-radius: 3px; }
 .audit .track .bar { height: 22px; }

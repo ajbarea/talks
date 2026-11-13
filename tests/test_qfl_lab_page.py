@@ -95,8 +95,8 @@ def test_the_federated_learning_picture_is_the_decks() -> None:
         return re.findall(r"<text[^>]*>([^<]*)</text>", html)
 
     deck_html = (TALK / "index.html").read_text()
-    deck = re.search(r'<svg data-only="desktop" viewBox="0 0 1180 452".*?</svg>', deck_html, re.S)
-    page = re.search(r'<svg class="fl" viewBox="0 0 1180 452".*?</svg>', (LAB / "index.html").read_text(), re.S)
+    deck = re.search(r'<svg data-only="desktop" viewBox="0 0 1180 466".*?</svg>', deck_html, re.S)
+    page = re.search(r'<svg class="fl" viewBox="0 0 1180 466".*?</svg>', (LAB / "index.html").read_text(), re.S)
     assert deck and page
     assert texts(deck.group(0)) == texts(page.group(0))
     shapes = lambda h: re.findall(r'<(?:rect|path)[^>]*\b(?:d|x)="[^"]*"', h)  # noqa: E731

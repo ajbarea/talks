@@ -4,10 +4,9 @@
 Target Format: Vertical 9:16 (YouTube Shorts)
 Target Duration: 48 seconds, a Short only
 Tone: deadpan. AJ treats a silly job with total seriousness and never winks at the camera. The joke is in the gap between how hard he tests each board and what he hands over at the end. No slang, no hype words, no world records.
-Idea: Alex's (see the video list). Two nephews, both about 15.
+Idea: Alex's (see the video list). Only AJ appears on screen: the nephews stay off camera, and the camera is the second nephew, so the last board is handed straight to the viewer.
 Look:
 - **AJ:** loose orange jersey with 'AJ' in white block letters, black shorts, black knee pads, black skate shoes, matte black helmet with a yellow lightning bolt. He wears the helmet in every segment, the kitchen table included.
-- **Nephews:** two 15-year-old boys in hoodies and jeans, one grey, one navy, standing in a sunny suburban driveway.
 - **Sets:** a full-size wooden mega ramp in an open desert at golden hour (segments 1 and 2), a home kitchen table at night (segment 3), a suburban driveway in afternoon sun (segment 4).
 - **Physics, every skating shot:** the board stays on the ramp surface except over the gap and above the quarter pipe lip. In the air he follows one smooth falling arc. He lands rolling, knees bent, on a surface sloped the way he is moving. No riding on walls or buildings, no floating, no slow motion hang time, no crowds, no confetti.
 
@@ -53,12 +52,12 @@ Sources:
 
 ### Segment S4 (0:36 – 0:48): The Handoff
 
-* **Environment & Lighting:** A sunny suburban driveway in afternoon light, a garage door and a lawn behind. Eye-level camera, vertical 9:16, medium-wide shot that holds all three people.
-* **Avatar (Wardrobe & Physicality):** AJ: loose orange jersey with 'AJ' in white block letters, black shorts, black knee pads, black skate shoes, matte black helmet with a yellow lightning bolt. Nephews: two 15-year-old boys, one in a grey hoodie and jeans, one in a navy hoodie and jeans. At 0:37, AJ hands the full-size maple skateboard to the nephew in grey, who grins and takes it in both hands. At 0:41, AJ turns to the nephew in navy and places a tiny fingerboard in his open palm. The nephew in navy looks at it, then at AJ, with no expression. At 0:45, AJ turns to the camera, serious.
+* **Environment & Lighting:** A sunny suburban driveway in afternoon light, a garage door and a lawn behind. Eye-level camera at a teenager's height, as if the viewer is standing in front of AJ, vertical 9:16, medium close-up. AJ is the only person in frame.
+* **Avatar (Wardrobe & Physicality):** AJ: loose orange jersey with 'AJ' in white block letters, black shorts, black knee pads, black skate shoes, matte black helmet with a yellow lightning bolt. At 0:37, turns slightly to his right and holds the full-size maple skateboard out of frame, as if handing it to someone just off camera; it leaves his hands and he smiles briefly. At 0:41, turns back to the camera, face serious again, and holds a tiny fingerboard out on his open palm, close to the lens, as if offering it to the viewer. At 0:45, keeps the palm out and looks straight into the camera, completely sincere.
 * **Visual Overlay:** None.
 * **Spoken Script:**
   "One for you. And for you... a board I tested just as hard. Which one would you pick?"
-* **Vocal Direction:** Warm on 'One for you', then the same flat inspector tone on 'a board I tested just as hard'. A short pause, then the question straight to the camera, dry and sincere, so it loops back into 'My nephews want skateboards'.
+* **Vocal Direction:** Warm on 'One for you', said toward the off-camera side, then the same flat inspector tone on 'a board I tested just as hard', said straight into the camera. A short pause, then the question, dry and sincere, so it loops back into 'My nephews want skateboards'.
 
 ---
 
@@ -79,7 +78,7 @@ A 30-second loop: laid-back lo-fi hip hop at 85 BPM, dusty drum break, warm elec
 ## YouTube metadata
 
 - **Title:** I Test Every Skateboard Before My Nephews Get One
-- **Description:** Two nephews, two skateboards, one very serious uncle. Every board gets the same test on the same three-part ramp: roll in, clear the gap, land on the slope, quarter pipe. Narrated and acted by an AI avatar of AJ, made with Google Vids. Ramp layout: https://en.wikipedia.org/wiki/Mega_ramp
+- **Description:** Two nephews, two skateboards, one very serious uncle, and only one of them gets a full-size board. Every board gets the same test on the same three-part ramp: roll in, clear the gap, land on the slope, quarter pipe. Narrated and acted by an AI avatar of AJ, made with Google Vids. Ramp layout: https://en.wikipedia.org/wiki/Mega_ramp
 - **Disclosure:** tick 'Altered or synthetic content' on upload.
 - **Pinned comment:** Which one would you pick: the big board or the one that fits in your pocket?
 - **Tags:** skateboarding, mega ramp, fingerboard, tech deck, uncle, nephews, comedy, shorts

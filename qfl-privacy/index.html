@@ -155,7 +155,7 @@
   <h2>The gradient a client shares can rebuild the input it was computed from</h2>
   <div class="point">
     <figure class="flow-fig">
-      <svg viewBox="0 0 640 330" role="img" aria-label="Diagram: a client keeps its input x and sends only its gradient g to the server. The server knows the circuit and searches for an input x-hat whose gradient matches g; when it succeeds, x-hat equals x.">
+      <svg data-only="desktop" viewBox="0 0 640 330" role="img" aria-label="Diagram: a client keeps its input x and sends only its gradient g to the server. The server knows the circuit and searches for an input x-hat whose gradient matches g; when it succeeds, x-hat equals x.">
         <rect class="box client" x="8" y="40" width="200" height="190" rx="10"/>
         <text class="box-title" x="108" y="78" text-anchor="middle">Client</text>
         <text class="box-text" x="108" y="112" text-anchor="middle">keeps its input</text>
@@ -174,6 +174,27 @@
         <g class="fragment" data-fragment-index="0">
           <rect class="found" x="440" y="262" width="180" height="56" rx="28"/>
           <text class="found-text" x="530" y="298" text-anchor="middle">x̂ = x: leaked</text>
+        </g>
+      </svg>
+      <svg data-only="phone" viewBox="0 0 360 412" role="img" aria-label="Diagram: a client keeps its input x and sends only its gradient g down to the server. The server knows the circuit and searches for an input x-hat whose gradient matches g; when it succeeds, x-hat equals x.">
+        <rect class="box client" x="20" y="8" width="320" height="104" rx="10"/>
+        <text class="box-title" x="44" y="52">Client</text>
+        <text class="box-text" x="44" y="86">keeps its input</text>
+        <circle class="held-dot" cx="276" cy="60" r="28"/>
+        <text class="held-x" x="276" y="70" text-anchor="middle">x</text>
+        <path class="wire" d="M70 116V190"/>
+        <path class="head" d="M70 198l-9 -16h18z"/>
+        <text class="wire-label" x="96" y="142">sends gradient g</text>
+        <text class="wire-sub" x="96" y="168">one number per</text>
+        <text class="wire-sub" x="96" y="192">trainable angle</text>
+        <rect class="box server" x="20" y="202" width="320" height="136" rx="10"/>
+        <text class="box-title" x="180" y="238" text-anchor="middle">Server</text>
+        <text class="box-text" x="180" y="270" text-anchor="middle">knows the circuit,</text>
+        <text class="box-text" x="180" y="296" text-anchor="middle">looks for an x̂</text>
+        <text class="box-text" x="180" y="322" text-anchor="middle">whose gradient is g</text>
+        <g class="fragment" data-fragment-index="0">
+          <rect class="found" x="80" y="352" width="200" height="52" rx="26"/>
+          <text class="found-text" x="180" y="386" text-anchor="middle">x̂ = x: leaked</text>
         </g>
       </svg>
     </figure>

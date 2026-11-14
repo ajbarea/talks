@@ -4,7 +4,7 @@
 Target Format: Vertical 9:16 (YouTube Shorts)
 Target Duration: 48 seconds, a Short only
 Tone: deadpan. AJ treats a silly job with total seriousness and never winks at the camera. The joke is in the gap between how hard he tests each board and what he hands over at the end. No slang, no hype words, no world records.
-Idea: Alex's (see the video list). Only AJ appears on screen: the nephews stay off camera, and the camera is the second nephew, so the last board is handed straight to the viewer.
+Idea: Alex's (see the video list). Only AJ appears on screen: the nephews stay off camera. Micah gets the full-size board, handed out of frame. Alex gets the fingerboard, and the camera is Alex, so it is handed straight to the viewer.
 Look:
 - **AJ:** loose orange jersey with 'AJ' in white block letters, black shorts, black knee pads, black skate shoes, matte black helmet with a yellow lightning bolt. He wears the helmet in every segment, the kitchen table included.
 - **Sets:** a full-size wooden mega ramp in an open desert at golden hour (segments 1 and 2), a home kitchen table at night (segment 3), a suburban driveway in afternoon sun (segment 4).
@@ -21,7 +21,7 @@ Sources:
 
 * **Environment & Lighting:** The top deck of a full-size wooden mega ramp in an open desert at golden hour, warm low sun from the left, long shadows, clear sky. Behind AJ the steep roll-in drops away, then a gap, a sloped landing ramp and a tall quarter pipe far below. Handheld camera at chest height, vertical 9:16, medium shot.
 * **Avatar (Wardrobe & Physicality):** AJ: loose orange jersey with 'AJ' in white block letters, black shorts, black knee pads, black skate shoes, matte black helmet with a yellow lightning bolt. Stands at the edge holding a plain maple skateboard upright beside him, calm and serious. At 0:06, glances down at the drop, then back at the camera without smiling. At 0:10, sets the tail of the board on the coping.
-* **Visual Overlay:** At 0:01, a plain white caption at the top: 'BOARD 1 OF 2'. Nothing else.
+* **Visual Overlay:** At 0:01, a plain white caption at the top: 'BOARD 1 OF 2: MICAH'. Nothing else.
 * **Spoken Script:**
   "My nephews want skateboards. Before I give anyone a board, I test it myself... on the biggest ramp I could find."
 * **Vocal Direction:** Flat, calm, matter-of-fact, like reading a safety notice. No energy lift. A half-second pause before 'on the biggest ramp', then say it in the same flat tone.
@@ -43,7 +43,7 @@ Sources:
 
 * **Environment & Lighting:** A home kitchen table at night under one warm pendant lamp, dark window behind. On the table sits a small wooden fingerboard mega ramp about the size of a shoebox, with the same three sections: roll-in, gap, quarter pipe. Close-up from table height, vertical 9:16, shallow depth of field.
 * **Avatar (Wardrobe & Physicality):** AJ: loose orange jersey with 'AJ' in white block letters, black knee pads, matte black helmet with a yellow lightning bolt, seated at the table and leaning in with total focus. Two fingers ride a tiny fingerboard down the little roll-in. At 0:27, the fingerboard clears the tiny gap in one small arc and lands on the slope. At 0:30, it goes up the little quarter pipe and back down. At 0:33, AJ lifts his eyes to the camera, completely serious, and nods once.
-* **Visual Overlay:** At 0:24, a plain white caption at the top: 'BOARD 2 OF 2'. At 0:34, a small white checkmark caption: 'BOARD 2: APPROVED'.
+* **Visual Overlay:** At 0:24, a plain white caption at the top: 'BOARD 2 OF 2: ALEX'. At 0:34, a small white checkmark caption: 'BOARD 2: APPROVED'.
 * **Spoken Script:**
   "Board two got the exact same test. Same ramp. Same standards... slightly smaller."
 * **Vocal Direction:** Identical flat inspector tone to the line before, as if nothing is different. A one-second pause before 'slightly smaller', then say it quietly and quickly, eyes on the camera.
@@ -56,8 +56,8 @@ Sources:
 * **Avatar (Wardrobe & Physicality):** AJ: loose orange jersey with 'AJ' in white block letters, black shorts, black knee pads, black skate shoes, matte black helmet with a yellow lightning bolt. At 0:37, turns slightly to his right and holds the full-size maple skateboard out of frame, as if handing it to someone just off camera; it leaves his hands and he smiles briefly. At 0:41, turns back to the camera, face serious again, and holds a tiny fingerboard out on his open palm, close to the lens, as if offering it to the viewer. At 0:45, keeps the palm out and looks straight into the camera, completely sincere.
 * **Visual Overlay:** None.
 * **Spoken Script:**
-  "One for you. And for you... a board I tested just as hard. Which one would you pick?"
-* **Vocal Direction:** Warm on 'One for you', said toward the off-camera side, then the same flat inspector tone on 'a board I tested just as hard', said straight into the camera. A short pause, then the question, dry and sincere, so it loops back into 'My nephews want skateboards'.
+  "Micah, this one's yours. Alex... a board I tested just as hard. Which one would you pick?"
+* **Vocal Direction:** Warm on 'Micah, this one's yours', said toward the off-camera side, then the same flat inspector tone on 'a board I tested just as hard', said straight into the camera. A short pause, then the question, dry and sincere, so it loops back into 'My nephews want skateboards'.
 
 ---
 
@@ -86,5 +86,5 @@ A 30-second loop: laid-back lo-fi hip hop at 85 BPM, dusty drum break, warm elec
 ## Assets
 
 - AJ's avatar in the orange 'AJ' jersey and lightning-bolt helmet (as in the first sk8 draft).
-- Captions: 'BOARD 1 OF 2', 'BOARD 1: APPROVED', 'BOARD 2 OF 2', 'BOARD 2: APPROVED', plain white sans serif.
+- Captions: 'BOARD 1 OF 2: MICAH', 'BOARD 1: APPROVED', 'BOARD 2 OF 2: ALEX', 'BOARD 2: APPROVED', plain white sans serif.
 - The audio loop above, and the SFX in the table.

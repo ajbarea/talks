@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import importlib.util
+import json
+import re
 from pathlib import Path
 
 import pytest
@@ -128,8 +130,9 @@ def test_links_and_downloads_appear_for_each_talk(site, repo: Path, tmp_path: Pa
     site.build(out, repo, _exports(tmp_path, "alpha-talk", "beta-talk"))
     index = (out / "index.html").read_text()
     alpha = index[index.index('href="alpha-talk/"') : index.index('href="beta-talk/"')]
-    assert 'href="alpha-talk/alpha-talk.pptx" download' in alpha and "(2.5 MB)" in alpha
-    assert 'href="alpha-talk/alpha-talk.pdf" download' in alpha and "Download PDF" in alpha and "(350 KB)" in alpha
+    assert 'href="alpha-talk/alpha-talk.pptx" download' in alpha and "2.5 MB" in alpha
+    assert 'href="alpha-talk/alpha-talk.pdf" download' in alpha and "350 KB" in alpha
+    assert '<span class="sr-only">Download </span>PDF' in alpha
     assert alpha.index(".pptx") < alpha.index(".pdf")
     # In the order the index defines, whatever order talk.json lists them.
     assert alpha.index("https://github.com/a/b") < alpha.index("https://youtu.be/x")
@@ -298,3 +301,120 @@ def test_a_moved_talk_is_published_as_a_redirect_and_not_listed(site, tmp_path):
     page = (out / "claude-duet" / "index.html").read_text()
     assert 'http-equiv="refresh"' in page and "../claude-tooling/" in page
     assert "claude-duet/" not in (out / "index.html").read_text()
+
+
+def _built(site, repo: Path, tmp_path: Path, **links: str) -> str:
+    if links:
+        (repo / "alpha-talk" / "talk.json").write_text(json.dumps({"links": links}))
+    exports = _exports(tmp_path, "alpha-talk", "beta-talk")
+    (exports / "alpha-talk" / "thumb-loop.webp").write_bytes(b"loop")
+    out = tmp_path / "out"
+    site.build(out, repo, exports)
+    return (out / "index.html").read_text()
+
+
+def _talks(index: str) -> dict[str, str]:
+    """Each talk's markup, by folder name."""
+    found = re.findall(r'<div class="talk" id="talk-([a-z0-9-]+)".*?\n      </div>', index, re.S)
+    return {
+        name: re.search(rf'<div class="talk" id="talk-{name}".*?\n      </div>', index, re.S).group(0) for name in found
+    }
+
+
+def test_every_talk_offers_its_deck_downloads_and_links_once(site, repo: Path, tmp_path: Path) -> None:
+    index = _built(site, repo, tmp_path, code="https://github.com/a/b", video="https://youtu.be/x")
+    talks = _talks(index)
+    assert list(talks) == ["alpha-talk", "beta-talk"]
+    for name, talk in talks.items():
+        assert talk.count(f'<a class="open" href="{name}/">Open the deck') == 1
+        assert f'<h2><a href="{name}/">' in talk
+        for ext, label in (("pptx", "PowerPoint"), ("pdf", "PDF")):
+            assert f'href="{name}/{name}.{ext}" download>' in talk and f"Download </span>{label} " in talk
+    alpha = talks["alpha-talk"]
+    assert alpha.index("github.com/a/b") < alpha.index("youtu.be/x")
+    assert ">Code on GitHub</a>" in alpha and ">Video</a>" in alpha
+    assert "github.com" not in talks["beta-talk"]
+
+
+def test_the_page_names_the_carousel_and_its_controls(site, repo: Path, tmp_path: Path) -> None:
+    index = _built(site, repo, tmp_path)
+    assert '<section class="talks" id="talks" aria-label="Talks">' in index
+    assert '<button class="step prev" type="button" aria-label="Previous talk" hidden>' in index
+    assert '<button class="step next" type="button" aria-label="Next talk" hidden>' in index
+    assert '<p class="sr-only" aria-live="polite" aria-atomic="true"></p>' in index
+    # The label never repeats "carousel", which the role description already says.
+    assert 'aria-label="Talks carousel"' not in index
+
+
+def test_without_script_every_talk_is_a_plain_card(site, repo: Path, tmp_path: Path) -> None:
+    """The carousel roles, hidden talks and the stage controls exist only once the script runs."""
+    index = _built(site, repo, tmp_path)
+    body = index[index.index("<body>") : index.index("<script>\n")]
+    assert "aria-roledescription" not in body and "inert" not in body
+    assert '<html lang="en">' in index and 'classList.add("flow")' in index
+    for talk in _talks(index).values():
+        about = talk[talk.index('<div class="about">') :].replace('<svg aria-hidden="true"', "<svg")
+        assert "hidden" not in about and "tabindex" not in about
+        # The preview repeats the deck link, so it stays out of the tab order and the accessibility tree.
+        cover = talk[: talk.index('<div class="about">')]
+        assert 'tabindex="-1" aria-hidden="true"' in cover
+
+
+def test_the_script_wires_the_carousel_pattern() -> None:
+    js = (ROOT / "scripts" / "index" / "index.js").read_text()
+    for wiring in (
+        '"aria-roledescription", "carousel"',
+        '"role", "group"',
+        '"aria-roledescription", "slide"',
+        "aria-label",
+        ".inert = !here",
+        '"aria-hidden", "true"',
+        "aria-disabled",
+        "scrollend",
+        '.hint")?.setAttribute("hidden"',
+    ):
+        assert wiring in js, wiring
+
+
+def test_the_centered_talk_alone_loads_eagerly_and_loops(site, repo: Path, tmp_path: Path) -> None:
+    for name in ("gamma-talk", "delta-talk"):
+        _talk(repo, name)
+    exports = _exports(tmp_path, "alpha-talk", "beta-talk", "delta-talk", "gamma-talk")
+    out = tmp_path / "out"
+    site.build(out, repo, exports)
+    talks = _talks((out / "index.html").read_text())
+    middle = list(talks)[(len(talks) - 1) // 2]
+    assert [n for n, t in talks.items() if 'fetchpriority="high"' in t] == [middle]
+    assert all(f"--thumb: url('{n}/thumb.webp')" in t for n, t in talks.items())
+
+
+def test_the_page_inlines_its_styles_and_script(site, repo: Path, tmp_path: Path) -> None:
+    index = _built(site, repo, tmp_path)
+    assert "/* index.css */" not in index and "/* index.js */" not in index and "<!-- talks -->" not in index
+    assert "@keyframes flow-tilt" in index and "animation-timeline: --talk" in index
+    assert "prefers-reduced-motion: reduce" in index and "prefers-color-scheme: dark" in index
+
+
+def test_the_cover_flow_animates_only_transform_and_opacity() -> None:
+    """Each per-frame change runs on the compositor; z-index orders the covers and changes only by step."""
+    css = (ROOT / "scripts" / "index" / "index.css").read_text()
+    names = re.findall(r"@keyframes (flow-[a-z]+) \{", css)
+    assert {"flow-z", "flow-tilt", "flow-shade", "flow-about", "flow-flat"} <= set(names)
+    for name in names:
+        start = css.index("{", css.index(f"@keyframes {name} {{")) + 1
+        depth, end = 1, start
+        while depth:
+            depth += {"{": 1, "}": -1}.get(css[end], 0)
+            end += 1
+        props = set(re.findall(r"([a-z-]+):", css[start:end]))
+        assert props <= ({"z-index"} if name == "flow-z" else {"transform", "opacity"}), name
+
+
+def test_the_preview_loop_plays_once_and_briefly() -> None:
+    """It starts on its own on the centered talk, so it must end within 5 s (WCAG 2.2.2) and not repeat."""
+    exports = (ROOT / "scripts" / "exports.py").read_text()
+    assert "loop=1," in exports
+    fps = int(re.search(r"^LOOP_FPS = (\d+)$", exports, re.M).group(1))
+    seconds = float(re.search(r"^LOOP_SECONDS = ([\d.]+)$", exports, re.M).group(1))
+    assert "range(round(LOOP_FPS * LOOP_SECONDS) + 1)" in exports
+    assert (round(fps * seconds) + 1) / fps < 5  # the frames written, at their rate

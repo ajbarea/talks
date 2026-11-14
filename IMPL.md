@@ -1,29 +1,23 @@
-# IMPL: three talks, each a stronger version of itself, light by default, 2026-11-09
+# IMPL: the talks landing page as a cover flow, 2026-11-11
 
-Branch fix/deck-looks-rollback, PR #96. Builds on the rollback commit a1494ff (the shared forge look undone).
+Branch feat/coverflow, issue #101, PR #102 (assigned ajbarea). Only the index page changes (`scripts/site.py`, `scripts/index/`, the loop count in `scripts/exports.py`); no deck is touched. Do NOT merge: AJ approves the look first.
 
 ## Slice
-Each talk gets its own strong identity on a light ground for lit rooms, and every slide is audited against the bar: text 4.5:1 and up (aim 7:1), marks 3:1 or a darker outline, pale fills tested under room light, one meaning per colour, no leftover forge token. `checking-the-checker/`, `shared/deck.css` and `shared/deck.js` stay unchanged.
+The deck picker is a cover flow: centered talk large, neighbours turned in 3D with reflections on a dark stage that fades into the page; keys, swipe, trackpad, wheel over the covers, mouse drag and clicks glide; the centered talk plays its loop once; title, description, one "Open the deck" and small labelled chips below. No script: the old cards.
 
 ## Done
-- ✅ claude-tooling (second pass, AJ's verdict on the orange bands): warm paper, near-black ink, Source Serif 4 titles (self-hosted, OFL), neutral cards with thin borders, clay only as accent; quiet text-tab rail with a clay underline; the dancing robot in clay on the paper. Slide 9 key still says Orange; the Desktop folders stay blue because its key says Blue.
-- ✅ claude-tooling product icons beside the app names, chat, Desktop and Duet from official listings and product pages, Code, Science, Cowork and Design supplied by AJ (f046caf); sources in `claude-tooling/README.md`. Closing slide: "Product names and icons belong to Anthropic."
-- ✅ Each deck's chapter rail is its own (rules in that deck's `deck.css` only): claude-tooling text tabs, federated-agents a connected progress track with nodes, kourai-khryseai small caps with lozenges and a Greek key under the current chapter.
-- ✅ federated-agents: blue is shared and travels, orange is what stays private, rivals are grey, AJ's own work navy, wrong or attack raspberry, right ink with its tick. `script.md` and notes: gold/green/blue words moved to blue/orange/grey; "Mine, in blue and orange" (the split dot on slide 7).
-- ✅ kourai-khryseai: marble ground with veins, Greek key under titles and along the title and closing feet, Marcellus for titles with digits in Atkinson via unicode-range, gold and bronze, Aegean blue for context, terracotta for risk. Golden Maidens cut out of their dark ground (`img/golden-maidens-light.webp`), halo kept, no Hephaestus portrait.
-- ✅ Light by default on all three: `dark` classes and dark background attributes removed from title and closing slides. Reveal copies a section's classes to its background element, so the deck.css title pseudo-elements are scoped to `section.`.
-- ✅ Audit tool in the session scratchpad (per-slide contrast and mark sampling); room-light closest-pair test reproduces PR #92's 7.6 and 20.7.
-- ✅ README look section updated.
-
-- ✅ Review fixes (11-10): closing slides centered again (`fit-content(620px) 424px`, shared `justify-content: center`); claude-tooling back on system `--sans`/`--mono`; every slides-check WARN cleared (kicker, owner line and PR chips 0.64em; phone kicker, owner, details table, FAQ, back link and backup `.small` raised to 12px+); README and this file match the code.
+- ✅ Scroll-snap strip + CSS view timelines (transform/opacity only); script settles on scrollend, APG carousel roles, inert, one polite announcement, focus carried to the new talk.
+- ✅ Four review rounds (a11y, perf, UX, verify x3); every Blocking and Should-fix fixed or kept by a documented choice in the PR body; Copilot's two points declined with reasons.
+- ✅ `make site-check` (in `make check` and CI): 40+ checks incl. axe in both themes, fold for every talk, resize, drags, focus rings, chip borders; new checks mutation-proven.
+- ✅ Frame timing: p95 16.7 ms at 1920 and on a 4x phone; 44rem cover cap and flat shade chosen by measurement.
+- ✅ Shots in fleet-briefing/shots/2026-11-11/talks-coverflow-*.
 
 ## Next
-- 📋 Independent Opus verify of the review fixes; then Heph and AJ merge. Icon nits for AJ: faint edge on `icon-claude-science.png`, square corners on `icon-claude-design.png`.
+- 📋 Round-5 read (ceiling) result; then AJ judges the look on #102; merge only on his yes.
 
 ## Verify
-- `SLIDES=<techne>/plugins/graphe/skills/slides/scripts/slides.py SPHRAGIS=<sphragis> make check`, then `make lint`.
-- Render every slide at 1920x1080 and on a phone; read the sheets. `document.getAnimations()` on each title: robot, motif `m-flow`, halo `k-ring`; none under reduced motion.
-- Per-slide text against main: only the title byline moved (earlier pass) and the colour words above changed.
+- With `_exports/` present: `make site`, `flock -o /tmp/fleet-heavy.lock make site-check SLIDES=...`, `make lint`, `uv run pytest -q tests/test_site.py`.
+- Frame timing: the rAF + trace script from the PR's Measurements section (headless Chromium, 1920 and 390x844 at 4x CPU).
 
 ## Next (not started)
 - Custom thumbnails for Tier 1 uploads that still show an auto frame (upload-package.md recipe).

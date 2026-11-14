@@ -30,6 +30,11 @@ number to see every slide and jump to one. A link like `.../federated-agents/#/5
   Hyperlegible because Marcellus's numerals read as letters).
 - `scripts/site.py`: lays every talk out as one site and writes the index page, listing each talk
   by its own `<title>` and description, with its preview, its PowerPoint and PDF downloads and its links.
+  The page's template, styles and script are in `scripts/index/` and are inlined at build time. With
+  its script the page is a cover flow (arrow keys, swipe, trackpad, wheel, drag or a click on a side
+  cover; the centered talk plays its preview loop); without it, the talks are plain cards.
+  `make site-check` drives the built page in Chromium: carousel roles, keys, focus, target sizes,
+  reduced motion, the no-script cards and axe.
 - `scripts/exports.py`: exports each talk as `<folder>.pptx` (one picture per slide, the script in
   the speaker notes' prompts, through `graphe:slides pptx`), `<folder>.pdf` (vector, one page per slide,
   through `graphe:slides pdf`) and a preview of its title slide. The exports are built in CI,

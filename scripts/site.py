@@ -30,7 +30,7 @@ MARK = ".talks-site"
 #: A talk folder's notes (README.md) and scripts stay in the repository.
 SKIP = shutil.ignore_patterns("*.py", "__pycache__", "*.md", "talk.json")
 #: The links a talk may name, in the order the index shows them, with their labels.
-LINKS = {"code": "Code on GitHub", "docs": "Documentation", "video": "Watch the video"}
+LINKS = {"code": "Code on GitHub", "docs": "Docs site", "video": "Video"}
 
 
 def is_moved(d: pathlib.Path) -> bool:
@@ -109,20 +109,24 @@ def size(path: pathlib.Path) -> str:
     return f"{mb:.1f} MB" if mb >= 1 else f"{max(1, round(mb * 1000))} KB"
 
 
-#: The downloads each talk offers, by file type, in the order the index shows them.
-DOWNLOADS = {"pptx": "Download for PowerPoint", "pdf": "Download PDF"}
+#: The downloads each talk offers, by file type, in the order the index shows them, with their labels.
+DOWNLOADS = {"pptx": "PowerPoint", "pdf": "PDF"}
+#: The index page's template, styles and script, joined into one file at build time.
+PAGE = pathlib.Path(__file__).with_name("index")
 
 ICONS = {
+    "download": '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
     "code": '<path d="M9 7 4 12l5 5M15 7l5 5-5 5"/>',
     "docs": '<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7"/>',
-    "video": '<path d="M5 4l14 8-14 8z"/>',
+    "video": '<path d="M7 5l12 7-12 7z"/>',
+    "open": '<path d="M5 12h14M13 6l6 6-6 6"/>',
 }
 
 
-def icon(kind: str) -> str:
+def icon(kind: str, px: int = 16) -> str:
     return (
-        '<svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" '
-        f'stroke="currentColor" stroke-width="2" stroke-linejoin="round">{ICONS[kind]}</svg>'
+        f'<svg aria-hidden="true" viewBox="0 0 24 24" width="{px}" height="{px}" fill="none" '
+        f'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">{ICONS[kind]}</svg>'
     )
 
 
@@ -134,164 +138,55 @@ def item(
     sizes: dict[str, str] | None,
     thumb: bool,
     loop: bool = False,
+    centered: bool = False,
 ) -> str:
+    """One talk: its preview and, beside or under it, its title, description, one primary action
+    and a row of small labelled downloads and links. The page script turns the list into a cover flow."""
     t, d = html.escape(title), html.escape(description)
     loop_attr = f' data-loop="{name}/thumb-loop.webp"' if loop else ""
+    # Every preview loads at once anyway: its reflection draws from the same file.
+    priority = ' fetchpriority="high"' if centered else ""
     picture = (
-        f'<a class="shot" href="{name}/" tabindex="-1" aria-hidden="true">'
-        f'<img src="{name}/thumb.webp" alt="" width="960" height="540" loading="lazy"{loop_attr}></a>'
+        f'<a class="cover" href="{name}/" tabindex="-1" aria-hidden="true" draggable="false" '
+        f"style=\"--thumb: url('{name}/thumb.webp')\">"
+        f'<img src="{name}/thumb.webp" alt="" width="960" height="540" decoding="async" draggable="false"'
+        f"{priority}{loop_attr}></a>"
         if thumb
-        else f'<a class="shot blank" href="{name}/" tabindex="-1" aria-hidden="true"><span>{t}</span></a>'
+        else f'<a class="cover blank" href="{name}/" tabindex="-1" aria-hidden="true" draggable="false">'
+        f"<span>{t}</span></a>"
     )
-    actions = [f'<a class="button primary" href="{name}/">Open the talk</a>']
-    for ext, label in DOWNLOADS.items() if sizes else ():
-        actions.append(
-            f'<a class="button" href="{name}/{name}.{ext}" download>{label} '
-            f'<span class="note">({sizes[ext]})</span></a>'
-        )
-    more = "".join(
-        f'<li><a href="{html.escape(url)}">{icon(kind)}{LINKS[kind]}</a></li>' for kind, url in named.items()
-    )
-    return f"""    <article class="talk">
-      {picture}
-      <div class="about">
-        <h2><a href="{name}/">{t}</a></h2>
-        <p>{d}</p>
-        <p class="actions">{"".join(actions)}</p>
-        {f'<ul class="links">{more}</ul>' if more else ""}
-      </div>
-    </article>"""
+    chips = [
+        f'<li><a class="chip" href="{name}/{name}.{ext}" download>{icon("download")}'
+        f'<span class="sr-only">Download </span>{label} <span class="size">{sizes[ext]}</span></a></li>'
+        for ext, label in (DOWNLOADS.items() if sizes else ())
+    ]
+    chips += [
+        f'<li><a class="chip" href="{html.escape(url)}">{icon(kind)}{LINKS[kind]}</a></li>'
+        for kind, url in named.items()
+    ]
+    more = f'<ul class="chips">{"".join(chips)}</ul>' if chips else ""
+    return f"""      <div class="talk" id="talk-{name}" data-name="{name}">
+        {picture}
+        <div class="about">
+          <h2><a href="{name}/">{t}</a></h2>
+          <p class="description">{d}</p>
+          <div class="actions"><a class="open" href="{name}/">Open the deck{icon("open", 18)}</a>{more}</div>
+        </div>
+      </div>"""
 
 
-INDEX = """<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Talks by AJ Barea</title>
-  <meta name="description"
-    content="Research talks by AJ Barea: open one in your browser, or download it as PowerPoint or PDF.">
-  <meta property="og:title" content="Talks by AJ Barea">
-  <meta property="og:description"
-    content="Research talks: open one in your browser, or download it as PowerPoint or PDF.">
-  <style>
-    @font-face {{ font-family: "Atkinson Hyperlegible Next"; font-weight: 200 800;
-      src: url("shared/fonts/atkinson-hyperlegible-next-latin-wght-normal.woff2") format("woff2");
-      font-display: swap; }}
-    :root {{
-      --paper: #f1f4f6; --card: #ffffff; --ink: #15202b; --muted: #3b4856; --label: #24384c;
-      --line: #c3ccd5; --band: #e4e9ee; --ours-line: #8a5a0c; --neutral-ink: #1b567d;
-      --display: var(--sans);
-      --sans: "Atkinson Hyperlegible Next", system-ui, "Segoe UI", Roboto, Arial, sans-serif;
-    }}
-    * {{ box-sizing: border-box; }}
-    body {{ margin: 0; background: var(--paper); color: var(--ink); font: 1.0625rem/1.55 var(--sans); }}
-    main {{ max-width: 108rem; margin: 0 auto; padding: 4rem 2rem 3rem; }}
-    header {{ max-width: 44rem; margin-bottom: 3rem; }}
-    .talks {{ display: block; }}
-    h1 {{ font: 700 clamp(2.5rem, 6vw, 4.2rem)/1 var(--display); margin: 0 0 1rem; color: var(--ours-line); }}
-    header p {{ margin: 0; color: var(--muted); font-size: 1.2rem; }}
-    header a {{ color: var(--neutral-ink); display: inline-block; padding: 0.5rem 0; margin: -0.5rem 0; }}
-    .talk {{ display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 9fr); gap: 2.5rem;
-      align-items: center; padding: 2.5rem 0; border-top: 1px solid var(--line); }}
-    .shot {{ display: block; border-radius: 3px; overflow: hidden; outline: 1px solid var(--line);
-      aspect-ratio: 16 / 9; background: var(--band); }}
-    .shot img {{ display: block; width: 100%; height: 100%; object-fit: cover; }}
-    @media (prefers-reduced-motion: no-preference) {{
-      @view-transition {{ navigation: auto; }}
-      @keyframes enter {{ from {{ opacity: 0; transform: translateY(14px); }} }}
-      header h1, header p, .talk {{ animation: enter 0.6s cubic-bezier(0.22, 0.8, 0.3, 1) backwards; }}
-      header p {{ animation-delay: 0.1s; }}
-      .talk:nth-of-type(1) {{ animation-delay: 0.25s; }}
-      .talk:nth-of-type(2) {{ animation-delay: 0.4s; }}
-      .talk:nth-of-type(n + 3) {{ animation-delay: 0.55s; }}
-      .shot {{ transition: transform 0.35s cubic-bezier(0.22, 0.8, 0.3, 1), box-shadow 0.35s; }}
-      .shot img {{ transition: transform 0.6s cubic-bezier(0.22, 0.8, 0.3, 1); }}
-      .talk:hover .shot, .talk:focus-within .shot {{
-        transform: translateY(-6px); box-shadow: 0 18px 30px -22px rgba(21, 32, 43, 0.5); }}
-      .talk:hover .shot img, .talk:focus-within .shot img {{ transform: scale(1.025); }}
-    }}
-    .shot.blank {{ display: grid; place-items: center; padding: 2rem; font-size: 1.6rem; font-weight: 700; }}
-    h2 {{ font: 700 1.9rem/1.15 var(--display); margin: 0 0 0.6rem; }}
-    h2 a {{ color: inherit; text-decoration: none; display: inline-block; padding: 0.2rem 0; }}
-    h2 a:hover {{ text-decoration: underline; text-decoration-thickness: 2px; }}
-    .about > p {{ margin: 0 0 1.4rem; color: var(--muted); max-width: 36rem; }}
-    .actions {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }}
-    .actions .primary {{ grid-column: 1 / -1; }}
-    .button {{ display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; text-align: center;
-      gap: 0 0.5rem; padding: 0.7rem 1.1rem;
-      border-radius: 3px; border: 2px solid var(--ink); color: var(--ink); font-weight: 650;
-      text-decoration: none; }}
-    .button:hover {{ background: var(--band); }}
-    .button.primary {{ background: var(--ink); color: var(--paper); }}
-    .button.primary:hover {{ background: #24384c; }}
-    .note {{ font-weight: 400; font-size: 0.9em; white-space: nowrap; }}
-    .links {{ list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; padding: 0; margin: 1.25rem 0 0; }}
-    .links a {{ display: inline-flex; align-items: center; gap: 0.45rem; color: var(--neutral-ink); font-weight: 600; }}
-    a:focus-visible {{ outline: 3px solid var(--ink); outline-offset: 3px; }}
-    footer {{ margin-top: 2.5rem; border-top: 1px solid var(--line); padding-top: 1.5rem; color: var(--muted);
-      font-size: 0.95rem; }}
-    footer a {{ color: var(--neutral-ink); }}
-    kbd {{ font: inherit; font-weight: 700; padding: 0 0.35em; border: 1px solid var(--line); border-radius: 4px;
-      background: #fff; }}
-    @media (min-width: 1400px) {{
-      main {{ padding-top: 5rem; }}
-      .talks {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3rem; }}
-      .talk {{ grid-template-columns: 1fr; gap: 1.75rem; align-items: start; padding: 1.5rem 1.5rem 2rem;
-        border: 1px solid var(--line); border-radius: 3px; background: var(--card); }}
-      .about > p {{ max-width: none; }}
-      .about > p:first-of-type {{ min-height: 3.1em; }}
-    }}
-    @media (max-width: 1099px) {{
-      .talk {{ grid-template-columns: 1fr; gap: 1.25rem; padding: 2rem 0; }}
-      .about > p {{ max-width: 44rem; }}
-    }}
-    @media (max-width: 760px) {{
-      main {{ padding: 2.5rem 1.25rem 2rem; }}
-      .actions {{ grid-template-columns: 1fr; }}
-      .button {{ width: 100%; justify-content: center; }}
-    }}
-  </style>
-</head>
-<body>
-<main>
-  <header>
-    <h1>Talks</h1>
-    <p>Research talks by <a href="https://ajbarea.github.io/">AJ Barea</a>, PhD student at the
-      Rochester Institute of Technology. Open one in your browser, or download it as PowerPoint or PDF.</p>
-  </header>
-  <div class="talks">
-{items}
-  </div>
-  <footer>In a talk, press <kbd>S</kbd> for the speaker notes and <kbd>F</kbd> for full screen.
-    Source: <a href="https://github.com/ajbarea/talks">github.com/ajbarea/talks</a></footer>
-</main>
-<script>
-  // A preview plays its talk's title slide while the card is hovered or focused, and the talk
-  // opens out of the preview that was clicked.
-  if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {{
-    for (const card of document.querySelectorAll(".talk")) {{
-      const img = card.querySelector("img[data-loop]");
-      if (!img) continue;
-      const still = img.getAttribute("src");
-      const set = (src) => () => {{ img.src = src; }};
-      card.addEventListener("pointerenter", set(img.dataset.loop));
-      card.addEventListener("pointerleave", set(still));
-      card.addEventListener("focusin", set(img.dataset.loop));
-      card.addEventListener("focusout", set(still));
-    }}
-  }}
-  addEventListener("pageswap", (e) => {{
-    if (!e.viewTransition || !e.activation || !e.activation.entry) return;
-    const path = new URL(e.activation.entry.url).pathname;
-    for (const shot of document.querySelectorAll(".shot")) {{
-      if (new URL(shot.href).pathname === path) shot.style.viewTransitionName = "talk-shot";
-    }}
-  }});
-</script>
-</body>
-</html>
-"""
+def page(items: list[str]) -> str:
+    """The index page: the template with its styles and script inlined, so it paints in one request."""
+    template = (PAGE / "index.html").read_text()
+    css, js = (PAGE / "index.css").read_text(), (PAGE / "index.js").read_text()
+    for name, part, text in (("index.css", "style", css), ("index.js", "script", js)):
+        if f"</{part}" in text.lower():
+            raise SystemExit(f"scripts/index/{name} must not close its own <{part}>")
+    return (
+        template.replace("/* index.css */", css.strip())
+        .replace("/* index.js */", js.strip())
+        .replace("<!-- talks -->", "\n".join(items))
+    )
 
 
 def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | None = None) -> list[str]:
@@ -329,8 +224,9 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | 
             sizes = {ext: size(out / talk.name / f) for ext, f in zip(DOWNLOADS, files, strict=True)}
             if loop:
                 shutil.copy2(exports / talk.name / "thumb-loop.webp", out / talk.name / "thumb-loop.webp")
-        items.append(item(talk.name, title, description, named, sizes, exports is not None, loop))
-    (out / "index.html").write_text(INDEX.format(items="\n".join(items)))
+        centered = len(items) == (len(rows) - 1) // 2  # the talk the cover flow opens on
+        items.append(item(talk.name, title, description, named, sizes, exports is not None, loop, centered))
+    (out / "index.html").write_text(page(items))
     return [t.name for t in found]
 
 

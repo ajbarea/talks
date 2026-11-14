@@ -1,6 +1,6 @@
 # Every talk is a folder holding an index.html; `site` lays them all out as one Pages site.
 # SPHRAGIS points at a sphragis checkout for the talks whose figures come from it.
-.PHONY: help setup lint fix test videos-check videos-verify script-length figures figures-check qr qr-check fonts slides-script slides-check render exports site check
+.PHONY: help setup lint fix test videos-check videos-verify script-length figures figures-check qr qr-check fonts slides-script slides-check render exports site site-check check
 
 SLIDES ?= ../techne/plugins/graphe/skills/slides/scripts/slides.py
 # The browser command and the list of talks each come from the one place that defines them.
@@ -75,4 +75,8 @@ exports: slides-script ## Export every talk's .pptx, .pdf and preview into _expo
 site:              ## Lay out every talk under _site/, with the exports when they are built
 	python3 scripts/site.py _site $(if $(wildcard _exports/.talks-exports),--exports _exports)
 
-check: lint test figures-check qr-check slides-check exports site   ## Everything CI runs
+site-check: slides-script ## Drive the built index page in Chromium: the cover flow's keys, roles and fallbacks
+	@test -f _site/index.html || { echo "no _site/index.html; run make site first" >&2; exit 1; }
+	$(B) python scripts/site_check.py _site
+
+check: lint test figures-check qr-check slides-check exports site site-check   ## Everything CI runs

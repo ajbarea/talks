@@ -24,7 +24,7 @@ First, the oldest: Claude chat, at claude.ai since July 2023, and on your phone 
 
 ## 4. Claude Desktop is for your computer: it works in your own folders
 
-Claude Desktop came in October 2024 for Mac and Windows; Linux is in beta now. It's for your computer. One app holds the chat, Cowork for longer tasks, and Claude Code, and it can read and write the folders you choose. This summer, my SCADS team built an analyst tool called makesense. It installs into Claude Desktop from one ZIP file and runs on the analyst's own computer. The limit: to reach your files, the app has to be open on that computer. Close it, and Claude can keep working in the cloud, but not in your folders. Next, the app for code. 
+Claude Desktop came in October 2024 for Mac and Windows; Linux is in beta now. It's for your computer. One app holds the chat, Cowork for longer tasks, and Claude Code, and it can read and write the folders you choose. This summer, my SCADS team built an analyst tool called makesense. It installs into Claude Desktop from one ZIP file and runs on the analyst's own computer. The limits: to reach your files, the app has to be open on that computer. Close it, and Claude can keep working in the cloud, but not in your folders. And its Cowork mode runs a whole Linux virtual machine: when I installed it, the app took about 13 gigabytes of disk, and other users report ten to twelve. Next, the app for code. 
 
 <!-- Sources: Anthropic on X, October 31, 2024; help center, Install Claude Desktop and Get started with Claude Cowork; makesense, August 2026. -->
 
@@ -42,7 +42,7 @@ Claude Science has been a beta since June 30th. It's for your research. It's a s
 
 ## 7. Claude Duet is for your accounts: it checks them, then comes to you
 
-Duet is the newest, a research preview since October 21st. It's for your accounts. It has its own computer in Anthropic's cloud, so it keeps working with your phone and laptop off. Every few hours it checks your connected accounts, and when something needs you, it comes to you. Here's a real one from November 1st: it read an email Richard Lange sent me and offered to draft my rotation wrap-up. Before it sends a message, makes a payment, signs a document or deletes anything, it shows you first and waits for your yes. The limits: it can't see the files on your computer, and it isn't on Team plans yet, so it isn't on our lab's plan. Now, all five on one page. 
+Duet is the newest, a research preview since October 21st. It's for your accounts. It has its own computer in Anthropic's cloud, so it keeps working with your phone and laptop off. Every few hours it checks your connected accounts, and when something needs you, it comes to you. Here's a real one from November 1st: it read an email Richard Lange sent me and offered to draft my rotation wrap-up. Before it sends a message, makes a payment, signs a document or deletes anything, it shows you first and waits for your yes. The limits: it doesn't know what my other Claude apps have done. It read my email and offered to start work that Claude Code had already finished with me. It can't see the files on your computer either, and it isn't on Team plans yet, so it isn't on our lab's plan. Now, all five on one page. 
 
 <!-- Sources: Introducing Claude Duet, October 21, 2026; Get started with Claude Duet (help center); my Duet app, November 1. -->
 

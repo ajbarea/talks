@@ -165,10 +165,12 @@ html.lab-still .lab-link, html.reveal-print .lab-link, html.print-pdf .lab-link 
 /* ------------------------------------------------------------------ phone -- */
 .phone .title-art { position: relative; right: auto; top: auto; width: 240px; margin: 24px 0 30px; }
 .phone .point, .phone .claims, .phone .setup, .phone .batch-row { grid-template-columns: 1fr; gap: 22px; }
-/* The two diagrams keep a readable size on a phone and pan sideways. */
-.phone .flow-fig, .phone .circuit-fig { overflow-x: auto; }
-.phone .flow-fig svg { min-width: 600px; }
-.phone .circuit-fig svg { min-width: 620px; }
+/* The attack flow has a tall phone drawing; the circuit fits the width, so nothing hides off screen. */
+.phone .flow-fig svg { max-width: 360px; margin: 0 auto; }
+/* Fitted to a phone, the circuit draws at about half size; these keep its text at 12px or more. */
+.phone .circuit-fig .labels text, .phone .circuit-fig .meter text,
+.phone .circuit-fig .repeat-label, .phone .circuit-fig .block-label, .phone .circuit-fig .sub { font-size: 23px; }
+.phone .circuit-fig .enc text, .phone .circuit-fig .train text { font-size: 24px; }
 .phone .lab-row { grid-template-columns: 1fr; gap: 10px; }
 .phone .paper figcaption { margin-bottom: 4px; }
 .phone .eq { white-space: normal; font-size: 0.8em; }

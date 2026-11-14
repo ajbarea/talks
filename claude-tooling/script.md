@@ -18,9 +18,9 @@ Your work lives in five places: a conversation, your computer, your code, your r
 
 ## 3. Claude chat is for a conversation: you ask, it answers and drafts
 
-First, the oldest: Claude chat, at claude.ai since July 2023, and on your phone and desktop too. It's for a conversation. You ask; it answers, drafts and explains. On paid plans it now also makes documents, slides and designs right in the chat. A lab could use it like this: paste a reviewer's comments and ask for a point-by-point plan for the response letter. The limit is what it can reach. In the browser, it sees only what you paste, upload or connect. It can't open the files on your laptop. For that, there's the desktop app. 
+First, the oldest: Claude chat, at claude.ai since July 2023, and on your phone and desktop too. It's for a conversation. You ask; it answers, drafts and explains. On paid plans it now also makes documents, slides and designs right in the chat. In practice, researchers use it most to draft their papers: Anthropic found that's about one in five research chats, and answering peer reviewers is another one in fifteen. The limit is what it can reach. In the browser, it sees only what you paste, upload or connect. It can't open the files on your laptop. For that, there's the desktop app. 
 
-<!-- FILL: AJ's own example? Sources: Anthropic, Claude 2 announcement, July 11, 2023; claude.com pricing; Claude Cowork and chat are now one Claude, September 16, 2026. -->
+<!-- Sources: Anthropic, Claude 2 announcement, July 11, 2023; claude.com pricing; Claude Cowork and chat are now one Claude, September 16, 2026; Anthropic, How researchers use Claude, November 5, 2026 (drafting manuscripts 18.6%, peer-review replies 6.7%). -->
 
 ## 4. Claude Desktop is for your computer: it works in your own folders
 
@@ -36,9 +36,9 @@ Claude Code arrived in February 2025 as a research preview, and became generally
 
 ## 6. Claude Science is for your research: each result is traced to its code
 
-Claude Science has been a beta since June 30th. It's for your research. It's a separate app that runs on your computer, your lab's server or a cluster. You describe an analysis in plain words. It writes and runs the code in a sandbox, and saves every figure with the code and history that made it. It started in biology, but it works for any field. A lab could use it to rebuild last semester's figures, so each one can be traced and reproduced. The limit: a reviewer checks its claims against what ran, but it doesn't rerun the analysis. You still check the results yourself. And last, Duet. 
+Claude Science has been a beta since June 30th. It's for your research. It's a separate app that runs on your computer, your lab's server or a cluster. You describe an analysis in plain words. It writes and runs the code in a sandbox, and saves every figure with the code and history that made it. It started in biology, but it works for any field. In practice, UCSF's Brain Tumor Center used it to run genetic workups in about a tenth of the time they used to take, and checked the results independently. The limit: a reviewer checks its claims against what ran, but it doesn't rerun the analysis. You still check the results yourself. And last, Duet. 
 
-<!-- FILL: AJ's own example? Sources: Anthropic, Claude Science announcement, June 30, 2026; Claude Science docs overview; Get started with Claude Science (help center). -->
+<!-- Sources: Anthropic, Claude Science announcement, June 30, 2026 (UCSF Brain Tumor Center, roughly one-tenth the time, independently validated); Claude Science docs overview; Get started with Claude Science (help center). -->
 
 ## 7. Claude Duet is for your accounts: it checks them, then comes to you
 

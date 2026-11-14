@@ -59,15 +59,15 @@ No launch date changed from the previous version. Facts that moved since Novembe
 
 ## Uses on the app slides
 
-Each app slide's middle row is "In my work" where there is evidence and "A lab could" where there is none:
+Each app slide's middle row is "In my work" where AJ has his own example and "In practice" where a published one fits better:
 
-- Claude chat: "A lab could" (reviewer comments to a response plan). FILL: AJ's own example?
+- Claude chat: "In practice", from Anthropic's How researchers use Claude (November 5, 2026): drafting manuscripts is the top task on Claude (18.6% of research sessions), peer-review replies 6.7%.
 - Claude Desktop: makesense, the SCADS 2026 analyst tool, installs into Claude Desktop from one ZIP and runs on the analyst's computer (delivered August 4, 2026).
 - Claude Code: nn-library #18 for Richard Lange's lab (open PR, not yet merged), peak memory of one CKA step from about 1 GB to under 1 MB.
-- Claude Science: "A lab could" (rebuild last semester's figures with their code and history). FILL: AJ's own example?
+- Claude Science: "In practice", from Anthropic's launch post (June 30, 2026): UCSF Brain Tumor Center germline workups in roughly one-tenth the time, independently validated.
 - Claude Duet: the real card from November 1 (IMG_1281).
 
-The FILL markers are in those two slides' speaker notes, inside the `<small>` source line.
+Each "In practice" example names its source in the slide's speaker notes and on the Sources, continued slide.
 
 For another lab, change the title slide's kicker and the first line of its notes, which name LDQIS and Dr. Reznik.
 

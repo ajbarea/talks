@@ -164,7 +164,7 @@ def name_slide(slide):
                 )
             ],
             [("PhD student, Computing and Information Sciences · AI Software track", False, MUTED)],
-            [("Advisor: Dr. Leon Reznik", False, MUTED)],
+            [("AWARE-AI advisor: Dr. Reynold Bailey", False, MUTED)],
         ],
         size=18,
         align=PP_ALIGN.CENTER,
@@ -389,7 +389,7 @@ SLIDES = (
         NAME,
         None,
         [
-            "Name, PhD in Computing and Information Sciences, AI Software track, Dr. Reznik",
+            "Name, PhD in Computing and Information Sciences, AI Software track, AWARE-AI advisor Dr. Reynold Bailey",
             "One question: does learned house style belong to a project group, the organization, or neither?",
             "Roadmap: problem, study, the rest of the year, where it stands",
         ],

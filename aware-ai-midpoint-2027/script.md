@@ -6,7 +6,7 @@
 
 ## 1. AJ Barea
 
-Hi, I'm AJ Barea, a first-year PhD student in Computing and Information Sciences, in the AI Software track, advised by Dr. Leon Reznik. My research asks one question: when a model learns house style from code review, does that style belong to a group of projects, to the whole organization, or to neither? I'll show the problem, my study, what else I've done this year, and where the study stands.
+Hi, I'm AJ Barea, a first-year PhD student in Computing and Information Sciences, in the AI Software track; my AWARE-AI advisor is Dr. Reynold Bailey. My research asks one question: when a model learns house style from code review, does that style belong to a group of projects, to the whole organization, or to neither? I'll show the problem, my study, what else I've done this year, and where the study stands.
 
 ## 2. AI coding assistants rarely see an organization's unwritten house style
 

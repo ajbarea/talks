@@ -4,7 +4,7 @@ AJ Barea's research talks as web decks (reveal.js), one folder per talk, publish
 
 ## Commands
 
-`make help` lists every target; `make setup` installs the dev tools. Before a PR run `make check`, which is everything CI runs (lint, tests, figures, QR codes, the slide gates, exports and the site) and drives Chromium. It reads `SLIDES` (the `graphe:slides` script, default `../techne/...`), `SPHRAGIS` (default `../sphragis`) and `QFL` (default `../csci739-qfl-privacy`); from a worktree under `.claude/worktrees/`, set them to the real checkouts, or the figure tests skip and the gates stop.
+`make help` lists every target; `make setup` installs the dev tools. `make tts TALK=<name>` generates audio narration (`talk.mp3` and `talk.vtt`) defaulting to `en-GB-SoniaNeural` at `+6%` rate. Before a PR run `make check`, which is everything CI runs (lint, tests, figures, QR codes, the slide gates, exports and the site) and drives Chromium. It reads `SLIDES` (the `graphe:slides` script, default `../techne/...`), `SPHRAGIS` (default `../sphragis`) and `QFL` (default `../csci739-qfl-privacy`); from a worktree under `.claude/worktrees/`, set them to the real checkouts, or the figure tests skip and the gates stop.
 
 ## Rules
 

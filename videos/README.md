@@ -29,7 +29,7 @@ Work already in progress, top of the queue:
 | 01 | Why Your Tech Lead Rejects AI Code (Federated Agents Short) | [script](01-federated-agents/script.md), from the [Federated Agents deck](../federated-agents/) | script lint-clean | audio prompt, SFX schedule, metadata with the disclosure, assets list | – |
 | – | Hackathon: driving a robot with one forearm | AJ's hackathon notes | in progress | record the screen, the sim and the arm, then edit | – |
 | – | Akira motorcycle-scene homage | AJ's ideas | idea | a script | – |
-| – | Skateboard tricks (Alex's idea) | AJ's ideas | in progress | finish the first draft against the rules | – |
+| 06 | [I Test Every Skateboard Before My Nephews Get One](06-gift-test/script.md), a deadpan Short (my nephew's idea) | AJ's ideas; the mega ramp layout | script lint-clean | AJ reads it aloud, then generate | – |
 
 New in this track:
 

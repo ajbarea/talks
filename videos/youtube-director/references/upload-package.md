@@ -29,7 +29,7 @@ The whole description stays under 5,000 bytes and has no `<` or `>`, which YouTu
 
 ## The rest of the metadata
 
-- **Title:** under 70 characters for a long video, under 50 for a Short; the topic word first. Change an old title only when it is unclear: an edit keeps the URL, the views and the comments.
+- **Title:** under 70 characters for a long video; 40 to 60 for a Short, with the hook in the first 40, which is what the Shorts player shows ([OverseerOS, Oct 2026 data](https://www.overseeros.com/blog/best-youtube-shorts-title-length), [vidIQ](https://vidiq.com/blog/post/youtube-shorts-titles/)); the topic word first. Change an old title only when it is unclear: an edit keeps the URL, the views and the comments.
 - **Tags:** 5 to 15, for misspellings and synonyms only. YouTube says tags "play a minimal role" in discovery ([YouTube Help 146402](https://support.google.com/youtube/answer/146402)).
 - **Pinned comment:** one specific question tied to a moment in the video, plus at most one link. A specific question draws replies where "what did you think?" does not ([TubeMilestone](https://tubemilestone.com/blog/youtube-pinned-comments); vendor guidance).
 - **End screen** on a video of 25 seconds or more: Subscribe plus the most related video, in the last 5 to 20 seconds ([YouTube Help 6388789](https://support.google.com/youtube/answer/6388789)). Vertical Shorts get none.
@@ -43,6 +43,8 @@ Built from the video's own material, never generated:
 3. Three to five words that add to the title rather than repeat it.
 
 `python3 videos/tools/thumbnail.py FACE VISUAL thumbnail.jpg "2,016" "QUAKES" "IN 30 DAYS"` composes it and writes a 320 px preview; read the preview, since that is the size most viewers see. YouTube takes JPG or PNG, 16:9, at least 640 px wide, and as large as possible ([YouTube Help 72431](https://support.google.com/youtube/answer/72431)). A custom thumbnail needs a verified account.
+
+**A Short's thumbnail is 9:16, 1080x1920**, not 16:9: a 16:9 image gets black bars or a bad crop on the Shorts shelf. Use 2 to 5 words in the middle band, inside a centred 4:5 crop, and keep the video's punchline object visible ([vidIQ](https://vidiq.com/pt/blog/post/youtube-shorts-custom-thumbnails), [ClipSpeed 2026](https://www.clipspeed.ai/blog/best-thumbnail-strategies-shorts-2026.html)). Re-check these rules against current sources before each upload; they drift.
 
 ## The review pass, before upload
 

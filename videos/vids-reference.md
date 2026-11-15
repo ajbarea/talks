@@ -121,3 +121,17 @@ Google's pages disagree. Treat the counter in the product as the truth.
 - Each track has one single-entry edit list, which YouTube accepts (`05-haunted-terminal/TOOLING-NOTES.md:9`).
 - Vids cuts score 0.13 to 0.44. Detect them at a scene threshold of 0.12, not 0.3 (`05-haunted-terminal/TOOLING-NOTES.md:41`).
 - A 9:16 crop cuts off the Gemini mark, so it is redrawn (`05-haunted-terminal/TOOLING-NOTES.md:67`). A baked card fell outside the crop (`05-haunted-terminal/delivered.md:82`).
+
+## 7. Driving it from Playwright (AJ taught it, 2026-11-14)
+
+Verified in a live session on AJ's personal account.
+
+1. **Open** `docs.google.com/videos/?authuser=<personal email>`; without `authuser` the work account loads and the page returns 403. AJ signs in first.
+2. **New video:** Blank video. Set the canvas with the toolbar's Video size (9:16 for a Short).
+3. **AI clip:** right rail **AI Video** > **Create**. The **Avatar** slot (next to Ingredients) opens the Avatars dialog: pick **Me** (Personal avatar, AJ's digital twin) > **Select**. That inserts a real `Me` chip (`prompt-chip-wrapper`) at the start of the prompt.
+4. **Prompt:** click the box, Ctrl+End, Shift+Enter (a new line after the chip), then type with real key presses. Never `fill()`: it replaces the box and deletes the chip. Typing right after the chip can split the first letter onto its own text node; check the start of the box and join it.
+5. **Clothes, always:** describe the outfit in words in every clip, or the twin renders shirtless. A clothing image as an ingredient also works.
+6. **Settings:** the button under the prompt (`Generation settings: Omni, 720p, Landscape, 10 seconds`) opens model, resolution (720p or 1080p), aspect ratio radios (Landscape, Portrait) and a duration slider (arrow keys move 1 s; the cap is 15 s since Omni 1.2). Set orientation here, not in the prompt.
+7. **Quotes:** anything in double quotes is spoken; on-screen text goes in single quotes.
+8. **Continuity:** Extend cannot re-add the avatar. For the next clip, use Create with the Me chip and add a screenshot of the last clip as an **Ingredient** (up to 3 images).
+9. Refs in the accessibility snapshot change on every render; locate by role and name (`getByRole('radio', { name: 'Portrait' })`, `getByRole('button', { name: '720p', description: 'Resolution' })`).

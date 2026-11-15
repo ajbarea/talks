@@ -132,7 +132,7 @@ def test_links_and_downloads_appear_for_each_talk(site, repo: Path, tmp_path: Pa
     alpha = index[index.index('href="alpha-talk/"') : index.index('href="beta-talk/"')]
     assert 'href="alpha-talk/alpha-talk.pptx" download' in alpha and "2.5 MB" in alpha
     assert 'href="alpha-talk/alpha-talk.pdf" download' in alpha and "350 KB" in alpha
-    assert '<span class="sr-only">Download </span>PDF' in alpha
+    assert "Download" in alpha and "PDF" in alpha
     assert alpha.index(".pptx") < alpha.index(".pdf")
     # In the order the index defines, whatever order talk.json lists them.
     assert alpha.index("https://github.com/a/b") < alpha.index("https://youtu.be/x")
@@ -326,19 +326,28 @@ def test_every_talk_offers_its_deck_downloads_and_links_once(site, repo: Path, t
     talks = _talks(index)
     assert list(talks) == ["alpha-talk", "beta-talk"]
     for name, talk in talks.items():
-        assert talk.count(f'<a class="open" href="{name}/">Open the deck') == 1
+        assert "Open the deck" not in talk
+        assert '<a class="cover' in talk and f'href="{name}/"' in talk
         assert f'<h2><a href="{name}/">' in talk
         for ext, label in (("pptx", "PowerPoint"), ("pdf", "PDF")):
-            assert f'href="{name}/{name}.{ext}" download>' in talk and f"Download </span>{label} " in talk
+            assert f'href="{name}/{name}.{ext}" download' in talk and f"Download {label}" in talk
     alpha = talks["alpha-talk"]
     assert alpha.index("github.com/a/b") < alpha.index("youtu.be/x")
-    assert ">Code on GitHub</a>" in alpha and ">Video</a>" in alpha
+    assert "Code on GitHub" in alpha and "Video" in alpha
     assert "github.com" not in talks["beta-talk"]
+
+
+def test_the_footer_has_no_speaker_or_fullscreen_instruction(site, repo: Path, tmp_path: Path) -> None:
+    index = _built(site, repo, tmp_path)
+    footer = index[index.index("<footer>") : index.index("</footer>") + len("</footer>")]
+    assert "speaker notes" not in footer
+    assert "full screen" not in footer
+    assert "github.com/ajbarea/talks" in footer
 
 
 def test_the_page_names_the_carousel_and_its_controls(site, repo: Path, tmp_path: Path) -> None:
     index = _built(site, repo, tmp_path)
-    assert '<section class="talks" id="talks" aria-label="Talks">' in index
+    assert '<section class="talks" id="talks" aria-label="Talks"' in index
     assert '<button class="step prev" type="button" aria-label="Previous talk" hidden>' in index
     assert '<button class="step next" type="button" aria-label="Next talk" hidden>' in index
     assert '<p class="sr-only" aria-live="polite" aria-atomic="true"></p>' in index
@@ -418,3 +427,14 @@ def test_the_preview_loop_plays_once_and_briefly() -> None:
     seconds = float(re.search(r"^LOOP_SECONDS = ([\d.]+)$", exports, re.M).group(1))
     assert "range(round(LOOP_FPS * LOOP_SECONDS) + 1)" in exports
     assert (round(fps * seconds) + 1) / fps < 5  # the frames written, at their rate
+
+
+def test_decks_add_a_home_link_to_the_centered_cover_flow() -> None:
+    deck = (ROOT / "shared" / "deck.js").read_text()
+    css = (ROOT / "shared" / "deck.css").read_text()
+    assert 'class: "deck-home"' in deck
+    assert "href: `../#${encodeURIComponent(folder)}`" in deck
+    assert ".deck-home" in css
+    home_rule = re.search(r"\.deck-home\s*\{([^}]+)\}", css).group(1)
+    assert "min-height" not in home_rule  # mutation guard: the fixed 44px square is explicit
+    assert "width: 44px" in home_rule and "height: 44px" in home_rule

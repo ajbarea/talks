@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="bg6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#081014"/>
+      <stop offset="50%" stop-color="#0e1a22"/>
+      <stop offset="100%" stop-color="#142632"/>
+    </linearGradient>
+    <radialGradient id="glow6" cx="72%" cy="48%" r="48%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow6" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg6)"/>
+  <rect width="1600" height="900" fill="url(#glow6)"/>
+
+  <!-- Left: Typography -->
+  <g transform="translate(140, 340)">
+    <text x="0" y="0" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="70" fill="#f8fafc" letter-spacing="-0.03em">When Quantum</text>
+    <text x="0" y="80" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="70" fill="#38bdf8" letter-spacing="-0.03em">Circuits Keep</text>
+    <text x="0" y="160" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="70" fill="#f8fafc" letter-spacing="-0.03em">Data Private</text>
+    <text x="0" y="240" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="500" font-size="30" fill="#94a3b8" letter-spacing="-0.01em">Quantum Federated Learning &amp; Gradient Matching</text>
+    <text x="0" y="305" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="600" font-size="24" fill="#38bdf8" opacity="0.9" letter-spacing="0.05em">AJ BAREA · CSCI-739</text>
+  </g>
+
+  <!-- Right: Bloch Sphere & Quantum State Vectors Motif -->
+  <g transform="translate(1000, 160)" filter="url(#shadow6)">
+    <!-- Bloch Sphere Boundary -->
+    <circle cx="240" cy="280" r="210" fill="#0f172a" stroke="#334155" stroke-width="4"/>
+    <!-- Equator Ellipse -->
+    <ellipse cx="240" cy="280" rx="210" ry="56" fill="none" stroke="#475569" stroke-width="3" stroke-dasharray="10 8"/>
+    <!-- Meridian Ellipse -->
+    <ellipse cx="240" cy="280" rx="80" ry="210" transform="rotate(-22 240 280)" fill="none" stroke="#475569" stroke-width="3" stroke-dasharray="10 8"/>
+    <!-- Coordinate Axes -->
+    <line x1="240" y1="50" x2="240" y2="510" stroke="#64748b" stroke-width="3"/>
+    <text x="240" y="40" font-family="'Atkinson Hyperlegible Next', sans-serif" font-size="22" font-weight="700" fill="#cbd5e1" text-anchor="middle">|0⟩</text>
+    <text x="240" y="540" font-family="'Atkinson Hyperlegible Next', sans-serif" font-size="22" font-weight="700" fill="#cbd5e1" text-anchor="middle">|1⟩</text>
+
+    <!-- Client Hidden Quantum State Vector (Cobalt / Cyan) -->
+    <line x1="240" y1="280" x2="365" y2="140" stroke="#38bdf8" stroke-width="10" stroke-linecap="round" stroke-dasharray="18 12"/>
+    <circle cx="365" cy="140" r="16" fill="#0284c7" stroke="#38bdf8" stroke-width="4"/>
+    <text x="395" y="145" font-family="'Atkinson Hyperlegible Next', sans-serif" font-size="22" font-weight="800" fill="#38bdf8">|ψ⟩ truth</text>
+
+    <!-- Attacker Gradient-Matching Reconstruction Vector (Vermilion / Red) -->
+    <line x1="240" y1="280" x2="415" y2="230" stroke="#ef4444" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="415" cy="230" r="16" fill="#b91c1c" stroke="#ef4444" stroke-width="4"/>
+    <text x="445" y="235" font-family="'Atkinson Hyperlegible Next', sans-serif" font-size="22" font-weight="800" fill="#ef4444">|ψ̂⟩ guess</text>
+  </g>
+</svg>

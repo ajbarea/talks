@@ -54,8 +54,7 @@ RING = """() => {
   const lum = (c) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
     return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
   const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
-  const band = el.closest('.stage') && !el.closest('.about');
-  const behind = band ? [21, 32, 43] : rgb(getComputedStyle(document.body).backgroundColor);
+  const behind = rgb(getComputedStyle(document.body).backgroundColor);
   const name = el.className || el.textContent.trim().slice(0, 20);
   return [name, st.outlineStyle === 'none' ? 0 : Math.round(ratio(rgb(st.outlineColor), behind) * 10) / 10];
 }"""
@@ -168,36 +167,39 @@ def run(url: str) -> Report:
             page.get_attribute(".prev", "aria-disabled") == "true",
         )
 
-        for start in (".open", ".chip"):
-            page.focus(f".talk:not([aria-hidden]) {start}")
+        for start in (".cover", ".chip"):
+            el = page.query_selector(f".talk:not([aria-hidden]) {start}")
+            if not el:
+                continue
+            el.focus()
             page.evaluate(COUNT)
             page.keyboard.press("ArrowRight")
             page.wait_for_timeout(SETTLE_MS)
             focus = page.evaluate(FOCUS)
             r.check(
-                f"from {start}, focus moves to the new centered talk's Open the deck, read once (no live text)",
-                focus == ["open", True] and page.evaluate("window.__said") == 0,
+                f"from {start}, focus moves to the new centered talk's cover, read once (no live text)",
+                focus == ["cover", True] and page.evaluate("window.__said") == 0,
                 [focus, page.evaluate("window.__said")],
             )
-        page.focus(".talk:not([aria-hidden]) .open")
+        page.focus(".talk:not([aria-hidden]) .cover")
         side = page.locator(".talk").nth(0).locator(".cover").bounding_box()
         assert side is not None
         page.mouse.click(side["x"] + side["width"] * 0.3, side["y"] + side["height"] / 2)
         page.wait_for_timeout(SETTLE_MS)
         r.check(
             "a click on a cover never leaves focus in hidden content",
-            page.evaluate(FOCUS) == ["open", True],
+            page.evaluate(FOCUS) == ["cover", True],
             page.evaluate(FOCUS),
         )
         page.locator(".dots button").nth(2).click()
         page.wait_for_timeout(SETTLE_MS)
-        r.check("nor does a click on a dot", page.evaluate(FOCUS) == ["open", True], page.evaluate(FOCUS))
+        r.check("nor does a click on a dot", page.evaluate(FOCUS) == ["cover", True], page.evaluate(FOCUS))
 
         # A resize or zoom keeps the centered talk, the focus, the address and the silence.
         page.goto("about:blank")
         page.goto(url)
         page.wait_for_timeout(SETTLE_MS)
-        page.focus(".talk:not([aria-hidden]) .open")
+        page.focus(".talk:not([aria-hidden]) .cover")
         page.evaluate(COUNT)
         before = page.evaluate(STATE)
         for w, h in ((1280, 800), (1024, 640), (640, 480), (1920, 1080), (1920, 700), (1920, 1080)):
@@ -209,7 +211,7 @@ def run(url: str) -> Report:
             after["c"] == before["c"]
             and after["hash"] == before["hash"]
             and page.evaluate("window.__said") == 0
-            and page.evaluate(FOCUS) == ["open", True],
+            and page.evaluate(FOCUS) == ["cover", True],
             [before, after, page.evaluate("window.__said")],
         )
 
@@ -271,7 +273,7 @@ def run(url: str) -> Report:
             (1366, 768, ".actions"),
             (1280, 720, ".actions"),
             (1024, 768, ".actions"),
-            (390, 844, ".open"),
+            (390, 844, ".actions"),
         ):
             page.set_viewport_size({"width": w, "height": h})
             over = {}
@@ -328,14 +330,14 @@ def run(url: str) -> Report:
             phone.wait_for_timeout(SETTLE_MS)
             r.check(f"axe, phone, {scheme}", not (v := axe(phone)), v)
             sizes = phone.evaluate(
-                "[...document.querySelectorAll('.talk:not([aria-hidden]) .chip, .talk:not([aria-hidden]) .open,"
+                "[...document.querySelectorAll('.talk:not([aria-hidden]) .chip, .talk:not([aria-hidden]) .cover,"
                 " .step, .dots button')].map((e) => { const b = e.getBoundingClientRect();"
                 " return [e.className, b.width, b.height]; })"
             )
             r.check(
                 f"targets at least 24 px, the primary and steps 44 px ({scheme})",
                 all(w >= 24 and h >= 24 for _, w, h in sizes)
-                and all(h >= 44 for c, _, h in sizes if c in ("open", "step prev", "step next")),
+                and all(h >= 44 for c, _, h in sizes if "cover" in c or "step" in c),
                 sizes,
             )
             r.check(

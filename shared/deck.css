@@ -607,6 +607,26 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
   stroke-width: 2;
 }
 
+/* ---------------------------------------------------------------- way-back -- */
+
+.deck-home {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 31;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  text-decoration: none;
+}
+
+.deck-home:hover { background: var(--band); }
+
 /* ------------------------------------------------------------ chapter rail -- */
 
 /* One row that never wraps: a pill that wraps turns into a tall circle that covers the slide.
@@ -810,6 +830,7 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 }
 
 @media print {
+  .deck-home,
   .rail { display: none; }
 }
 

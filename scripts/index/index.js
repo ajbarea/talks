@@ -1,7 +1,7 @@
 // The talks as a cover flow: a carousel in the WAI-ARIA APG pattern over a native scroll-snap strip.
 // The strip's own scrolling (touch, trackpad, keys) moves the covers and CSS view timelines turn them; this
-// script only names the centered talk once a glide settles, adds keys, mouse drag, the wheel and a click on a
-// side cover, and plays the centered talk's preview loop.
+// script only names the centered talk once a glide settles, adds keys, mouse drag, the wheel, click-to-center
+// and click-to-open on covers, and plays the centered talk's preview loop.
 (() => {
   const root = document.getElementById("talks");
   const strip = root && root.querySelector(".covers");
@@ -17,6 +17,26 @@
   const dots = root.querySelector(".dots");
   const title = (s) => s.querySelector("h2").textContent.trim();
 
+  // Theme toggle: persists preference in localStorage
+  const toggle = document.querySelector(".theme-toggle");
+  if (toggle) {
+    const updateThemeLabel = () => {
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark" ||
+        (!document.documentElement.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+      toggle.setAttribute("aria-label", isDark ? "Switch to light theme" : "Switch to dark theme");
+    };
+    updateThemeLabel();
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", updateThemeLabel);
+    toggle.addEventListener("click", () => {
+      const currentTheme = document.documentElement.getAttribute("data-theme") ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      const nextTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", nextTheme);
+      localStorage.setItem("talks-theme", nextTheme);
+      updateThemeLabel();
+    });
+  }
+
   root.setAttribute("aria-roledescription", "carousel");
   slides.forEach((s, i) => {
     s.setAttribute("role", "group");
@@ -30,10 +50,16 @@
   });
   if (n > 1) prev.hidden = next.hidden = dots.hidden = false;
   else document.querySelector(".hint")?.setAttribute("hidden", "");
-  // A pointer press on a cover or a dot never takes focus: both sit in hidden content, and focus already in
-  // the carousel is carried to the new centered talk when it settles.
+
+  // A pointer press on a side cover or a dot never takes focus: both sit in inactive content.
   for (const el of [strip, dots]) {
-    el.addEventListener("mousedown", (e) => e.target.closest(".cover, button") && e.preventDefault());
+    el.addEventListener("mousedown", (e) => {
+      const cover = e.target.closest(".cover");
+      const s = e.target.closest(".talk");
+      // Allow the centered cover to accept focus naturally on click/activation
+      if (cover && s && slides.indexOf(s) === nearest()) return;
+      if (e.target.closest(".cover, button")) e.preventDefault();
+    });
   }
 
   // Geometry, read once and again only when the strip changes size: the strip scrolls one slot per talk.
@@ -90,6 +116,16 @@
       if (here) s.removeAttribute("aria-hidden");
       else s.setAttribute("aria-hidden", "true");
       s.querySelector(".about").inert = !here;
+      const cov = s.querySelector(".cover");
+      if (cov) {
+        if (here) {
+          cov.removeAttribute("tabindex");
+          cov.removeAttribute("aria-hidden");
+        } else {
+          cov.setAttribute("tabindex", "-1");
+          cov.setAttribute("aria-hidden", "true");
+        }
+      }
       dots.children[k].setAttribute("aria-current", here ? "true" : "false");
     });
     dots.style.setProperty("--at", i);
@@ -99,9 +135,10 @@
     mark(i);
     if (document.readyState === "complete") play(slides[i]);
     if (focused) {
-      // Keep focus on the same control of the new centered talk instead of losing it to the page; moving
-      // focus into the new slide already reads its name, so the live region stays quiet.
-      slides[i].querySelector(focused.closest("h2") ? "h2 a" : ".open").focus({ preventScroll: true });
+      // Keep focus on the primary control of the new centered talk instead of losing it to the page;
+      // moving focus into the new slide already reads its name, so the live region stays quiet.
+      const el = slides[i].querySelector(focused.closest("h2") ? "h2 a" : ".cover");
+      if (el) el.focus({ preventScroll: true });
     } else if (announce) {
       live.textContent = `${title(slides[i])}, ${i + 1} of ${n}`;
     }
@@ -193,11 +230,9 @@
       const fling = Math.max(-2, Math.min(2, (-v * 180) / slot));
       dragging = false;
       go(Math.round(at + fling));
-      // Snapping comes back once the glide has landed on its talk, so it never jumps mid-glide.
-      // A release that lands exactly on a talk scrolls nowhere, so no scrollend comes: settle here too.
       const land = () => {
         clearTimeout(late);
-        strip.removeEventListener("scrollend", land); // a glide that scrolled nowhere never used it up
+        strip.removeEventListener("scrollend", land);
         strip.classList.remove("dragging");
         settle(true);
       };
@@ -209,12 +244,11 @@
     strip.addEventListener("pointercancel", up);
   });
 
-  // A vertical wheel over the covers steps one talk per notch or per trackpad gesture; at either end, and
-  // anywhere off the covers, the page scrolls on. Sideways trackpad swipes scroll the strip natively.
+  // Vertical wheel over covers steps one talk per notch
   let lastWheel = 0, lastStep = 0, lastAbs = 0;
   strip.addEventListener("wheel", (e) => {
     if (e.ctrlKey || Math.abs(e.deltaX) >= Math.abs(e.deltaY) || e.target.closest(".about")) return;
-    const cover = slides[Math.max(0, current)].querySelector(".cover"); // its box before the turn
+    const cover = slides[Math.max(0, current)].querySelector(".cover");
     const top = strip.getBoundingClientRect().top + cover.offsetTop;
     if (e.clientY < top || e.clientY > top + cover.offsetHeight) return;
     const d = Math.sign(e.deltaY);
@@ -235,20 +269,17 @@
   new ResizeObserver(keep).observe(strip);
   addEventListener("resize", keep);
   reduce.addEventListener("change", () => (reduce.matches ? still(slides[current]) : play(slides[current])));
-  // A link to another talk on this page, followed or typed, glides to it.
   addEventListener("hashchange", () => {
     const i = slides.findIndex((s) => `#${s.dataset.name}` === location.hash);
     if (i >= 0 && i !== current) go(i);
   });
 
-  // Open on the talk named in the address, else the middle one, with nothing read out; its loop waits for load.
   const named = slides.findIndex((s) => `#${s.dataset.name}` === location.hash);
   strip.scrollLeft = left(named >= 0 ? named : Math.floor((n - 1) / 2));
   settle(false);
   if (document.readyState === "complete") play(slides[current]);
   else addEventListener("load", () => play(slides[current]), { once: true });
 
-  // The talk opens out of the cover that was clicked.
   addEventListener("pageswap", (e) => {
     if (!e.viewTransition || !e.activation || !e.activation.entry) return;
     const path = new URL(e.activation.entry.url).pathname;

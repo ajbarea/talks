@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="bg5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0e0a05"/>
+      <stop offset="50%" stop-color="#17120a"/>
+      <stop offset="100%" stop-color="#241a0d"/>
+    </linearGradient>
+    <radialGradient id="glow5" cx="72%" cy="48%" r="48%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow5" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg5)"/>
+  <rect width="1600" height="900" fill="url(#glow5)"/>
+
+  <!-- Left: Typography -->
+  <g transform="translate(140, 360)">
+    <text x="0" y="0" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="78" fill="#f8fafc" letter-spacing="-0.03em">Kourai</text>
+    <text x="0" y="85" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="78" fill="#fbbf24" letter-spacing="-0.03em">Khryseai</text>
+    <text x="0" y="170" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="500" font-size="32" fill="#e2e8f0" letter-spacing="-0.01em">Ten AI Agents That Build Software With You</text>
+    <text x="0" y="240" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="600" font-size="24" fill="#f59e0b" opacity="0.9" letter-spacing="0.05em">AJ BAREA · ROCHESTER INSTITUTE OF TECHNOLOGY</text>
+  </g>
+
+  <!-- Right: Golden Maidens Automaton Motif -->
+  <g transform="translate(980, 150)" filter="url(#shadow5)">
+    <!-- Radiant Automaton Halo -->
+    <circle cx="240" cy="280" r="220" fill="none" stroke="#d97706" stroke-width="4" stroke-dasharray="14 10" opacity="0.6"/>
+    <circle cx="240" cy="280" r="185" fill="none" stroke="#fbbf24" stroke-width="3" opacity="0.4"/>
+    <circle cx="240" cy="280" r="150" fill="#261b0c" stroke="#f59e0b" stroke-width="6"/>
+
+    <!-- Homeric Automaton Silhouette / Maiden Avatar -->
+    <g transform="translate(155, 170)">
+      <!-- Head -->
+      <circle cx="85" cy="65" r="42" fill="#fbbf24"/>
+      <!-- Classical Headdress / Tiara -->
+      <path d="M55 50 Q85 30 115 50 Q85 40 55 50 Z" fill="#d97706"/>
+      <!-- Automaton Torso & Armor -->
+      <path d="M40 120 Q85 95 130 120 L145 220 Q85 240 25 220 Z" fill="#f59e0b"/>
+      <path d="M60 130 Q85 115 110 130 L118 200 Q85 210 52 200 Z" fill="#b45309"/>
+      <!-- Radiating Core Spark -->
+      <circle cx="85" cy="160" r="12" fill="#fffbeb"/>
+    </g>
+
+    <!-- Autonomous Collaboration Dialog Bubble -->
+    <g transform="translate(20, 390)">
+      <rect x="0" y="0" width="310" height="76" rx="14" fill="#18181b" stroke="#f59e0b" stroke-width="3"/>
+      <text x="18" y="32" font-family="'Atkinson Hyperlegible Next', sans-serif" font-size="16" font-weight="700" fill="#fbbf24">Metis · Spec Agent</text>
+      <text x="18" y="58" font-family="'Atkinson Hyperlegible Next', sans-serif" font-size="15" fill="#f8fafc">"Should CSV export stream chunked?"</text>
+    </g>
+  </g>
+</svg>

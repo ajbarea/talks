@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b1320"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#141f32"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="72%" cy="48%" r="45%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+
+  <!-- Left: Typography -->
+  <g transform="translate(140, 360)">
+    <text x="0" y="0" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="76" fill="#f8fafc" letter-spacing="-0.03em">Checking</text>
+    <text x="0" y="85" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="76" fill="#38bdf8" letter-spacing="-0.03em">the Checker</text>
+    <text x="0" y="170" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="500" font-size="32" fill="#94a3b8" letter-spacing="-0.01em">Differential Testing of Static Verifiers</text>
+    <text x="0" y="240" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="600" font-size="24" fill="#38bdf8" opacity="0.85" letter-spacing="0.05em">AJ BAREA · CISC-810</text>
+  </g>
+
+  <!-- Right: Motif -->
+  <g transform="translate(920, 160)" filter="url(#shadow)">
+    <!-- Sheet / Report -->
+    <rect x="60" y="70" width="360" height="460" rx="20" fill="#1e293b" stroke="#334155" stroke-width="4"/>
+    <line x1="110" y1="140" x2="360" y2="140" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+    <line x1="110" y1="190" x2="300" y2="190" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+    <line x1="110" y1="240" x2="340" y2="240" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+    <line x1="110" y1="290" x2="260" y2="290" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+
+    <!-- Verified checkmark -->
+    <path d="M120 370 l50 50 l110 -120" fill="none" stroke="#22c55e" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Lens revealing discrepancy -->
+    <g transform="translate(190, 240)">
+      <circle cx="110" cy="110" r="110" fill="#0f172a" fill-opacity="0.8" stroke="#38bdf8" stroke-width="10"/>
+      <!-- Hollow check inside lens -->
+      <path d="M50 120 l45 45 l65 -75" fill="none" stroke="#ef4444" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="14 10"/>
+      <!-- Lens handle -->
+      <line x1="190" y1="190" x2="280" y2="280" stroke="#38bdf8" stroke-width="24" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

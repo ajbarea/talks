@@ -2,7 +2,7 @@
 # SPHRAGIS points at a sphragis checkout for the talks whose figures come from it.
 .PHONY: help setup lint fix test videos-check videos-verify script-length figures figures-check qr qr-check fonts slides-script slides-check render exports site site-check check
 
-SLIDES ?= ../techne/plugins/graphe/skills/slides/scripts/slides.py
+SLIDES ?= $(firstword $(wildcard ../techne/plugins/graphe/skills/slides/scripts/slides.py ../../../../techne/plugins/graphe/skills/slides/scripts/slides.py /home/ajbar/.gemini/config/plugins/graphe/skills/slides/scripts/slides.py))
 # The browser command and the list of talks each come from the one place that defines them.
 # On Linux the gates and renders draw text only in DejaVu (scripts/fonts.conf), the font CI draws,
 # so a slide that fits here fits there.

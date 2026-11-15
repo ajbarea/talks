@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <defs>
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a101d"/>
+      <stop offset="50%" stop-color="#111c30"/>
+      <stop offset="100%" stop-color="#182744"/>
+    </linearGradient>
+    <radialGradient id="glow4" cx="72%" cy="48%" r="48%">
+      <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow4" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg4)"/>
+  <rect width="1600" height="900" fill="url(#glow4)"/>
+
+  <!-- Left: Typography -->
+  <g transform="translate(140, 360)">
+    <text x="0" y="0" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="78" fill="#f8fafc" letter-spacing="-0.03em">Federated Agents:</text>
+    <text x="0" y="85" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="800" font-size="78" fill="#fbbf24" letter-spacing="-0.03em">Step One</text>
+    <text x="0" y="170" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="500" font-size="32" fill="#cbd5e1" letter-spacing="-0.01em">Registered Reports &amp; Empirical Foundations</text>
+    <text x="0" y="240" font-family="'Atkinson Hyperlegible Next', system-ui, -apple-system, sans-serif" font-weight="600" font-size="24" fill="#fbbf24" opacity="0.9" letter-spacing="0.05em">AJ BAREA · LDQIS LAB</text>
+  </g>
+
+  <!-- Right: Plan & Sphragis Seal Motif -->
+  <g transform="translate(980, 150)" filter="url(#shadow4)">
+    <!-- Plan Sheet -->
+    <rect x="30" y="40" width="380" height="520" rx="16" fill="#1e293b" stroke="#334155" stroke-width="4"/>
+    <rect x="30" y="40" width="380" height="90" rx="16" fill="#0f172a"/>
+    <text x="70" y="96" font-family="'Atkinson Hyperlegible Next', sans-serif" font-size="32" font-weight="800" fill="#f8fafc">The Plan</text>
+
+    <!-- Document rules -->
+    <line x1="70" y1="170" x2="370" y2="170" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
+    <line x1="70" y1="210" x2="330" y2="210" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
+    <line x1="70" y1="250" x2="350" y2="250" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- Hash seal statement -->
+    <rect x="60" y="290" width="320" height="48" rx="8" fill="#0f172a" stroke="#d97706" stroke-width="2"/>
+    <text x="80" y="322" font-family="monospace" font-size="16" font-weight="700" fill="#fbbf24">sha256: e8b9...f34a [SEALED]</text>
+
+    <!-- Sphragis Red/Amber Embossed Wax Seal -->
+    <g transform="translate(240, 370) rotate(-8)">
+      <circle cx="100" cy="100" r="90" fill="#b91c1c" stroke="#dc2626" stroke-width="6"/>
+      <circle cx="100" cy="100" r="74" fill="none" stroke="#fca5a5" stroke-width="3" stroke-dasharray="8 6"/>
+      <!-- Seal Stamp Center Motif -->
+      <path d="M70 100 l22 22 l40 -45" fill="none" stroke="#fef2f2" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="100" y="152" font-family="'Atkinson Hyperlegible Next', sans-serif" font-size="16" font-weight="800" fill="#fee2e2" text-anchor="middle" letter-spacing="0.1em">SPHRAGIS</text>
+    </g>
+  </g>
+</svg>

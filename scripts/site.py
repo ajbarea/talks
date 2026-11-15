@@ -116,9 +116,25 @@ PAGE = pathlib.Path(__file__).with_name("index")
 
 ICONS = {
     "download": '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
-    "code": '<path d="M9 7 4 12l5 5M15 7l5 5-5 5"/>',
-    "docs": '<path d="M6 3h9l4 4v14H6zM14 3v5h5M9 12h7M9 16h7"/>',
-    "video": '<path d="M7 5l12 7-12 7z"/>',
+    "pptx": (
+        '<path d="M4 3h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM2 17h20M10 21h4M12 17v4"/>'
+        '<path d="M9 13V7h3.5a1.5 1.5 0 0 1 0 3H9"/>'
+    ),
+    "pdf": ('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M9 13h6M9 17h4"/>'),
+    "code": (
+        '<path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 '
+        "0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-"
+        ".908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647"
+        ".35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-"
+        ".446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 "
+        "1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 "
+        "3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58"
+        '.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>'
+    ),
+    "docs": (
+        '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10M6 10h10M6 14h6"/>'
+    ),
+    "video": '<rect x="2" y="4" width="20" height="16" rx="3"/><path d="m10 9 5 3-5 3V9z"/>',
     "open": '<path d="M5 12h14M13 6l6 6-6 6"/>',
 }
 
@@ -139,29 +155,43 @@ def item(
     thumb: bool,
     loop: bool = False,
     centered: bool = False,
+    has_cover: bool = False,
 ) -> str:
-    """One talk: its preview and, beside or under it, its title, description, one primary action
-    and a row of small labelled downloads and links. The page script turns the list into a cover flow."""
+    """One talk: its preview and, beside or under it, its title, description,
+    and a row of clean icon action buttons for downloads and links. The cover itself is the primary way in."""
     t, d = html.escape(title), html.escape(description)
     loop_attr = f' data-loop="{name}/thumb-loop.webp"' if loop else ""
-    # Every preview loads at once anyway: its reflection draws from the same file.
     priority = ' fetchpriority="high"' if centered else ""
+
+    if thumb:
+        img_src = f"{name}/thumb.webp"
+    elif has_cover:
+        img_src = f"{name}/cover.svg"
+    else:
+        img_src = ""
+
     picture = (
         f'<a class="cover" href="{name}/" tabindex="-1" aria-hidden="true" draggable="false" '
-        f"style=\"--thumb: url('{name}/thumb.webp')\">"
-        f'<img src="{name}/thumb.webp" alt="" width="960" height="540" decoding="async" draggable="false"'
+        f'style="--thumb: url(\'{img_src}\')" aria-label="Open {t}">'
+        f'<img src="{img_src}" alt="" width="960" height="540" decoding="async" draggable="false"'
         f"{priority}{loop_attr}></a>"
-        if thumb
-        else f'<a class="cover blank" href="{name}/" tabindex="-1" aria-hidden="true" draggable="false">'
-        f"<span>{t}</span></a>"
+        if img_src
+        else (
+            f'<a class="cover blank" href="{name}/" tabindex="-1" aria-hidden="true" draggable="false" '
+            f'aria-label="Open {t}"><span>{t}</span></a>'
+        )
     )
     chips = [
-        f'<li><a class="chip" href="{name}/{name}.{ext}" download>{icon("download")}'
-        f'<span class="sr-only">Download </span>{label} <span class="size">{sizes[ext]}</span></a></li>'
+        f'<li><a class="chip action-btn" href="{name}/{name}.{ext}" download '
+        f'aria-label="Download {label}, {sizes[ext]}" data-tooltip="{label}, {sizes[ext]}">{icon(ext, 20)}'
+        f'<span class="sr-only">Download </span><span class="sr-only">{label} </span>'
+        f'<span class="sr-only size">{sizes[ext]}</span></a></li>'
         for ext, label in (DOWNLOADS.items() if sizes else ())
     ]
     chips += [
-        f'<li><a class="chip" href="{html.escape(url)}">{icon(kind)}{LINKS[kind]}</a></li>'
+        f'<li><a class="chip action-btn" href="{html.escape(url)}" '
+        f'aria-label="{LINKS[kind]}" data-tooltip="{LINKS[kind]}">{icon(kind, 20)}'
+        f'<span class="sr-only">{LINKS[kind]}</span></a></li>'
         for kind, url in named.items()
     ]
     more = f'<ul class="chips">{"".join(chips)}</ul>' if chips else ""
@@ -170,7 +200,7 @@ def item(
         <div class="about">
           <h2><a href="{name}/">{t}</a></h2>
           <p class="description">{d}</p>
-          <div class="actions"><a class="open" href="{name}/">Open the deck{icon("open", 18)}</a>{more}</div>
+          <div class="actions">{more}</div>
         </div>
       </div>"""
 
@@ -225,7 +255,8 @@ def build(out: pathlib.Path, root: pathlib.Path = ROOT, exports: pathlib.Path | 
             if loop:
                 shutil.copy2(exports / talk.name / "thumb-loop.webp", out / talk.name / "thumb-loop.webp")
         centered = len(items) == (len(rows) - 1) // 2  # the talk the cover flow opens on
-        items.append(item(talk.name, title, description, named, sizes, exports is not None, loop, centered))
+        has_cover = (talk / "cover.svg").is_file()
+        items.append(item(talk.name, title, description, named, sizes, exports is not None, loop, centered, has_cover))
     (out / "index.html").write_text(page(items))
     return [t.name for t in found]
 

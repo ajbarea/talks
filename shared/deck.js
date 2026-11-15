@@ -57,6 +57,31 @@
     return node;
   }
 
+  function buildHome() {
+    const reveal = document.querySelector(".reveal");
+    if (!reveal || /receiver/i.test(location.search) || !location.pathname) return;
+    const folder = location.pathname.replace(/\/+$/, "").split("/").pop();
+    if (!folder) return;
+    const link = html("a", {
+      class: "deck-home",
+      href: `../#${encodeURIComponent(folder)}`,
+      "aria-label": "Back to talks",
+    }, reveal);
+    svg("svg", {
+      viewBox: "0 0 24 24",
+      width: "20",
+      height: "20",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "aria-hidden": "true",
+    }, link);
+    svg("path", { d: "M3 11.5 12 4l9 7.5" }, link.lastChild);
+    svg("path", { d: "M5.5 10.5V20h13v-9.5M9.5 20v-5h5v5" }, link.lastChild);
+  }
+
   // <span data-if="readings.planted_all">: kept only when the flag is true (data-unless: false).
   // Removed rather than hidden, so the speaker notes read only the branch that holds.
   function branch() {
@@ -484,6 +509,7 @@
   document.querySelectorAll(".timeline[data-source]").forEach(buildTimeline);
   document.querySelectorAll(".flow[data-source]").forEach(buildFlow);
   document.querySelectorAll(".forest[data-source]").forEach(buildForest);
+  buildHome();
   const chs = chapters();
   buildAgenda(chs);
   for (const k of document.querySelectorAll(".reveal .slides .kicker")) chapterInto(k, k.textContent);

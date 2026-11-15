@@ -142,3 +142,5 @@ Verified in a live session on AJ's personal account.
 14. **Insert:** the first clip goes in with Insert; later clips offer **Insert in new scene**. Scenes can be dragged to reorder in the timeline.
 15. **Music:** right rail **Music** opens "Generate a song" (Lyria 3.5): describe genre and mood and paste lyrics; options are Duration (30s or Full) and an Instrumental toggle. Use it before any outside music tool.
 
+16. **Mix:** select the song track, open **Sound**: set Volume (about 20%), click the label text of **Background: lower the volume of this clip while narrative clips play** (clicking the radio itself did not stick), and a 2 s fade out. Then File > Download > MP4 and transcribe the mix: every spoken line must come through word for word.
+17. **Hearing it:** the Playwright browser is muted (`--mute-audio`) and runs in WSL, so AJ listens in his own browser or from the exported MP4.

@@ -135,11 +135,10 @@
     mark(i);
     if (document.readyState === "complete") play(slides[i]);
     if (focused) {
-      // Keep focus on the same control of the new centered talk instead of losing it to the page;
+      // Keep focus on the primary control of the new centered talk instead of losing it to the page;
       // moving focus into the new slide already reads its name, so the live region stays quiet.
-      const targetControl = focused.closest("h2") ? "h2 a" : (focused.classList.contains("chip") ? ".chip" : ".cover");
-      const nextEl = slides[i].querySelector(targetControl) || slides[i].querySelector(".cover") || slides[i].querySelector("h2 a");
-      if (nextEl) nextEl.focus({ preventScroll: true });
+      const el = slides[i].querySelector(focused.closest("h2") ? "h2 a" : ".cover");
+      if (el) el.focus({ preventScroll: true });
     } else if (announce) {
       live.textContent = `${title(slides[i])}, ${i + 1} of ${n}`;
     }

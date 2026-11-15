@@ -135,3 +135,10 @@ Verified in a live session on AJ's personal account.
 7. **Quotes:** anything in double quotes is spoken; on-screen text goes in single quotes.
 8. **Continuity:** Extend cannot re-add the avatar. For the next clip, use Create with the Me chip and add a screenshot of the last clip as an **Ingredient** (up to 3 images).
 9. Refs in the accessibility snapshot change on every render; locate by role and name (`getByRole('radio', { name: 'Portrait' })`, `getByRole('button', { name: '720p', description: 'Resolution' })`).
+10. **The prompt box changes name:** with ingredients attached it reads "Specify how you want to use the ingredients…", and it collapses after a generation (press its Expand button). Locate it as the panel's last textbox, not by label.
+11. **Next clip:** Create, Ctrl+A and Backspace in the box, **Remove avatar**, then **Add** > **Avatar** > **Me** > **Select** for a fresh chip (with an image ingredient attached, the Avatar slot moves into the Add menu). Wait about half a second after Shift+Enter and the first-letter split does not happen.
+12. **Continuity still:** download the clip (open its video URL in a new tab, which triggers a download), take the last frame with ffmpeg, crop off any baked caption, and upload it through **Add** > **Upload** (a Drive picker: its Upload tab, then Browse).
+13. **Check a clip without playing it:** sample frames into a contact sheet with ffmpeg and transcribe the audio locally (faster-whisper `base.en`) to confirm the spoken lines word for word.
+14. **Insert:** the first clip goes in with Insert; later clips offer **Insert in new scene**. Scenes can be dragged to reorder in the timeline.
+15. **Music:** right rail **Music** opens "Generate a song" (Lyria 3.5): describe genre and mood and paste lyrics; options are Duration (30s or Full) and an Instrumental toggle. Use it before any outside music tool.
+

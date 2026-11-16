@@ -3,7 +3,11 @@
 from __future__ import annotations
 
 import importlib.util
+import shutil
+import subprocess
 from pathlib import Path
+
+import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -90,3 +94,27 @@ def test_detect_engine_resolves_expected_defaults() -> None:
     assert tts.detect_engine("edge-tts", None) == "edge-tts"
     assert tts.detect_engine("auto", "en-GB-SoniaNeural") == "edge-tts"
     assert tts.detect_engine("auto", "en-US-GuyNeural") == "edge-tts"
+
+
+@pytest.mark.skipif(shutil.which("ffmpeg") is None, reason="needs ffmpeg")
+def test_an_mp3_clip_and_the_wav_chime_join_without_losing_either(tmp_path):
+    def tone(path, seconds):
+        subprocess.run(
+            ["ffmpeg", "-y", "-f", "lavfi", "-i", f"sine=f=440:d={seconds}", "-ar", "24000", "-ac", "1", str(path)],
+            check=True,
+            capture_output=True,
+        )
+
+    tone(tmp_path / "a.mp3", 1.0)  # edge-tts writes MP3
+    tone(tmp_path / "b.wav", 0.5)  # the chime and silences are WAV
+    tone(tmp_path / "c.mp3", 1.0)
+    parts = [tts.to_wav(tmp_path / n, tmp_path / f"{n}.24k.wav") for n in ("a.mp3", "b.wav", "c.mp3")]
+    listing = tmp_path / "list.txt"
+    listing.write_text("".join(f"file '{p}'\n" for p in parts), encoding="utf-8")
+    out = tmp_path / "talk.mp3"
+    subprocess.run(
+        ["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i", str(listing), "-c:a", "libmp3lame", str(out)],
+        check=True,
+        capture_output=True,
+    )
+    assert abs(tts.get_duration(out) - 2.5) < 0.15

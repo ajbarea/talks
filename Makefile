@@ -1,6 +1,6 @@
 # Every talk is a folder holding an index.html; `site` lays them all out as one Pages site.
 # SPHRAGIS points at a sphragis checkout for the talks whose figures come from it.
-.PHONY: help setup lint fix test videos-check videos-verify script-length figures figures-check qr qr-check fonts slides-script slides-check render exports site site-check tts check
+.PHONY: help setup lint fix test videos-check videos-verify script-length figures figures-check qr qr-check fonts slides-script slides-check render exports site serve site-check tts check
 
 SLIDES ?= $(firstword $(wildcard ../techne/plugins/graphe/skills/slides/scripts/slides.py ../../../../techne/plugins/graphe/skills/slides/scripts/slides.py /home/ajbar/.gemini/config/plugins/graphe/skills/slides/scripts/slides.py))
 # The browser command and the list of talks each come from the one place that defines them.
@@ -74,6 +74,9 @@ exports: slides-script ## Export every talk's .pptx, .pdf and preview into _expo
 
 site:              ## Lay out every talk under _site/, with the exports when they are built
 	python3 scripts/site.py _site $(if $(wildcard _exports/.talks-exports),--exports _exports)
+
+serve:             ## Serve _site/ locally on an open port: make serve [DIR=_site] [PORT=8765]
+	uv run python scripts/serve.py $(if $(DIR),$(DIR),_site) $(if $(PORT),--port $(PORT))
 
 tts:               ## Generate rehearsal audio: make tts TALK=<name> [VOICE=<name>] [RATE=+6%] [ENGINE=keryx|edge-tts]
 	@[ -n "$(TALK)" ] || { echo "set TALK (e.g. make tts TALK=federated-agents-step-one)" >&2; exit 1; }

@@ -462,6 +462,14 @@ def check_script(text: str) -> list[tuple[str, int]]:
 
 
 def build(template: pathlib.Path, out: pathlib.Path) -> None:
+    if not template.is_file():
+        raise SystemExit(
+            f"template not found: {template}\n"
+            "The AWARE-AI cohort symposium template is required to build these slides.\n"
+            "Export the symposium deck from Google Slides (File > Download > Microsoft PowerPoint)\n"
+            "as a .pptx file and pass its path, or derive it from the Desktop deck copy."
+        )
+
     r = readings()
     script = fill(SCRIPT.read_text(), r)
     counts = check_script(script)

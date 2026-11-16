@@ -9,3 +9,9 @@ __pycache__/
 COMMITS.md
 *.log
 logs/
+*.mp3
+*.wav
+*.vtt
+spoken_script.txt
+slide_chime.wav
+slide_chime.mp3

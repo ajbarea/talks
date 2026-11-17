@@ -262,17 +262,6 @@ def test_every_talk_loads_the_motion_files_after_the_deck(site) -> None:
         assert page.index("../shared/deck.js") < page.index("../shared/motion.js")
 
 
-def test_replay_waits_for_the_viewer() -> None:
-    # Hover or click replays a figure; nothing restarts on a timer (WCAG 2.2.2).
-    motion = (ROOT / "shared" / "motion.js").read_text()
-    assert 'querySelectorAll("[data-replay]")' in motion
-    assert 'box.addEventListener("pointerenter", replay)' in motion
-    assert 'box.addEventListener("click", replay)' in motion
-    assert "slide !== Reveal.getCurrentSlide() || !animating()" in motion
-    assert "setInterval" not in motion
-    assert "data-replay" in (ROOT / "qfl-privacy" / "index.html").read_text()
-
-
 def test_the_motion_resting_style_is_the_finished_one() -> None:
     """Exports, phones and print never turn motion on, so no rule outside html.m-live may hide or move a figure."""
     css = (ROOT / "shared" / "motion.css").read_text()
@@ -442,24 +431,9 @@ def test_the_preview_loop_plays_once_and_briefly() -> None:
 def test_decks_add_a_home_link_to_the_centered_cover_flow() -> None:
     deck = (ROOT / "shared" / "deck.js").read_text()
     css = (ROOT / "shared" / "deck.css").read_text()
-    assert 'class: "deck-home"' in deck
+    assert 'class: "deck-home web-only"' in deck
     assert "href: `../#${encodeURIComponent(folder)}`" in deck
     assert ".deck-home" in css
     home_rule = re.search(r"\.deck-home\s*\{([^}]+)\}", css).group(1)
     assert "min-height" not in home_rule  # mutation guard: the fixed 44px square is explicit
     assert "width: 44px" in home_rule and "height: 44px" in home_rule
-
-
-def test_decks_add_a_fullscreen_toggle_beside_home() -> None:
-    deck = (ROOT / "shared" / "deck.js").read_text()
-    css = (ROOT / "shared" / "deck.css").read_text()
-    assert 'class: "deck-fullscreen"' in deck
-    assert "buildHome();\n  buildFullscreen();" in deck
-    # Hidden where the page cannot go full screen, and kept in step with F and Esc.
-    assert "doc.fullscreenEnabled || doc.webkitFullscreenEnabled" in deck
-    assert 'doc.addEventListener("fullscreenchange", sync)' in deck
-    # A mouse press hands Space back to the deck.
-    assert "if (e.detail > 0) button.blur();" in deck
-    rule = re.search(r"\.deck-fullscreen\s*\{([^}]+)\}", css).group(1)
-    assert "box-sizing: content-box" in rule and "width: 44px" in rule
-    assert re.search(r"@media print \{[^}]*\.deck-fullscreen", css)

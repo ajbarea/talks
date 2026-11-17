@@ -63,7 +63,7 @@
     const folder = location.pathname.replace(/\/+$/, "").split("/").pop();
     if (!folder) return;
     const link = html("a", {
-      class: "deck-home",
+      class: "deck-home web-only",
       href: `../#${encodeURIComponent(folder)}`,
       "aria-label": "Back to talks",
     }, reveal);
@@ -90,7 +90,11 @@
     const enabled = doc.fullscreenEnabled || doc.webkitFullscreenEnabled;
     if (!reveal || !enabled || /receiver/i.test(location.search)) return;
     const current = () => doc.fullscreenElement || doc.webkitFullscreenElement;
-    const button = html("button", { type: "button", class: "deck-fullscreen", "aria-label": "Full screen", "aria-pressed": "false" }, reveal);
+    const button = html("button", { type: "button", class: "deck-fullscreen web-only", "aria-label": "Full screen", "aria-pressed": "false" });
+    // Right after Home, so Tab reaches it where it sits on screen.
+    const home = reveal.querySelector(".deck-home");
+    if (home) home.after(button);
+    else reveal.appendChild(button);
     const icon = svg("svg", {
       viewBox: "0 0 24 24",
       width: "20",
@@ -112,16 +116,13 @@
       button.title = on ? "Leave full screen (Esc)" : "Full screen (F)";
       arrows.setAttribute("d", on ? IN : OUT);
     };
-    button.addEventListener("click", (e) => {
+    button.addEventListener("click", () => {
       const root = doc.documentElement;
       // A browser can still refuse (a kiosk or an embedding frame); the button then stays as it was.
       const ask = current()
         ? (doc.exitFullscreen || doc.webkitExitFullscreen).call(doc)
         : (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
       Promise.resolve(ask).catch(() => {});
-      // After a mouse or touch press, hand the keys back to the deck: Space must advance the
-      // slide, not press this button again. A keyboard press keeps focus where the user put it.
-      if (e.detail > 0) button.blur();
     });
     doc.addEventListener("fullscreenchange", sync);
     doc.addEventListener("webkitfullscreenchange", sync);

@@ -102,11 +102,17 @@
 
   // <svg data-replay>: hovering or clicking it plays its figures again. Replay waits for the
   // viewer to ask, so nothing loops on its own (WCAG 2.2.2).
+  let shownAt = 0;
   for (const box of document.querySelectorAll("[data-replay]")) {
-    const replay = () => {
+    const replay = (e) => {
       const slide = box.closest("section");
       if (!slide || slide !== Reveal.getCurrentSlide() || !animating()) return;
-      const els = inSlide(slide).filter((el) => box.contains(el));
+      // A slide that opens under a resting pointer fires pointerenter too: that is not a hover.
+      if (e.type === "pointerenter" && performance.now() - shownAt < 900) return;
+      const els = inSlide(slide).filter((el) => {
+        const f = fragmentOf(el);
+        return box.contains(el) && (!f || f.classList.contains("visible"));
+      });
       if (els.some((el) => el.getAnimations().some((a) => a.playState === "running"))) return;
       for (const el of els) set(el, false);
       void box.getBoundingClientRect(); // restyle, so the animation starts over
@@ -122,6 +128,7 @@
   Reveal.on("fragmentshown", () => sync(Reveal.getCurrentSlide()));
   Reveal.on("fragmenthidden", () => sync(Reveal.getCurrentSlide()));
   Reveal.on("slidechanged", (e) => {
+    shownAt = performance.now();
     const { previousSlide: prev, currentSlide: now } = e;
     if (prev) {
       // Reset after the fade, so a slide never un-builds in front of the room.

@@ -6,7 +6,8 @@
 
 It checks the WAI-ARIA carousel roles, that only the centered talk is reachable, the keys, a click on a
 side cover, the announcement after a glide, focus kept on the new centered talk, target sizes, the
-reduced-motion and no-script pages, and axe at 1920 and on a phone in both themes. Exits 1 on a failure.
+reduced-motion and no-script pages, axe at 1920 and on a phone in both themes, and the deck's corner
+buttons and title replay. Exits 1 on a failure.
 """
 
 from __future__ import annotations
@@ -399,6 +400,91 @@ def run(url: str) -> Report:
     return r
 
 
+DECK_CHROME = """() => {
+  const home = document.querySelector('.deck-home'), fs = document.querySelector('.deck-fullscreen');
+  const box = (e) => e.getBoundingClientRect();
+  const chips = [...document.querySelectorAll('.rail button')].filter((b) => box(b).width > 0);
+  const hit = (a, b) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+  return {
+    after: home && home.nextElementSibling === fs,
+    webOnly: !!fs && fs.classList.contains('web-only') && home.classList.contains('web-only'),
+    covered: chips.filter((c) => hit(box(c), box(home)) || hit(box(c), box(fs))).map((c) => c.textContent),
+    chips: chips.length,
+  };
+}"""
+
+
+def deck_checks(browser, base: str, report: Report) -> None:
+    """The deck buttons beside Home, and a title figure that replays only when asked."""
+    page = browser.new_page(viewport={"width": 1280, "height": 720})
+    errors: list[str] = []
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    page.goto(base + "federated-agents/#/1")
+    page.wait_for_timeout(1500)
+    s = page.evaluate(DECK_CHROME)
+    report.check("deck: full screen sits right after Home, both kept out of exports", s["after"] and s["webOnly"], s)
+    report.check("deck: no chapter chip under the corner buttons at 1280", s["chips"] > 0 and not s["covered"], s)
+
+    page.set_viewport_size({"width": 1920, "height": 1080})
+    page.goto(base + "qfl-privacy/#/1")
+    page.wait_for_timeout(1500)
+    state = """() => {
+      const b = document.querySelector('.deck-fullscreen');
+      return [!!document.fullscreenElement, b.getAttribute('aria-pressed'), b.querySelector('path').getAttribute('d')];
+    }"""
+    off = page.evaluate(state)
+    page.click(".deck-fullscreen")
+    page.wait_for_timeout(500)
+    on = page.evaluate(state)
+    page.keyboard.press("Space")
+    page.wait_for_timeout(700)
+    slide = page.evaluate("Reveal.getIndices().h")
+    page.click(".deck-fullscreen")
+    page.wait_for_timeout(500)
+    back = page.evaluate(state)
+    report.check(
+        "deck: the button enters full screen, swaps its arrows, then Space still advances and a click leaves",
+        off[:2] == [False, "false"] and on[:2] == [True, "true"] and on[2] != off[2] and slide == 2 and back == off,
+        [off, on, slide, back],
+    )
+
+    page.goto(base + "qfl-privacy/#/0")
+    page.wait_for_timeout(2500)
+    running = (
+        """() => document.querySelector('.title-slide .guess').getAnimations().some((a) => a.playState === 'running')"""
+    )
+    page.hover(".title-art")
+    page.wait_for_timeout(150)
+    hovered = page.evaluate(running)
+    page.wait_for_timeout(2000)
+    page.keyboard.press("ArrowRight")
+    page.wait_for_timeout(1200)
+    page.keyboard.press("ArrowLeft")  # the pointer rests where the figure comes back
+    page.wait_for_timeout(300)
+    returned = page.evaluate(running)
+    page.wait_for_timeout(6000)
+    report.check(
+        "deck: hovering replays the title figure; coming back under a resting pointer and waiting do not",
+        hovered and not returned and not page.evaluate(running),
+        [hovered, returned],
+    )
+    page.close()
+
+    for query, size in (("?receiver", (1920, 1080)), ("", (390, 844))):
+        p = browser.new_page(viewport={"width": size[0], "height": size[1]})
+        p.goto(base + "qfl-privacy/" + query)
+        p.wait_for_timeout(1500)
+        shown = p.evaluate(
+            """() => {
+              const b = document.querySelector('.deck-fullscreen');
+              return !!b && getComputedStyle(b).display !== 'none';
+            }"""
+        )
+        report.check(f"deck: no full-screen button in the {'speaker view' if query else 'phone feed'}", not shown)
+        p.close()
+    report.check("deck: no page errors", not errors, errors)
+
+
 def main() -> int:
     if len(sys.argv) != 2:
         raise SystemExit("usage: site_check.py SITE_FOLDER")
@@ -421,6 +507,7 @@ def main() -> int:
         try:
             with sync_playwright() as p:
                 browser = p.chromium.launch()
+                deck_checks(browser, url, report)
                 for scheme in ("light", "dark"):
                     page = browser.new_page(viewport={"width": 1920, "height": 1080}, color_scheme=scheme)
                     page.goto(url)

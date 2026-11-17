@@ -659,10 +659,11 @@ html.sideways .deck-fullscreen { display: none; }
   position: fixed;
   top: 8px;
   left: 50%;
-  transform: translateX(-50%);
+  /* Centered while it fits; a wider row starts just right of Home and full screen (116px). */
+  transform: translateX(max(-50%, calc(116px - 50vw)));
   display: flex;
   gap: 4px;
-  max-width: calc(100vw - 232px); /* clear of Home and full screen at the left (116px), mirrored */
+  max-width: calc(100vw - 124px);
   overflow-x: auto;
   scrollbar-width: none;
   z-index: 30;
@@ -673,9 +674,6 @@ html.sideways .deck-fullscreen { display: none; }
 }
 
 /* Hidden keeps the row's place, so the space the slides leave for it does not change. */
-html.phone .rail,
-html.sideways .rail { max-width: calc(100vw - 16px); }
-
 .rail[hidden] {
   display: flex;
   visibility: hidden;

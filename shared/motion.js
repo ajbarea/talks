@@ -108,7 +108,7 @@
       const slide = box.closest("section");
       if (!slide || slide !== Reveal.getCurrentSlide() || !animating()) return;
       // A slide that opens under a resting pointer fires pointerenter too: that is not a hover.
-      if (e.type === "pointerenter" && performance.now() - shownAt < 900) return;
+      if (e.type === "pointerenter" && performance.now() - shownAt < 250) return;
       const els = inSlide(slide).filter((el) => {
         const f = fragmentOf(el);
         return box.contains(el) && (!f || f.classList.contains("visible"));

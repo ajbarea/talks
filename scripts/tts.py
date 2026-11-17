@@ -151,6 +151,16 @@ def detect_engine(
     return "edge-tts"
 
 
+def to_wav(src: pathlib.Path, dst: pathlib.Path) -> pathlib.Path:
+    """Re-encode SRC as 24 kHz mono 16-bit WAV at DST, the one format the join takes."""
+    subprocess.run(
+        ["ffmpeg", "-y", "-i", str(src), "-ar", "24000", "-ac", "1", "-c:a", "pcm_s16le", str(dst)],
+        check=True,
+        capture_output=True,
+    )
+    return dst
+
+
 def generate_chime(output_path: pathlib.Path) -> None:
     """Generate a gentle two-tone slide transition chime via ffmpeg."""
     filter_str = (
@@ -317,6 +327,9 @@ def main(argv: list[str] | None = None) -> int:
         else:
             slide_files = asyncio.run(synthesize_edge_slides(slides, voice, args.rate, tmp_dir))
 
+        # The concat demuxer copies streams, so every piece must share one format:
+        # edge-tts writes MP3 and the chime and silences are WAV.
+        slide_files = [to_wav(f, tmp_dir / f"slide_{i:03d}.wav") for i, f in enumerate(slide_files, 1)]
         slide_durations = [get_duration(f) for f in slide_files]
 
         # Prepare silence assets
@@ -337,6 +350,7 @@ def main(argv: list[str] | None = None) -> int:
         chime_dur = 0.0
         if not args.no_chime:
             generate_chime(chime_file)
+            chime_file = to_wav(chime_file, tmp_dir / "chime_24k.wav")
             chime_dur = get_duration(chime_file)
             shutil.copy(chime_file, talk_dir / "slide_chime.wav")
 

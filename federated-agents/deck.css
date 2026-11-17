@@ -36,7 +36,7 @@ table.data th { color: inherit; border-bottom: 1px solid var(--line); }
 .agenda .num { display: inline; min-width: 0; color: inherit; }
 .agenda .num::after { content: " \00B7"; }
 /* The rail: a connected track of small nodes. Chapters passed are filled blue; the current one is the talk's blue-and-orange node with its label in bold. */
-.rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(max-content, 1fr); gap: 0; width: min(1320px, calc(100vw - 16px)); }
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(max-content, 1fr); gap: 0; width: min(1320px, calc(100vw - 232px)); }
 .rail button { position: relative; padding: 18px 12px 3px; font: 500 17px var(--sans); letter-spacing: 0; text-align: center; color: var(--muted); background: none; border: 0; border-radius: 0; }
 .rail button .num { margin-right: 0; color: inherit; }
 .rail button .num::after { content: " \00B7"; }

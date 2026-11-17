@@ -627,6 +627,30 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 
 .deck-home:hover { background: var(--band); }
 
+.deck-fullscreen {
+  position: fixed;
+  top: 8px;
+  left: 62px; /* Home: 8px in, 46px wide with its border; then an 8px gap */
+  box-sizing: content-box; /* the same 46px circle as Home */
+  z-index: 31;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.deck-fullscreen:hover { background: var(--band); }
+
+/* A phone reads the deck as a scrolling feed: no full screen there. */
+html.phone .deck-fullscreen,
+html.sideways .deck-fullscreen { display: none; }
+
 /* ------------------------------------------------------------ chapter rail -- */
 
 /* One row that never wraps: a pill that wraps turns into a tall circle that covers the slide.
@@ -635,10 +659,11 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
   position: fixed;
   top: 8px;
   left: 50%;
-  transform: translateX(-50%);
+  /* Centered while it fits; a wider row starts just right of Home and full screen (116px). */
+  transform: translateX(max(-50%, calc(116px - 50vw)));
   display: flex;
   gap: 4px;
-  max-width: calc(100vw - 16px);
+  max-width: calc(100vw - 124px);
   overflow-x: auto;
   scrollbar-width: none;
   z-index: 30;
@@ -831,6 +856,7 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 
 @media print {
   .deck-home,
+  .deck-fullscreen,
   .rail { display: none; }
 }
 

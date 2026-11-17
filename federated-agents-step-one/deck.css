@@ -61,7 +61,7 @@ html:not(.phone):not(.sideways) .reveal .slides section:not(.title-slide):not(.c
 
 /* The chapter rail: the talk's path as a stamped checklist across the top. Chapters behind the
    talk are stamped solid, the current one is framed and bold, the ones ahead stay open boxes. */
-.rail { top: 8px; left: 50%; transform: translateX(-50%); width: min(calc(100vw - 16px), 1240px); gap: 0; align-items: stretch; }
+.rail { top: 8px; left: 50%; transform: translateX(-50%); width: min(calc(100vw - 232px), 1240px); gap: 0; align-items: stretch; }
 .rail button { position: relative; flex: 1 1 auto; display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 8px 0 0; font: 500 clamp(14px, 0.92vw, 18px) var(--sans); letter-spacing: 0; color: var(--ink); background: var(--paper); border: 0; border-radius: 0; }
 .rail button::after { content: ""; flex: 1 1 8px; min-width: 8px; height: 3px; background: var(--line); }
 .rail button:last-child { flex: 0 1 auto; padding-right: 2px; }

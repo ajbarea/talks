@@ -337,12 +337,11 @@ def test_every_talk_offers_its_deck_downloads_and_links_once(site, repo: Path, t
     assert "github.com" not in talks["beta-talk"]
 
 
-def test_the_footer_has_no_speaker_or_fullscreen_instruction(site, repo: Path, tmp_path: Path) -> None:
+def test_the_page_has_no_site_wide_source_link(site, repo: Path, tmp_path: Path) -> None:
+    # Each talk links its own code; the talks repo itself is not a destination for viewers.
     index = _built(site, repo, tmp_path)
-    footer = index[index.index("<footer>") : index.index("</footer>") + len("</footer>")]
-    assert "speaker notes" not in footer
-    assert "full screen" not in footer
-    assert "github.com/ajbarea/talks" in footer
+    assert "<footer" not in index
+    assert 'github.com/ajbarea/talks"' not in index
 
 
 def test_the_page_names_the_carousel_and_its_controls(site, repo: Path, tmp_path: Path) -> None:
@@ -432,7 +431,7 @@ def test_the_preview_loop_plays_once_and_briefly() -> None:
 def test_decks_add_a_home_link_to_the_centered_cover_flow() -> None:
     deck = (ROOT / "shared" / "deck.js").read_text()
     css = (ROOT / "shared" / "deck.css").read_text()
-    assert 'class: "deck-home"' in deck
+    assert 'class: "deck-home web-only"' in deck
     assert "href: `../#${encodeURIComponent(folder)}`" in deck
     assert ".deck-home" in css
     home_rule = re.search(r"\.deck-home\s*\{([^}]+)\}", css).group(1)

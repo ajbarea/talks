@@ -262,6 +262,17 @@ def test_every_talk_loads_the_motion_files_after_the_deck(site) -> None:
         assert page.index("../shared/deck.js") < page.index("../shared/motion.js")
 
 
+def test_replay_waits_for_the_viewer() -> None:
+    # Hover or click replays a figure; nothing restarts on a timer (WCAG 2.2.2).
+    motion = (ROOT / "shared" / "motion.js").read_text()
+    assert 'querySelectorAll("[data-replay]")' in motion
+    assert 'box.addEventListener("pointerenter", replay)' in motion
+    assert 'box.addEventListener("click", replay)' in motion
+    assert "slide !== Reveal.getCurrentSlide() || !animating()" in motion
+    assert "setInterval" not in motion
+    assert "data-replay" in (ROOT / "qfl-privacy" / "index.html").read_text()
+
+
 def test_the_motion_resting_style_is_the_finished_one() -> None:
     """Exports, phones and print never turn motion on, so no rule outside html.m-live may hide or move a figure."""
     css = (ROOT / "shared" / "motion.css").read_text()
@@ -337,12 +348,11 @@ def test_every_talk_offers_its_deck_downloads_and_links_once(site, repo: Path, t
     assert "github.com" not in talks["beta-talk"]
 
 
-def test_the_footer_has_no_speaker_or_fullscreen_instruction(site, repo: Path, tmp_path: Path) -> None:
+def test_the_page_has_no_site_wide_source_link(site, repo: Path, tmp_path: Path) -> None:
+    # Each talk links its own code; the talks repo itself is not a destination for viewers.
     index = _built(site, repo, tmp_path)
-    footer = index[index.index("<footer>") : index.index("</footer>") + len("</footer>")]
-    assert "speaker notes" not in footer
-    assert "full screen" not in footer
-    assert "github.com/ajbarea/talks" in footer
+    assert "<footer" not in index
+    assert 'github.com/ajbarea/talks"' not in index
 
 
 def test_the_page_names_the_carousel_and_its_controls(site, repo: Path, tmp_path: Path) -> None:
@@ -438,3 +448,18 @@ def test_decks_add_a_home_link_to_the_centered_cover_flow() -> None:
     home_rule = re.search(r"\.deck-home\s*\{([^}]+)\}", css).group(1)
     assert "min-height" not in home_rule  # mutation guard: the fixed 44px square is explicit
     assert "width: 44px" in home_rule and "height: 44px" in home_rule
+
+
+def test_decks_add_a_fullscreen_toggle_beside_home() -> None:
+    deck = (ROOT / "shared" / "deck.js").read_text()
+    css = (ROOT / "shared" / "deck.css").read_text()
+    assert 'class: "deck-fullscreen"' in deck
+    assert "buildHome();\n  buildFullscreen();" in deck
+    # Hidden where the page cannot go full screen, and kept in step with F and Esc.
+    assert "doc.fullscreenEnabled || doc.webkitFullscreenEnabled" in deck
+    assert 'doc.addEventListener("fullscreenchange", sync)' in deck
+    # A mouse press hands Space back to the deck.
+    assert "if (e.detail > 0) button.blur();" in deck
+    rule = re.search(r"\.deck-fullscreen\s*\{([^}]+)\}", css).group(1)
+    assert "box-sizing: content-box" in rule and "width: 44px" in rule
+    assert re.search(r"@media print \{[^}]*\.deck-fullscreen", css)

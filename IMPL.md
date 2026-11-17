@@ -1,3 +1,20 @@
+# IMPL: deck fullscreen button, title replay on demand, no site-wide Source link (2026-11-17)
+
+Branch feat/fullscreen-button. From AJ's live walkthrough of the QFL deck (11-17).
+
+## Done
+- ✅ Fullscreen toggle beside Home in every deck (hidden where unsupported, synced with F/Esc, Space still advances after a click).
+- ✅ `data-replay`: hovering or clicking the QFL title sphere replays its motion; nothing loops on a timer (WCAG 2.2.2).
+- ✅ Index footer's Source pill removed; each talk keeps its own repo button.
+
+## Next
+- 📋 Independent review, CI, merge; then continue the slide-by-slide walkthrough from slide 2.
+- 📋 Walkthrough notes so far: slide-1 safe margin (~5%) and unbroken URL; title guess that searches the sphere; page dots need names; QFL lacks the explainer button.
+
+## Verify
+- `uv run pytest -q tests/test_site.py`; `make lint`.
+- Headless Chromium (playwright 1.63): click the button, Space advances, click leaves; hover the title sphere replays. The WSL Playwright MCP window refuses fullscreen ("not granted"); real Chrome does not.
+
 # IMPL: the talks landing page as a cover flow, 2026-11-11
 
 Branch feat/coverflow, issue #101, PR #102 (assigned ajbarea). Only the index page changes (`scripts/site.py`, `scripts/index/`, the loop count in `scripts/exports.py`); no deck is touched. Do NOT merge: AJ approves the look first.

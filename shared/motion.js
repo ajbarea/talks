@@ -100,6 +100,22 @@
     for (const el of inSlide(slide)) set(el, false);
   }
 
+  // <svg data-replay>: hovering or clicking it plays its figures again. Replay waits for the
+  // viewer to ask, so nothing loops on its own (WCAG 2.2.2).
+  for (const box of document.querySelectorAll("[data-replay]")) {
+    const replay = () => {
+      const slide = box.closest("section");
+      if (!slide || slide !== Reveal.getCurrentSlide() || !animating()) return;
+      const els = inSlide(slide).filter((el) => box.contains(el));
+      if (els.some((el) => el.getAnimations().some((a) => a.playState === "running"))) return;
+      for (const el of els) set(el, false);
+      void box.getBoundingClientRect(); // restyle, so the animation starts over
+      for (const el of els) set(el, true);
+    };
+    box.addEventListener("pointerenter", replay);
+    box.addEventListener("click", replay);
+  }
+
   root.classList.add("m-live");
   Reveal.on("ready", (e) => sync(e.currentSlide));
   if (Reveal.isReady()) sync(Reveal.getCurrentSlide());

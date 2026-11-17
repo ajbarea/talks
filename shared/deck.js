@@ -82,6 +82,52 @@
     svg("path", { d: "M5.5 10.5V20h13v-9.5M9.5 20v-5h5v5" }, link.lastChild);
   }
 
+  // Beside Home: enters and leaves full screen, for a keyboard or clicker that never sends F.
+  // Hidden where the page cannot go full screen (iPhone Safari has no element fullscreen).
+  function buildFullscreen() {
+    const reveal = document.querySelector(".reveal");
+    const doc = document;
+    const enabled = doc.fullscreenEnabled || doc.webkitFullscreenEnabled;
+    if (!reveal || !enabled || /receiver/i.test(location.search)) return;
+    const current = () => doc.fullscreenElement || doc.webkitFullscreenElement;
+    const button = html("button", { type: "button", class: "deck-fullscreen", "aria-label": "Full screen", "aria-pressed": "false" }, reveal);
+    const icon = svg("svg", {
+      viewBox: "0 0 24 24",
+      width: "20",
+      height: "20",
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": "2",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "aria-hidden": "true",
+    }, button);
+    const arrows = svg("path", {}, icon);
+    // Arrows point out to enter and in to leave.
+    const OUT = "M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7";
+    const IN = "M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7";
+    const sync = () => {
+      const on = !!current();
+      button.setAttribute("aria-pressed", String(on));
+      button.title = on ? "Leave full screen (Esc)" : "Full screen (F)";
+      arrows.setAttribute("d", on ? IN : OUT);
+    };
+    button.addEventListener("click", (e) => {
+      const root = doc.documentElement;
+      // A browser can still refuse (a kiosk or an embedding frame); the button then stays as it was.
+      const ask = current()
+        ? (doc.exitFullscreen || doc.webkitExitFullscreen).call(doc)
+        : (root.requestFullscreen || root.webkitRequestFullscreen).call(root);
+      Promise.resolve(ask).catch(() => {});
+      // After a mouse or touch press, hand the keys back to the deck: Space must advance the
+      // slide, not press this button again. A keyboard press keeps focus where the user put it.
+      if (e.detail > 0) button.blur();
+    });
+    doc.addEventListener("fullscreenchange", sync);
+    doc.addEventListener("webkitfullscreenchange", sync);
+    sync();
+  }
+
   // <span data-if="readings.planted_all">: kept only when the flag is true (data-unless: false).
   // Removed rather than hidden, so the speaker notes read only the branch that holds.
   function branch() {
@@ -510,6 +556,7 @@
   document.querySelectorAll(".flow[data-source]").forEach(buildFlow);
   document.querySelectorAll(".forest[data-source]").forEach(buildForest);
   buildHome();
+  buildFullscreen();
   const chs = chapters();
   buildAgenda(chs);
   for (const k of document.querySelectorAll(".reveal .slides .kicker")) chapterInto(k, k.textContent);

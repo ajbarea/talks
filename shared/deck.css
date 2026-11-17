@@ -627,6 +627,26 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 
 .deck-home:hover { background: var(--band); }
 
+.deck-fullscreen {
+  position: fixed;
+  top: 8px;
+  left: 62px; /* Home: 8px in, 46px wide with its border; then an 8px gap */
+  box-sizing: content-box; /* the same 46px circle as Home */
+  z-index: 31;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.deck-fullscreen:hover { background: var(--band); }
+
 /* ------------------------------------------------------------ chapter rail -- */
 
 /* One row that never wraps: a pill that wraps turns into a tall circle that covers the slide.
@@ -831,6 +851,7 @@ html:not(.phone):not(.sideways) .reveal .slides section.closing:not(:has(.mark-f
 
 @media print {
   .deck-home,
+  .deck-fullscreen,
   .rail { display: none; }
 }
 

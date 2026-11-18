@@ -1,3 +1,19 @@
+# IMPL: external chips open in a new tab, 2026-11-18
+
+Branch fix/external-links-new-tab, issue #161 (assigned ajbarea). Do NOT merge.
+
+## Done
+- ✅ Code/Docs/Video chips: `target="_blank" rel="noopener noreferrer"`; aria-label, tooltip and sr-only text end ", opens in a new tab" (WCAG G201; label starts with the visible name).
+- ✅ Test `test_every_external_chip_opens_in_a_new_tab_and_says_so` fails without the change.
+- ✅ Live at 1920: GitHub chip on Federated Agents opens a new tab, page stays.
+- Brand link (ajbarea.github.io) left in-tab: same-site navigation, not an external destination.
+
+## Next
+- 📋 CI green, report to Heph, `fleet done`.
+
+## Verify
+- `uv run pytest -q tests/test_site.py`; `make lint`; `make site`.
+
 # IMPL: deck fullscreen button, title replay on demand, no site-wide Source link (2026-11-17)
 
 Branch feat/fullscreen-button. From AJ's live walkthrough of the QFL deck (11-17).

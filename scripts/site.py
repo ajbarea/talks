@@ -30,6 +30,8 @@ MARK = ".talks-site"
 #: A talk folder's notes (README.md) and scripts stay in the repository.
 SKIP = shutil.ignore_patterns("*.py", "__pycache__", "*.md", "talk.json")
 #: The links a talk may name, in the order the index shows them, with their labels.
+# WCAG G201: the name says the link leaves in a new tab, after the visible label.
+NEW_TAB = ", opens in a new tab"
 LINKS = {"code": "Code on GitHub", "docs": "Docs site", "video": "Video"}
 
 
@@ -189,9 +191,9 @@ def item(
         for ext, label in (DOWNLOADS.items() if sizes else ())
     ]
     chips += [
-        f'<li><a class="chip action-btn" href="{html.escape(url)}" '
-        f'aria-label="{LINKS[kind]}" data-tooltip="{LINKS[kind]}">{icon(kind, 20)}'
-        f'<span class="sr-only">{LINKS[kind]}</span></a></li>'
+        f'<li><a class="chip action-btn" href="{html.escape(url)}" target="_blank" rel="noopener noreferrer" '
+        f'aria-label="{LINKS[kind]}{NEW_TAB}" data-tooltip="{LINKS[kind]}{NEW_TAB}">{icon(kind, 20)}'
+        f'<span class="sr-only">{LINKS[kind]}{NEW_TAB}</span></a></li>'
         for kind, url in named.items()
     ]
     more = f'<ul class="chips">{"".join(chips)}</ul>' if chips else ""

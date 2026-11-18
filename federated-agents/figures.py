@@ -91,6 +91,30 @@ def planted_runs(org: str) -> list[str]:
     return list(verdicts.values())
 
 
+#: Check 5's registered plant per community (sphragis `cells.PLANT_BY_ORG`, research log
+#: 2026-11-17): the quote-style plant δ was set on, at every lesson it can change, in OpenStack
+#: and Wikimedia; each half's end-of-line marker in half its lessons in Qt. The slides say so in
+#: words, so another registration fails the build until they are reworded.
+REGISTERED_PLANTS = {"openstack": ("code", 1.0), "wikimedia": ("code", 1.0), "qt": ("marker", 0.5)}
+
+
+def planted_check(org: str) -> tuple[int, int]:
+    """Check 5's runs on `org`'s registered plant and how many passed, from sphragis
+    `planted_check.py`'s reading of them (`planted-check-<org>-<convention><fraction>.json`)."""
+    convention, fraction = REGISTERED_PLANTS[org]
+    check = load(f"planted-check-{org}-{convention}{fraction}.json")
+    if (
+        check.get("kind") != "planted_check"
+        or check.get("metric") != METRIC
+        or (check.get("convention"), check.get("fraction")) != (convention, fraction)
+        or check.get("registered_plant") != [convention, fraction]
+    ):
+        raise SystemExit(f"{org}'s check 5 is no longer registered on {convention} at {fraction}; reword the slides")
+    if check.get("runs") != check.get("registered_runs") or len(check.get("by_run", [])) != check["runs"]:
+        raise SystemExit(f"{org}'s check 5 did not read its registered runs")
+    return check["runs"], check["passed"]
+
+
 #: Dots on the sizing panel, one per simulated study with a real effect.
 SIZED_STUDIES = 20
 
@@ -320,13 +344,18 @@ def readings() -> dict[str, str | int | bool]:
     values["tuned_exact_gain"] = f"{100 * control['adapter_minus_base']['exact_match']:.0f}"
     # H2's registered K, the cap its simulation took (sphragis research log, 2026-11-02: K = 40, calibrated).
     values["k_foreign"] = load("k-coverage-qt-foreignchromium-likelihood-chains.json")["runs"]
-    # Check 5: each half's own marker planted in half its training lessons; how many runs found it.
-    planted = {org: planted_runs(org) for org in (*ORGS, "qt")}
-    if len({len(v) for v in planted.values()}) != 1:
-        raise SystemExit(f"planted runs differ in number: { {o: len(v) for o, v in planted.items()} }")
-    every = [v for runs in planted.values() for v in runs]
-    values["planted_runs"] = len(every)
-    values["planted_found"] = every.count("pass")
+    # Check 5 on each community's registered plant: how many of its runs found it.
+    planted = {org: planted_check(org) for org in (*ORGS, "qt")}
+    if len({runs for runs, _ in planted.values()}) != 1:
+        raise SystemExit(f"planted runs differ in number: {planted}")
+    values["planted_runs"] = sum(runs for runs, _ in planted.values())
+    values["planted_found"] = sum(found for _, found in planted.values())
+    # Qt's C++ version of the quote-style plant, read and not registered (research log, 2026-11-17).
+    qt_code = load("planted-check-qt-code1.0.json")
+    if qt_code.get("rule_met") or qt_code.get("metric") != METRIC:
+        raise SystemExit("Qt's code plant now meets check 5's rule; reword the backup notes")
+    values["planted_qt_code_runs"] = qt_code["runs"]
+    values["planted_qt_code_found"] = qt_code["passed"]
     values["planted_all"] = values["planted_found"] == values["planted_runs"]
     # Each community's K from the coverage rule a Gerrit test read takes it from, in relation
     # chains, beside the reproducibility K it would have had: the coverage rule raised it where

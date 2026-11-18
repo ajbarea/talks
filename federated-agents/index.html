@@ -384,7 +384,7 @@
       <b data-if="readings.planted_all">A planted rule is caught</b>
       <b data-unless="readings.planted_all">A planted rule was missed</b>
       <div class="dots count fragment" data-dots="readings.planted_found" data-of="readings.planted_runs" data-cols="10"></div>
-      <p>A fake house rule, planted in half the training lessons, was found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span> development runs<span data-unless="readings.planted_all">; the test waits until that is fixed</span>.</p>
+      <p>A planted house rule, each half's own quote style (in Qt, a made-up marker), was found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span> development runs<span data-unless="readings.planted_all">; the test waits until that is fixed</span>.</p>
     </div>
     <div class="card">
       <b>Sized to find a real effect</b>
@@ -392,7 +392,7 @@
       <p>With a real effect of the smallest size that matters, at least <span data-value="readings.sized_found"></span> of <span data-value="readings.sized_studies"></span> simulated studies find it.</p>
     </div>
   </div>
-  <aside class="notes"><ul><li>Own against sibling must win twice: the whole fix, and the fix without its names</li><li>Averaged over many splits; planted rule found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span> runs</li><li>Simulations: a real effect of the smallest size that matters is found almost every time</li></ul></aside>
+  <aside class="notes"><ul><li>Own against sibling must win twice: the whole fix, and the fix without its names</li><li>Averaged over many splits; planted quote style (Qt: a marker) found in <span data-value="readings.planted_found"></span> of <span data-value="readings.planted_runs"></span> runs</li><li>Simulations: a real effect of the smallest size that matters is found almost every time</li></ul></aside>
 </section>
 
 <section data-chapter="6 · Where it stands">
@@ -558,7 +558,7 @@
   </ul>
   <p>A measurement, not a guarantee.</p>
   <p class="back"><a href="#/faq">Back to the questions</a></p>
-  <aside class="notes"><span data-if="readings.planted_all">Word-for-word matching missed the planted rule in most runs, so the test scores probability. </span><span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>Changes stacked on one another in review, Gerrit's relation chains, are not independent, so the test resamples whole chains, not single changes; I fixed that after the first readings, before reading any chain. For the Chromium contrast, no number of splits the plan allows held false alarms at the planned rate, so it takes the most allowed, declared as a change, with its pass mark set from simulated false alarms. On the score without names, Wikimedia's simulated false alarms ran above the promised rate, so its pass mark is also set from simulated false alarms. The test is sized at 95% joint power.</aside>
+  <aside class="notes"><span data-if="readings.planted_all">Word-for-word matching missed the planted rule in most runs, so the test scores probability. </span>The planted rule is each half's own quote style, the habit the smallest effect that matters was set on. In Qt's C++, the matching rule, whether a space follows if, was found in <span data-value="readings.planted_qt_code_found"></span> of <span data-value="readings.planted_qt_code_runs"></span> runs, short of the rule that every run passes, so Qt keeps a made-up end-of-line marker, reported as a change from the plan. <span data-if="readings.k_raised_openstack">Simulations showed OpenStack needs <span data-value="readings.k_openstack"></span> splits, not <span data-value="readings.k_reproducibility_openstack"></span>, to keep false alarms as rare as promised, so it gets them. </span><span data-if="readings.k_raised_wikimedia">Simulations showed Wikimedia needs <span data-value="readings.k_wikimedia"></span> splits, not <span data-value="readings.k_reproducibility_wikimedia"></span>, to keep false alarms as rare as promised, so it gets them. </span>Changes stacked on one another in review, Gerrit's relation chains, are not independent, so the test resamples whole chains, not single changes; I fixed that after the first readings, before reading any chain. For the Chromium contrast, no number of splits the plan allows held false alarms at the planned rate, so it takes the most allowed, declared as a change, with its pass mark set from simulated false alarms. On the score without names, Wikimedia's simulated false alarms ran above the promised rate, so its pass mark is also set from simulated false alarms. The test is sized at 95% joint power.</aside>
 </section>
 
 <section id="faq-communities" class="backup">

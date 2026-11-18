@@ -48,7 +48,7 @@ Here's what the tool sets aside on OpenStack. Most review comments go; the bigge
 
 ## 11. The test is built so it can't fool me
 
-I made sure the test can't fool me. The main test must win twice: on the whole fix, and on the fix without its names, so a team's names alone cannot pass it. Each dot on the left is one way of dividing the data; any one can mislead, so the test averages many. On the development months, I planted a fake house rule in half the training lessons: {if readings.planted_all}the test found it in every run.{/if}{unless readings.planted_all}it was missed in some runs, so the test waits until that is fixed.{/unless} And in simulations, it finds a real effect of the smallest size that matters almost every time.
+I made sure the test can't fool me. The main test must win twice: on the whole fix, and on the fix without its names, so a team's names alone cannot pass it. Each dot on the left is one way of dividing the data; any one can mislead, so the test averages many. On the development months, I planted a house rule in each half's training lessons, its own quote style, and in Qt a made-up end-of-line marker: {if readings.planted_all}the test found it in every run.{/if}{unless readings.planted_all}it was missed in some runs, so the test waits until that is fixed.{/unless} And in simulations, it finds a real effect of the smallest size that matters almost every time.
 
 ## 12. The datasets are stage one; federated coding agents are the goal
 

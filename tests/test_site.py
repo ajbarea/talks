@@ -437,3 +437,14 @@ def test_decks_add_a_home_link_to_the_centered_cover_flow() -> None:
     home_rule = re.search(r"\.deck-home\s*\{([^}]+)\}", css).group(1)
     assert "min-height" not in home_rule  # mutation guard: the fixed 44px square is explicit
     assert "width: 44px" in home_rule and "height: 44px" in home_rule
+
+
+def test_every_external_chip_opens_in_a_new_tab_and_says_so(site, repo: Path, tmp_path: Path) -> None:
+    index = _built(site, repo, tmp_path, code="https://github.com/a/b", video="https://youtu.be/x")
+    chips = re.findall(r'<a class="chip action-btn" href="https://[^>]*>', index)
+    assert len(chips) >= 2
+    for chip in chips:
+        assert 'target="_blank"' in chip and 'rel="noopener noreferrer"' in chip
+        assert "opens in a new tab" in chip
+    downloads = re.findall(r'<a class="chip action-btn" href="(?!https)[^>]*>', index)
+    assert downloads and all("_blank" not in d for d in downloads)

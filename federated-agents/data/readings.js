@@ -84,6 +84,8 @@ window.DECK_DATA = Object.assign(window.DECK_DATA || {}, { readings: {
   "k_foreign": 40,
   "planted_runs": 30,
   "planted_found": 30,
+  "planted_qt_code_runs": 10,
+  "planted_qt_code_found": 9,
   "planted_all": true,
   "k_openstack": 10,
   "k_reproducibility_openstack": 10,

@@ -52,11 +52,11 @@ I made sure the test can't fool me. The main test must win twice: on the whole f
 
 ## 12. The datasets are stage one; federated coding agents are the goal
 
-The datasets are stage one, and I'm still collecting and checking data. By November 20th the plan goes to MSR 2027, the Mining Software Repositories conference, as a registered report: reviewers judge the method before any test result exists, so publication rests on the method, not the answer. If they accept it in February, I open the sealed test and the full paper goes to the journal Empirical Software Engineering before September 30th; then I build the two add-ons and try to break them, toward federated coding agents.
+The datasets are stage one, and I'm still collecting and checking data. On November 20th I sent the plan to MSR 2027, the Mining Software Repositories conference, as a registered report: reviewers judge the method before any test result exists, so publication rests on the method, not the answer. Reviews come in December and I revise in January. If they accept it on February 4th, I open the sealed test and the full paper goes to the journal Empirical Software Engineering before September 30th; then I build the two add-ons and try to break them, toward federated coding agents.
 
 ## 13. Three communities decide the answer, and GitHub checks it elsewhere
 
-OpenStack, Wikimedia and Qt decide the answer, and each must pass; Qt said yes in writing. Second, Qt's C++ is compared with Google projects' C++: Chromium is the registered comparison, and Fuchsia is exploratory. GitHub, where review is often optional, is a separate replication: Apache and .NET qualify, LLVM and Grafana don't. Membership is fixed by November 20th, before any test result exists.
+OpenStack, Wikimedia and Qt decide the answer, and each must pass; Qt said yes in writing. Second, Qt's C++ is compared with Google projects' C++: Chromium is the registered comparison, and Fuchsia is exploratory. GitHub, where review is often optional, is a separate replication: Apache and .NET qualify, LLVM and Grafana don't. Membership was fixed in the November 20th plan, before any test result exists.
 
 ## 14. Before agents share a team's habits, test that there are habits to learn
 

@@ -234,6 +234,8 @@ def test_the_restarts_table_scrolls_from_the_keyboard() -> None:
     assert wrap and 'tabindex: "0"' in wrap.group(1) and '"aria-label"' in wrap.group(1)
     (body,) = _bodies(src, r"function onKey\(\w+\) \{")
     guard = next(line for line in body.splitlines() if line.strip().startswith("if (wrap"))
+    # The guard looks up the very class the table is built with.
+    assert re.search(r'const wrap = e\.target\.closest && e\.target\.closest\("\.table-wrap"\);', body)
     # Only plain sideways arrows, only when the table overflows: Space, Home, End and
     # Shift+arrows still drive the player from inside the table.
     assert "scrollWidth > wrap.clientWidth" in guard and "!e.shiftKey" in guard

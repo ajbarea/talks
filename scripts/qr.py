@@ -17,7 +17,6 @@ from __future__ import annotations
 import argparse
 import html
 import importlib.util
-import json
 import pathlib
 import re
 import sys
@@ -45,12 +44,7 @@ def close_target(talk: pathlib.Path | str) -> tuple[str, str]:
     """The closing code's address and caption: the talk itself, or the page its talk.json names
     (`"close": {"path": "lab/", "label": "Try the lab"}`), so a talk can end on its playground."""
     talk = pathlib.Path(talk)
-    path = ROOT / talk.name / "talk.json"
-    try:
-        data = json.loads(path.read_text()) if path.is_file() else {}
-    except json.JSONDecodeError as exc:
-        raise SystemExit(f"{talk.name}/talk.json is not JSON: {exc}") from exc
-    close = data.get("close") if isinstance(data, dict) else None
+    close = talks_site.talk_json(ROOT / talk.name).get("close")
     if close is None:
         return talk_url(talk), "These slides"
     if not isinstance(close, dict) or set(close) != {"path", "label"}:

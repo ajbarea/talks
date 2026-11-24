@@ -111,5 +111,13 @@ def test_a_talk_json_that_is_not_json_names_the_file(tmp_path, monkeypatch):
     (tmp_path / "t").mkdir()
     (tmp_path / "t" / "talk.json").write_text("{")
     monkeypatch.setattr(qr, "ROOT", tmp_path)
-    with pytest.raises(SystemExit, match="t/talk.json is not JSON"):
+    with pytest.raises(SystemExit, match="t/talk.json is not UTF-8 JSON"):
+        qr.close_target(tmp_path / "t")
+
+
+def test_a_talk_json_that_is_not_utf8_names_the_file(tmp_path, monkeypatch):
+    (tmp_path / "t").mkdir()
+    (tmp_path / "t" / "talk.json").write_bytes(b'{"close": "\xff"}')
+    monkeypatch.setattr(qr, "ROOT", tmp_path)
+    with pytest.raises(SystemExit, match="t/talk.json is not UTF-8 JSON"):
         qr.close_target(tmp_path / "t")

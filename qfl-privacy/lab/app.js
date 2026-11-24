@@ -254,7 +254,7 @@
       const det = el("details", { class: "table" }, body);
       if (!opts.closedTable) det.open = true;
       el("summary", {}, det, "Each restart, as a table");
-      const wrap = el("div", { class: "table-wrap", tabindex: "0", role: "region", "aria-label": opts.title ? `Each restart, ${opts.title}` : "Each restart, as a table" }, det);
+      const wrap = el("div", { class: "table-wrap", tabindex: "0", role: "region", "aria-label": `Each restart, ${opts.title}` }, det);
       const t = el("table", { class: "runs" }, wrap);
       const hr = el("tr", {}, el("thead", {}, t));
       for (const [h, c] of [["#", ""], ["start", ""], ["end", ""], ["loss", ""], ["from the input", ""], ["outcome", "o"]]) el("th", { scope: "col", class: c || null }, hr, h);

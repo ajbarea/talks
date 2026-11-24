@@ -88,6 +88,7 @@ BAD_CLOSE = [
     {"path": "data/", "label": "x"},
     "lab/",
     ["lab/"],
+    5,
 ]
 
 

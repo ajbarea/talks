@@ -7,7 +7,8 @@ index page listing the talks by their own <title> and description, with each tal
     python scripts/site.py --list                      # the talks, by folder
 
 A talk is a top-level folder holding an index.html, and optionally a talk.json naming its links
-({"links": {"code": URL, "docs": URL, "video": URL}}, each optional). With --exports, every talk
+({"links": {"code": URL, "docs": URL, "video": URL}}, each optional) and, for scripts/qr.py, the page
+its closing QR code opens ({"close": {"path": ..., "label": ...}}). With --exports, every talk
 must have its `<folder>.pptx`, `<folder>.pdf` and `thumb.webp` there (scripts/exports.py writes
 them), and the index offers the downloads; a `thumb-loop.webp` there plays when a preview is
 hovered. Build scripts and caches stay behind.

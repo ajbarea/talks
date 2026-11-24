@@ -1,6 +1,7 @@
 # When do quantum circuits keep federated training data private? Script
 
-<!-- budget: 1400 words. About 9.7 minutes read aloud at 140 words a minute, plus about 2 minutes of dragging controls on the three lab slides: about 12 minutes inside a 13 to 14 minute slot. -->
+<!-- budget: 1550 words -->
+<!-- 1357 spoken words by scripts/script_length.py (headings and figure keys count above): about 9.7 minutes read aloud at 140 words a minute, plus about 2 minutes of dragging controls on the three lab slides: about 12 minutes in the slot. -->
 
 ## When do quantum circuits keep federated training data private?
 

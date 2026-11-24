@@ -56,7 +56,7 @@
 .phone .fl-fig figcaption { font-size: 0.7em; }
 .fl-fig .box { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; }
 .fl-fig .box-title { font: 700 26px var(--sans); fill: var(--ink); }
-.fl-fig .box-text { font: 22px var(--sans); fill: var(--muted); }
+.fl-fig .box-text { font: 23px var(--sans); fill: var(--muted); }
 .fl-fig .data { fill: var(--held-tint); stroke: var(--held); stroke-width: 2.5; }
 .fl-fig .up { fill: none; stroke: var(--ink); stroke-width: 4; }
 .fl-fig .up-head { fill: var(--ink); }
@@ -71,7 +71,7 @@
 .fl-fig .chip-text { font: 700 24px var(--sans); fill: var(--ink); }
 .fl-fig .chip-text.model { fill: var(--muted); font-weight: 400; }
 .fl-fig .home { fill: none; stroke: var(--held); stroke-width: 3; }
-.fl-fig .home-text { font: 700 22px var(--sans); fill: var(--held-ink); }
+.fl-fig .home-text { font: 700 23px var(--sans); fill: var(--held-ink); }
 .fl-fig figcaption { margin-top: 10px; font-size: 0.64em; color: var(--muted); }
 
 

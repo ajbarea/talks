@@ -8,7 +8,8 @@ The address is SITE plus the talk's folder name, the one place it is defined. Ea
 inline SVG (error correction M, 4-module quiet zone, black on white), so it is crisp at any
 size, travels into the PDF and PowerPoint exports, and needs no network. A block sits between
 `<!-- qr:KIND -->` and `<!-- /qr -->`; a talk without one gets it added: KIND `follow` into the
-first slide, KIND `close` into the slide titled "Thank you".
+first slide, KIND `close` into the slide titled "Thank you". A talk.json `close` entry points the
+closing code at a page inside the talk instead, such as its playground.
 """
 
 from __future__ import annotations
@@ -39,6 +40,24 @@ def talk_url(talk: pathlib.Path | str) -> str:
     return f"{SITE}{pathlib.Path(talk).name}"
 
 
+def close_target(talk: pathlib.Path | str) -> tuple[str, str]:
+    """The closing code's address and caption: the talk itself, or the page its talk.json names
+    (`"close": {"path": "lab/", "label": "Try the lab"}`), so a talk can end on its playground."""
+    talk = pathlib.Path(talk)
+    close = talks_site.talk_json(ROOT / talk.name).get("close")
+    if close is None:
+        return talk_url(talk), "These slides"
+    if not isinstance(close, dict) or set(close) != {"path", "label"}:
+        raise SystemExit(f'{talk.name}/talk.json "close" holds a "path" and a "label"')
+    rel, label = close["path"], close["label"]
+    if not isinstance(rel, str) or not isinstance(label, str):
+        raise SystemExit(f'{talk.name}/talk.json "close" holds a "path" and a "label"')
+    # A folder inside the talk that holds a page, so the code never points at a 404.
+    if not re.fullmatch(r"[\w-]+(/[\w-]+)*/?", rel) or not (ROOT / talk.name / rel / "index.html").is_file():
+        raise SystemExit(f"{talk.name}/talk.json close path {rel!r} is not a page in the talk")
+    return f"{talk_url(talk)}/{rel}", label
+
+
 def short(url: str) -> str:
     return url.removeprefix("https://")
 
@@ -66,14 +85,14 @@ def svg(url: str) -> str:
     )
 
 
-def block(kind: str, url: str) -> str:
+def block(kind: str, url: str, label: str = "These slides") -> str:
     # The address breaks after "/talks/": at the talk's name on the closing slide, where it is large.
-    text = html.escape(short(url)).replace("/talks/", "/talks/<wbr>" if kind == "follow" else "/talks/<br>")
+    text = html.escape(short(url).rstrip("/")).replace("/talks/", "/talks/<wbr>" if kind == "follow" else "/talks/<br>")
     if kind == "follow":
         body = f'<p class="qr-label"><b>Follow along</b><span>{text}</span></p>\n    {svg(url)}'
         attrs = 'class="qr qr-follow"'
     else:
-        body = f'{svg(url)}\n    <p class="qr-label"><b>These slides</b><span>{text}</span></p>'
+        body = f'{svg(url)}\n    <p class="qr-label"><b>{html.escape(label)}</b><span>{text}</span></p>'
         attrs = 'class="qr qr-close" data-motion="pop" data-delay="300" data-dur="600"'
     return f"  <!-- qr:{kind} -->\n  <div {attrs}>\n    {body}\n  </div>\n  <!-- /qr -->\n"
 
@@ -123,14 +142,14 @@ def close_slide(page: str, talk: str) -> str:
 
 
 def render(page: str, talk: pathlib.Path) -> str:
-    url = talk_url(talk)
+    targets = {"follow": (talk_url(talk), "These slides"), "close": close_target(talk)}
     page = close_slide(page, talk.name)
     found = {m.group(1) for m in BLOCK.finditer(page)}
-    page = BLOCK.sub(lambda m: block(m.group(1), url), page)
+    page = BLOCK.sub(lambda m: block(m.group(1), *targets[m.group(1)]), page)
     for kind in KINDS:
         if kind not in found:
             at = slide_end(page, kind, talk.name)
-            page = page[:at] + block(kind, url) + page[at:]
+            page = page[:at] + block(kind, *targets[kind]) + page[at:]
     return page
 
 

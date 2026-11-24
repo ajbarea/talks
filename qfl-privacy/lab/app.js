@@ -254,7 +254,8 @@
       const det = el("details", { class: "table" }, body);
       if (!opts.closedTable) det.open = true;
       el("summary", {}, det, "Each restart, as a table");
-      const t = el("table", { class: "runs" }, el("div", { class: "table-wrap" }, det));
+      const wrap = el("div", { class: "table-wrap", tabindex: "0", role: "region", "aria-label": `Each restart, ${opts.title}` }, det);
+      const t = el("table", { class: "runs" }, wrap);
       const hr = el("tr", {}, el("thead", {}, t));
       for (const [h, c] of [["#", ""], ["start", ""], ["end", ""], ["loss", ""], ["from the input", ""], ["outcome", "o"]]) el("th", { scope: "col", class: c || null }, hr, h);
       tbody = el("tbody", {}, t);
@@ -553,13 +554,17 @@
     // Keys anywhere in the view, or with nothing focused: Space plays and pauses, arrows step,
     // Shift+arrows jump to the next landing, Home and End go to the ends. Keys typed into a
     // control, Space on a button, link or disclosure, and any key with Ctrl, Meta or Alt (the
-    // browser's: Cmd+Left is Back) keep their own meaning.
+    // browser's: Cmd+Left is Back) keep their own meaning, and so do the plain arrows in a
+    // restarts table wide enough to scroll.
     const view = opts.keyScope || box;
     function onKey(e) {
       if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
       if (!(e.target === document.body || view.contains(e.target))) return;
       const tag = e.target.tagName;
       if (e.target !== scrub && (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA")) return;
+      // A restarts table that overflows scrolls sideways with its own plain arrow keys.
+      const wrap = e.target.closest && e.target.closest(".table-wrap");
+      if (wrap && wrap.scrollWidth > wrap.clientWidth && !e.shiftKey && (e.key === "ArrowLeft" || e.key === "ArrowRight")) return;
       if (e.key === " " && (tag === "SUMMARY" || tag === "A")) return;
       if (e.key === " " && tag !== "BUTTON") {
         e.preventDefault();

@@ -224,3 +224,50 @@ def test_every_key_handler_leaves_browser_shortcuts_alone() -> None:
     for b in taking:
         assert all(k in b for k in ("ctrlKey", "metaKey", "altKey")), b[:120]
         assert b.index("altKey") < b.index("preventDefault"), b[:120]
+
+
+def test_the_restarts_table_scrolls_from_the_keyboard() -> None:
+    # axe scrollable-region-focusable: a sideways-scrolling table needs a tab stop and a name,
+    # and the player's arrow keys must leave it to scroll.
+    src = (LAB / "app.js").read_text()
+    wrap = re.search(r'el\("div", \{ class: "table-wrap"([^}]*)\}', src)
+    assert wrap and 'tabindex: "0"' in wrap.group(1) and '"aria-label"' in wrap.group(1)
+    (body,) = _bodies(src, r"function onKey\(\w+\) \{")
+    guard = next(line for line in body.splitlines() if line.strip().startswith("if (wrap"))
+    # The guard looks up the very class the table is built with.
+    assert re.search(r'const wrap = e\.target\.closest && e\.target\.closest\("\.table-wrap"\);', body)
+    # Only plain sideways arrows, only when the table overflows: Space, Home, End and
+    # Shift+arrows still drive the player from inside the table.
+    assert "scrollWidth > wrap.clientWidth" in guard and "!e.shiftKey" in guard
+    assert '"ArrowLeft"' in guard and '"ArrowRight"' in guard
+    assert not any(k in guard for k in ('" "', '"Home"', '"End"'))
+    assert body.index(guard) < body.index('e.key === " "')
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="needs node")
+def test_the_table_guard_takes_only_plain_sideways_arrows_in_an_overflowing_table() -> None:
+    # Runs the guard's own condition, so a changed operator fails as well as a missing term.
+    src = (LAB / "app.js").read_text()
+    (body,) = _bodies(src, r"function onKey\(\w+\) \{")
+    guard = next(line for line in body.splitlines() if line.strip().startswith("if (wrap"))
+    cond = re.match(r"\s*if \((.*)\) return;\s*$", guard).group(1)
+    cases = [
+        # key, shift, in a table, overflows -> the table keeps it
+        ("ArrowRight", False, True, True, True),
+        ("ArrowLeft", False, True, True, True),
+        ("ArrowRight", True, True, True, False),
+        ("ArrowRight", False, True, False, False),
+        ("ArrowRight", False, False, True, False),
+        (" ", False, True, True, False),
+        ("Home", False, True, True, False),
+        ("End", False, True, True, False),
+    ]
+    prog = (
+        f"const cases = {json.dumps(cases)};"
+        " console.log(JSON.stringify(cases.map(([key, shiftKey, inTable, over]) => {"
+        " const e = { key, shiftKey };"
+        " const wrap = inTable ? { scrollWidth: over ? 200 : 100, clientWidth: 100 } : null;"
+        f" return Boolean({cond}); }})))"
+    )
+    out = subprocess.run(["node", "-e", prog], capture_output=True, text=True, check=True)
+    assert json.loads(out.stdout) == [c[4] for c in cases]

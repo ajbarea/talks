@@ -7,7 +7,8 @@ index page listing the talks by their own <title> and description, with each tal
     python scripts/site.py --list                      # the talks, by folder
 
 A talk is a top-level folder holding an index.html, and optionally a talk.json naming its links
-({"links": {"code": URL, "docs": URL, "video": URL}}, each optional). With --exports, every talk
+({"links": {"code": URL, "docs": URL, "video": URL}}, each optional) and, for scripts/qr.py, the page
+its closing QR code opens ({"close": {"path": ..., "label": ...}}). With --exports, every talk
 must have its `<folder>.pptx`, `<folder>.pdf` and `thumb.webp` there (scripts/exports.py writes
 them), and the index offers the downloads; a `thumb-loop.webp` there plays when a preview is
 hovered. Build scripts and caches stay behind.
@@ -86,17 +87,23 @@ def entry(talk: pathlib.Path) -> tuple[str, str]:
     return title, description
 
 
-def links(talk: pathlib.Path) -> dict[str, str]:
-    """The talk's links from its talk.json, checked: known kinds only, each an https URL."""
+def talk_json(talk: pathlib.Path) -> dict:
+    """The talk's talk.json as an object of known keys, or {} when it has none."""
     path = talk / "talk.json"
     if not path.is_file():
         return {}
     try:
-        data = json.loads(path.read_text())
-    except json.JSONDecodeError as exc:
-        raise SystemExit(f"{talk.name}/talk.json is not JSON: {exc}") from exc
-    if not isinstance(data, dict) or set(data) - {"links"}:
-        raise SystemExit(f'{talk.name}/talk.json holds only {{"links": {{...}}}}')
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        raise SystemExit(f"{talk.name}/talk.json is not UTF-8 JSON: {exc}") from exc
+    if not isinstance(data, dict) or set(data) - {"links", "close"}:
+        raise SystemExit(f'{talk.name}/talk.json holds only {{"links": {{...}}, "close": {{...}}}}')
+    return data
+
+
+def links(talk: pathlib.Path) -> dict[str, str]:
+    """The talk's links from its talk.json, checked: known kinds only, each an https URL."""
+    data = talk_json(talk)
     named = data.get("links", {})
     if not isinstance(named, dict) or set(named) - set(LINKS):
         raise SystemExit(f"{talk.name}/talk.json links are limited to {', '.join(LINKS)}")

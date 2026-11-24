@@ -1,8 +1,18 @@
-<!-- budget: 1900 words -->
+<!-- budget: 2200 words -->
 # QFL privacy talk: explainer sheet
 
 For AJ, before the CSCI-739 talk. Each equation on the slides, in plain words, with a few lines of
 Python you can run. Then what the live lab does on each slide, and what to say when it misbehaves.
+
+## On Zoom, Dec 10 at 9:10
+
+- Share only the deck's window; press S first, so the speaker view opens in its own window that the room never sees.
+- Slide 3 ends on a quick bet: "is the gradient private, yes or no?" in the chat. Read two or
+  three answers aloud on slide 4; the last line of its script answers them.
+- On the closing slide, paste `https://ajbarea.github.io/talks/qfl-privacy/lab/` into the chat as
+  you say it. The QR code goes to the same page for anyone on a phone.
+- The script is about 9.7 minutes aloud at 140 words a minute; the three lab slides add about 2 minutes of dragging.
+  If you run long, skip the toy's rows on the restarts slide and go straight to the paper's.
 
 ## Federated learning, in one picture (slide 3)
 
@@ -16,6 +26,8 @@ grey dots the new model coming back. In one line: "the data stays home, the grad
 ## The equations
 
 ### The circuit's output, f(x; θ)
+
+Say it: "f is the circuit's answer: put the input in as angles, apply the trainable gates, and average the Z readings."
 
 Each qubit gets its input as a Y rotation, R_Y(x). Then come trainable rotations R_Y(θ) and R_Z(θ)
 and a chain of CNOTs. The output is the Z measurement averaged over the qubits, a number between −1
@@ -32,6 +44,8 @@ print(state[0] ** 2 - state[1] ** 2, np.cos(x))  # <Z> both ways: 0.6967 0.6967
 
 ### On the Bloch sphere: R_Y(x)|0⟩ sits at (sin x, 0, cos x)
 
+Say it: "Encoding x turns the qubit x radians away from zero, so the input is an angle you can see on the sphere."
+
 An encoded input is a point on the circle through |0⟩ and |1⟩, at angle x from |0⟩. That is why
 the live lab can show the hidden input and the guess as two arrows: the angle between them is the
 error the paper measures. Angles are compared modulo 2π, because R_Y(x + 2π) only flips the
@@ -39,10 +53,14 @@ state's global phase.
 
 ### The client's gradient, g = ∇_θ (f(x; θ) − y)²
 
+Say it: "g is how much the client's error would change if each trainable angle moved a little; that list is all it sends."
+
 The client's loss is the squared gap between output and label. Its gradient is one number per
 trainable angle: how the loss changes if that angle moves. That list is what the client sends.
 
 ### The parameter-shift rule: ∂f/∂θ = [f(θ + π/2) − f(θ − π/2)] / 2
+
+Say it: "Run the circuit with the angle a quarter turn up and a quarter turn down; half the difference is the exact slope."
 
 For a rotation gate, the exact slope comes from running the circuit twice, with the angle shifted
 up and down by a quarter turn. A device computes gradients this way, and so does the live lab.
@@ -54,6 +72,8 @@ print((f(t + np.pi / 2) - f(t - np.pi / 2)) / 2, -np.sin(0.8 + t))  # both -0.89
 ```
 
 ### The attack: L(x̂) = ‖ ∇_θ (f(x̂; θ) − y)² − g ‖²
+
+Say it: "L is how far my guess's gradient is from the one I received; zero means the guess explains it exactly."
 
 Read it as: how far my guess's gradient is from the one I received. x̂ ("x-hat") is the guess. The
 attacker knows θ and y, computes the gradient its guess would produce, and moves the guess to shrink
@@ -84,17 +104,23 @@ print(xs[L(xs) < 1e-8].round(2))` finds the truth at 0.80 and a second exact mat
 
 ### Effective parameters, P_eff = P − N
 
+Say it: "Count every angle, then drop the last Z rotation on each qubit, because it never changes the output."
+
 The circuit has P = 2rℓN angles: r repetitions, ℓ blocks, two rotations per qubit per block. The
 last block's Z rotations are followed only by CNOTs and a Z measurement, so they never change the output; their
 gradient is always zero. The other P − N angles each give one useful equation.
 
 ### Unknowns per effective parameter, NB / P_eff (batch slide)
 
+Say it: "Unknown numbers in the batch divided by useful equations; above one, many batches fit the same gradient."
+
 A batch of B inputs on N qubits has NB unknown numbers. The gradient still gives only P_eff useful equations. Above
 1, there are more unknowns than equations, and many batches fit the same gradient. The paper's grid
 recovered inputs up to 0.67 and never from 1.14, so the crossover lies between.
 
 ### Shot noise: ⟨Z⟩ ≈ 2k/S − 1, error shrinks like 1/√S
+
+Say it: "Each reading is a coin flip, so the estimate's error shrinks with the square root of the shots: a hundred times the shots, a tenth the error."
 
 With S shots, k of them read 0, and 2k/S − 1 estimates ⟨Z⟩. Its standard error falls like 1/√S, a
 slope of −1/2 on a log-log plot. The paper's errors fell with slopes −0.54 to −0.49, the same rate.
@@ -112,11 +138,15 @@ for S in (100, 10_000):
 
 ### The label-free attack (backup): input i adds c_i ∇_θ f(x_i)
 
+Say it: "Without the label, each input's weight in the gradient is unknown, so the attacker solves for the best weights for each guess."
+
 With a squared loss, each input adds its own gradient times a weight c_i = 2(f − y_i)/B. Without
 the labels, the attacker does not know the weights, so for each guess it solves for the best ones
 by least squares and matches what remains.
 
 ### The p-values: exact McNemar test
+
+Say it: "Look only at seeds where the two conditions disagree; if hiding the label did nothing, they'd split like coin flips."
 
 Each seed is attacked twice (label known or hidden; before or after training). Only seeds where
 the two disagree count. If hiding the label did nothing, those seeds would split 50/50 like coin

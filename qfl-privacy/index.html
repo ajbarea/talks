@@ -44,9 +44,9 @@
 </section>
 
 <section>
-  <h2>Three parts: the attack, a live lab, then what else hides the input</h2>
+  <h2>Three parts: the attack, a live lab, then what else might stop it</h2>
   <ol class="agenda" data-auto></ol>
-  <aside class="notes"><ul><li>The attack and the disagreement it settles</li><li>A live lab on a toy circuit, beside the paper's numbers</li><li>Batches, hidden labels, training; then the summary</li></ul></aside>
+  <aside class="notes"><ul><li>The attack and the disagreement it settles</li><li>A live lab on a toy circuit, beside the paper's numbers</li><li>Batches, hidden labels, training</li></ul></aside>
 </section>
 
 <section data-chapter="1 · The attack">
@@ -147,7 +147,7 @@
     </svg>
     <figcaption>One round: clients train on their own data and send only their update; the server averages them (McMahan et al., 2017).</figcaption>
   </figure>
-  <aside class="notes"><ul><li>Clients keep their data; each trains the shared model locally</li><li>Only the update goes up (here a gradient; FedAvg sends weights after a few local steps); the server averages, sends the new model back</li><li>Data stays home, the gradient travels: is the gradient private?</li></ul></aside>
+  <aside class="notes"><ul><li>Clients keep their data; each trains the shared model locally</li><li>Only the update goes up (here a gradient; FedAvg sends weights after a few local steps); the server averages, sends the new model back</li><li>Data stays home, the gradient travels. Quick bet in the chat: is the gradient private, yes or no?</li></ul></aside>
 </section>
 
 <section data-contribution data-chapter="1 · The attack">
@@ -667,8 +667,8 @@
   <aside class="notes"><ul><li>Toy: drag shots down; the dip lifts and shifts, the end points spread; rows: the attack still finds nearly every input at 100 shots, misses several at 10</li><li>Paper: at 8 qubits at most <span data-value="rq2.within8Max"></span> of <span data-value="paper.seeds"></span> seeds within <span data-value="paper.closeRad"></span> rad; at 4 qubits <span data-value="rq2.within4Min"></span> to <span data-value="rq2.within4Max"></span></li><li>Noise <span data-value="rq2.noise8"></span> vs signal <span data-value="rq2.signal8"></span> (squared norms); the toy is the small, easy end</li><li>Blocked this attack, not a guarantee: shot noise is no substitute for calibrated DP-SGD noise (Sedrakyan et al., 2026)</li></ul></aside>
 </section>
 
-<section data-chapter="3 · What else hides it">
-  <span class="kicker">3 · What else hides it</span>
+<section data-chapter="3 · What else might stop it">
+  <span class="kicker">3 · What else might stop it</span>
   <h2>Every batch we tried with more unknowns than effective parameters was ambiguous</h2>
   <div class="batch-row">
     <figure class="paper wide">
@@ -733,8 +733,8 @@
   <aside class="notes"><ul><li>Batch of B inputs: N times B unknowns, same effective parameters</li><li>Leaked up to <span data-value="rq3.leakMax"></span> unknowns per effective parameter, never from <span data-value="rq3.heldMin"></span>; the crossover sits between</li><li>Past it: ambiguous, another batch fits as well</li></ul></aside>
 </section>
 
-<section data-chapter="3 · What else hides it">
-  <span class="kicker">3 · What else hides it</span>
+<section data-chapter="3 · What else might stop it">
+  <span class="kicker">3 · What else might stop it</span>
   <h2>Hiding the label helped a little; training the circuit made no detectable net change</h2>
   <div class="batch-row">
     <figure class="paper wide">
@@ -773,7 +773,7 @@
   <h2>Repetitions slowed the attack; <span data-value="rq2.lowShots"></span> shots at 8 qubits and large batches stopped it</h2>
   <div class="recap">
     <div class="tile"><p class="num"><span data-value="paper.seeds"></span> of <span data-value="paper.seeds"></span></p><p>seeds leaked (untrained, exact gradients, one input, label known) on every circuit with one encoding layer and two or more trainable layers</p></div>
-    <div class="tile"><p class="num"><span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span></p><p>restarts that hit, of <span data-value="rq1.tries"></span>, at 8 qubits and <span data-value="rq1.params"></span> effective parameters, from 1 to 8 repetitions; <span data-value="budget.large"></span> restarts recovered most stuck seeds</p></div>
+    <div class="tile"><p class="num"><span data-value="rq1.hits1"></span> to <span data-value="rq1.hits8"></span></p><p>restarts that hit, of <span data-value="rq1.tries"></span>, at 8 qubits and <span data-value="rq1.params"></span> effective parameters, from 1 to 8 repetitions; <span data-value="budget.large"></span> restarts recovered most stuck seeds on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits</p></div>
     <div class="tile"><p class="num">≤ <span data-value="rq2.within8Max"></span></p><p>seed of <span data-value="paper.seeds"></span> within <span data-value="paper.closeRad"></span> rad at 8 qubits and <span data-value="rq2.lowShots"></span> shots; no batch recovered from <span data-value="rq3.heldMin"></span> unknowns per effective parameter up</p></div>
   </div>
   <div class="open">
@@ -783,23 +783,23 @@
       <li>Does the attacker's cost grow exponentially with the number of qubits?</li>
     </ul>
   </div>
-  <aside class="notes"><ul><li>One encoding layer with two or more trainable layers leaked (untrained, exact); repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li><span data-value="rq2.lowShots"></span> shots at 8 qubits and big batches actually blocked this attack; not a privacy guarantee</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
+  <aside class="notes"><ul><li>One encoding layer with two or more trainable layers leaked (untrained, exact); repetitions are a work factor on <span data-value="budget.othersCount"></span> of <span data-value="budget.circuits"></span> circuits; <span data-value="budget.hardest"></span> cost unknown</li><li>The line to remember: stuck is not private. <span data-value="rq2.lowShots"></span> shots at 8 qubits and big batches actually blocked this attack; neither is a guarantee</li><li>Open: training under that noise; cost vs qubits. That's my talk.</li></ul></aside>
 </section>
 
 <section class="closing">
   <div class="close-text">
   <h2>Thank you</h2>
-  <p class="asks">I'm glad to take questions.</p>
+  <p class="asks">Find a setting where the attack fails, then add restarts.</p>
   <p class="contact"><b>AJ Barea</b><br>PhD student, Rochester Institute of Technology</p>
   <p class="contact"><a href="mailto:ajb6289@rit.edu">ajb6289@rit.edu</a><br><a href="https://github.com/ajbarea/csci739-qfl-privacy">github.com/ajbarea/csci739-qfl-privacy</a></p>
   </div>
   <!-- qr:close -->
   <div class="qr qr-close" data-motion="pop" data-delay="300" data-dur="600">
-    <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/qfl-privacy" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM14 4h1v1h-1zM16 4h2v1h-2zM20 4h5v1h-5zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM14 5h6v1h-6zM21 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM15 6h3v1h-3zM19 6h4v1h-4zM24 6h1v1h-1zM27 6h2v1h-2zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h2v1h-2zM15 7h1v1h-1zM18 7h1v1h-1zM20 7h1v1h-1zM24 7h3v1h-3zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h2v1h-2zM16 8h2v1h-2zM19 8h1v1h-1zM22 8h1v1h-1zM25 8h1v1h-1zM28 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h4v1h-4zM17 9h1v1h-1zM19 9h4v1h-4zM24 9h3v1h-3zM28 9h1v1h-1zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h1v1h-1zM15 11h2v1h-2zM18 11h2v1h-2zM22 11h1v1h-1zM25 11h2v1h-2zM28 11h1v1h-1zM4 12h1v1h-1zM6 12h5v1h-5zM17 12h3v1h-3zM21 12h2v1h-2zM24 12h1v1h-1zM26 12h1v1h-1zM30 12h5v1h-5zM11 13h1v1h-1zM13 13h1v1h-1zM18 13h1v1h-1zM20 13h1v1h-1zM22 13h4v1h-4zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM5 14h7v1h-7zM13 14h1v1h-1zM15 14h2v1h-2zM19 14h2v1h-2zM22 14h1v1h-1zM25 14h1v1h-1zM30 14h1v1h-1zM32 14h1v1h-1zM34 14h2v1h-2zM7 15h1v1h-1zM15 15h1v1h-1zM18 15h2v1h-2zM25 15h2v1h-2zM28 15h2v1h-2zM32 15h4v1h-4zM7 16h1v1h-1zM10 16h2v1h-2zM16 16h1v1h-1zM19 16h1v1h-1zM22 16h2v1h-2zM25 16h1v1h-1zM28 16h2v1h-2zM31 16h3v1h-3zM5 17h2v1h-2zM8 17h2v1h-2zM11 17h2v1h-2zM14 17h1v1h-1zM16 17h1v1h-1zM18 17h4v1h-4zM24 17h3v1h-3zM28 17h3v1h-3zM33 17h4v1h-4zM6 18h2v1h-2zM9 18h3v1h-3zM13 18h1v1h-1zM15 18h3v1h-3zM21 18h1v1h-1zM23 18h1v1h-1zM25 18h1v1h-1zM29 18h4v1h-4zM35 18h1v1h-1zM4 19h1v1h-1zM6 19h1v1h-1zM11 19h3v1h-3zM15 19h1v1h-1zM17 19h2v1h-2zM20 19h1v1h-1zM22 19h5v1h-5zM28 19h4v1h-4zM33 19h2v1h-2zM4 20h1v1h-1zM6 20h1v1h-1zM10 20h2v1h-2zM13 20h1v1h-1zM17 20h1v1h-1zM21 20h1v1h-1zM23 20h1v1h-1zM27 20h3v1h-3zM31 20h2v1h-2zM36 20h1v1h-1zM4 21h1v1h-1zM7 21h1v1h-1zM15 21h1v1h-1zM20 21h5v1h-5zM27 21h1v1h-1zM30 21h2v1h-2zM33 21h4v1h-4zM9 22h5v1h-5zM16 22h1v1h-1zM18 22h2v1h-2zM21 22h1v1h-1zM26 22h1v1h-1zM28 22h2v1h-2zM31 22h2v1h-2zM34 22h2v1h-2zM4 23h1v1h-1zM6 23h1v1h-1zM12 23h3v1h-3zM17 23h1v1h-1zM19 23h4v1h-4zM24 23h1v1h-1zM27 23h2v1h-2zM30 23h7v1h-7zM4 24h7v1h-7zM12 24h1v1h-1zM14 24h3v1h-3zM19 24h2v1h-2zM24 24h3v1h-3zM29 24h1v1h-1zM32 24h2v1h-2zM35 24h2v1h-2zM4 25h1v1h-1zM7 25h2v1h-2zM11 25h1v1h-1zM13 25h5v1h-5zM19 25h1v1h-1zM21 25h2v1h-2zM27 25h1v1h-1zM30 25h1v1h-1zM33 25h1v1h-1zM36 25h1v1h-1zM4 26h1v1h-1zM6 26h1v1h-1zM8 26h3v1h-3zM12 26h1v1h-1zM14 26h1v1h-1zM16 26h5v1h-5zM22 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM31 26h1v1h-1zM34 26h2v1h-2zM4 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM13 27h2v1h-2zM18 27h2v1h-2zM25 27h1v1h-1zM27 27h3v1h-3zM31 27h1v1h-1zM34 27h3v1h-3zM4 28h1v1h-1zM7 28h1v1h-1zM10 28h2v1h-2zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM19 28h3v1h-3zM24 28h1v1h-1zM26 28h1v1h-1zM28 28h5v1h-5zM36 28h1v1h-1zM12 29h1v1h-1zM15 29h4v1h-4zM20 29h1v1h-1zM22 29h4v1h-4zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM13 30h1v1h-1zM16 30h1v1h-1zM19 30h2v1h-2zM22 30h1v1h-1zM24 30h2v1h-2zM27 30h2v1h-2zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h1v1h-1zM14 31h2v1h-2zM17 31h1v1h-1zM20 31h1v1h-1zM25 31h4v1h-4zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM16 32h1v1h-1zM22 32h2v1h-2zM25 32h1v1h-1zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h5v1h-5zM18 33h4v1h-4zM24 33h3v1h-3zM29 33h1v1h-1zM32 33h2v1h-2zM36 33h1v1h-1zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h1v1h-1zM14 34h4v1h-4zM21 34h1v1h-1zM23 34h1v1h-1zM26 34h1v1h-1zM30 34h2v1h-2zM33 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h1v1h-1zM16 35h1v1h-1zM18 35h1v1h-1zM20 35h1v1h-1zM23 35h4v1h-4zM32 35h3v1h-3zM4 36h7v1h-7zM12 36h2v1h-2zM15 36h2v1h-2zM21 36h3v1h-3zM26 36h4v1h-4zM31 36h1v1h-1zM33 36h1v1h-1zM35 36h1v1h-1z"/></svg>
-    <p class="qr-label"><b>These slides</b><span>ajbarea.github.io/talks/<br>qfl-privacy</span></p>
+    <svg class="qr-code" viewBox="0 0 41 41" role="img" aria-label="QR code for ajbarea.github.io/talks/qfl-privacy/lab/" shape-rendering="crispEdges"><rect width="41" height="41" fill="#fff"/><path fill="#000" d="M4 4h7v1h-7zM16 4h1v1h-1zM20 4h1v1h-1zM22 4h3v1h-3zM27 4h1v1h-1zM30 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM13 5h1v1h-1zM15 5h2v1h-2zM19 5h1v1h-1zM22 5h1v1h-1zM24 5h3v1h-3zM28 5h1v1h-1zM30 5h1v1h-1zM36 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h3v1h-3zM18 6h3v1h-3zM24 6h2v1h-2zM27 6h2v1h-2zM30 6h1v1h-1zM32 6h3v1h-3zM36 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h1v1h-1zM16 7h1v1h-1zM22 7h1v1h-1zM26 7h1v1h-1zM28 7h1v1h-1zM30 7h1v1h-1zM32 7h3v1h-3zM36 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM12 8h4v1h-4zM17 8h4v1h-4zM24 8h2v1h-2zM27 8h1v1h-1zM30 8h1v1h-1zM32 8h3v1h-3zM36 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h3v1h-3zM16 9h2v1h-2zM21 9h3v1h-3zM25 9h2v1h-2zM30 9h1v1h-1zM36 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h7v1h-7zM12 11h2v1h-2zM16 11h1v1h-1zM18 11h1v1h-1zM20 11h1v1h-1zM22 11h6v1h-6zM4 12h1v1h-1zM6 12h5v1h-5zM16 12h3v1h-3zM21 12h4v1h-4zM26 12h2v1h-2zM30 12h5v1h-5zM4 13h3v1h-3zM8 13h1v1h-1zM11 13h2v1h-2zM17 13h2v1h-2zM20 13h6v1h-6zM27 13h1v1h-1zM30 13h2v1h-2zM33 13h2v1h-2zM36 13h1v1h-1zM4 14h3v1h-3zM8 14h14v1h-14zM25 14h1v1h-1zM30 14h1v1h-1zM32 14h1v1h-1zM34 14h2v1h-2zM4 15h1v1h-1zM7 15h1v1h-1zM12 15h6v1h-6zM19 15h1v1h-1zM21 15h2v1h-2zM25 15h2v1h-2zM28 15h2v1h-2zM32 15h4v1h-4zM6 16h2v1h-2zM10 16h1v1h-1zM12 16h1v1h-1zM14 16h1v1h-1zM18 16h3v1h-3zM23 16h2v1h-2zM26 16h1v1h-1zM28 16h2v1h-2zM31 16h3v1h-3zM5 17h2v1h-2zM8 17h2v1h-2zM11 17h4v1h-4zM16 17h1v1h-1zM19 17h1v1h-1zM21 17h2v1h-2zM25 17h1v1h-1zM27 17h4v1h-4zM33 17h4v1h-4zM6 18h2v1h-2zM10 18h4v1h-4zM15 18h2v1h-2zM19 18h3v1h-3zM24 18h2v1h-2zM29 18h4v1h-4zM35 18h1v1h-1zM6 19h1v1h-1zM8 19h2v1h-2zM12 19h1v1h-1zM18 19h2v1h-2zM22 19h1v1h-1zM25 19h2v1h-2zM28 19h4v1h-4zM33 19h2v1h-2zM5 20h4v1h-4zM10 20h1v1h-1zM14 20h1v1h-1zM16 20h4v1h-4zM21 20h1v1h-1zM27 20h3v1h-3zM31 20h2v1h-2zM36 20h1v1h-1zM4 21h1v1h-1zM6 21h2v1h-2zM9 21h1v1h-1zM12 21h2v1h-2zM15 21h3v1h-3zM20 21h1v1h-1zM22 21h4v1h-4zM27 21h1v1h-1zM30 21h2v1h-2zM33 21h4v1h-4zM6 22h5v1h-5zM12 22h1v1h-1zM14 22h1v1h-1zM17 22h3v1h-3zM22 22h1v1h-1zM28 22h2v1h-2zM31 22h2v1h-2zM34 22h2v1h-2zM5 23h2v1h-2zM9 23h1v1h-1zM12 23h2v1h-2zM16 23h1v1h-1zM19 23h2v1h-2zM24 23h2v1h-2zM27 23h2v1h-2zM30 23h7v1h-7zM5 24h1v1h-1zM7 24h4v1h-4zM14 24h1v1h-1zM17 24h1v1h-1zM19 24h1v1h-1zM22 24h1v1h-1zM29 24h1v1h-1zM32 24h2v1h-2zM35 24h2v1h-2zM4 25h1v1h-1zM11 25h3v1h-3zM16 25h2v1h-2zM19 25h3v1h-3zM24 25h1v1h-1zM27 25h1v1h-1zM30 25h1v1h-1zM33 25h1v1h-1zM36 25h1v1h-1zM4 26h1v1h-1zM6 26h6v1h-6zM14 26h1v1h-1zM16 26h3v1h-3zM22 26h2v1h-2zM26 26h1v1h-1zM31 26h1v1h-1zM34 26h2v1h-2zM4 27h1v1h-1zM9 27h1v1h-1zM11 27h3v1h-3zM15 27h3v1h-3zM20 27h1v1h-1zM23 27h3v1h-3zM27 27h3v1h-3zM31 27h1v1h-1zM34 27h1v1h-1zM4 28h1v1h-1zM6 28h1v1h-1zM8 28h6v1h-6zM17 28h2v1h-2zM20 28h2v1h-2zM23 28h2v1h-2zM26 28h1v1h-1zM28 28h5v1h-5zM12 29h1v1h-1zM14 29h1v1h-1zM18 29h1v1h-1zM20 29h5v1h-5zM28 29h1v1h-1zM32 29h1v1h-1zM34 29h1v1h-1zM36 29h1v1h-1zM4 30h7v1h-7zM17 30h5v1h-5zM24 30h1v1h-1zM26 30h3v1h-3zM30 30h1v1h-1zM32 30h1v1h-1zM34 30h1v1h-1zM4 31h1v1h-1zM10 31h1v1h-1zM12 31h4v1h-4zM17 31h1v1h-1zM20 31h3v1h-3zM25 31h4v1h-4zM32 31h5v1h-5zM4 32h1v1h-1zM6 32h3v1h-3zM10 32h1v1h-1zM12 32h1v1h-1zM16 32h1v1h-1zM20 32h1v1h-1zM23 32h1v1h-1zM25 32h1v1h-1zM28 32h6v1h-6zM4 33h1v1h-1zM6 33h3v1h-3zM10 33h1v1h-1zM12 33h4v1h-4zM18 33h2v1h-2zM21 33h2v1h-2zM25 33h1v1h-1zM29 33h1v1h-1zM32 33h2v1h-2zM35 33h2v1h-2zM4 34h1v1h-1zM6 34h3v1h-3zM10 34h1v1h-1zM12 34h2v1h-2zM17 34h1v1h-1zM19 34h3v1h-3zM26 34h1v1h-1zM30 34h2v1h-2zM33 34h2v1h-2zM4 35h1v1h-1zM10 35h1v1h-1zM13 35h2v1h-2zM17 35h1v1h-1zM19 35h1v1h-1zM25 35h2v1h-2zM32 35h3v1h-3zM4 36h7v1h-7zM12 36h1v1h-1zM14 36h3v1h-3zM19 36h1v1h-1zM21 36h2v1h-2zM26 36h4v1h-4zM31 36h1v1h-1zM33 36h1v1h-1zM35 36h1v1h-1z"/></svg>
+    <p class="qr-label"><b>Try the lab</b><span>ajbarea.github.io/talks/<br>qfl-privacy/lab</span></p>
   </div>
   <!-- /qr -->
-  <aside class="notes"><ul><li>Thank you; the code, results and this lab are public</li><li>Questions</li></ul></aside>
+  <aside class="notes"><ul><li>Thank you; paste the lab link in the Zoom chat now</li><li>Invite: find a setting where the attack fails, then add restarts</li><li>Questions</li></ul></aside>
 </section>
 
 <section id="faq" class="backup faq-index">

@@ -1,6 +1,7 @@
 """Each talk's committed QR codes decode to that talk's exact address."""
 
 import importlib.util
+import json
 import pathlib
 import re
 
@@ -79,11 +80,18 @@ def test_a_talk_can_end_on_its_playground():
     assert qr.close_target(ROOT / "checking-the-checker") == (qr.talk_url("checking-the-checker"), "These slides")
 
 
-@pytest.mark.parametrize("close", [{"path": "../etc/", "label": "x"}, {"path": "nowhere/", "label": "x"}, {"path": "lab/"}])
-def test_a_close_entry_must_name_a_page_inside_the_talk(tmp_path, monkeypatch, close):
-    import json
+BAD_CLOSE = [
+    {"path": "../etc/", "label": "x"},
+    {"path": "nowhere/", "label": "x"},
+    {"path": "lab/"},
+    {"path": "lab/", "label": "x", "url": "https://example.com"},
+]
 
+
+@pytest.mark.parametrize("close", BAD_CLOSE)
+def test_a_close_entry_must_name_a_page_inside_the_talk(tmp_path, monkeypatch, close):
     (tmp_path / "t" / "lab").mkdir(parents=True)
+    (tmp_path / "etc").mkdir()  # "../etc/" exists, so only the path rule can refuse it
     (tmp_path / "t" / "talk.json").write_text(json.dumps({"close": close}))
     monkeypatch.setattr(qr, "ROOT", tmp_path)
     with pytest.raises(SystemExit):

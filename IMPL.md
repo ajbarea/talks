@@ -1,3 +1,22 @@
+# IMPL: QFL talk fits the Dec 10 slot and ends on the lab, 2026-11-24
+
+Branch qfl-quality, issue #166, PR #167 (assigned ajbarea).
+
+## Done
+- ✅ Script trimmed by intent: rehearsal audio 9.8 to 8.8 min (edge-tts, +0%); 1357 spoken words, 9.7 min at 140 wpm; cap now 10 min.
+- ✅ Chat bet on slide 3, "stuck is not private" payoff, closing QR + short link to the lab (`talk.json` `close`, read by `site.talk_json`).
+- ✅ Every slide number checked against the paper; qualifiers kept; section 3 "what else might stop it".
+- ✅ Explainer: spoken gloss per equation, Zoom run of show.
+- ✅ Lab: restarts table keyboard-scrollable and named (axe serious, 3 tabs, fixed); lab audit clean at 1920 and 390.
+- ✅ Five Opus review rounds; round 5 clean (2 out-of-scope Nits: default encodings elsewhere).
+
+## Next
+- 📋 CI green, merge, confirm live; AJ's guided lab walk (periegesis) decides any flow changes.
+
+## Verify
+- `python3 scripts/script_length.py qfl-privacy --check`; `uv run python scripts/qr.py --check`; `uv run pytest -q tests/test_qr.py tests/test_qfl_lab_page.py`.
+- Audio: `uv run --with edge-tts python3 scripts/tts.py qfl-privacy --engine edge-tts --rate=+0% --out /tmp/x.mp3`.
+
 # IMPL: external chips open in a new tab, 2026-11-18
 
 Branch fix/external-links-new-tab, issue #161 (assigned ajbarea). Do NOT merge.

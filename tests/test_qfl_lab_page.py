@@ -240,3 +240,32 @@ def test_the_restarts_table_scrolls_from_the_keyboard() -> None:
     assert '"ArrowLeft"' in guard and '"ArrowRight"' in guard
     assert not any(k in guard for k in ('" "', '"Home"', '"End"'))
     assert body.index(guard) < body.index('e.key === " "')
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="needs node")
+def test_the_table_guard_takes_only_plain_sideways_arrows_in_an_overflowing_table() -> None:
+    # Runs the guard's own condition, so a changed operator fails as well as a missing term.
+    src = (LAB / "app.js").read_text()
+    (body,) = _bodies(src, r"function onKey\(\w+\) \{")
+    guard = next(line for line in body.splitlines() if line.strip().startswith("if (wrap"))
+    cond = re.match(r"\s*if \((.*)\) return;\s*$", guard).group(1)
+    cases = [
+        # key, shift, in a table, overflows -> the table keeps it
+        ("ArrowRight", False, True, True, True),
+        ("ArrowLeft", False, True, True, True),
+        ("ArrowRight", True, True, True, False),
+        ("ArrowRight", False, True, False, False),
+        ("ArrowRight", False, False, True, False),
+        (" ", False, True, True, False),
+        ("Home", False, True, True, False),
+        ("End", False, True, True, False),
+    ]
+    prog = (
+        f"const cases = {json.dumps(cases)};"
+        " console.log(JSON.stringify(cases.map(([key, shiftKey, inTable, over]) => {"
+        " const e = { key, shiftKey };"
+        " const wrap = inTable ? { scrollWidth: over ? 200 : 100, clientWidth: 100 } : null;"
+        f" return Boolean({cond}); }})))"
+    )
+    out = subprocess.run(["node", "-e", prog], capture_output=True, text=True, check=True)
+    assert json.loads(out.stdout) == [c[4] for c in cases]

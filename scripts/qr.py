@@ -46,7 +46,10 @@ def close_target(talk: pathlib.Path | str) -> tuple[str, str]:
     (`"close": {"path": "lab/", "label": "Try the lab"}`), so a talk can end on its playground."""
     talk = pathlib.Path(talk)
     path = ROOT / talk.name / "talk.json"
-    data = json.loads(path.read_text()) if path.is_file() else {}
+    try:
+        data = json.loads(path.read_text()) if path.is_file() else {}
+    except json.JSONDecodeError as exc:
+        raise SystemExit(f"{talk.name}/talk.json is not JSON: {exc}") from exc
     close = data.get("close") if isinstance(data, dict) else None
     if close is None:
         return talk_url(talk), "These slides"

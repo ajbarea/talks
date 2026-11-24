@@ -46,13 +46,17 @@ def close_target(talk: pathlib.Path | str) -> tuple[str, str]:
     (`"close": {"path": "lab/", "label": "Try the lab"}`), so a talk can end on its playground."""
     talk = pathlib.Path(talk)
     path = ROOT / talk.name / "talk.json"
-    close = json.loads(path.read_text()).get("close") if path.is_file() else None
+    data = json.loads(path.read_text()) if path.is_file() else {}
+    close = data.get("close") if isinstance(data, dict) else None
     if close is None:
         return talk_url(talk), "These slides"
-    rel, label = close.get("path"), close.get("label")
-    if set(close) != {"path", "label"} or not isinstance(rel, str) or not isinstance(label, str):
+    if not isinstance(close, dict) or set(close) != {"path", "label"}:
         raise SystemExit(f'{talk.name}/talk.json "close" holds a "path" and a "label"')
-    if not re.fullmatch(r"[\w-]+(/[\w-]+)*/?", rel) or not (ROOT / talk.name / rel).exists():
+    rel, label = close["path"], close["label"]
+    if not isinstance(rel, str) or not isinstance(label, str):
+        raise SystemExit(f'{talk.name}/talk.json "close" holds a "path" and a "label"')
+    # A folder inside the talk that holds a page, so the code never points at a 404.
+    if not re.fullmatch(r"[\w-]+(/[\w-]+)*/?", rel) or not (ROOT / talk.name / rel / "index.html").is_file():
         raise SystemExit(f"{talk.name}/talk.json close path {rel!r} is not a page in the talk")
     return f"{talk_url(talk)}/{rel}", label
 

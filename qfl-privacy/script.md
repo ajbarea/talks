@@ -1,10 +1,10 @@
 # When do quantum circuits keep federated training data private? Script
 
-<!-- budget: 1300 words. About 9.5 minutes read aloud, plus about 2 minutes of dragging controls on the three lab slides: about 12 minutes inside a 13 to 14 minute slot. -->
+<!-- budget: 1400 words. About 9.7 minutes read aloud at 140 words a minute, plus about 2 minutes of dragging controls on the three lab slides: about 12 minutes inside a 13 to 14 minute slot. -->
 
 ## When do quantum circuits keep federated training data private?
 
-Hi, I'm AJ, a first-year PhD student. My project asks one question: when a quantum model is trained the federated way, does the gradient it sends keep the training data private? By the end you'll know where it does and where it doesn't, and you can run the attack yourself in your browser. Please stop me any time a term isn't clear.
+Hi, I'm AJ, a first-year PhD student. My project asks one question: when a quantum model is trained the federated way, does the gradient it sends keep the training data private? By the end you'll know where this attack works and where it fails, and you can run the attack yourself in your browser. Please stop me any time a term isn't clear.
 
 ## Three parts: the attack, a live lab, then what else might stop it
 
@@ -18,7 +18,7 @@ A quick setup. Several clients, say phones or hospitals, want to train one share
 
 A gradient is just a list of numbers, one per trainable angle, and that feels private. Here's the catch: the server knows the circuit, so it can play a guessing game: pick an input, compute that input's gradient, and adjust the guess until the two gradients match. If they match exactly, the guess is usually the input. That's the gradient-matching attack, and on classical networks it rebuilds images.
 
-What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would, {rq1.attacks} attacks with exact gradients, then shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With exact gradients, one input per update and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave its input away on every seed. So if you typed yes, the answer is: not by itself.
+What I did: I attacked simulated 4- and 8-qubit circuits the way a curious server would, {rq1.attacks} attacks with exact gradients, then shot noise, batches, hidden labels and trained circuits, {paper.seeds} seeds per setting. Why you should care: these are exactly the gradients our parameter-shift code computes. With exact gradients, one input per update and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave its input away on every seed. So if you typed yes: no, not in this setting.
 
 ## Two papers from one group disagree on whether the attack works on quantum circuits
 
@@ -36,7 +36,7 @@ Each attack ends one of four ways. Recovered: within {paper.recoveredRad} radian
 
 ## At a fixed parameter count, more encoding repetitions left the search stuck more often
 
-This is the live lab. It's a toy: one qubit, one hidden input, running in this browser. The curve is the matching loss for every possible guess, and the blue line marks the hidden input. Each restart is a ball rolling downhill. The number to watch is restarts that found the input.
+This is the live lab. It's a toy: one qubit, one hidden input, running in this browser. The curve is the matching loss for every possible guess, and the blue line marks the hidden input. Each restart is a ball rolling downhill. On the sphere, the blue ring is the input and the red dot is the attacker's best guess. The number to watch is restarts that found the input.
 
 I'll drag the repetitions up, keeping the total number of trainable blocks fixed. More repetitions mean more frequencies, so more dips for a restart to get trapped in. That's Kumar's mechanism. One input is a noisy sample, so at the foot of the panel the toy runs hidden inputs one to twenty, not picked. The pies thin out as repetitions grow.
 
@@ -44,7 +44,7 @@ On the right is what the paper measured, at 8 qubits and {rq1.params} effective 
 
 ## Stuck is not private: with {budget.large} restarts, most stuck seeds gave up their input
 
-But stuck only means the search gave up. So I'll add restarts. The attacker keeps the restart with the lowest loss, so it never needs to know the truth to pick the winner. In the toy's rows, one restart recovers about half of the twenty inputs, and twenty restarts recover them all.
+But stuck only means the search gave up. The toy is now at eight repetitions with one restart, and I'll add restarts. The attacker keeps the restart with the lowest loss, so it never needs to know the truth to pick the winner. In the toy's rows, one restart recovers about half of the twenty inputs, and twenty restarts recover them all.
 
 The paper did the same at scale. I reran the {budget.circuits} hardest 8-qubit circuits with {budget.large} restarts instead of {budget.small}. On {budget.othersCount} of them, recovery jumped to {budget.othersMin} or {budget.othersMax} of {paper.seeds} seeds. The {budget.hardest} circuit stayed hard: only {budget.hardestRate} percent of its restarts found the input, and {budget.hardestHeld} seeds held. Its cost is unknown, not infinite. So on three of the four circuits, encoding repetitions acted like a work factor for the attacker, not a wall.
 
@@ -62,13 +62,13 @@ Up to {rq3.leakMax} unknowns per effective parameter, every circuit leaked on at
 
 ## Hiding the label helped a little; training the circuit made no detectable net change
 
-Two more, briefly. If the server doesn't know the labels, it can still fit each input's weight in closed form. That recovered fewer seeds: {rq4.knownOnly} only with the labels and {rq4.unknownOnly} only without, a p-value of {rq4.p}. Most of that was batches of two, where the extra failures were stuck: a harder search, not a hidden input.
+Two more, briefly. If the server doesn't know the labels, it can still fit each input's weight in closed form. That recovered fewer seeds: {rq4.knownOnly} only with the labels and {rq4.unknownOnly} only without, a p-value of {rq4.p}. Most of that was batches of two on one circuit, where the extra failures were stuck: a harder search, not a hidden input.
 
-And training the circuit first? Pooled over {rq5.tasks} tasks, {rq5.before} seeds were recovered only before training and {rq5.after} only after, p of {rq5.p}. No detectable net change.
+And training the circuit first? Pooled over {rq5.tasks} tasks, {rq5.before} seeds were recovered only before training and {rq5.after} only after, p of {rq5.p}. No detectable net change, though the tasks leaned opposite ways.
 
 ## Repetitions slowed the attack; {rq2.lowShots} shots at 8 qubits and large batches stopped it
 
-So, to sum up. A shared gradient can rebuild the input: with exact gradients, one input and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave it away. More encoding repetitions slowed the attack, and more restarts recovered most stuck seeds. If you remember one line, make it this one: stuck is not private. What actually blocked this attack was {rq2.lowShots} shots per expectation value at 8 qubits, and batches with more unknowns than effective parameters, and neither one is a guarantee.
+So, to sum up. A shared gradient can rebuild the input: with exact gradients, one input and a known label, every untrained circuit with one encoding layer and two or more trainable layers gave it away. More encoding repetitions slowed the attack, and on three of the four circuits, more restarts recovered most stuck seeds. If you remember one line, make it this one: stuck is not private. What actually blocked this attack was {rq2.lowShots} shots per expectation value at 8 qubits, and batches with more unknowns than effective parameters, and neither one is a guarantee.
 
 Two questions stay open. Can a client still train on gradients that noisy? And does the attacker's cost grow exponentially with the number of qubits? Two circuit sizes can't tell us. That's my talk.
 

@@ -85,13 +85,19 @@ BAD_CLOSE = [
     {"path": "nowhere/", "label": "x"},
     {"path": "lab/"},
     {"path": "lab/", "label": "x", "url": "https://example.com"},
+    {"path": "data/", "label": "x"},
+    "lab/",
+    ["lab/"],
 ]
 
 
 @pytest.mark.parametrize("close", BAD_CLOSE)
 def test_a_close_entry_must_name_a_page_inside_the_talk(tmp_path, monkeypatch, close):
     (tmp_path / "t" / "lab").mkdir(parents=True)
+    (tmp_path / "t" / "lab" / "index.html").write_text("<!doctype html>")
+    (tmp_path / "t" / "data").mkdir()  # a folder with no page in it
     (tmp_path / "etc").mkdir()  # "../etc/" exists, so only the path rule can refuse it
+    (tmp_path / "etc" / "index.html").write_text("<!doctype html>")
     (tmp_path / "t" / "talk.json").write_text(json.dumps({"close": close}))
     monkeypatch.setattr(qr, "ROOT", tmp_path)
     with pytest.raises(SystemExit):

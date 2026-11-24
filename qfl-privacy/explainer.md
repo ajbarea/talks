@@ -11,7 +11,7 @@ Python you can run. Then what the live lab does on each slide, and what to say w
   three answers aloud on slide 4; the last line of its script answers them.
 - On the closing slide, paste `https://ajbarea.github.io/talks/qfl-privacy/lab/` into the chat as
   you say it. The QR code goes to the same page for anyone on a phone.
-- The script runs about 9 minutes aloud; the three lab slides add about 2 minutes of dragging.
+- The script is about 9.5 minutes aloud at 140 words a minute; the three lab slides add about 2 minutes of dragging.
   If you run long, skip the toy's rows on the restarts slide and go straight to the paper's.
 
 ## Federated learning, in one picture (slide 3)

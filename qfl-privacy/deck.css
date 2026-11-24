@@ -71,7 +71,7 @@
 .fl-fig .chip-text { font: 700 24px var(--sans); fill: var(--ink); }
 .fl-fig .chip-text.model { fill: var(--muted); font-weight: 400; }
 .fl-fig .home { fill: none; stroke: var(--held); stroke-width: 3; }
-.fl-fig .home-text { font: 700 22px var(--sans); fill: var(--held-ink); }
+.fl-fig .home-text { font: 700 23px var(--sans); fill: var(--held-ink); }
 .fl-fig figcaption { margin-top: 10px; font-size: 0.64em; color: var(--muted); }
 
 

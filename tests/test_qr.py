@@ -44,7 +44,8 @@ def test_every_talk_has_both_codes_decoding_to_its_address(talk):
     assert set(found) == set(qr.KINDS)
     for kind, markup in found.items():
         results = zxingcpp.read_barcodes(rasterize(markup))
-        assert [r.text for r in results] == [qr.talk_url(talk)], kind
+        want = qr.close_target(talk)[0] if kind == "close" else qr.talk_url(talk)
+        assert [r.text for r in results] == [want], kind
         assert results[0].ec_level == "M", kind
 
 
@@ -60,7 +61,8 @@ def test_address_appears_once_on_the_closing_slide(talk):
     start = page.rindex("<section", 0, page.index("Thank you"))
     slide = page[start : page.index("</section>", start)]
     assert "closing" in slide[: slide.index(">")]
-    assert slide.count(qr.short(qr.talk_url(talk)).replace("/talks/", "/talks/<br>")) == 1
+    address = qr.short(qr.close_target(talk)[0]).rstrip("/")
+    assert slide.count(address.replace("/talks/", "/talks/<br>")) == 1
     assert "These slides:" not in slide
 
 
@@ -69,3 +71,20 @@ def test_quiet_zone_is_four_modules_of_white():
     margin = qr.QUIET * SCALE
     assert img.crop((0, 0, img.width, margin)).getextrema()[0] == 255
     assert img.crop((0, 0, margin, img.height)).getextrema()[0] == 255
+
+
+def test_a_talk_can_end_on_its_playground():
+    url, label = qr.close_target(ROOT / "qfl-privacy")
+    assert (url, label) == ("https://ajbarea.github.io/talks/qfl-privacy/lab/", "Try the lab")
+    assert qr.close_target(ROOT / "checking-the-checker") == (qr.talk_url("checking-the-checker"), "These slides")
+
+
+@pytest.mark.parametrize("close", [{"path": "../etc/", "label": "x"}, {"path": "nowhere/", "label": "x"}, {"path": "lab/"}])
+def test_a_close_entry_must_name_a_page_inside_the_talk(tmp_path, monkeypatch, close):
+    import json
+
+    (tmp_path / "t" / "lab").mkdir(parents=True)
+    (tmp_path / "t" / "talk.json").write_text(json.dumps({"close": close}))
+    monkeypatch.setattr(qr, "ROOT", tmp_path)
+    with pytest.raises(SystemExit):
+        qr.close_target(tmp_path / "t")

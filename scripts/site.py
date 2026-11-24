@@ -95,8 +95,8 @@ def links(talk: pathlib.Path) -> dict[str, str]:
         data = json.loads(path.read_text())
     except json.JSONDecodeError as exc:
         raise SystemExit(f"{talk.name}/talk.json is not JSON: {exc}") from exc
-    if not isinstance(data, dict) or set(data) - {"links"}:
-        raise SystemExit(f'{talk.name}/talk.json holds only {{"links": {{...}}}}')
+    if not isinstance(data, dict) or set(data) - {"links", "close"}:
+        raise SystemExit(f'{talk.name}/talk.json holds only {{"links": {{...}}, "close": {{...}}}}')
     named = data.get("links", {})
     if not isinstance(named, dict) or set(named) - set(LINKS):
         raise SystemExit(f"{talk.name}/talk.json links are limited to {', '.join(LINKS)}")

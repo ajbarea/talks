@@ -33,7 +33,7 @@ CAP_MINUTES = {
     "claude-tooling": 10,
     "checking-the-checker": 7,
     "federated-agents-step-one": 10,
-    "qfl-privacy": 15,
+    "qfl-privacy": 10,  # read aloud; the lab demo adds about 2 minutes in a 13-14 minute slot
 }
 # Tags that end a word even with no space around them; inline ones such as <b> do not.
 BREAKS = {"br", "p", "li", "ul", "ol", "div", "section", "aside", "td", "tr"}

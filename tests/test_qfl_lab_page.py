@@ -224,3 +224,13 @@ def test_every_key_handler_leaves_browser_shortcuts_alone() -> None:
     for b in taking:
         assert all(k in b for k in ("ctrlKey", "metaKey", "altKey")), b[:120]
         assert b.index("altKey") < b.index("preventDefault"), b[:120]
+
+
+def test_the_restarts_table_scrolls_from_the_keyboard() -> None:
+    # axe scrollable-region-focusable: a sideways-scrolling table needs a tab stop and a name,
+    # and the player's arrow keys must leave it to scroll.
+    src = (LAB / "app.js").read_text()
+    wrap = re.search(r'el\("div", \{ class: "table-wrap"([^}]*)\}', src)
+    assert wrap and 'tabindex: "0"' in wrap.group(1) and '"aria-label"' in wrap.group(1)
+    (body,) = _bodies(src, r"function onKey\(\w+\) \{")
+    assert body.index('closest(".table-wrap")') < body.index("ArrowLeft")

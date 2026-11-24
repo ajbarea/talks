@@ -56,7 +56,7 @@
 .phone .fl-fig figcaption { font-size: 0.7em; }
 .fl-fig .box { fill: var(--card); stroke: var(--ink); stroke-width: 2.5; }
 .fl-fig .box-title { font: 700 26px var(--sans); fill: var(--ink); }
-.fl-fig .box-text { font: 22px var(--sans); fill: var(--muted); }
+.fl-fig .box-text { font: 23px var(--sans); fill: var(--muted); }
 .fl-fig .data { fill: var(--held-tint); stroke: var(--held); stroke-width: 2.5; }
 .fl-fig .up { fill: none; stroke: var(--ink); stroke-width: 4; }
 .fl-fig .up-head { fill: var(--ink); }

@@ -58,6 +58,7 @@ The sources and how strong each one is are in [research-2026-11.md](research-202
 
 | Date | Post | Impressions (2026-11-05) |
 |---|---|---|
+| 2026-12-01 (planned) | [makesense at IAAI-27](posts/2026-12-01-makesense-iaai27.md) | not posted |
 | 2026-11-05 | [AWARE-AI Fall hackathon, Best Presentation](posts/2026-11-05-aware-ai-fall-hackathon-best-presentation.md) | new |
 | 2026-05-19 | [HackerRank Orchestrate, rank 11 of 1,349](posts/2026-05-19-hackerrank-orchestrate-rank-11.md) | 795 |
 | 2026-05-02 | [Orchestrate Triage agent](posts/2026-05-02-orchestrate-triage-agent.md) | 748 |
